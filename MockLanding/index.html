@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spark — AI Research, Simplified</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #191e3f;
+      --bg-card:   #1e2447;
+      --accent:    #5c6eb8;
+      --accent-dim: rgba(92, 110, 184, 0.18);
+      --white:     #ffffff;
+      --white-60:  rgba(255,255,255,0.60);
+      --white-22:  rgba(255,255,255,0.22);
+      --white-07:  rgba(255,255,255,0.07);
+      --serif:     Georgia, "Times New Roman", serif;
+      --sans:      -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(25, 30, 63, 0.80);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--white-07);
+    }
+
+    .logo {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      color: var(--white);
+      text-transform: uppercase;
+    }
+    .logo span { color: var(--accent); }
+
+    nav a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--white-60);
+      text-decoration: none;
+      letter-spacing: 0.03em;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--white); }
+
+    .nav-cta {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent) !important;
+      border: 1px solid rgba(92,110,184,0.45);
+      padding: 7px 16px;
+      border-radius: 999px;
+      transition: background 0.2s, color 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--accent-dim); color: var(--white) !important; }
+
+    nav .nav-links { display: flex; gap: 32px; align-items: center; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      padding: 120px 40px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(92,110,184,0.14) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid rgba(92,110,184,0.30);
+      padding: 5px 12px;
+      border-radius: 999px;
+      margin-bottom: 28px;
+    }
+    .badge-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    h1 {
+      font-size: clamp(36px, 6vw, 68px);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      max-width: 720px;
+      margin: 0 auto 20px;
+    }
+    h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: clamp(15px, 1.8vw, 17px);
+      color: var(--white-60);
+      line-height: 1.65;
+      max-width: 480px;
+      margin: 0 auto 44px;
+      font-weight: 400;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 72px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: var(--white);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 999px;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--white-60);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      padding: 14px 24px;
+      border-radius: 999px;
+      border: 1px solid var(--white-22);
+      transition: border-color 0.2s, color 0.2s, transform 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--white-60); color: var(--white); transform: translateY(-1px); }
+
+    /* ── MOCK PHONE ── */
+    .phone-wrap {
+      position: relative;
+      display: inline-block;
+    }
+
+    .phone {
+      width: 220px;
+      border-radius: 36px;
+      border: 1.5px solid rgba(255,255,255,0.10);
+      background: var(--bg-card);
+      overflow: hidden;
+      box-shadow:
+        0 40px 80px rgba(0,0,0,0.5),
+        0 0 0 1px rgba(92,110,184,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+
+    .phone-notch {
+      width: 60px;
+      height: 6px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 999px;
+      margin: 12px auto 0;
+    }
+
+    .phone-screen {
+      padding: 16px 18px 20px;
+    }
+
+    .card-source {
+      display: inline-block;
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-dim);
+      padding: 3px 8px;
+      border-radius: 999px;
+      margin-bottom: 18px;
+    }
+
+    .card-hook {
+      font-size: 16px;
+      font-weight: 900;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      margin-bottom: 20px;
+    }
+
+    .card-divider {
+      height: 1px;
+      background: var(--white-07);
+      margin: 0 -4px 14px;
+    }
+
+    .card-label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 7.5px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .card-body {
+      font-size: 10.5px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.80);
+      line-height: 1.6;
+    }
+
+    .card-quote {
+      font-size: 22px;
+      font-family: var(--serif);
+      color: rgba(92,110,184,0.4);
+      line-height: 1;
+      float: left;
+      margin-right: 5px;
+      margin-top: -3px;
+    }
+
+    .phone-hint {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      font-size: 8px;
+      font-weight: 500;
+      color: var(--white-22);
+      padding: 10px 0 14px;
+    }
+
+    /* ── HOW IT WORKS ── */
+    #how {
+      padding: 100px 40px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: clamp(26px, 3.5vw, 38px);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      max-width: 480px;
+      margin-bottom: 60px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1px;
+      background: var(--white-07);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .step {
+      background: var(--bg);
+      padding: 32px 28px;
+    }
+
+    .step-num {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.10em;
+      color: var(--accent);
+      opacity: 0.7;
+      margin-bottom: 16px;
+    }
+
+    .step-icon {
+      font-size: 22px;
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .step h3 {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .step p {
+      font-size: 13px;
+      color: var(--white-60);
+      line-height: 1.6;
+    }
+
+    /* ── CARD TYPES ── */
+    #cards {
+      padding: 100px 40px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .pill-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 40px;
+    }
+
+    .pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: var(--bg-card);
+      border: 1px solid var(--white-07);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white-60);
+      letter-spacing: 0.01em;
+    }
+
+    .pill-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.6;
+    }
+
+    .pill:first-child .pill-dot { opacity: 1; }
+
+    /* ── CTA ── */
+    #cta {
+      padding: 100px 40px 120px;
+      text-align: center;
+    }
+
+    .cta-box {
+      max-width: 560px;
+      margin: 0 auto;
+      border: 1px solid var(--white-07);
+      border-radius: 28px;
+      padding: 56px 48px;
+      background: var(--bg-card);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-box::before {
+      content: '';
+      position: absolute;
+      top: -60px; left: 50%;
+      transform: translateX(-50%);
+      width: 300px; height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(92,110,184,0.20) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-box h2 {
+      font-size: clamp(22px, 3vw, 30px);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 14px;
+    }
+
+    .cta-box p {
+      font-size: 14px;
+      color: var(--white-60);
+      line-height: 1.65;
+      margin-bottom: 32px;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 8px;
+      max-width: 360px;
+      margin: 0 auto;
+    }
+
+    input[type="email"] {
+      flex: 1;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--white-22);
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-size: 13px;
+      color: var(--white);
+      outline: none;
+      transition: border-color 0.2s;
+      font-family: var(--sans);
+    }
+    input[type="email"]::placeholder { color: var(--white-22); }
+    input[type="email"]:focus { border-color: rgba(92,110,184,0.70); }
+
+    button[type="submit"] {
+      background: var(--accent);
+      color: var(--white);
+      border: none;
+      border-radius: 999px;
+      padding: 12px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity 0.2s;
+      font-family: var(--sans);
+    }
+    button[type="submit"]:hover { opacity: 0.85; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--white-07);
+      padding: 24px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--white-22);
+    }
+    footer a { color: var(--white-22); text-decoration: none; }
+    footer a:hover { color: var(--white-60); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      .nav-links { gap: 16px; }
+      #hero { padding: 100px 24px 60px; }
+      #how, #cards, #cta { padding: 72px 24px; }
+      .cta-box { padding: 40px 28px; }
+      .input-row { flex-direction: column; }
+      footer { flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Spark<span>.</span></div>
+  <div class="nav-links">
+    <a href="#how">How it works</a>
+    <a href="#cards">What you get</a>
+    <a href="#cta" class="nav-cta">Early access</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div style="position:relative;">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Fully automated · No human review
+    </div>
+
+    <h1>Bleeding-edge AI research,<br><em>without the PhD.</em></h1>
+
+    <p class="hero-sub">
+      Spark converts the latest AI papers into swipeable, plain-English card decks—
+      automatically, every 90 minutes.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#cta" class="btn-primary">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7.5 3l3 3.5-3 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Get early access
+      </a>
+      <a href="#how" class="btn-ghost">
+        See how it works
+      </a>
+    </div>
+
+    <!-- MOCK PHONE -->
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="card-source">arXiv · 2 hrs ago</div>
+          <div class="card-hook">LLMs can now reason about their own uncertainty — and it changes everything.</div>
+
+          <div class="card-divider"></div>
+
+          <div class="card-label">
+            <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="4.5" r="3.5" stroke="currentColor" stroke-width="1.2"/><path d="M4.5 3v2l1 1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            ELI5
+          </div>
+          <div class="card-body">
+            Imagine if your calculator could tell you "I'm pretty sure this is right, but double-check me." These models now do exactly that—they flag their own blind spots.
+          </div>
+
+          <div style="height:14px;"></div>
+          <div class="card-divider"></div>
+
+          <div class="card-label">
+            <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 7.5l2-3 2 2 1.5-4 1.5 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Analogy
+          </div>
+          <div class="card-body">
+            <span class="card-quote">"</span>It's like a surgeon who pauses mid-operation to say "I've only done this twice"—before you have to ask.
+          </div>
+        </div>
+        <div class="phone-hint">
+          <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 2v5M2 5.5l2.5 2 2.5-2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          scroll to explore
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <p class="section-label">How it works</p>
+  <h2 class="section-title">From paper to pocket in under 10 seconds.</h2>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <span class="step-icon">🔍</span>
+      <h3>Ingest</h3>
+      <p>Every 90 minutes, Spark scans arXiv, GitHub trending, and RSS feeds for the highest-signal AI research.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <span class="step-icon">🧠</span>
+      <h3>Distill</h3>
+      <p>A multi-stage LLM pipeline extracts the hook, core ideas, ELI5, analogy, and key takeaway—in parallel.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <span class="step-icon">📱</span>
+      <h3>Deliver</h3>
+      <p>Six-card decks land in your feed, ordered by relevance score. Swipe through at your own pace.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CARD TYPES -->
+<section id="cards">
+  <p class="section-label">What you get</p>
+  <h2 class="section-title">Six cards. Every paper. Always in the same order.</h2>
+
+  <div class="pill-grid">
+    <div class="pill"><span class="pill-dot"></span>Hook — why it matters</div>
+    <div class="pill"><span class="pill-dot"></span>Core Ideas</div>
+    <div class="pill"><span class="pill-dot"></span>ELI5 explanation</div>
+    <div class="pill"><span class="pill-dot"></span>Real-world Analogy</div>
+    <div class="pill"><span class="pill-dot"></span>Visual diagram</div>
+    <div class="pill"><span class="pill-dot"></span>Takeaway</div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-box">
+    <h2>Be first to know<br>when it ships.</h2>
+    <p>We're polishing the final pieces. Drop your email and you'll get early access before the public launch.</p>
+    <form class="input-row" onsubmit="handleSubmit(event)">
+      <input type="email" placeholder="your@email.com" required />
+      <button type="submit">Notify me</button>
+    </form>
+    <p id="form-success" style="display:none;margin-top:16px;font-size:13px;color:rgba(92,110,184,0.9);font-weight:600;">You're on the list.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Spark</span>
+  <span>Built for curious minds.</span>
+</footer>
+
+<script>
+  function handleSubmit(e) {
+    e.preventDefault();
+    e.target.style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>
