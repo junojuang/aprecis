@@ -5,6 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Aprecis — AI Research, Simplified</title>
   <style>
+    @font-face {
+      font-family: 'Satoshi';
+      src: url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff2') format('woff2'),
+           url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff') format('woff'),
+           url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.ttf') format('truetype');
+      font-weight: 300 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Satoshi';
+      src: url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.woff2') format('woff2'),
+           url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.woff') format('woff'),
+           url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.ttf') format('truetype');
+      font-weight: 300 900;
+      font-style: italic;
+      font-display: swap;
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -17,7 +37,7 @@
       --white-60:    rgba(255,255,255,0.60);
       --white-22:    rgba(255,255,255,0.22);
       --white-07:    rgba(255,255,255,0.07);
-      --sans:        -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --sans:        'Satoshi', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       --serif:       Georgia, "Times New Roman", serif;
     }
 
@@ -114,7 +134,7 @@
     .hero-bg {
       position: absolute;
       inset: 0;
-      background-image: url('../assets/aprecis_banner_main.png');
+      background-image: url('./assets/aprecis_banner_main.png');
       background-size: cover;
       background-position: center 35%;
       filter: brightness(0.50) saturate(1.3);
@@ -481,7 +501,7 @@
 <nav>
   <a class="logo" href="#">
     <div class="logo-mark">
-      <img src="../assets/aprecis_main.png" alt="Aprecis logo" />
+      <img src="./assets/aprecis_main.png" alt="Aprecis logo" />
     </div>
     Aprecis
   </a>
@@ -551,7 +571,7 @@
 <!-- BANNER VISUAL -->
 <section id="visual">
   <div class="visual-wrap">
-    <img src="../assets/aprecis_banner_main.png" alt="Aprecis — see the signal through the noise" />
+    <img src="./assets/aprecis_banner_main.png" alt="Aprecis — see the signal through the noise" />
     <div class="visual-caption">See the signal through the noise.</div>
   </div>
 </section>
