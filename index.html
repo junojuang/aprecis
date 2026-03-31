@@ -3,23 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aprecis — AI Research, Simplified</title>
+  <title>Aprécis — AI Research, Precisely Distilled</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CEG84Y6QSP"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-CEG84Y6QSP');
+  </script>
   <style>
     @font-face {
       font-family: 'Satoshi';
       src: url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff2') format('woff2'),
-           url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff') format('woff'),
-           url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.ttf') format('truetype');
+           url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff') format('woff');
       font-weight: 300 900;
       font-style: normal;
       font-display: swap;
     }
-
     @font-face {
       font-family: 'Satoshi';
       src: url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.woff2') format('woff2'),
-           url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.woff') format('woff'),
-           url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.ttf') format('truetype');
+           url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.woff') format('woff');
       font-weight: 300 900;
       font-style: italic;
       font-display: swap;
@@ -27,340 +32,565 @@
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    :root {
-      --bg:          #05050a;
-      --bg-card:     #0c0d18;
-      --accent:      #5aaeff;
-      --accent-warm: #e07c3a;
-      --accent-dim:  rgba(90, 174, 255, 0.12);
-      --white:       #ffffff;
-      --white-60:    rgba(255,255,255,0.60);
-      --white-22:    rgba(255,255,255,0.22);
-      --white-07:    rgba(255,255,255,0.07);
-      --sans:        'Satoshi', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      --serif:       Georgia, "Times New Roman", serif;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--white);
-      font-family: var(--sans);
+    html, body {
+      background: #04080f;
+      color: #ffffff;
+      font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
+    }
+
+    /* ── CANVAS ── */
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── BG GLOW (blue ambient) ── */
+    .bg-glow {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 90% 65% at 55% 30%, rgba(18, 55, 140, 0.55) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 50% at 80% 70%, rgba(10, 30, 100, 0.35) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 15% 65%, rgba(8, 22, 80, 0.28) 0%, transparent 60%);
+    }
+
+    /* ── FILM GRAIN ── */
+    .grain {
+      position: fixed;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      opacity: 0.13;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+      animation: grain 0.5s steps(1) infinite;
+    }
+    @keyframes grain {
+      0%   { background-position:   0%   0%; }
+      10%  { background-position: -5%  -10%; }
+      20%  { background-position: -15%   5%; }
+      30%  { background-position:  7%  -25%; }
+      40%  { background-position: 20%   10%; }
+      50%  { background-position: -10%  15%; }
+      60%  { background-position:  15%  -5%; }
+      70%  { background-position:  0%   22%; }
+      80%  { background-position: -20% -15%; }
+      90%  { background-position:  10%   5%; }
+      100% { background-position:   0%   0%; }
     }
 
     /* ── NAV ── */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
-      z-index: 100;
+      z-index: 50;
+      padding: 24px 36px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 18px 40px;
-      background: rgba(5, 5, 10, 0.80);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--white-07);
     }
 
     .logo {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 15px;
-      font-weight: 900;
-      letter-spacing: 0.10em;
-      color: var(--white);
-      text-transform: uppercase;
       text-decoration: none;
     }
 
     .logo-mark {
-      width: 30px;
-      height: 30px;
-      border-radius: 8px;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
       overflow: hidden;
+      mix-blend-mode: screen;
       flex-shrink: 0;
-      border: 1px solid rgba(90,174,255,0.18);
     }
-
     .logo-mark img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center;
     }
 
-    nav a {
+    .logo-text {
       font-size: 13px;
-      font-weight: 500;
-      color: var(--white-60);
-      text-decoration: none;
-      letter-spacing: 0.03em;
-      transition: color 0.2s;
-    }
-    nav a:hover { color: var(--white); }
-
-    .nav-cta {
-      font-size: 12px;
       font-weight: 700;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--accent) !important;
-      border: 1px solid rgba(90,174,255,0.35);
-      padding: 7px 16px;
-      border-radius: 999px;
-      transition: background 0.2s, color 0.2s !important;
+      color: #ffffff;
     }
-    .nav-cta:hover { background: var(--accent-dim); color: var(--white) !important; }
 
-    nav .nav-links { display: flex; gap: 32px; align-items: center; }
+
+    /* ── WRAPPER ── */
+    .wrap {
+      position: relative;
+      z-index: 10;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 36px;
+    }
 
     /* ── HERO ── */
     #hero {
-      position: relative;
-      min-height: 100svh;
+      min-height: 88svh;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      text-align: center;
-      overflow: hidden;
+      padding-top: 100px;
+      padding-bottom: 40px;
+      gap: 60px;
     }
 
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background-image: url('./assets/aprecis_banner_main.png');
-      background-size: cover;
-      background-position: center 35%;
-      filter: brightness(0.50) saturate(1.3);
+    .def-entry { max-width: 860px; }
+
+    .hero-kicker {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.38);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .hero-kicker::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: rgba(255,255,255,0.25);
+      flex-shrink: 0;
     }
 
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(5,5,10,0.25) 0%,
-        rgba(5,5,10,0.05) 35%,
-        rgba(5,5,10,0.55) 70%,
-        rgba(5,5,10,1.00) 100%
-      );
+    .def-kicker {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 18px;
     }
 
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      padding: 140px 40px 100px;
-      max-width: 800px;
+    .def-pos {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #4d9cff;
+    }
+
+    .def-phon {
+      font-size: 13px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.25);
+      letter-spacing: 0.03em;
+    }
+
+    .def-word {
+      font-size: clamp(72px, 12vw, 160px);
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      line-height: 0.88;
+      color: #ffffff;
+      margin-bottom: 32px;
+    }
+
+    .hero-tagline {
+      font-size: clamp(32px, 5vw, 62px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.08;
+      color: #ffffff;
+      max-width: 720px;
+      margin-bottom: 40px;
+    }
+    .hero-tagline em {
+      font-style: italic;
+      font-weight: 300;
+      color: rgba(255,255,255,0.55);
+    }
+    .def-word em {
+      font-style: normal;
+      color: #4d9cff;
+    }
+    .word-prefix {
+      color: rgba(255,255,255,0.25);
+      font-weight: 800;
+    }
+
+    .dict-card {
+      margin-bottom: 44px;
+      max-width: 560px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .dict-entry-word {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(77,156,255,0.55);
+    }
+    .dict-pos {
+      color: rgba(255,255,255,0.22);
+      font-weight: 400;
+      letter-spacing: 0.12em;
+    }
+
+    .dict-number { display: none; }
+
+    .def-meaning {
+      font-size: clamp(15px, 1.6vw, 19px);
+      font-weight: 300;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.6;
+      font-style: italic;
+      letter-spacing: -0.01em;
+    }
+
+    .dict-source {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.25);
+      font-style: italic;
+    }
+
+    .def-rule {
+      width: 36px;
+      height: 1px;
+      background: rgba(255,255,255,0.14);
+      margin-bottom: 28px;
+    }
+
+    .def-hook {
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.58);
+      line-height: 1.75;
+      max-width: 460px;
+      margin-bottom: 28px;
     }
 
     .badge {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
       font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
+      font-weight: 600;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--accent);
-      background: rgba(90,174,255,0.10);
-      border: 1px solid rgba(90,174,255,0.22);
-      padding: 5px 12px;
+      color: rgba(255,255,255,0.38);
+      border: 1px solid rgba(255,255,255,0.09);
+      padding: 5px 13px;
       border-radius: 999px;
-      margin-bottom: 28px;
     }
     .badge-dot {
       width: 5px; height: 5px;
       border-radius: 50%;
-      background: var(--accent);
-      animation: pulse 2s infinite;
+      background: #4d9cff;
+      animation: pulse 2.2s ease-in-out infinite;
     }
     @keyframes pulse {
       0%, 100% { opacity: 1; }
-      50%       { opacity: 0.3; }
+      50%       { opacity: 0.2; }
     }
 
-    h1 {
-      font-size: clamp(38px, 7vw, 76px);
-      font-weight: 900;
-      line-height: 1.05;
-      letter-spacing: -0.025em;
-      max-width: 740px;
-      margin: 0 auto 20px;
-      text-shadow: 0 2px 40px rgba(0,0,0,0.5);
+    .scroll-hint {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.32);
+      animation: scrollBob 2.6s ease-in-out infinite;
+      width: fit-content;
     }
-    h1 em {
-      font-style: normal;
-      color: var(--accent);
+    .scroll-hint svg {
+      animation: scrollPulse 2.6s ease-in-out infinite;
+    }
+    @keyframes scrollBob {
+      0%, 100% { transform: translateY(0);   opacity: 0.32; }
+      50%       { transform: translateY(5px); opacity: 0.55; }
+    }
+    @keyframes scrollPulse {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(4px); }
+    }
+
+    /* ── HERO MARKETING COPY ── */
+    .hero-headline {
+      font-size: clamp(20px, 2.4vw, 28px);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      line-height: 1.3;
+      margin-bottom: 14px;
     }
 
     .hero-sub {
-      font-size: clamp(15px, 1.8vw, 18px);
-      color: var(--white-60);
+      font-size: clamp(14px, 1.4vw, 16px);
+      font-weight: 400;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.75;
+      max-width: 460px;
+      margin-bottom: 32px;
+    }
+
+    /* ── HERO FORM ── */
+    .hero-form form {
+      display: flex;
+      gap: 8px;
+      max-width: 400px;
+    }
+
+    .hero-form input[type="email"] {
+      flex: 1;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 999px;
+      padding: 13px 20px;
+      font-size: 14px;
+      font-family: 'Satoshi', sans-serif;
+      color: #ffffff;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .hero-form input[type="email"]::placeholder { color: rgba(255,255,255,0.22); }
+    .hero-form input[type="email"]:focus { border-color: rgba(77,156,255,0.55); }
+
+    .hero-form button {
+      background: #4d9cff;
+      color: #04080f;
+      border: none;
+      border-radius: 999px;
+      padding: 13px 22px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: 'Satoshi', sans-serif;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .hero-form button:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    .form-note {
+      font-size: 11px;
+      color: rgba(255,255,255,0.22);
+      margin-top: 10px;
+      letter-spacing: 0.03em;
+    }
+
+    .hero-success {
+      display: none;
+      font-size: 14px;
+      font-weight: 600;
+      color: #4d9cff;
+      margin-top: 12px;
+    }
+
+    /* ── FEATURED IMAGE ── */
+    #feature {
+      margin-bottom: 120px;
+    }
+
+    .feature-wrap {
+      position: relative;
+      overflow: hidden;
+      min-height: 90vh;
+    }
+    .feature-wrap img {
+      width: 100%;
+      height: 90vh;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    .feature-wrap::before,
+    .feature-wrap::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0;
+      height: 260px;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .feature-wrap::before {
+      top: 0;
+      background: linear-gradient(to bottom, #04080f 0%, transparent 100%);
+    }
+    .feature-wrap::after {
+      bottom: 0;
+      background: linear-gradient(to top, #04080f 0%, transparent 100%);
+    }
+    .feature-text {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 48px;
+      background: rgba(4,8,15,0.42);
+    }
+    .feature-tagline {
+      font-size: clamp(36px, 5.5vw, 80px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: #ffffff;
+      margin-bottom: 28px;
+      text-shadow: 0 2px 48px rgba(0,0,0,0.85);
+    }
+    .feature-tagline em {
+      font-style: italic;
+      font-weight: 300;
+      color: rgba(255,255,255,0.65);
+    }
+    .feature-caption {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+    }
+
+    /* ── FLIP CARDS ── */
+    .flip-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 120px;
+    }
+
+    .flip-card {
+      aspect-ratio: 3/4;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+
+    .flip-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 16px;
+    }
+
+    .flip-card:hover .flip-inner,
+    .flip-card.flipped .flip-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-front,
+    .flip-back {
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      overflow: hidden;
+    }
+
+    .flip-front {
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .flip-front img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      mix-blend-mode: screen;
+      opacity: 0.75;
+      transition: opacity 0.3s;
+    }
+    .flip-card:hover .flip-front img { opacity: 1; }
+
+    .flip-back {
+      transform: rotateY(180deg);
+      background: rgba(4, 8, 20, 0.97);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(77,156,255,0.28);
+      padding: 40px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .flip-back-num {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      color: #4d9cff;
+      margin-bottom: 18px;
+    }
+
+    .flip-back-icon {
+      font-size: 34px;
+      margin-bottom: 18px;
+      display: block;
+    }
+
+    .flip-back h3 {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: #ffffff;
+      margin-bottom: 14px;
+      line-height: 1.15;
+    }
+
+    .flip-back p {
+      font-size: 15px;
+      color: rgba(255,255,255,0.78);
       line-height: 1.65;
-      max-width: 480px;
-      margin: 0 auto 44px;
       font-weight: 400;
     }
 
-    .hero-actions {
-      display: flex;
-      gap: 14px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--accent);
-      color: #05050a;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      text-decoration: none;
-      padding: 14px 28px;
-      border-radius: 999px;
-      transition: opacity 0.2s, transform 0.2s;
-    }
-    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
-
-    .btn-ghost {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--white-60);
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-decoration: none;
-      padding: 14px 24px;
-      border-radius: 999px;
-      border: 1px solid var(--white-22);
-      transition: border-color 0.2s, color 0.2s, transform 0.2s;
-    }
-    .btn-ghost:hover { border-color: var(--white-60); color: var(--white); transform: translateY(-1px); }
-
-    /* ── HOW IT WORKS ── */
-    #how {
-      padding: 100px 40px;
-      max-width: 960px;
-      margin: 0 auto;
-    }
-
+    /* ── SECTIONS ── */
     .section-label {
       font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 0.16em;
+      font-weight: 700;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--accent);
+      color: #4d9cff;
       margin-bottom: 16px;
     }
 
     .section-title {
-      font-size: clamp(26px, 3.5vw, 38px);
-      font-weight: 900;
-      letter-spacing: -0.02em;
+      font-size: clamp(28px, 3.8vw, 44px);
+      font-weight: 400;
+      letter-spacing: -0.025em;
       line-height: 1.1;
+      color: #ffffff;
       max-width: 480px;
-      margin-bottom: 60px;
+      margin-bottom: 52px;
     }
 
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1px;
-      background: var(--white-07);
-      border-radius: 20px;
-      overflow: hidden;
-    }
 
-    .step {
-      background: var(--bg-card);
-      padding: 32px 28px;
-      transition: background 0.2s;
-    }
-    .step:hover { background: #111220; }
-
-    .step-num {
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.10em;
-      color: var(--accent);
-      opacity: 0.6;
-      margin-bottom: 16px;
-    }
-
-    .step-icon {
-      font-size: 22px;
-      margin-bottom: 14px;
-      display: block;
-    }
-
-    .step h3 {
-      font-size: 15px;
-      font-weight: 800;
-      margin-bottom: 8px;
-      letter-spacing: -0.01em;
-    }
-
-    .step p {
-      font-size: 13px;
-      color: var(--white-60);
-      line-height: 1.6;
-    }
-
-    /* ── BANNER VISUAL ── */
-    #visual {
-      padding: 0 40px 100px;
-      max-width: 960px;
-      margin: 0 auto;
-    }
-
-    .visual-wrap {
-      border-radius: 20px;
-      overflow: hidden;
-      border: 1px solid var(--white-07);
-      position: relative;
-    }
-
-    .visual-wrap img {
-      width: 100%;
-      height: auto;
-      display: block;
-      filter: brightness(0.85) saturate(1.1);
-    }
-
-    .visual-caption {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      padding: 28px 32px;
-      background: linear-gradient(to top, rgba(5,5,10,0.95) 0%, transparent 100%);
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--white-60);
-      letter-spacing: 0.03em;
-    }
-
-    /* ── CARD TYPES ── */
-    #cards {
-      padding: 100px 40px;
-      max-width: 960px;
-      margin: 0 auto;
-    }
+    /* ── PILL GRID ── */
+    #cards { padding-bottom: 120px; }
 
     .pill-grid {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: 40px;
+      margin-top: 44px;
     }
 
     .pill {
@@ -369,38 +599,39 @@
       gap: 8px;
       padding: 10px 18px;
       border-radius: 999px;
-      background: var(--bg-card);
-      border: 1px solid var(--white-07);
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
       font-size: 13px;
-      font-weight: 600;
-      color: var(--white-60);
-      letter-spacing: 0.01em;
+      font-weight: 500;
+      color: rgba(255,255,255,0.50);
       transition: border-color 0.2s, color 0.2s;
+      cursor: default;
     }
-    .pill:hover { border-color: rgba(90,174,255,0.30); color: var(--white); }
+    .pill:hover { border-color: rgba(77,156,255,0.28); color: rgba(255,255,255,0.85); }
 
     .pill-dot {
-      width: 7px; height: 7px;
+      width: 6px; height: 6px;
       border-radius: 50%;
-      background: var(--accent);
-      opacity: 0.6;
+      background: #4d9cff;
+      opacity: 0.5;
     }
-
     .pill:first-child .pill-dot { opacity: 1; }
 
     /* ── CTA ── */
     #cta {
-      padding: 100px 40px 120px;
+      padding-bottom: 140px;
       text-align: center;
     }
 
     .cta-box {
-      max-width: 560px;
+      max-width: 500px;
       margin: 0 auto;
-      border: 1px solid var(--white-07);
+      border: 1px solid rgba(255,255,255,0.07);
       border-radius: 28px;
-      padding: 56px 48px;
-      background: var(--bg-card);
+      padding: 56px 44px;
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       position: relative;
       overflow: hidden;
     }
@@ -408,214 +639,400 @@
     .cta-box::before {
       content: '';
       position: absolute;
-      top: -80px; left: 50%;
+      top: -100px; left: 50%;
       transform: translateX(-50%);
-      width: 400px; height: 220px;
+      width: 360px; height: 260px;
       border-radius: 50%;
-      background: radial-gradient(ellipse, rgba(90,174,255,0.10) 0%, transparent 70%);
+      background: radial-gradient(ellipse, rgba(77,156,255,0.07) 0%, transparent 70%);
       pointer-events: none;
     }
 
     .cta-box h2 {
       font-size: clamp(22px, 3vw, 30px);
-      font-weight: 900;
-      letter-spacing: -0.02em;
-      line-height: 1.15;
+      font-weight: 400;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
       margin-bottom: 14px;
     }
 
-    .cta-box p {
+    .cta-box > p {
       font-size: 14px;
-      color: var(--white-60);
-      line-height: 1.65;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.72;
       margin-bottom: 32px;
     }
 
     .input-row {
       display: flex;
       gap: 8px;
-      max-width: 360px;
+      max-width: 330px;
       margin: 0 auto;
     }
 
     input[type="email"] {
       flex: 1;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--white-22);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.13);
       border-radius: 999px;
       padding: 12px 18px;
       font-size: 13px;
-      color: var(--white);
+      font-family: 'Satoshi', sans-serif;
+      color: #ffffff;
       outline: none;
       transition: border-color 0.2s;
-      font-family: var(--sans);
     }
-    input[type="email"]::placeholder { color: var(--white-22); }
-    input[type="email"]:focus { border-color: rgba(90,174,255,0.60); }
+    input[type="email"]::placeholder { color: rgba(255,255,255,0.18); }
+    input[type="email"]:focus { border-color: rgba(77,156,255,0.48); }
 
     button[type="submit"] {
-      background: var(--accent);
-      color: #05050a;
+      background: #4d9cff;
+      color: #000000;
       border: none;
       border-radius: 999px;
       padding: 12px 20px;
       font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.05em;
+      font-weight: 700;
+      font-family: 'Satoshi', sans-serif;
+      letter-spacing: 0.04em;
       cursor: pointer;
       white-space: nowrap;
       transition: opacity 0.2s;
-      font-family: var(--sans);
     }
-    button[type="submit"]:hover { opacity: 0.85; }
+    button[type="submit"]:hover { opacity: 0.82; }
+
+    #form-success {
+      margin-top: 16px;
+      font-size: 13px;
+      color: rgba(77,156,255,0.9);
+      font-weight: 600;
+      display: none;
+    }
 
     /* ── FOOTER ── */
     footer {
-      border-top: 1px solid var(--white-07);
-      padding: 24px 40px;
+      position: relative;
+      z-index: 10;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 24px 36px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 12px;
-      color: var(--white-22);
+      color: rgba(255,255,255,0.18);
     }
-    footer a { color: var(--white-22); text-decoration: none; }
-    footer a:hover { color: var(--white-60); }
+    footer a { color: rgba(255,255,255,0.18); text-decoration: none; }
+    footer a:hover { color: rgba(255,255,255,0.45); }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 640px) {
-      nav { padding: 16px 20px; }
-      .nav-links { gap: 16px; }
-      .hero-content { padding: 100px 24px 80px; }
-      #how, #cards, #cta { padding: 72px 24px; }
-      #visual { padding: 0 24px 72px; }
-      .cta-box { padding: 40px 28px; }
+    @media (max-width: 768px) {
+      nav { padding: 20px; }
+      .wrap { padding: 0 20px; }
+      .stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps { grid-template-columns: 1fr; }
+      .texture-strip { grid-template-columns: repeat(2, 1fr); }
+      .texture-strip .texture-tile:last-child { display: none; }
+      .cta-box { padding: 40px 24px; }
       .input-row { flex-direction: column; }
-      footer { flex-direction: column; gap: 8px; text-align: center; }
+      footer { flex-direction: column; gap: 8px; text-align: center; padding: 20px; }
     }
   </style>
 </head>
 <body>
 
+<canvas id="bg-canvas"></canvas>
+<div class="bg-glow" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
 <!-- NAV -->
 <nav>
   <a class="logo" href="#">
     <div class="logo-mark">
-      <img src="./assets/aprecis_main.png" alt="Aprecis logo" />
+      <img src="./assets/aprecis_main.png" alt="Aprécis" />
     </div>
-    Aprecis
+    <span class="logo-text">Aprécis</span>
   </a>
-  <div class="nav-links">
-    <a href="#how">How it works</a>
-    <a href="#cards">What you get</a>
-    <a href="#cta" class="nav-cta">Early access</a>
-  </div>
 </nav>
 
 <!-- HERO -->
-<section id="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <div class="badge">
-      <span class="badge-dot"></span>
-      Fully automated · No human review
+<div class="wrap">
+  <section id="hero" style="position:relative;">
+
+    <!-- Definition block -->
+    <div class="def-entry">
+      <p class="hero-kicker">Early Access</p>
+
+      <h1 class="def-word"><span class="word-prefix">A</span>pré<em>cis</em></h1>
+
+      <div class="dict-card">
+        <div class="dict-entry-word">précis <span class="dict-pos"> · noun</span></div>
+        <p class="def-meaning">A concise summary of essential points,<br>statements, or facts.</p>
+        <div class="dict-source">— Merriam-Webster</div>
+      </div>
+
+
     </div>
 
-    <h1>Bleeding-edge AI research,<br><em>without the PhD.</em></h1>
-
-    <p class="hero-sub">
-      Aprecis converts the latest AI papers into swipeable, plain-English card decks—
-      automatically, every 90 minutes.
-    </p>
-
-    <div class="hero-actions">
-      <a href="#cta" class="btn-primary">
-        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7.5 3l3 3.5-3 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Get early access
-      </a>
-      <a href="#how" class="btn-ghost">
-        See how it works
-      </a>
+    <!-- Scroll indicator -->
+    <div class="scroll-hint">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M8 2v12M3 9l5 5 5-5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Scroll
     </div>
+
+  </section>
+</div>
+
+<!-- FEATURED BANNER -->
+<section id="feature">
+    <div class="feature-wrap">
+      <img
+        src="./assets/extra/junohan_httpss.mj.runCQWY6ak6vvk_give_me_a_banner_for_my_bran_1384c0f9-a42d-4861-9db0-2462f5e10587_3.png"
+        alt="See the signal through the noise"
+      />
+      <div class="feature-text">
+        <p class="feature-tagline">The world's most important ideas<br>understood in minutes,<br><em>before they matter.</em></p>
+        <p class="feature-caption">See the signal through the noise.</p>
+      </div>
+    </div>
+  </section>
+
+<!-- FLIP CARDS -->
+<div class="wrap">
+  <div class="flip-strip">
+
+    <div class="flip-card">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <img src="./assets/extra/junohan_httpss.mj.runCQWY6ak6vvk_generate_me_a_plain_backgrou_d9330be2-04c9-4cea-b90f-747ab6def97a_0.png" alt="" />
+        </div>
+        <div class="flip-back">
+          <div class="flip-back-num">01</div>
+          <span class="flip-back-icon">⚡</span>
+          <h3>Signal &gt; Noise</h3>
+          <p>No fluff, no hype. Only high-impact AI updates that matter — curated from the sources researchers actually trust.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-card">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <img src="./assets/extra/junohan_httpss.mj.runCQWY6ak6vvk_generate_me_a_plain_backgrou_fdb29a02-0388-4436-993c-9355dda03822_0.png" alt="" />
+        </div>
+        <div class="flip-back">
+          <div class="flip-back-num">02</div>
+          <span class="flip-back-icon">⏱</span>
+          <h3>Learn in Minutes</h3>
+          <p>Designed for busy builders. Each insight is distilled to its sharpest form — under 60 seconds to read, impossible to forget.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-card">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <img src="./assets/extra/junohan_httpss.mj.runCQWY6ak6vvk_generate_me_a_plain_backgrou_d9330be2-04c9-4cea-b90f-747ab6def97a_2.png" alt="" />
+        </div>
+        <div class="flip-back">
+          <div class="flip-back-num">03</div>
+          <span class="flip-back-icon">🔭</span>
+          <h3>Stay Early</h3>
+          <p>The gap between research and mainstream adoption is your window. Spot the trends, tools, and opportunities before everyone else does.</p>
+        </div>
+      </div>
+    </div>
+
   </div>
-</section>
+</div>
 
-<!-- HOW IT WORKS -->
-<section id="how">
-  <p class="section-label">How it works</p>
-  <h2 class="section-title">From paper to pocket in under 10 seconds.</h2>
-
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">01</div>
-      <span class="step-icon">🔍</span>
-      <h3>Ingest</h3>
-      <p>Every 90 minutes, Aprecis scans arXiv, GitHub trending, and RSS feeds for the highest-signal AI research.</p>
+<!-- WHAT YOU GET -->
+<div class="wrap">
+  <section id="cards">
+    <p class="section-label">What you get</p>
+    <h2 class="section-title">We turn complex papers and emerging signals into clear, intuitive breakdowns in minutes.</h2>
+    <div class="pill-grid">
+      <div class="pill"><span class="pill-dot"></span>Hook — why it matters</div>
+      <div class="pill"><span class="pill-dot"></span>Core Ideas</div>
+      <div class="pill"><span class="pill-dot"></span>ELI5 Explanation</div>
+      <div class="pill"><span class="pill-dot"></span>Real-world Analogy</div>
+      <div class="pill"><span class="pill-dot"></span>Visual Diagram</div>
+      <div class="pill"><span class="pill-dot"></span>Takeaway</div>
     </div>
-    <div class="step">
-      <div class="step-num">02</div>
-      <span class="step-icon">🧠</span>
-      <h3>Distill</h3>
-      <p>A multi-stage LLM pipeline extracts the hook, core ideas, ELI5, analogy, and key takeaway—in parallel.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">03</div>
-      <span class="step-icon">📱</span>
-      <h3>Deliver</h3>
-      <p>Six-card decks land in your feed, ordered by relevance score. Swipe through at your own pace.</p>
-    </div>
-  </div>
-</section>
-
-<!-- BANNER VISUAL -->
-<section id="visual">
-  <div class="visual-wrap">
-    <img src="./assets/aprecis_banner_main.png" alt="Aprecis — see the signal through the noise" />
-    <div class="visual-caption">See the signal through the noise.</div>
-  </div>
-</section>
-
-<!-- CARD TYPES -->
-<section id="cards">
-  <p class="section-label">What you get</p>
-  <h2 class="section-title">Six cards. Every paper. Always in the same order.</h2>
-
-  <div class="pill-grid">
-    <div class="pill"><span class="pill-dot"></span>Hook — why it matters</div>
-    <div class="pill"><span class="pill-dot"></span>Core Ideas</div>
-    <div class="pill"><span class="pill-dot"></span>ELI5 explanation</div>
-    <div class="pill"><span class="pill-dot"></span>Real-world Analogy</div>
-    <div class="pill"><span class="pill-dot"></span>Visual diagram</div>
-    <div class="pill"><span class="pill-dot"></span>Takeaway</div>
-  </div>
-</section>
+  </section>
+</div>
 
 <!-- CTA -->
-<section id="cta">
-  <div class="cta-box">
-    <h2>Be first to know<br>when it ships.</h2>
-    <p>We're polishing the final pieces. Drop your email and you'll get early access before the public launch.</p>
-    <form class="input-row" onsubmit="handleSubmit(event)">
-      <input type="email" placeholder="your@email.com" required />
-      <button type="submit">Notify me</button>
-    </form>
-    <p id="form-success" style="display:none;margin-top:16px;font-size:13px;color:rgba(90,174,255,0.9);font-weight:600;">You're on the list.</p>
-  </div>
-</section>
+<div class="wrap">
+  <section id="cta">
+    <div class="cta-box">
+      <h2>Don't fall behind<br>while everyone catches up.</h2>
+      <p>Join the waitlist and be among the first to use it.</p>
+      <form class="input-row" onsubmit="handleSubmit(event)">
+        <input type="email" placeholder="your@email.com" required />
+        <button type="submit">Notify me</button>
+      </form>
+      <p id="form-success">You're on the list.</p>
+    </div>
+  </section>
+</div>
 
 <!-- FOOTER -->
 <footer>
-  <span>© 2026 Aprecis</span>
+  <span>© 2026 Aprécis</span>
   <span>See the signal through the noise.</span>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 <script>
-  function handleSubmit(e) {
-    e.preventDefault();
-    e.target.style.display = 'none';
-    document.getElementById('form-success').style.display = 'block';
+(function () {
+  // ── SCENE ──
+  const canvas = document.getElementById('bg-canvas');
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x04080f, 0.004);
+  // no scene.background — keep canvas transparent so CSS bg shows through
+
+  const camera = new THREE.PerspectiveCamera(65, innerWidth / innerHeight, 0.1, 1000);
+  camera.position.set(0, 6, 34);
+  camera.lookAt(0, -2, 0);
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setSize(innerWidth, innerHeight);
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+
+  // ── PYRAMID ──
+  // ConeGeometry(radius, height, radialSegments=4, heightSegments=80)
+  // 4 sides = square pyramid, 80 rings = dense horizontal layering
+  // Apex floats near viewport centre, wide base bleeds off-screen below
+  const pyramidVS = /* glsl */`
+    uniform float uTime;
+    varying float vHeight; // 0 = base, 1 = apex
+
+    void main() {
+      // ConeGeometry: apex at +h/2 = +21, base at -h/2 = -21
+      vHeight = (position.y + 21.0) / 42.0;
+
+      vec3 pos = position;
+      float r = length(pos.xz);
+      // Rings shimmer inward/outward like a signal pulse
+      if (r > 0.01) {
+        float shimmer = sin(vHeight * 8.0 - uTime * 1.0) * 0.05;
+        pos.xz *= (1.0 + shimmer);
+      }
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+    }
+  `;
+
+  const pyramidFS = /* glsl */`
+    uniform float uOpacity;
+    varying float vHeight;
+
+    void main() {
+      // Apex = bright blue-white, base = near-transparent dark
+      float c = pow(vHeight, 0.65);
+
+      vec3 dark  = vec3(0.00, 0.02, 0.10);
+      vec3 mid   = vec3(0.06, 0.20, 0.65);
+      vec3 apex  = vec3(0.50, 0.75, 1.00);
+
+      vec3 color = mix(dark, mid, c);
+      color      = mix(color, apex, pow(c, 2.0));
+
+      // Fade base to transparent, keep apex fully opaque
+      float alpha = smoothstep(0.0, 0.18, vHeight) * mix(0.3, 1.0, c) * uOpacity;
+      gl_FragColor = vec4(color, alpha);
+    }
+  `;
+
+  const pyramidUniforms = { uTime: { value: 0 }, uOpacity: { value: 0.55 } };
+
+  const pyramidMesh = new THREE.Mesh(
+    new THREE.ConeGeometry(32, 42, 4, 80, false),
+    new THREE.ShaderMaterial({
+      uniforms: pyramidUniforms,
+      vertexShader: pyramidVS,
+      fragmentShader: pyramidFS,
+      wireframe: true,
+      transparent: true,
+      side: THREE.DoubleSide,
+    })
+  );
+  // Apex at world y = -14 + 21 = +7 (just above screen centre)
+  // Base at world y = -14 - 21 = -35 (off-screen below)
+  pyramidMesh.position.set(0, -14, 0);
+  pyramidMesh.rotation.y = Math.PI / 4; // show corner edge, not flat face
+  scene.add(pyramidMesh);
+
+  // ── STARFIELD ──
+  const count = 3000;
+  const pos = new Float32Array(count * 3);
+  for (let i = 0; i < count; i++) {
+    const theta = Math.random() * Math.PI * 2;
+    const r = 100 + Math.random() * 200;
+    pos[i * 3]     = Math.cos(theta) * r;
+    pos[i * 3 + 1] = Math.random() * 100 - 10;
+    pos[i * 3 + 2] = Math.sin(theta) * r;
   }
+  const starGeo = new THREE.BufferGeometry();
+  starGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({
+    color: 0xffffff,
+    size: 0.4,
+    transparent: true,
+    opacity: 0.72,
+    sizeAttenuation: false,
+  })));
+
+  // ── LOOP ──
+  const clock = new THREE.Clock();
+  (function animate() {
+    requestAnimationFrame(animate);
+    const t = clock.getElapsedTime();
+    pyramidUniforms.uTime.value = t;
+    pyramidMesh.rotation.y = Math.PI / 4 + t * 0.035; // slow rotation, keeps corner forward
+    camera.position.x = Math.sin(t * 0.04) * 1.5;
+    camera.position.y = 6 + Math.sin(t * 0.09) * 0.8;
+    camera.lookAt(0, -2, 0);
+    renderer.render(scene, camera);
+  })();
+
+  // ── RESIZE ──
+  window.addEventListener('resize', () => {
+    camera.aspect = innerWidth / innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth, innerHeight);
+  });
+})();
+
+// ── SUPABASE ──
+const _sb = supabase.createClient(
+  'https://kurqbmbayqecfbbcjojj.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1cnFibWJheXFlY2ZiYmNqb2pqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3OTQ5MDAsImV4cCI6MjA4OTM3MDkwMH0.gmwpVByjPKSe6vRCGKgWtVFUfgsfG6NR4bxQzW-V7b4'
+);
+
+async function saveEmail(email) {
+  const { error } = await _sb.from('waitlist').insert({ email });
+  if (error && error.code !== '23505') console.error('Waitlist error:', error.message);
+}
+
+async function handleSubmit(e) {
+  e.preventDefault();
+  const email = e.target.querySelector('input[type="email"]').value;
+  await saveEmail(email);
+  e.target.style.display = 'none';
+  document.getElementById('form-success').style.display = 'block';
+}
+
+async function handleHeroSubmit(e) {
+  e.preventDefault();
+  const email = e.target.querySelector('input[type="email"]').value;
+  await saveEmail(email);
+  e.target.style.display = 'none';
+  document.querySelector('.form-note').style.display = 'none';
+  document.getElementById('hero-success').style.display = 'block';
+}
 </script>
 
 </body>
