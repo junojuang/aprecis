@@ -279,6 +279,27 @@
       max-width: 460px;
       margin-bottom: 28px;
     }
+    .hero-waitlist-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.78);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+    .hero-waitlist-btn:hover {
+      border-color: rgba(77,156,255,0.45);
+      color: #ffffff;
+      background: rgba(77,156,255,0.12);
+    }
 
     .badge {
       display: inline-flex;
@@ -727,6 +748,39 @@
     @media (max-width: 768px) {
       nav { padding: 20px; }
       .wrap { padding: 0 20px; }
+      .hero-waitlist-btn { width: 100%; max-width: 260px; }
+      .flip-strip {
+        display: flex;
+        gap: 12px;
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 6px;
+      }
+      .flip-strip::-webkit-scrollbar { height: 0; }
+      .flip-card {
+        flex: 0 0 78%;
+        min-width: 250px;
+        max-width: 300px;
+        scroll-snap-align: start;
+        aspect-ratio: 3/4;
+      }
+      .flip-inner {
+        transform: none !important;
+      }
+      .flip-front {
+        display: none;
+      }
+      .flip-back {
+        position: relative;
+        transform: none;
+        inset: auto;
+        height: 100%;
+        padding: 28px 20px;
+      }
+      .flip-back h3 { font-size: 20px; }
+      .flip-back p { font-size: 14px; line-height: 1.55; }
       .stat-grid { grid-template-columns: repeat(2, 1fr); }
       .steps { grid-template-columns: 1fr; }
       .texture-strip { grid-template-columns: repeat(2, 1fr); }
@@ -768,6 +822,7 @@
         <p class="def-meaning">A concise summary of essential points,<br>statements, or facts.</p>
         <div class="dict-source">— Merriam-Webster</div>
       </div>
+      <a class="hero-waitlist-btn" href="#cta">Join the waitlist</a>
 
 
     </div>
