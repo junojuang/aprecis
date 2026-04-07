@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aprécis</title>
+  <link rel="icon" href="./assets/aprecis_favicon.svg" type="image/svg+xml" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CEG84Y6QSP"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-CEG84Y6QSP');
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap');
+
+    @font-face {
+      font-family: 'Satoshi';
+      src: url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff2') format('woff2'),
+           url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff') format('woff');
+      font-weight: 300 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Satoshi';
+      src: url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.woff2') format('woff2'),
+           url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.woff') format('woff');
+      font-weight: 300 900;
+      font-style: italic;
+      font-display: swap;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #02020a;
+      color: #ffffff;
+      font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    /* ── HERO FULL SCREEN ── */
+    .hero {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* ── STAR CANVAS ── */
+    #star-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    /* ── HORIZON ARC ── */
+    .planet {
+      position: absolute;
+      bottom: -44vw;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90vw;
+      height: 90vw;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 20%, #0d0d18 0%, #050508 60%, #000000 100%);
+      box-shadow:
+        0 0 40px 6px rgba(80, 100, 200, 0.04),
+        inset 0 1px 0 0 rgba(160, 180, 255, 0.06);
+      z-index: 1;
+    }
+
+    /* ultra-faint rim */
+    .planet::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: transparent;
+      box-shadow: inset 0 1px 3px 0 rgba(180, 200, 255, 0.07);
+    }
+
+    /* ── CONTENT ── */
+    .content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 32px;
+      /* sit above the planet horizon */
+      margin-bottom: 12vw;
+    }
+
+    /* ── LOGO PILL ── */
+    .logo-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px 6px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(8px);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .logo-pill svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    /* ── LOGO ANIMATION ── */
+    @keyframes bar-shimmer {
+      0%, 100% { opacity: 0.7; }
+      50%       { opacity: 1;   }
+    }
+    @keyframes logo-glow {
+      0%, 100% { filter: drop-shadow(0 0 0px rgba(106,146,255,0));   }
+      50%      { filter: drop-shadow(0 0 6px rgba(106,146,255,0.55)); }
+    }
+
+    .logo-anim {
+      animation: logo-glow 3s ease-in-out infinite;
+    }
+    .lb {
+      animation: bar-shimmer 3s ease-in-out infinite;
+    }
+
+    /* ── HEADLINE ── */
+    .headline {
+      line-height: 1.08;
+    }
+
+    .headline .line-sans {
+      display: block;
+      font-family: 'Satoshi', sans-serif;
+      font-weight: 700;
+      font-size: clamp(30px, 4.2vw, 62px);
+      letter-spacing: -0.02em;
+      color: #ffffff;
+    }
+
+    .headline .line-serif {
+      display: block;
+      font-family: 'EB Garamond', Georgia, serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(30px, 4.2vw, 62px);
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    /* ── BUTTONS ── */
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn:hover { opacity: 0.85; transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-dark {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+    }
+
+    .btn-light {
+      background: #ffffff;
+      color: #000000;
+      box-shadow: 0 0 24px 4px rgba(106, 146, 255, 0.35), 0 2px 12px rgba(0,0,0,0.4);
+      font-weight: 600;
+      padding: 10px 24px;
+    }
+
+    /* ── SOCIAL ICONS ── */
+    .social-row {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .social-link {
+      color: rgba(255, 255, 255, 0.28);
+      transition: color 0.2s ease;
+      display: flex;
+      align-items: center;
+    }
+    .social-link:hover { color: rgba(255, 255, 255, 0.7); }
+
+    @media (max-width: 480px) {
+      .btn { padding: 7px 14px; font-size: 12px; }
+      .btn-light { padding: 7px 16px; }
+    }
+
+    /* ── SPLASH SCREEN ── */
+    #splash {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: #000000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      transition: opacity 0.7s ease, visibility 0.7s ease;
+    }
+    #splash.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .splash-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      animation: splash-fade-in 0.6s ease both;
+    }
+    @keyframes splash-fade-in {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0);   }
+    }
+
+    .splash-logo svg {
+      width: 72px;
+      height: 72px;
+    }
+
+    .splash-wordmark {
+      font-family: 'Satoshi', sans-serif;
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: rgba(255, 255, 255, 0.75);
+      text-transform: uppercase;
+    }
+
+    /* load bar */
+    .load-track {
+      width: 160px;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      overflow: hidden;
+      animation: splash-fade-in 0.6s 0.2s ease both;
+    }
+    .load-bar {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #3050cc, #6a92ff, #c8dcff);
+      animation: load-fill 1.8s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
+    }
+    @keyframes load-fill {
+      0%   { width: 0%;   opacity: 1; }
+      85%  { width: 95%;  opacity: 1; }
+      100% { width: 100%; opacity: 0; }
+    }
+
+    /* animated bars — same wave as pill logo */
+    .splash-logo .lb {
+      animation: bar-shimmer 2.4s ease-in-out infinite;
+    }
+    .splash-logo .logo-anim {
+      animation: logo-glow 2.4s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── SPLASH ── -->
+<div id="splash">
+  <div class="splash-logo">
+    <svg class="logo-anim" width="72" height="72" viewBox="248 252 198 174" xmlns="http://www.w3.org/2000/svg">
+      <rect class="lb" style="animation-delay:0.00s" x="334" y="252" width="12" height="14" fill="#2235a8"/>
+      <rect class="lb" style="animation-delay:0.15s" x="318" y="272" width="44" height="14" fill="#3050cc"/>
+      <rect class="lb" style="animation-delay:0.30s" x="294" y="292" width="92" height="14" fill="#4a6ee8"/>
+      <rect class="lb" style="animation-delay:0.45s" x="264" y="312" width="152" height="14" fill="#6a92ff"/>
+      <rect class="lb" style="animation-delay:0.60s" x="248" y="332" width="184" height="14" fill="#c8dcff"/>
+      <rect class="lb" style="animation-delay:0.75s" x="264" y="352" width="152" height="14" fill="#6a92ff"/>
+      <rect class="lb" style="animation-delay:0.90s" x="294" y="372" width="92" height="14" fill="#4a6ee8"/>
+      <rect class="lb" style="animation-delay:1.05s" x="318" y="392" width="44" height="14" fill="#3050cc"/>
+      <rect class="lb" style="animation-delay:1.20s" x="334" y="412" width="12" height="14" fill="#2235a8"/>
+    </svg>
+    <span class="splash-wordmark">Aprécis</span>
+  </div>
+  <div class="load-track">
+    <div class="load-bar"></div>
+  </div>
+</div>
+
+<section class="hero">
+  <canvas id="star-canvas"></canvas>
+  <div class="planet"></div>
+
+  <div class="content">
+    <!-- Logo pill -->
+    <div class="logo-pill">
+      <!-- Aprécis logo mark — animated wave shimmer -->
+      <svg class="logo-anim" width="26" height="26" viewBox="248 252 198 174" xmlns="http://www.w3.org/2000/svg">
+        <rect class="lb" style="animation-delay:0.00s" x="334" y="252" width="12" height="14" fill="#2235a8"/>
+        <rect class="lb" style="animation-delay:0.15s" x="318" y="272" width="44" height="14" fill="#3050cc"/>
+        <rect class="lb" style="animation-delay:0.30s" x="294" y="292" width="92" height="14" fill="#4a6ee8"/>
+        <rect class="lb" style="animation-delay:0.45s" x="264" y="312" width="152" height="14" fill="#6a92ff"/>
+        <rect class="lb" style="animation-delay:0.60s" x="248" y="332" width="184" height="14" fill="#c8dcff"/>
+        <rect class="lb" style="animation-delay:0.75s" x="264" y="352" width="152" height="14" fill="#6a92ff"/>
+        <rect class="lb" style="animation-delay:0.90s" x="294" y="372" width="92" height="14" fill="#4a6ee8"/>
+        <rect class="lb" style="animation-delay:1.05s" x="318" y="392" width="44" height="14" fill="#3050cc"/>
+        <rect class="lb" style="animation-delay:1.20s" x="334" y="412" width="12" height="14" fill="#2235a8"/>
+      </svg>
+      <span style="letter-spacing:0">Aprecis<span style="color:rgba(255,255,255,0.35);font-weight:400;">.app</span></span>
+    </div>
+
+    <!-- Headline -->
+    <h1 class="headline">
+      <span class="line-sans">Building the world's most</span>
+      <span class="line-serif">learnable knowledge.</span>
+    </h1>
+
+    <!-- CTA buttons -->
+    <div class="btn-row">
+      <a href="./learn-more.html" class="btn btn-dark">Learn More</a>
+      <a href="./join.html" class="btn btn-light">Get Early Access</a>
+    </div>
+
+    <!-- Social icons -->
+    <div class="social-row">
+      <a href="https://www.instagram.com/aprecis.app/" target="_blank" rel="noopener" class="social-link" aria-label="Instagram">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="20" height="20" rx="5.5" stroke="currentColor" stroke-width="1.8"/>
+          <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+        </svg>
+      </a>
+      <a href="https://x.com/aprecis_app" target="_blank" rel="noopener" class="social-link" aria-label="X">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"/>
+        </svg>
+      </a>
+      <a href="https://www.tiktok.com/@aprecis.app" target="_blank" rel="noopener" class="social-link" aria-label="TikTok">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06Z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  // ── Universe Starfield ──
+  const canvas = document.getElementById('star-canvas');
+  const ctx = canvas.getContext('2d');
+
+  let stars = [], nebulae = [];
+  let W = 0, H = 0, DPR = 1;
+
+  function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W   = window.innerWidth;
+    H   = window.innerHeight;
+    canvas.style.width  = W + 'px';
+    canvas.style.height = H + 'px';
+    canvas.width  = W * DPR;
+    canvas.height = H * DPR;
+    ctx.scale(DPR, DPR);
+  }
+
+  function initNebulae() {
+    // use the shorter dimension so nebulae scale correctly on portrait mobile
+    nebulae = [
+      { x: 0.15, y: 0.20, r: 0.38, color: '60,80,200',  alpha: 0.025 },
+      { x: 0.82, y: 0.18, r: 0.30, color: '80,50,170',  alpha: 0.020 },
+      { x: 0.50, y: 0.55, r: 0.42, color: '40,65,150',  alpha: 0.016 },
+      { x: 0.90, y: 0.72, r: 0.28, color: '110,70,190', alpha: 0.018 },
+    ];
+  }
+
+  function initStars() {
+    stars = [];
+    // scale star count to screen area so mobile isn't over-crowded
+    const area   = W * H;
+    const scale  = Math.sqrt(area / (1440 * 900));
+    const micro  = Math.round(400 * scale);
+    const mid    = Math.round(180 * scale);
+    const bright = Math.round(20  * scale);
+
+    // Layer 1: micro dust
+    for (let i = 0; i < micro; i++) {
+      stars.push({
+        x: Math.random() * W, y: Math.random() * H,
+        r: Math.random() * 0.45 + 0.1,
+        baseAlpha: Math.random() * 0.22 + 0.04,
+        freq:  (Math.random() * 0.3 + 0.05) * 0.001,
+        phase: Math.random() * Math.PI * 2,
+        color: '210,220,255', hero: false,
+      });
+    }
+
+    // Layer 2: mid stars
+    for (let i = 0; i < mid; i++) {
+      const depth = Math.pow(Math.random(), 1.8);
+      const warm  = Math.random() > 0.72;
+      stars.push({
+        x: Math.random() * W, y: Math.random() * H,
+        r: 0.3 + depth * 0.9,
+        baseAlpha: 0.10 + depth * 0.42,
+        freq:      (Math.random() * 0.5 + 0.1) * 0.001,
+        phase:     Math.random() * Math.PI * 2,
+        shimmer:   depth > 0.6 && Math.random() > 0.5,
+        shimFreq:  (Math.random() * 1.4 + 0.4) * 0.001,
+        shimPhase: Math.random() * Math.PI * 2,
+        color: warm ? '255,228,195' : '220,232,255', hero: false,
+      });
+    }
+
+    // Layer 3: bright hero stars
+    for (let i = 0; i < bright; i++) {
+      stars.push({
+        x: Math.random() * W, y: Math.random() * H,
+        r: 1.1 + Math.random() * 0.7,
+        baseAlpha: 0.5 + Math.random() * 0.4,
+        freq:      (Math.random() * 0.2 + 0.05) * 0.001,
+        phase:     Math.random() * Math.PI * 2,
+        shimmer:   true,
+        shimFreq:  (Math.random() * 0.7 + 0.15) * 0.001,
+        shimPhase: Math.random() * Math.PI * 2,
+        color: '230,240,255', hero: true,
+      });
+    }
+  }
+
+  function drawNebulae() {
+    const dim = Math.min(W, H); // use shortest side so mobile looks right
+    for (const n of nebulae) {
+      const cx = n.x * W, cy = n.y * H, rad = n.r * dim;
+      const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, rad);
+      grd.addColorStop(0,   `rgba(${n.color},${n.alpha})`);
+      grd.addColorStop(0.5, `rgba(${n.color},${n.alpha * 0.35})`);
+      grd.addColorStop(1,   `rgba(${n.color},0)`);
+      ctx.beginPath();
+      ctx.arc(cx, cy, rad, 0, Math.PI * 2);
+      ctx.fillStyle = grd;
+      ctx.fill();
+    }
+  }
+
+  function drawStars(t) {
+    ctx.clearRect(0, 0, W, H);
+
+    // deep space background — use diagonal so portrait & landscape both look deep
+    const bgRad = Math.sqrt(W * W + H * H) * 0.55;
+    const bg = ctx.createRadialGradient(W * 0.5, H * 0.28, 0, W * 0.5, H * 0.5, bgRad);
+    bg.addColorStop(0,   'rgba(8,10,28,1)');
+    bg.addColorStop(0.5, 'rgba(4,5,14,1)');
+    bg.addColorStop(1,   'rgba(2,2,8,1)');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    drawNebulae();
+
+    for (const s of stars) {
+      let a = s.baseAlpha * (0.55 + 0.45 * Math.sin(t * s.freq + s.phase));
+      if (s.shimmer) a *= (0.72 + 0.28 * Math.sin(t * s.shimFreq + s.shimPhase));
+
+      ctx.save();
+      if (s.hero) {
+        ctx.shadowColor = `rgba(${s.color},${a * 0.85})`;
+        ctx.shadowBlur  = s.r * 6;
+      } else if (s.r > 0.7) {
+        ctx.shadowColor = `rgba(${s.color},${a * 0.4})`;
+        ctx.shadowBlur  = s.r * 2.5;
+      }
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${s.color},${a})`;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // edge vignette — circular, not axis-biased, so it works on any ratio
+    const vigRad = Math.sqrt(W * W + H * H) * 0.52;
+    const vig = ctx.createRadialGradient(W * 0.5, H * 0.45, vigRad * 0.2, W * 0.5, H * 0.5, vigRad);
+    vig.addColorStop(0, 'rgba(0,0,0,0)');
+    vig.addColorStop(1, 'rgba(0,0,4,0.7)');
+    ctx.fillStyle = vig;
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  function loop(t) {
+    drawStars(t);
+    requestAnimationFrame(loop);
+  }
+
+  window.addEventListener('resize', () => {
+    resize();
+    initNebulae();
+    initStars();
+  });
+
+  resize();
+  initNebulae();
+  initStars();
+  requestAnimationFrame(loop);
+
+  // ── Dismiss splash after load bar completes ──
+  // bar animation: 0.3s delay + 1.8s fill = 2.1s total
+  // add a brief hold, then fade out
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('splash').classList.add('hidden');
+    }, 2400);
+  });
+</script>
+</body>
+</html>

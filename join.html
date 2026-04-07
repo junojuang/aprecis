@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aprécis</title>
+  <link rel="icon" href="./assets/aprecis_favicon.svg" type="image/svg+xml" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CEG84Y6QSP"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-CEG84Y6QSP');
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap');
+
+    @font-face {
+      font-family: 'Satoshi';
+      src: url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff2') format('woff2'),
+           url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff') format('woff');
+      font-weight: 300 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Satoshi';
+      src: url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.woff2') format('woff2'),
+           url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.woff') format('woff');
+      font-weight: 300 900;
+      font-style: italic;
+      font-display: swap;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      min-height: 100%;
+      background: #02020a;
+      color: #ffffff;
+      font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── CANVAS ── */
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── PAGE WRAPPER ── */
+    .page {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 24px 80px;
+    }
+
+    /* ── LOGO PILL ── */
+    .logo-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px 6px 10px;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(8px);
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      margin-bottom: 44px;
+      transition: background 0.2s;
+    }
+    .logo-pill:hover { background: rgba(255,255,255,0.10); }
+
+    @keyframes bar-shimmer {
+      0%, 100% { opacity: 0.7; }
+      50%       { opacity: 1;   }
+    }
+    @keyframes logo-glow {
+      0%, 100% { filter: drop-shadow(0 0 0px rgba(106,146,255,0));   }
+      50%      { filter: drop-shadow(0 0 6px rgba(106,146,255,0.55)); }
+    }
+    .logo-anim { animation: logo-glow 3s ease-in-out infinite; }
+    .lb        { animation: bar-shimmer 3s ease-in-out infinite; }
+
+    /* ── HEADER ── */
+    .header {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .header .line-sans {
+      display: block;
+      font-family: 'Satoshi', sans-serif;
+      font-weight: 700;
+      font-size: clamp(28px, 5vw, 52px);
+      letter-spacing: -0.02em;
+    }
+    .header .line-serif {
+      display: block;
+      font-family: 'EB Garamond', Georgia, serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(28px, 5vw, 52px);
+      color: rgba(255,255,255,0.88);
+    }
+
+    .subtext {
+      font-size: 13px;
+      color: rgba(255,255,255,0.38);
+      margin-bottom: 44px;
+      letter-spacing: 0.01em;
+    }
+
+    /* ── FORM ── */
+    .form-card {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    label.field-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.75);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    label.field-label .req { color: rgba(106,146,255,0.9); font-size: 11px; }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"] {
+      width: 100%;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 8px;
+      color: #ffffff;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    input::placeholder { color: rgba(255,255,255,0.22); }
+    input:focus {
+      border-color: rgba(106,146,255,0.5);
+      background: rgba(255,255,255,0.07);
+    }
+
+    /* ── RADIO / CHECKBOX OPTIONS ── */
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .option input[type="radio"],
+    .option input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      min-width: 16px;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 4px;
+      background: rgba(255,255,255,0.04);
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      position: relative;
+    }
+    .option input[type="radio"] {
+      border-radius: 50%;
+    }
+    .option input[type="radio"]:checked,
+    .option input[type="checkbox"]:checked {
+      background: rgba(106,146,255,0.22);
+      border-color: rgba(106,146,255,0.8);
+    }
+    .option input[type="radio"]:checked::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #6a92ff;
+    }
+    .option input[type="checkbox"]:checked::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+      width: 4px; height: 7px;
+      border-right: 1.5px solid #6a92ff;
+      border-bottom: 1.5px solid #6a92ff;
+      margin-top: -1px;
+    }
+
+    .option-label {
+      font-size: 13.5px;
+      color: rgba(255,255,255,0.62);
+      transition: color 0.15s;
+    }
+    .option:hover .option-label { color: rgba(255,255,255,0.88); }
+
+    /* ── SUBMIT ── */
+    .submit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      border-radius: 999px;
+      background: #ffffff;
+      color: #000000;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 0 24px 4px rgba(106,146,255,0.35), 0 2px 12px rgba(0,0,0,0.4);
+      transition: opacity 0.15s, transform 0.15s;
+      align-self: flex-start;
+    }
+    .submit-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    .submit-btn:active { transform: translateY(0); }
+    .submit-btn svg { transition: transform 0.2s; }
+    .submit-btn:hover svg { transform: translateX(3px); }
+
+    /* ── SUCCESS STATE ── */
+    #success {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 14px;
+      padding: 40px 0;
+    }
+    #success .tick {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: rgba(106,146,255,0.12);
+      border: 1px solid rgba(106,146,255,0.3);
+      display: flex; align-items: center; justify-content: center;
+    }
+    #success h2 {
+      font-size: 22px; font-weight: 700;
+    }
+    #success p {
+      font-size: 14px; color: rgba(255,255,255,0.45); max-width: 300px; line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<div class="page">
+
+  <!-- Logo pill — click to go back -->
+  <a href="./index.html" class="logo-pill">
+    <svg class="logo-anim" width="22" height="22" viewBox="248 252 198 174" xmlns="http://www.w3.org/2000/svg">
+      <rect class="lb" style="animation-delay:0.00s" x="334" y="252" width="12" height="14" fill="#2235a8"/>
+      <rect class="lb" style="animation-delay:0.15s" x="318" y="272" width="44" height="14" fill="#3050cc"/>
+      <rect class="lb" style="animation-delay:0.30s" x="294" y="292" width="92" height="14" fill="#4a6ee8"/>
+      <rect class="lb" style="animation-delay:0.45s" x="264" y="312" width="152" height="14" fill="#6a92ff"/>
+      <rect class="lb" style="animation-delay:0.60s" x="248" y="332" width="184" height="14" fill="#c8dcff"/>
+      <rect class="lb" style="animation-delay:0.75s" x="264" y="352" width="152" height="14" fill="#6a92ff"/>
+      <rect class="lb" style="animation-delay:0.90s" x="294" y="372" width="92" height="14" fill="#4a6ee8"/>
+      <rect class="lb" style="animation-delay:1.05s" x="318" y="392" width="44" height="14" fill="#3050cc"/>
+      <rect class="lb" style="animation-delay:1.20s" x="334" y="412" width="12" height="14" fill="#2235a8"/>
+    </svg>
+    <span style="letter-spacing:0">Aprécis<span style="color:rgba(255,255,255,0.35);font-weight:400;">.app</span></span>
+  </a>
+
+  <!-- Heading -->
+  <div class="header">
+    <span class="line-sans">The Knowledge App</span>
+    <span class="line-serif">Built for the Curious.</span>
+  </div>
+  <p class="subtext">Early members get free access, forever.</p>
+
+  <!-- Form -->
+  <form class="form-card" id="ea-form" novalidate>
+
+    <div class="field-group">
+      <label class="field-label" for="name">Your Name <span class="req">*</span></label>
+      <input type="text" id="name" name="name" placeholder="Jane Smith" required />
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="email">Your Email <span class="req">*</span></label>
+      <input type="email" id="email" name="email" placeholder="jane@gmail.com" required />
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">What best describes you? <span class="req">*</span></label>
+      <div class="options">
+        <label class="option"><input type="radio" name="role" value="student" required/><span class="option-label">Student</span></label>
+        <label class="option"><input type="radio" name="role" value="researcher"/><span class="option-label">Researcher or Academic</span></label>
+        <label class="option"><input type="radio" name="role" value="professional"/><span class="option-label">Working Professional</span></label>
+        <label class="option"><input type="radio" name="role" value="founder"/><span class="option-label">Founder or Builder</span></label>
+        <label class="option"><input type="radio" name="role" value="curious"/><span class="option-label">Just curious</span></label>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">How do you keep up with AI today? <span class="req">*</span></label>
+      <div class="options">
+        <label class="option"><input type="radio" name="current" value="none" required/><span class="option-label">I don't, it's overwhelming</span></label>
+        <label class="option"><input type="radio" name="current" value="social"/><span class="option-label">Social media &amp; Twitter/X</span></label>
+        <label class="option"><input type="radio" name="current" value="newsletters"/><span class="option-label">Newsletters</span></label>
+        <label class="option"><input type="radio" name="current" value="papers"/><span class="option-label">I read the actual papers</span></label>
+        <label class="option"><input type="radio" name="current" value="mix"/><span class="option-label">A mix of everything</span></label>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">What would you use Aprécis for? <span class="req">*</span></label>
+      <div class="options">
+        <label class="option"><input type="checkbox" name="goal" value="current"/><span class="option-label">Stay current on AI research</span></label>
+        <label class="option"><input type="checkbox" name="goal" value="doom"/><span class="option-label">Replace mindless doom-scrolling</span></label>
+        <label class="option"><input type="checkbox" name="goal" value="deep"/><span class="option-label">Learn concepts deeply, not just headlines</span></label>
+        <label class="option"><input type="checkbox" name="goal" value="share"/><span class="option-label">Share insights with my team</span></label>
+        <label class="option"><input type="checkbox" name="goal" value="unsure"/><span class="option-label">Not sure yet</span></label>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn">
+      Join the Waitlist
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+  </form>
+
+  <!-- Success -->
+  <div id="success">
+    <div class="tick">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <path d="M5 13l4 4L19 7" stroke="#6a92ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h2>You're on the list.</h2>
+    <p>We'll reach out when early access opens. Keep an eye on your inbox.</p>
+    <a href="./index.html" style="margin-top:8px;font-size:13px;color:rgba(255,255,255,0.38);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:1px;">← Back to home</a>
+  </div>
+
+</div>
+
+<script>
+  // ── Starfield (lightweight version) ──
+  const canvas = document.getElementById('bg-canvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H, DPR, stars = [];
+
+  function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W   = window.innerWidth;
+    H   = window.innerHeight;
+    canvas.style.width  = W + 'px';
+    canvas.style.height = H + 'px';
+    canvas.width  = W * DPR;
+    canvas.height = H * DPR;
+    ctx.scale(DPR, DPR);
+    initStars();
+  }
+
+  function initStars() {
+    stars = [];
+    const count = Math.round(220 * Math.sqrt((W * H) / (1440 * 900)));
+    for (let i = 0; i < count; i++) {
+      const d = Math.pow(Math.random(), 2);
+      stars.push({
+        x: Math.random() * W, y: Math.random() * H,
+        r: 0.1 + d * 1.0,
+        a: 0.05 + d * 0.45,
+        freq:  (Math.random() * 0.4 + 0.1) * 0.001,
+        phase: Math.random() * Math.PI * 2,
+        hero:  d > 0.8,
+      });
+    }
+  }
+
+  function draw(t) {
+    ctx.clearRect(0, 0, W, H);
+    // bg
+    const bg = ctx.createRadialGradient(W*.5, H*.25, 0, W*.5, H*.5, Math.sqrt(W*W+H*H)*.55);
+    bg.addColorStop(0,   'rgba(8,10,28,1)');
+    bg.addColorStop(0.6, 'rgba(4,5,14,1)');
+    bg.addColorStop(1,   'rgba(2,2,8,1)');
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+    // stars
+    for (const s of stars) {
+      const a = s.a * (0.55 + 0.45 * Math.sin(t * s.freq + s.phase));
+      ctx.save();
+      if (s.hero) { ctx.shadowColor = `rgba(220,232,255,${a*.8})`; ctx.shadowBlur = s.r * 6; }
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(220,232,255,${a})`;
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  requestAnimationFrame(function loop(t) { draw(t); requestAnimationFrame(loop); });
+
+  // ── Supabase ──
+  const SUPABASE_URL  = 'https://kurqbmbayqecfbbcjojj.supabase.co';
+  const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1cnFibWJheXFlY2ZiYmNqb2pqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3OTQ5MDAsImV4cCI6MjA4OTM3MDkwMH0.gmwpVByjPKSe6vRCGKgWtVFUfgsfG6NR4bxQzW-V7b4';
+
+  async function addToWaitlist(name, email) {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal',
+      },
+      body: JSON.stringify({ name, email }),
+    });
+    if (!res.ok && res.status !== 409) {
+      const err = await res.text();
+      throw new Error(err);
+    }
+  }
+
+  // ── Form submit ──
+  document.getElementById('ea-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const name  = form.elements['name'].value.trim();
+    const email = form.elements['email'].value.trim();
+    if (!name || !email) {
+      form.elements['name'].focus(); return;
+    }
+
+    const btn = form.querySelector('.submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Joining…';
+
+    // optimistic — show success immediately, log errors silently
+    addToWaitlist(name, email).catch(err => console.error('Waitlist insert failed:', err));
+    form.style.display = 'none';
+    document.getElementById('success').style.display = 'flex';
+  });
+</script>
+</body>
+</html>
