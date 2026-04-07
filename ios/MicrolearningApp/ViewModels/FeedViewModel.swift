@@ -10,6 +10,7 @@ final class FeedViewModel: ObservableObject {
 
     private var currentPage: Int = 0
     private var hasMore: Bool = true
+    private var pendingAdvance: Bool = false
     private let api: APIService
 
     init(api: APIService = .shared) {
@@ -70,7 +71,13 @@ final class FeedViewModel: ObservableObject {
     }
 
     func advancePaper() {
-        guard currentPaperIndex < decks.count - 1 else { return }
+        guard currentPaperIndex < decks.count - 1 else {
+            if hasMore {
+                pendingAdvance = true
+                Task { await loadMore() }
+            }
+            return
+        }
         currentPaperIndex += 1
         currentCardIndex = 0
         if decks.count - currentPaperIndex <= 3 {
@@ -100,7 +107,9 @@ final class FeedViewModel: ObservableObject {
         currentPaperIndex = 0
         currentCardIndex = 0
         do {
-            decks = try await api.fetchFeed(page: 0)
+            let page = try await api.fetchFeed(page: 0)
+            decks = page.decks
+            hasMore = page.has_more
         } catch {
             self.error = error.localizedDescription
         }
@@ -112,14 +121,21 @@ final class FeedViewModel: ObservableObject {
         isLoading = true
         let next = currentPage + 1
         do {
-            let fetched = try await api.fetchFeed(page: next)
-            if fetched.isEmpty {
-                hasMore = false
-            } else {
-                decks.append(contentsOf: fetched)
+            let page = try await api.fetchFeed(page: next)
+            hasMore = page.has_more
+            if !page.decks.isEmpty {
+                decks.append(contentsOf: page.decks)
                 currentPage = next
+                if pendingAdvance {
+                    pendingAdvance = false
+                    currentPaperIndex += 1
+                    currentCardIndex = 0
+                }
             }
-        } catch {}
+        } catch {
+            pendingAdvance = false
+            self.error = error.localizedDescription
+        }
         isLoading = false
     }
 }

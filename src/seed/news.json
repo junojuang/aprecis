@@ -1,0 +1,177 @@
+[
+  {
+    "id": "news-001",
+    "title": "AI Agents Are Transforming Enterprise Software Development",
+    "description": "Autonomous AI agents capable of writing, testing, and deploying code with minimal human supervision are being adopted across major technology companies. The agents use tool-calling, memory, and reflection loops to handle complex multi-step engineering tasks previously requiring teams of developers.",
+    "published_at": "2026-03-30T06:00:00Z",
+    "source": "TechCrunch"
+  },
+  {
+    "id": "news-002",
+    "title": "Startup Raises $200M to Build Autonomous AI Coding Agents",
+    "description": "A San Francisco startup has raised $200 million in Series B funding to scale its autonomous AI agent platform. The system chains multiple specialized LLMs to plan, execute, and verify complex software engineering tasks, demonstrating a 3x productivity increase in early enterprise deployments.",
+    "published_at": "2026-03-31T09:00:00Z",
+    "source": "Bloomberg"
+  },
+  {
+    "id": "news-003",
+    "title": "Google DeepMind Releases New Benchmark for Agentic AI Systems",
+    "description": "Google DeepMind published a comprehensive benchmark for evaluating autonomous AI agents on long-horizon tasks involving tool use, planning, and error recovery. The benchmark shows current frontier models achieving 62% success on tasks requiring 10+ sequential decisions with real-world API calls.",
+    "published_at": "2026-03-29T12:00:00Z",
+    "source": "MIT Technology Review"
+  },
+  {
+    "id": "news-004",
+    "title": "Agentic AI: The Next Wave After Chatbots",
+    "description": "Industry analysts say 2026 marks the transition from conversational AI to agentic AI — systems that autonomously pursue goals over extended time horizons. Unlike chatbots, these agents maintain state, call external tools, and self-correct. The market is projected to reach $45B by 2028.",
+    "published_at": "2026-03-28T08:00:00Z",
+    "source": "Wired"
+  },
+  {
+    "id": "news-005",
+    "title": "Multimodal AI Models Now Process Video, Images, and Text Simultaneously",
+    "description": "The latest generation of multimodal AI models from OpenAI, Google, and Anthropic can jointly reason across video, images, audio, and text within a single unified architecture. The systems demonstrate emergent cross-modal reasoning — understanding charts, reading documents, and interpreting diagrams without task-specific fine-tuning.",
+    "published_at": "2026-03-30T10:00:00Z",
+    "source": "The Verge"
+  },
+  {
+    "id": "news-006",
+    "title": "Vision-Language Models Reach Production Maturity for Document Intelligence",
+    "description": "Enterprise software vendors are integrating vision-language models into document processing pipelines, enabling automatic extraction of structured data from invoices, contracts, and financial reports. Industry adoption is accelerating as accuracy on complex document layouts surpasses 95%.",
+    "published_at": "2026-03-31T08:30:00Z",
+    "source": "Forbes"
+  },
+  {
+    "id": "news-007",
+    "title": "Gemini Ultra's Multimodal Reasoning Sets New Benchmarks",
+    "description": "Google's latest Gemini model has achieved state-of-the-art performance on multimodal reasoning benchmarks, including visual question answering, chart interpretation, and spatial reasoning tasks. The model demonstrates particularly strong performance on interleaved vision-language context windows.",
+    "published_at": "2026-03-29T15:00:00Z",
+    "source": "Reuters"
+  },
+  {
+    "id": "news-008",
+    "title": "AI-Powered Drug Discovery Produces First FDA-Approved Candidate",
+    "description": "A pharmaceutical company has received FDA fast-track designation for a drug candidate discovered entirely through AI-driven molecular design. The compound was identified using protein structure prediction and generative chemistry models, cutting the lead identification phase from 3 years to 8 months.",
+    "published_at": "2026-03-29T09:00:00Z",
+    "source": "Nature News"
+  },
+  {
+    "id": "news-009",
+    "title": "AlphaFold Successor Predicts Protein-Ligand Binding with Drug-Design Accuracy",
+    "description": "A new protein structure prediction model from DeepMind extends AlphaFold's capabilities to predict how drugs bind to protein targets, including conformational changes. Pharmaceutical researchers say the tool eliminates months of early-stage wet-lab work for target validation.",
+    "published_at": "2026-03-30T07:00:00Z",
+    "source": "Science"
+  },
+  {
+    "id": "news-010",
+    "title": "Biotech Firms Race to Apply Generative AI to Molecular Design",
+    "description": "Multiple biotech startups are deploying generative AI models trained on protein databases to design novel therapeutic molecules. The technology allows researchers to specify desired binding properties and receive ranked candidate structures in hours, fundamentally altering early-stage drug discovery pipelines.",
+    "published_at": "2026-03-31T10:30:00Z",
+    "source": "STAT News"
+  },
+  {
+    "id": "news-011",
+    "title": "AI Drug Discovery Firm Reports 60% Reduction in Preclinical Timelines",
+    "description": "An AI-focused drug discovery company reported that using machine learning for target identification, lead optimization, and ADMET prediction has cut preclinical development timelines by 60% compared to traditional methods. Three compounds are now entering Phase 1 trials.",
+    "published_at": "2026-03-28T11:00:00Z",
+    "source": "FierceBiotech"
+  },
+  {
+    "id": "news-012",
+    "title": "Microsoft and Atom Computing Demonstrate Fault-Tolerant Logical Qubits",
+    "description": "Microsoft and Atom Computing jointly announced a demonstration of fault-tolerant logical qubits using a neutral-atom quantum processor. The system achieved logical error rates below 0.001, crossing the threshold widely considered necessary for practical quantum computing applications.",
+    "published_at": "2026-03-30T08:00:00Z",
+    "source": "IEEE Spectrum"
+  },
+  {
+    "id": "news-013",
+    "title": "Quantum Error Correction Milestone Accelerates Timeline for Practical Quantum Computing",
+    "description": "Researchers at three independent laboratories have independently achieved quantum error correction performance that crosses the fault-tolerance threshold. Industry experts say the convergent results suggest the engineering challenge of fault-tolerant quantum computing is now tractable within this decade.",
+    "published_at": "2026-03-31T07:00:00Z",
+    "source": "Quanta Magazine"
+  },
+  {
+    "id": "news-014",
+    "title": "Google Quantum AI Achieves Record Logical Qubit Fidelity",
+    "description": "Google Quantum AI published results showing a logical qubit with 99.9% fidelity sustained over 1000 operations using a surface code implementation. The result represents a 10x improvement over prior published work and moves Google's quantum roadmap forward by an estimated 18 months.",
+    "published_at": "2026-03-29T11:00:00Z",
+    "source": "Nature"
+  },
+  {
+    "id": "news-015",
+    "title": "IBM Unveils 1000-Qubit Quantum Processor with Improved Error Rates",
+    "description": "IBM announced its latest quantum processor featuring 1000 physical qubits with median two-qubit gate error rates below 0.1%. The company says the hardware enables meaningful demonstrations of quantum error correction and is a stepping stone toward the thousands of logical qubits needed for commercial quantum advantage.",
+    "published_at": "2026-03-28T09:00:00Z",
+    "source": "Wall Street Journal"
+  },
+  {
+    "id": "news-016",
+    "title": "Commonwealth Fusion Systems Achieves Record Plasma Temperature",
+    "description": "Commonwealth Fusion Systems (CFS) announced its SPARC compact tokamak has achieved a plasma temperature of 100 million degrees Celsius sustained for 8 seconds using high-temperature superconducting magnets. The company says commercial fusion power by 2035 remains on track.",
+    "published_at": "2026-03-30T09:00:00Z",
+    "source": "Financial Times"
+  },
+  {
+    "id": "news-017",
+    "title": "Private Fusion Energy Investment Passes $10 Billion Milestone",
+    "description": "Total private investment in nuclear fusion energy has crossed $10 billion globally, according to a new Fusion Industry Association report. The report highlights accelerating milestone achievement across 40+ private fusion companies, with 6 companies targeting demonstration plants before 2030.",
+    "published_at": "2026-03-31T06:00:00Z",
+    "source": "Bloomberg"
+  },
+  {
+    "id": "news-018",
+    "title": "Helion Energy Demonstrates Net Energy Gain in Latest Fusion Test",
+    "description": "Helion Energy announced it has demonstrated a fusion reaction producing more energy than was input to the plasma in a laboratory setting, marking a Q>1 milestone for its field-reversed configuration approach. Microsoft, which has a power purchase agreement with Helion, confirmed the milestone.",
+    "published_at": "2026-03-29T10:00:00Z",
+    "source": "Axios"
+  },
+  {
+    "id": "news-019",
+    "title": "TAE Technologies Hits Plasma Stability Milestone with Hydrogen-Boron Fusion",
+    "description": "TAE Technologies reported achieving stable plasma at temperatures required for its hydrogen-boron fusion approach for the first time. The achievement is significant because hydrogen-boron fusion produces no neutrons, potentially simplifying the engineering of a commercial fusion reactor substantially.",
+    "published_at": "2026-03-28T13:00:00Z",
+    "source": "New Scientist"
+  },
+  {
+    "id": "news-020",
+    "title": "ITER Fusion Reactor Completes Critical Assembly Phase Ahead of Schedule",
+    "description": "The international ITER fusion project announced completion of the central solenoid assembly phase, the final major component installation before first plasma experiments. The project is on track for first plasma operations, representing the most powerful tokamak ever built.",
+    "published_at": "2026-03-30T14:00:00Z",
+    "source": "Science News"
+  },
+  {
+    "id": "news-021",
+    "title": "Enterprise AI Agents Autonomously Handle Customer Service at Scale",
+    "description": "Several Fortune 500 companies are now running autonomous AI agents to handle complex customer service workflows end-to-end. The systems use tool calling to query databases, process refunds, schedule callbacks, and escalate edge cases without human intervention on 85% of tickets.",
+    "published_at": "2026-03-27T09:00:00Z",
+    "source": "CIO Magazine"
+  },
+  {
+    "id": "news-022",
+    "title": "New Multimodal Foundation Models Excel at Medical Imaging Interpretation",
+    "description": "A new class of multimodal foundation models pre-trained on both medical images and clinical text is achieving radiologist-level accuracy on chest X-ray interpretation and CT scan analysis. The models' ability to integrate visual findings with clinical history represents a paradigm shift in AI-assisted diagnostics.",
+    "published_at": "2026-03-27T11:00:00Z",
+    "source": "NEJM"
+  },
+  {
+    "id": "news-023",
+    "title": "Quantum Computing Startups Attract Record $3B in Single Quarter",
+    "description": "Quantum computing startups raised a record $3 billion in Q1 2026, driven by recent fault-tolerance demonstrations and growing enterprise interest in quantum-classical hybrid algorithms for optimization and drug discovery. Investors cited the convergence of hardware and error-correction milestones as the key catalyst.",
+    "published_at": "2026-03-27T08:00:00Z",
+    "source": "PitchBook"
+  },
+  {
+    "id": "news-024",
+    "title": "Insilico Medicine's AI-Designed Drug Advances to Phase 2 Trials",
+    "description": "Insilico Medicine announced its AI-designed drug candidate for idiopathic pulmonary fibrosis has shown promising results in Phase 1 trials and is advancing to Phase 2. The drug was identified through generative AI and protein structure prediction in under 18 months from target to candidate.",
+    "published_at": "2026-03-26T14:00:00Z",
+    "source": "BioPharma Dive"
+  },
+  {
+    "id": "news-025",
+    "title": "Fusion Energy Could Arrive Sooner Than Expected, Report Finds",
+    "description": "A new analysis from the International Energy Agency suggests commercial fusion power plants could be operating by 2040 if current private-sector investment and milestone trends continue. The report identifies compact tokamaks using high-temperature superconducting magnets as the most likely near-term path.",
+    "published_at": "2026-03-26T10:00:00Z",
+    "source": "Guardian"
+  }
+]

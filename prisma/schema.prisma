@@ -1,0 +1,64 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [pgvector(map: "vector")]
+}
+
+model Item {
+  id          String      @id @default(uuid())
+  externalId  String      @unique
+  title       String?
+  content     String
+  author      String?
+  source      String      // "arxiv" | "x" | "news"
+  publishedAt DateTime
+  embedded    Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+
+  embedding   Embedding?
+  signalItems SignalItem[]
+}
+
+// NOTE: The `vector` field uses pgvector's native type.
+// After running `prisma migrate dev`, run `scripts/init-pgvector.sql`
+// to enable the extension and add the vector column.
+model Embedding {
+  id        String                     @id @default(uuid())
+  itemId    String                     @unique
+  item      Item                       @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  vector    Unsupported("vector(1536)")
+  createdAt DateTime                   @default(now())
+}
+
+model Signal {
+  id            String      @id @default(uuid())
+  topic         String
+  sourceCount   Int
+  totalMentions Int
+  timeSpanHours Float
+  score         Float
+  strength      String      // "weak" | "emerging" | "strong"
+  hook          String?
+  coreIdea      String?
+  eli5          String?
+  whyItMatters  String?
+  detectedAt    DateTime    @default(now())
+
+  signalItems SignalItem[]
+}
+
+model SignalItem {
+  id       String @id @default(uuid())
+  signalId String
+  itemId   String
+
+  signal Signal @relation(fields: [signalId], references: [id], onDelete: Cascade)
+  item   Item   @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@unique([signalId, itemId])
+}

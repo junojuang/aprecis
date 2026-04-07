@@ -1,5 +1,18 @@
 import SwiftUI
 
+// MARK: - Brand Palette
+
+/// Electric blue — primary accent
+let accentBlue   = Color(hex: "4d9cff")
+/// Deep space black — app background
+let pageBg       = Color(hex: "04080f")
+/// Lifted card surface
+let cardSurface  = Color(hex: "0c1422")
+/// Urgency accent — "Before It Matters" badge
+let urgentColor  = Color(hex: "ff3b5c")
+
+// MARK: - Hex Init
+
 extension Color {
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
@@ -12,6 +25,9 @@ extension Color {
         default:
             (r, g, b) = (0, 0, 0)
         }
-        self.init(.sRGB, red: Double(r) / 255, green: Double(g) / 255, blue: Double(b) / 255)
+        self.init(.sRGB,
+                  red: Double(r) / 255,
+                  green: Double(g) / 255,
+                  blue: Double(b) / 255)
     }
 }

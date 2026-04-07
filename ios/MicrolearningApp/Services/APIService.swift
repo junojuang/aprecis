@@ -89,13 +89,14 @@ final class APIService {
     // MARK: - Public API
 
     /// Fetches a page of card decks from GET /serve-cards?page=<page>
-    func fetchFeed(page: Int) async throws -> [CardDeck] {
-        struct FeedResponse: Decodable {
-            let decks: [CardDeck]
-        }
+    struct FeedPage: Decodable {
+        let decks: [CardDeck]
+        let has_more: Bool
+    }
+
+    func fetchFeed(page: Int) async throws -> FeedPage {
         let request = try makeRequest(path: "/serve-cards?page=\(page)")
-        let response: FeedResponse = try await perform(request)
-        return response.decks
+        return try await perform(request)
     }
 
     /// Records a user interaction via POST /serve-cards/interaction
