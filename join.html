@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aprécis</title>
+  <title>Aprecis · Join the early circle</title>
+  <meta name="description" content="Get early access to Aprecis. The first batch of testers will receive the iOS TestFlight invite when the beta opens." />
   <link rel="icon" href="./assets/aprecis_favicon.svg" type="image/svg+xml" />
-  <!-- Google tag (gtag.js) -->
+
+  <!-- Google tag -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-CEG84Y6QSP"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -13,431 +15,446 @@
     gtag('js', new Date());
     gtag('config', 'G-CEG84Y6QSP');
   </script>
+
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
 
     @font-face {
       font-family: 'Satoshi';
-      src: url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff2') format('woff2'),
-           url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Variable.woff') format('woff');
+      src: url('./fonts/satoshi/Satoshi-Variable.woff2') format('woff2');
       font-weight: 300 900;
       font-style: normal;
       font-display: swap;
     }
     @font-face {
       font-family: 'Satoshi';
-      src: url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.woff2') format('woff2'),
-           url('./fonts/satoshi/Satoshi_Complete/Fonts/WEB/fonts/Satoshi-VariableItalic.woff') format('woff');
+      src: url('./fonts/satoshi/Satoshi-VariableItalic.woff2') format('woff2');
       font-weight: 300 900;
       font-style: italic;
       font-display: swap;
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html, body {
-      min-height: 100%;
-      background: #02020a;
-      color: #ffffff;
-      font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
-      -webkit-font-smoothing: antialiased;
+    :root {
+      --paper:      #f7f4ef;
+      --paper_2:    #efeae1;
+      --ink:        #0f1117;
+      --ink_soft:   #4a4e58;
+      --muted:      #8a8f9a;
+      --line:       rgba(15,17,23,0.08);
+      --teal:       #1a8a8a;
+      --teal_deep:  #0f3a3a;
+      --teal_ink:   #0a2a2a;
+      --teal_bright:#5fd4d4;
+      --teal_light: #e8f5f5;
+      --amber:      #e8a020;
+      --rose:       #d46a6a;
+      --card:       #ffffff;
     }
 
-    /* ── CANVAS ── */
-    #bg-canvas {
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Satoshi', BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
       position: fixed;
       inset: 0;
-      z-index: 0;
+      background:
+        radial-gradient(700px 460px at 12% 12%, rgba(26,138,138,0.08), transparent 60%),
+        radial-gradient(560px 380px at 88% 88%, rgba(232,160,32,0.06), transparent 60%);
       pointer-events: none;
+      z-index: 0;
     }
+    a { color: inherit; text-decoration: none; }
+    img, svg { display: block; max-width: 100%; }
 
-    /* ── PAGE WRAPPER ── */
-    .page {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 48px 24px 80px;
+    .wrap { width: 100%; max-width: 720px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+    /* nav */
+    .nav {
+      position: sticky; top: 0; z-index: 20;
+      background: rgba(247, 244, 239, 0.82);
+      backdrop-filter: saturate(160%) blur(10px);
+      border-bottom: 1px solid var(--line);
     }
-
-    /* ── LOGO PILL ── */
-    .logo-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 14px 6px 10px;
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 999px;
-      background: rgba(255,255,255,0.06);
-      backdrop-filter: blur(8px);
-      font-size: 13px;
+    .nav_inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 78px;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 14px;
+      font-family: 'EB Garamond', serif;
       font-weight: 500;
-      color: rgba(255,255,255,0.9);
-      text-decoration: none;
-      margin-bottom: 44px;
-      transition: background 0.2s;
+      font-size: 30px;
     }
-    .logo-pill:hover { background: rgba(255,255,255,0.10); }
+    .brand_mark { width: 48px; height: 48px; border-radius: 11px; box-shadow: 0 4px 14px rgba(15,17,23,0.16); }
+    .brand_word { color: var(--teal); }
+    .brand_dot  { color: var(--ink); font-style: italic; }
+    .nav_back {
+      font-size: 13px;
+      color: var(--ink_soft);
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .nav_back:hover { color: var(--ink); }
+    @media (max-width: 640px) {
+      .brand { font-size: 26px; gap: 10px; }
+      .brand_mark { width: 40px; height: 40px; border-radius: 9px; }
+    }
 
-    @keyframes bar-shimmer {
-      0%, 100% { opacity: 0.7; }
-      50%       { opacity: 1;   }
-    }
-    @keyframes logo-glow {
-      0%, 100% { filter: drop-shadow(0 0 0px rgba(106,146,255,0));   }
-      50%      { filter: drop-shadow(0 0 6px rgba(106,146,255,0.55)); }
-    }
-    .logo-anim { animation: logo-glow 3s ease-in-out infinite; }
-    .lb        { animation: bar-shimmer 3s ease-in-out infinite; }
-
-    /* ── HEADER ── */
+    /* hero header */
     .header {
+      padding: 64px 0 36px;
       text-align: center;
-      margin-bottom: 12px;
     }
-    .header .line-sans {
+    .ornament {
+      display: flex; align-items: center; gap: 10px;
+      margin: 0 auto 22px;
+      max-width: 240px;
+    }
+    .ornament .r { flex: 1; height: 1px; background: var(--line); }
+    .ornament .d { width: 5px; height: 5px; border-radius: 50%; background: var(--teal); }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 16px;
+    }
+    .eyebrow::before {
+      content: "";
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--teal);
+      box-shadow: 0 0 10px rgba(26,138,138,0.55);
+    }
+
+    h1 {
+      font-family: 'EB Garamond', serif;
+      font-weight: 400;
+      font-size: clamp(38px, 5.4vw, 56px);
+      line-height: 1.06;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin: 0 0 16px;
+    }
+    h1 em { font-style: italic; color: var(--teal); }
+
+    .lede {
+      font-family: 'EB Garamond', serif;
+      font-size: 18px;
+      line-height: 1.55;
+      color: var(--ink_soft);
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    /* form card */
+    .form_wrap { padding-bottom: 80px; }
+    .form_card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 40px 36px;
+      box-shadow: 0 18px 50px rgba(15,17,23,0.06);
+    }
+    @media (max-width: 540px) {
+      .form_card { padding: 28px 22px; border-radius: 18px; }
+    }
+
+    .field { margin-bottom: 26px; }
+    .field_label {
       display: block;
       font-family: 'Satoshi', sans-serif;
-      font-weight: 700;
-      font-size: clamp(28px, 5vw, 52px);
-      letter-spacing: -0.02em;
-    }
-    .header .line-serif {
-      display: block;
-      font-family: 'EB Garamond', Georgia, serif;
-      font-style: italic;
-      font-weight: 400;
-      font-size: clamp(28px, 5vw, 52px);
-      color: rgba(255,255,255,0.88);
-    }
-
-    .subtext {
       font-size: 13px;
-      color: rgba(255,255,255,0.38);
-      margin-bottom: 44px;
-      letter-spacing: 0.01em;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--ink);
+      margin-bottom: 10px;
     }
+    .req { color: var(--teal); margin-left: 2px; }
 
-    /* ── FORM ── */
-    .form-card {
+    input[type="text"], input[type="email"] {
       width: 100%;
-      max-width: 480px;
-      display: flex;
-      flex-direction: column;
-      gap: 28px;
+      padding: 14px 16px;
+      font: inherit;
+      font-size: 15px;
+      color: var(--ink);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      transition: border-color .15s, background .15s, box-shadow .15s;
+    }
+    input[type="text"]::placeholder, input[type="email"]::placeholder {
+      color: rgba(138,143,154,0.7);
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+    }
+    input[type="text"]:focus, input[type="email"]:focus {
+      outline: none;
+      background: white;
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(26,138,138,0.12);
     }
 
-    .field-group {
-      display: flex;
-      flex-direction: column;
+    .options {
+      display: grid;
+      grid-template-columns: 1fr;
       gap: 8px;
     }
-
-    label.field-label {
-      font-size: 13px;
-      font-weight: 500;
-      color: rgba(255,255,255,0.75);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    label.field-label .req { color: rgba(106,146,255,0.9); font-size: 11px; }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="tel"] {
-      width: 100%;
-      padding: 12px 14px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.10);
-      border-radius: 8px;
-      color: #ffffff;
-      font-family: 'Satoshi', sans-serif;
-      font-size: 14px;
-      outline: none;
-      transition: border-color 0.2s, background 0.2s;
-    }
-    input::placeholder { color: rgba(255,255,255,0.22); }
-    input:focus {
-      border-color: rgba(106,146,255,0.5);
-      background: rgba(255,255,255,0.07);
-    }
-
-    /* ── RADIO / CHECKBOX OPTIONS ── */
-    .options {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
     .option {
-      display: flex;
-      align-items: center;
-      gap: 11px;
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 14px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 11px;
       cursor: pointer;
-      user-select: none;
+      transition: background .15s, border-color .15s, transform .1s;
     }
-
-    .option input[type="radio"],
-    .option input[type="checkbox"] {
-      appearance: none;
-      -webkit-appearance: none;
-      width: 16px;
-      height: 16px;
-      min-width: 16px;
-      border: 1px solid rgba(255,255,255,0.22);
-      border-radius: 4px;
-      background: rgba(255,255,255,0.04);
-      cursor: pointer;
-      transition: border-color 0.15s, background 0.15s;
+    .option:hover { background: white; border-color: rgba(26,138,138,0.3); }
+    .option input { position: absolute; opacity: 0; pointer-events: none; }
+    .option .pip {
+      width: 18px; height: 18px; border-radius: 50%;
+      border: 1.5px solid rgba(15,17,23,0.18);
+      background: white;
+      flex-shrink: 0;
       position: relative;
+      transition: border-color .15s, background .15s;
     }
-    .option input[type="radio"] {
-      border-radius: 50%;
-    }
-    .option input[type="radio"]:checked,
-    .option input[type="checkbox"]:checked {
-      background: rgba(106,146,255,0.22);
-      border-color: rgba(106,146,255,0.8);
-    }
-    .option input[type="radio"]:checked::after {
-      content: '';
+    .option input[type="checkbox"] ~ .pip { border-radius: 5px; }
+    .option input:checked ~ .pip { border-color: var(--teal); background: var(--teal); }
+    .option input:checked ~ .pip::after {
+      content: "";
       position: absolute;
+      inset: 0;
+      display: grid; place-items: center;
+    }
+    .option input[type="radio"]:checked ~ .pip::after {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: white;
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: #6a92ff;
     }
-    .option input[type="checkbox"]:checked::after {
-      content: '';
-      position: absolute;
+    .option input[type="checkbox"]:checked ~ .pip::after {
+      content: "";
+      width: 9px; height: 5px;
+      border: 1.7px solid white;
+      border-top: 0; border-right: 0;
+      transform: translate(-50%, -65%) rotate(-45deg);
       top: 50%; left: 50%;
-      transform: translate(-50%, -50%) rotate(45deg);
-      width: 4px; height: 7px;
-      border-right: 1.5px solid #6a92ff;
-      border-bottom: 1.5px solid #6a92ff;
-      margin-top: -1px;
+      position: absolute;
     }
-
-    .option-label {
-      font-size: 13.5px;
-      color: rgba(255,255,255,0.62);
-      transition: color 0.15s;
+    .option input:checked ~ .option_label { color: var(--ink); font-weight: 600; }
+    .option input:focus-visible ~ .pip {
+      box-shadow: 0 0 0 3px rgba(26,138,138,0.18);
     }
-    .option:hover .option-label { color: rgba(255,255,255,0.88); }
-
-    /* ── SUBMIT ── */
-    .submit-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 28px;
-      border-radius: 999px;
-      background: #ffffff;
-      color: #000000;
-      font-family: 'Satoshi', sans-serif;
+    .option_label {
       font-size: 14px;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 0 24px 4px rgba(106,146,255,0.35), 0 2px 12px rgba(0,0,0,0.4);
-      transition: opacity 0.15s, transform 0.15s;
-      align-self: flex-start;
+      color: var(--ink_soft);
     }
-    .submit-btn:hover { opacity: 0.88; transform: translateY(-1px); }
-    .submit-btn:active { transform: translateY(0); }
-    .submit-btn svg { transition: transform 0.2s; }
-    .submit-btn:hover svg { transform: translateX(3px); }
 
-    /* ── SUCCESS STATE ── */
+    .submit_btn {
+      width: 100%;
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 16px 22px;
+      background: var(--teal);
+      color: white;
+      border: none;
+      border-radius: 13px;
+      font: inherit;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 10px 26px rgba(26,138,138,0.25);
+      transition: transform .15s ease, box-shadow .15s ease;
+      margin-top: 8px;
+    }
+    .submit_btn:hover { transform: translateY(-1px); box-shadow: 0 12px 30px rgba(26,138,138,0.32); }
+    .submit_btn:disabled { opacity: 0.7; cursor: not-allowed; }
+    .submit_btn .arrow { transition: transform .15s; }
+    .submit_btn:hover .arrow { transform: translateX(3px); }
+
+    .fine {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+    }
+
+    /* success */
     #success {
       display: none;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      gap: 14px;
-      padding: 40px 0;
+      padding: 56px 32px;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: 0 18px 50px rgba(15,17,23,0.06);
     }
-    #success .tick {
-      width: 52px; height: 52px;
+    #success.show { display: flex; }
+    .badge {
+      width: 88px; height: 88px;
       border-radius: 50%;
-      background: rgba(106,146,255,0.12);
-      border: 1px solid rgba(106,146,255,0.3);
-      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, var(--amber), var(--teal));
+      display: grid; place-items: center;
+      box-shadow: 0 14px 30px rgba(26,138,138,0.25);
+      margin-bottom: 22px;
+      position: relative;
     }
+    .badge::after {
+      content: "";
+      position: absolute;
+      inset: 5px;
+      border-radius: 50%;
+      background: var(--paper);
+    }
+    .badge svg { position: relative; z-index: 1; }
     #success h2 {
-      font-size: 22px; font-weight: 700;
+      font-family: 'EB Garamond', serif;
+      font-weight: 400;
+      font-size: 32px;
+      line-height: 1.1;
+      margin: 0 0 10px;
     }
+    #success h2 em { font-style: italic; color: var(--teal); }
     #success p {
-      font-size: 14px; color: rgba(255,255,255,0.45); max-width: 300px; line-height: 1.6;
+      font-family: 'EB Garamond', serif;
+      font-size: 16px;
+      color: var(--ink_soft);
+      max-width: 380px;
+      margin: 0 0 24px;
+      line-height: 1.5;
+    }
+    #success .back_link {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 22px;
+      background: var(--ink);
+      color: var(--paper);
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
   </style>
 </head>
 <body>
 
-<canvas id="bg-canvas"></canvas>
-
-<div class="page">
-
-  <!-- Logo pill — click to go back -->
-  <a href="/" class="logo-pill">
-    <svg class="logo-anim" width="22" height="22" viewBox="248 252 198 174" xmlns="http://www.w3.org/2000/svg">
-      <rect class="lb" style="animation-delay:0.00s" x="334" y="252" width="12" height="14" fill="#2235a8"/>
-      <rect class="lb" style="animation-delay:0.15s" x="318" y="272" width="44" height="14" fill="#3050cc"/>
-      <rect class="lb" style="animation-delay:0.30s" x="294" y="292" width="92" height="14" fill="#4a6ee8"/>
-      <rect class="lb" style="animation-delay:0.45s" x="264" y="312" width="152" height="14" fill="#6a92ff"/>
-      <rect class="lb" style="animation-delay:0.60s" x="248" y="332" width="184" height="14" fill="#c8dcff"/>
-      <rect class="lb" style="animation-delay:0.75s" x="264" y="352" width="152" height="14" fill="#6a92ff"/>
-      <rect class="lb" style="animation-delay:0.90s" x="294" y="372" width="92" height="14" fill="#4a6ee8"/>
-      <rect class="lb" style="animation-delay:1.05s" x="318" y="392" width="44" height="14" fill="#3050cc"/>
-      <rect class="lb" style="animation-delay:1.20s" x="334" y="412" width="12" height="14" fill="#2235a8"/>
-    </svg>
-    <span style="letter-spacing:0">Aprécis<span style="color:rgba(255,255,255,0.35);font-weight:400;">.app</span></span>
-  </a>
-
-  <!-- Heading -->
-  <div class="header">
-    <span class="line-sans">The Knowledge App</span>
-    <span class="line-serif">Built for the Curious.</span>
+<!-- nav -->
+<header class="nav">
+  <div class="nav_inner">
+    <a href="/" class="brand">
+      <img class="brand_mark" src="./assets/aprecis_app_icon.svg" alt="Aprecis" />
+      <span><span class="brand_word">aprecis</span><span class="brand_dot">.</span></span>
+    </a>
+    <a href="/" class="nav_back">← Back</a>
   </div>
-  <p class="subtext">Early members get free access, forever.</p>
+</header>
 
-  <!-- Form -->
-  <form class="form-card" id="ea-form" novalidate>
+<!-- header -->
+<div class="wrap">
+  <section class="header">
+    <div class="ornament"><span class="r"></span><span class="d"></span><span class="r"></span></div>
+    <div class="eyebrow">Early access</div>
+    <h1>Join the <em>early circle</em>.</h1>
+    <p class="lede">We're rolling out the first batch of testers. Tell us a little about yourself and we'll send the iOS TestFlight invite when the beta opens. Free, forever, for the people who came in early.</p>
+  </section>
+</div>
 
-    <div class="field-group">
-      <label class="field-label" for="name">Your Name <span class="req">*</span></label>
-      <input type="text" id="name" name="name" placeholder="Jane Smith" required />
+<!-- form -->
+<div class="wrap form_wrap">
+  <form class="form_card" id="ea_form" novalidate>
+
+    <div class="field">
+      <label class="field_label" for="name">Your name <span class="req">*</span></label>
+      <input type="text" id="name" name="name" placeholder="Jane Smith" required autocomplete="name" />
     </div>
 
-    <div class="field-group">
-      <label class="field-label" for="email">Your Email <span class="req">*</span></label>
-      <input type="email" id="email" name="email" placeholder="jane@gmail.com" required />
+    <div class="field">
+      <label class="field_label" for="email">Your email <span class="req">*</span></label>
+      <input type="email" id="email" name="email" placeholder="jane@gmail.com" required autocomplete="email" />
     </div>
 
-    <div class="field-group">
-      <label class="field-label">What best describes you? <span class="req">*</span></label>
+    <div class="field">
+      <label class="field_label">What best describes you? <span class="req">*</span></label>
       <div class="options">
-        <label class="option"><input type="radio" name="role" value="student" required/><span class="option-label">Student</span></label>
-        <label class="option"><input type="radio" name="role" value="researcher"/><span class="option-label">Researcher or Academic</span></label>
-        <label class="option"><input type="radio" name="role" value="professional"/><span class="option-label">Working Professional</span></label>
-        <label class="option"><input type="radio" name="role" value="founder"/><span class="option-label">Founder or Builder</span></label>
-        <label class="option"><input type="radio" name="role" value="curious"/><span class="option-label">Just curious</span></label>
+        <label class="option"><input type="radio" name="role" value="student" required/><span class="pip"></span><span class="option_label">Student</span></label>
+        <label class="option"><input type="radio" name="role" value="researcher"/><span class="pip"></span><span class="option_label">Researcher or academic</span></label>
+        <label class="option"><input type="radio" name="role" value="professional"/><span class="pip"></span><span class="option_label">Working professional</span></label>
+        <label class="option"><input type="radio" name="role" value="founder"/><span class="pip"></span><span class="option_label">Founder or builder</span></label>
+        <label class="option"><input type="radio" name="role" value="curious"/><span class="pip"></span><span class="option_label">Just curious</span></label>
       </div>
     </div>
 
-    <div class="field-group">
-      <label class="field-label">How do you keep up with AI today? <span class="req">*</span></label>
+    <div class="field">
+      <label class="field_label">How do you keep up with AI today? <span class="req">*</span></label>
       <div class="options">
-        <label class="option"><input type="radio" name="current" value="none" required/><span class="option-label">I don't, it's overwhelming</span></label>
-        <label class="option"><input type="radio" name="current" value="social"/><span class="option-label">Social media &amp; Twitter/X</span></label>
-        <label class="option"><input type="radio" name="current" value="newsletters"/><span class="option-label">Newsletters</span></label>
-        <label class="option"><input type="radio" name="current" value="papers"/><span class="option-label">I read the actual papers</span></label>
-        <label class="option"><input type="radio" name="current" value="mix"/><span class="option-label">A mix of everything</span></label>
+        <label class="option"><input type="radio" name="current" value="none" required/><span class="pip"></span><span class="option_label">I don't, it's overwhelming</span></label>
+        <label class="option"><input type="radio" name="current" value="social"/><span class="pip"></span><span class="option_label">Social media and X</span></label>
+        <label class="option"><input type="radio" name="current" value="newsletters"/><span class="pip"></span><span class="option_label">Newsletters</span></label>
+        <label class="option"><input type="radio" name="current" value="papers"/><span class="pip"></span><span class="option_label">I read the actual papers</span></label>
+        <label class="option"><input type="radio" name="current" value="mix"/><span class="pip"></span><span class="option_label">A mix of everything</span></label>
       </div>
     </div>
 
-    <div class="field-group">
-      <label class="field-label">What would you use Aprécis for? <span class="req">*</span></label>
+    <div class="field">
+      <label class="field_label">What would you use Aprecis for? <span class="req">*</span></label>
       <div class="options">
-        <label class="option"><input type="checkbox" name="goal" value="current"/><span class="option-label">Stay current on AI research</span></label>
-        <label class="option"><input type="checkbox" name="goal" value="doom"/><span class="option-label">Replace mindless doom-scrolling</span></label>
-        <label class="option"><input type="checkbox" name="goal" value="deep"/><span class="option-label">Learn concepts deeply, not just headlines</span></label>
-        <label class="option"><input type="checkbox" name="goal" value="share"/><span class="option-label">Share insights with my team</span></label>
-        <label class="option"><input type="checkbox" name="goal" value="unsure"/><span class="option-label">Not sure yet</span></label>
+        <label class="option"><input type="checkbox" name="goal" value="current"/><span class="pip"></span><span class="option_label">Stay current on AI research</span></label>
+        <label class="option"><input type="checkbox" name="goal" value="doom"/><span class="pip"></span><span class="option_label">Replace mindless doomscrolling</span></label>
+        <label class="option"><input type="checkbox" name="goal" value="deep"/><span class="pip"></span><span class="option_label">Learn concepts deeply, not just headlines</span></label>
+        <label class="option"><input type="checkbox" name="goal" value="share"/><span class="pip"></span><span class="option_label">Share insights with my team</span></label>
+        <label class="option"><input type="checkbox" name="goal" value="unsure"/><span class="pip"></span><span class="option_label">Not sure yet</span></label>
       </div>
     </div>
 
-    <button type="submit" class="submit-btn">
-      Join the Waitlist
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <button type="submit" class="submit_btn">
+      <span class="btn_label">Save my spot</span>
+      <svg class="arrow" width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <path d="M3 8h10M9 4l4 4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </button>
-
+    <p class="fine">No spam, no marketing emails. One note when the beta is live.</p>
   </form>
 
-  <!-- Success -->
+  <!-- success -->
   <div id="success">
-    <div class="tick">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-        <path d="M5 13l4 4L19 7" stroke="#6a92ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <div class="badge">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
+        <path d="M5 12.5l4.5 4.5L19 7.5" stroke="#1a8a8a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
-    <h2>You're on the list.</h2>
-    <p>We'll reach out when early access opens. Keep an eye on your inbox.</p>
-    <a href="/" style="margin-top:8px;font-size:13px;color:rgba(255,255,255,0.38);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:1px;">← Back to home</a>
+    <h2>You're in the <em>early circle</em>.</h2>
+    <p>We'll reach out when TestFlight opens. Keep an eye on your inbox in the meantime.</p>
+    <a href="/" class="back_link">Back home →</a>
   </div>
-
 </div>
 
 <script>
-  // ── Starfield (lightweight version) ──
-  const canvas = document.getElementById('bg-canvas');
-  const ctx    = canvas.getContext('2d');
-  let W, H, DPR, stars = [];
+  // Supabase waitlist
+  const SUPABASE_URL = 'https://kurqbmbayqecfbbcjojj.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1cnFibWJheXFlY2ZiYmNqb2pqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3OTQ5MDAsImV4cCI6MjA4OTM3MDkwMH0.gmwpVByjPKSe6vRCGKgWtVFUfgsfG6NR4bxQzW-V7b4';
 
-  function resize() {
-    DPR = Math.min(window.devicePixelRatio || 1, 2);
-    W   = window.innerWidth;
-    H   = window.innerHeight;
-    canvas.style.width  = W + 'px';
-    canvas.style.height = H + 'px';
-    canvas.width  = W * DPR;
-    canvas.height = H * DPR;
-    ctx.scale(DPR, DPR);
-    initStars();
-  }
-
-  function initStars() {
-    stars = [];
-    const count = Math.round(220 * Math.sqrt((W * H) / (1440 * 900)));
-    for (let i = 0; i < count; i++) {
-      const d = Math.pow(Math.random(), 2);
-      stars.push({
-        x: Math.random() * W, y: Math.random() * H,
-        r: 0.1 + d * 1.0,
-        a: 0.05 + d * 0.45,
-        freq:  (Math.random() * 0.4 + 0.1) * 0.001,
-        phase: Math.random() * Math.PI * 2,
-        hero:  d > 0.8,
-      });
-    }
-  }
-
-  function draw(t) {
-    ctx.clearRect(0, 0, W, H);
-    // bg
-    const bg = ctx.createRadialGradient(W*.5, H*.25, 0, W*.5, H*.5, Math.sqrt(W*W+H*H)*.55);
-    bg.addColorStop(0,   'rgba(8,10,28,1)');
-    bg.addColorStop(0.6, 'rgba(4,5,14,1)');
-    bg.addColorStop(1,   'rgba(2,2,8,1)');
-    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
-    // stars
-    for (const s of stars) {
-      const a = s.a * (0.55 + 0.45 * Math.sin(t * s.freq + s.phase));
-      ctx.save();
-      if (s.hero) { ctx.shadowColor = `rgba(220,232,255,${a*.8})`; ctx.shadowBlur = s.r * 6; }
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(220,232,255,${a})`;
-      ctx.fill();
-      ctx.restore();
-    }
-  }
-
-  resize();
-  window.addEventListener('resize', resize);
-  requestAnimationFrame(function loop(t) { draw(t); requestAnimationFrame(loop); });
-
-  // ── Supabase ──
-  const SUPABASE_URL  = 'https://kurqbmbayqecfbbcjojj.supabase.co';
-  const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1cnFibWJheXFlY2ZiYmNqb2pqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3OTQ5MDAsImV4cCI6MjA4OTM3MDkwMH0.gmwpVByjPKSe6vRCGKgWtVFUfgsfG6NR4bxQzW-V7b4';
-
-  async function addToWaitlist(name, email) {
+  async function addToWaitlist(payload) {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
       method: 'POST',
       headers: {
@@ -446,7 +463,7 @@
         'Content-Type': 'application/json',
         'Prefer': 'return=minimal',
       },
-      body: JSON.stringify({ name, email }),
+      body: JSON.stringify(payload),
     });
     if (!res.ok && res.status !== 409) {
       const err = await res.text();
@@ -454,24 +471,31 @@
     }
   }
 
-  // ── Form submit ──
-  document.getElementById('ea-form').addEventListener('submit', async function(e) {
+  document.getElementById('ea_form').addEventListener('submit', async function(e) {
     e.preventDefault();
     const form = e.target;
     const name  = form.elements['name'].value.trim();
     const email = form.elements['email'].value.trim();
     if (!name || !email) {
-      form.elements['name'].focus(); return;
+      (name ? form.elements['email'] : form.elements['name']).focus();
+      return;
     }
 
-    const btn = form.querySelector('.submit-btn');
-    btn.disabled = true;
-    btn.textContent = 'Joining…';
+    const role    = form.elements['role'].value || null;
+    const current = form.elements['current'].value || null;
+    const goals = Array.from(form.querySelectorAll('input[name="goal"]:checked')).map(n => n.value);
 
-    // optimistic — show success immediately, log errors silently
-    addToWaitlist(name, email).catch(err => console.error('Waitlist insert failed:', err));
+    const btn = form.querySelector('.submit_btn');
+    btn.disabled = true;
+    btn.querySelector('.btn_label').textContent = 'Saving…';
+
+    addToWaitlist({ name, email, role, current, goals }).catch(err => {
+      console.error('Waitlist insert failed:', err);
+    });
+
     form.style.display = 'none';
-    document.getElementById('success').style.display = 'flex';
+    document.getElementById('success').classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 </script>
 </body>

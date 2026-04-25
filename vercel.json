@@ -3,10 +3,10 @@
   "outputDirectory": ".",
   "redirects": [
     { "source": "/join.html", "destination": "/join", "permanent": true },
-    { "source": "/learn-more.html", "destination": "/learn-more", "permanent": true }
+    { "source": "/landing.html", "destination": "/", "permanent": true }
   ],
   "rewrites": [
-    { "source": "/join", "destination": "/join.html" },
-    { "source": "/learn-more", "destination": "/learn-more.html" }
+    { "source": "/", "destination": "/landing.html" },
+    { "source": "/join", "destination": "/join.html" }
   ]
 }
