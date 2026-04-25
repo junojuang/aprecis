@@ -77,6 +77,7 @@
     .nav {
       position: sticky; top: 0; z-index: 20;
       background: rgba(247, 244, 239, 0.82);
+      -webkit-backdrop-filter: saturate(160%) blur(10px);
       backdrop-filter: saturate(160%) blur(10px);
       border-bottom: 1px solid var(--line);
     }
@@ -144,9 +145,20 @@
       gap: 56px;
       align-items: center;
     }
+    /* Safari fix: grid items default to min-width: auto, which lets a child
+       with aspect-ratio inflate the column. min-width: 0 keeps each column
+       inside its track. */
+    .hero_grid > * { min-width: 0; }
+    .hero_phone_col {
+      position: relative;
+      width: 300px;
+      max-width: 100%;
+      justify-self: center;
+    }
     @media (max-width: 900px) {
       .hero { padding: 48px 0 72px; }
       .hero_grid { grid-template-columns: 1fr; gap: 40px; }
+      .hero_phone_col { width: 260px; }
     }
 
     .hero_logo {
@@ -228,12 +240,15 @@
     }
     .sub_stats .dot { color: var(--teal); margin-right: 6px; }
 
-    /* phone frame */
+    /* phone frame
+       Explicit width/height (no aspect-ratio) avoids a Safari layout bug
+       where aspect-ratio in a grid item with align-items: center causes
+       width inflation from the row's stretched height. */
     .phone {
       position: relative;
-      justify-self: center;
       width: 300px;
-      aspect-ratio: 300 / 612;
+      height: 612px;
+      max-width: 100%;
       border-radius: 44px;
       background: #0a0a0c;
       padding: 10px;
@@ -266,7 +281,7 @@
       z-index: 2;
     }
     @media (max-width: 900px) {
-      .phone { width: 260px; transform: rotate(0deg); }
+      .phone { width: 260px; height: 530px; transform: rotate(0deg); }
     }
 
     /* floating chips */
@@ -406,6 +421,7 @@
       gap: 28px;
       margin-top: 14px;
     }
+    .step_row > * { min-width: 0; }
     @media (max-width: 900px) {
       .step_row { grid-template-columns: repeat(2, 1fr); gap: 32px 18px; }
     }
@@ -634,7 +650,7 @@
       </div>
     </div>
 
-    <div style="position: relative;">
+    <div class="hero_phone_col">
       <div class="phone" aria-label="Aprecis lesson cover screen">
         <div class="phone_screen">
           <img src="./assets/screens/cover.jpg" alt="Today's lesson cover" />
