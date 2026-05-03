@@ -377,7 +377,7 @@
     <div class="ornament"><span class="r"></span><span class="d"></span><span class="r"></span></div>
     <div class="eyebrow">Early access</div>
     <h1>Join the <em>early circle</em>.</h1>
-    <p class="lede">We're rolling out the first batch of testers. Tell us a little about yourself and we'll send the iOS TestFlight invite when the beta opens. Free, forever, for the people who came in early.</p>
+    <p class="lede">Drop your email. TestFlight invite lands the day beta opens. Free, forever, for the people who came in early.</p>
   </section>
 </div>
 
@@ -386,46 +386,8 @@
   <form class="form_card" id="ea_form" novalidate>
 
     <div class="field">
-      <label class="field_label" for="name">Your name <span class="req">*</span></label>
-      <input type="text" id="name" name="name" placeholder="Jane Smith" required autocomplete="name" />
-    </div>
-
-    <div class="field">
-      <label class="field_label" for="email">Your email <span class="req">*</span></label>
+      <label class="field_label" for="email">Your email</label>
       <input type="email" id="email" name="email" placeholder="jane@gmail.com" required autocomplete="email" />
-    </div>
-
-    <div class="field">
-      <label class="field_label">What best describes you? <span class="req">*</span></label>
-      <div class="options">
-        <label class="option"><input type="radio" name="role" value="student" required/><span class="pip"></span><span class="option_label">Student</span></label>
-        <label class="option"><input type="radio" name="role" value="researcher"/><span class="pip"></span><span class="option_label">Researcher or academic</span></label>
-        <label class="option"><input type="radio" name="role" value="professional"/><span class="pip"></span><span class="option_label">Working professional</span></label>
-        <label class="option"><input type="radio" name="role" value="founder"/><span class="pip"></span><span class="option_label">Founder or builder</span></label>
-        <label class="option"><input type="radio" name="role" value="curious"/><span class="pip"></span><span class="option_label">Just curious</span></label>
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="field_label">How do you keep up with AI today? <span class="req">*</span></label>
-      <div class="options">
-        <label class="option"><input type="radio" name="current" value="none" required/><span class="pip"></span><span class="option_label">I don't, it's overwhelming</span></label>
-        <label class="option"><input type="radio" name="current" value="social"/><span class="pip"></span><span class="option_label">Social media and X</span></label>
-        <label class="option"><input type="radio" name="current" value="newsletters"/><span class="pip"></span><span class="option_label">Newsletters</span></label>
-        <label class="option"><input type="radio" name="current" value="papers"/><span class="pip"></span><span class="option_label">I read the actual papers</span></label>
-        <label class="option"><input type="radio" name="current" value="mix"/><span class="pip"></span><span class="option_label">A mix of everything</span></label>
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="field_label">What would you use Aprecis for? <span class="req">*</span></label>
-      <div class="options">
-        <label class="option"><input type="checkbox" name="goal" value="current"/><span class="pip"></span><span class="option_label">Stay current on AI research</span></label>
-        <label class="option"><input type="checkbox" name="goal" value="doom"/><span class="pip"></span><span class="option_label">Replace mindless doomscrolling</span></label>
-        <label class="option"><input type="checkbox" name="goal" value="deep"/><span class="pip"></span><span class="option_label">Learn concepts deeply, not just headlines</span></label>
-        <label class="option"><input type="checkbox" name="goal" value="share"/><span class="pip"></span><span class="option_label">Share insights with my team</span></label>
-        <label class="option"><input type="checkbox" name="goal" value="unsure"/><span class="pip"></span><span class="option_label">Not sure yet</span></label>
-      </div>
     </div>
 
     <button type="submit" class="submit_btn">
@@ -475,22 +437,17 @@
   document.getElementById('ea_form').addEventListener('submit', async function(e) {
     e.preventDefault();
     const form = e.target;
-    const name  = form.elements['name'].value.trim();
     const email = form.elements['email'].value.trim();
-    if (!name || !email) {
-      (name ? form.elements['email'] : form.elements['name']).focus();
+    if (!email) {
+      form.elements['email'].focus();
       return;
     }
-
-    const role    = form.elements['role'].value || null;
-    const current = form.elements['current'].value || null;
-    const goals = Array.from(form.querySelectorAll('input[name="goal"]:checked')).map(n => n.value);
 
     const btn = form.querySelector('.submit_btn');
     btn.disabled = true;
     btn.querySelector('.btn_label').textContent = 'Saving…';
 
-    addToWaitlist({ name, email, role, current, goals }).catch(err => {
+    addToWaitlist({ email }).catch(err => {
       console.error('Waitlist insert failed:', err);
     });
 

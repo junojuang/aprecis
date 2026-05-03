@@ -1,12 +1,10 @@
 {
   "buildCommand": null,
   "outputDirectory": ".",
+  "cleanUrls": true,
+  "trailingSlash": false,
   "redirects": [
-    { "source": "/join.html", "destination": "/join", "permanent": true },
     { "source": "/landing", "destination": "/", "permanent": true },
     { "source": "/landing.html", "destination": "/", "permanent": true }
-  ],
-  "rewrites": [
-    { "source": "/join", "destination": "/join.html" }
   ]
 }

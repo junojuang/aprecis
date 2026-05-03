@@ -39,21 +39,24 @@
       font-display: swap;
     }
 
-    /* palette */
+    /* palette — locked to brand */
     :root {
       --paper:      #f7f4ef;
-      --paper_2:    #efeae1;
+      --paper_2:    #f1ece2;
+      --paper_3:    #ebe5d7;
       --ink:        #0f1117;
       --ink_2:      #2a2d36;
       --ink_soft:   #4a4e58;
       --muted:      #8a8f9a;
       --line:       rgba(15,17,23,0.08);
+      --line_2:     rgba(15,17,23,0.05);
       --teal:       #1a8a8a;
-      --teal_deep:  #0f3a3a;
+      --teal_deep:  #0e3434;
       --teal_ink:   #0a2a2a;
       --teal_mid:   #2db8b8;
       --teal_bright:#5fd4d4;
-      --teal_light: #e8f5f5;
+      --teal_pale:  #c8e8e8;
+      --teal_wash:  #e5f4f4;
       --amber:      #e8a020;
       --amber_soft: #fbf1dc;
       --card:       #ffffff;
@@ -67,38 +70,43 @@
       font-family: 'Satoshi', BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
       font-size: 16px;
       line-height: 1.5;
+      /* Premium tinted base — soft, omni-directional teal/amber wash. */
+      background-image:
+        radial-gradient(900px 600px at 8% 0%, rgba(26,138,138,0.07), transparent 60%),
+        radial-gradient(800px 600px at 96% 18%, rgba(232,160,32,0.05), transparent 65%),
+        radial-gradient(700px 500px at 50% 100%, rgba(26,138,138,0.05), transparent 60%);
+      background-attachment: fixed;
     }
     a { color: inherit; text-decoration: none; }
     img, svg { display: block; max-width: 100%; }
 
-    .wrap { width: 100%; max-width: 1180px; margin: 0 auto; padding: 0 28px; }
+    .wrap { width: 100%; max-width: 1140px; margin: 0 auto; padding: 0 28px; }
 
-    /* nav */
+    /* nav — slim, transparent, premium */
     .nav {
       position: sticky; top: 0; z-index: 20;
-      background: rgba(247, 244, 239, 0.82);
-      -webkit-backdrop-filter: saturate(160%) blur(10px);
-      backdrop-filter: saturate(160%) blur(10px);
-      border-bottom: 1px solid var(--line);
+      background: rgba(247, 244, 239, 0.74);
+      -webkit-backdrop-filter: saturate(160%) blur(14px);
+      backdrop-filter: saturate(160%) blur(14px);
+      border-bottom: 1px solid var(--line_2);
     }
     .nav_inner {
       display: flex; align-items: center; justify-content: space-between;
-      height: 78px;
+      height: 72px;
     }
     .brand {
-      display: flex; align-items: center; gap: 14px;
+      display: flex; align-items: center; gap: 12px;
       font-family: 'EB Garamond', serif;
       font-weight: 500;
-      font-size: 30px;
-      letter-spacing: 0;
+      font-size: 28px;
     }
     .brand_mark {
-      width: 48px; height: 48px; border-radius: 11px;
+      width: 40px; height: 40px; border-radius: 10px;
       object-fit: cover;
-      box-shadow: 0 4px 14px rgba(15,17,23,0.16);
+      box-shadow: 0 4px 14px rgba(15,17,23,0.14);
     }
     .brand_word { color: var(--teal); }
-    .brand_dot { color: var(--ink); font-style: italic; margin-left: 0; }
+    .brand_dot { color: var(--ink); font-style: italic; }
     .nav_links {
       display: flex; align-items: center; gap: 28px;
       font-size: 14px;
@@ -107,65 +115,44 @@
     .nav_links a:hover { color: var(--ink); }
     .nav_cta {
       display: inline-flex; align-items: center; gap: 6px;
-      padding: 11px 18px;
+      padding: 10px 18px;
       background: var(--ink);
       color: var(--paper);
       border-radius: 999px;
       font-weight: 600;
       font-size: 13px;
       letter-spacing: 0.02em;
-      transition: transform .15s ease;
+      transition: transform .15s ease, background .15s ease;
     }
-    .nav_cta:hover { transform: translateY(-1px); }
+    .nav_cta:hover { transform: translateY(-1px); background: var(--teal_ink); }
     @media (max-width: 640px) {
       .nav_links .link_hide { display: none; }
-      .brand { font-size: 26px; gap: 10px; }
-      .brand_mark { width: 40px; height: 40px; border-radius: 9px; }
+      .brand { font-size: 24px; gap: 10px; }
+      .brand_mark { width: 36px; height: 36px; border-radius: 9px; }
     }
 
     /* hero */
     .hero {
-      padding: 80px 0 100px;
+      padding: 88px 0 96px;
       position: relative;
-      overflow: hidden;
-    }
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(600px 400px at 12% 18%, rgba(26,138,138,0.08), transparent 60%),
-        radial-gradient(500px 350px at 92% 75%, rgba(232,160,32,0.06), transparent 60%);
-      pointer-events: none;
     }
     .hero_grid {
-      position: relative;
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 56px;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 64px;
       align-items: center;
     }
-    /* Safari fix: grid items default to min-width: auto, which lets a child
-       with aspect-ratio inflate the column. min-width: 0 keeps each column
-       inside its track. */
     .hero_grid > * { min-width: 0; }
-    .hero_phone_col {
-      position: relative;
-      width: 300px;
-      max-width: 100%;
-      justify-self: center;
-    }
     @media (max-width: 900px) {
-      .hero { padding: 48px 0 72px; }
-      .hero_grid { grid-template-columns: 1fr; gap: 40px; }
-      .hero_phone_col { width: 260px; }
+      .hero { padding: 56px 0 64px; }
+      .hero_grid { grid-template-columns: 1fr; gap: 48px; }
     }
 
     .hero_logo {
-      width: 92px; height: 92px; border-radius: 22px;
+      width: 76px; height: 76px; border-radius: 18px;
       object-fit: cover;
-      box-shadow: 0 14px 40px rgba(15,17,23,0.18);
-      margin-bottom: 22px;
+      box-shadow: 0 12px 36px rgba(15,17,23,0.16);
+      margin-bottom: 24px;
     }
 
     .eyebrow {
@@ -187,9 +174,9 @@
     .headline {
       font-family: 'EB Garamond', serif;
       font-weight: 400;
-      font-size: clamp(44px, 6.4vw, 76px);
+      font-size: clamp(46px, 6.6vw, 78px);
       line-height: 1.04;
-      letter-spacing: -0.015em;
+      letter-spacing: -0.018em;
       color: var(--ink);
       margin: 0 0 26px;
     }
@@ -214,19 +201,21 @@
       font-size: 13px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      transition: transform .15s ease, box-shadow .15s ease;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
     }
     .btn:hover { transform: translateY(-1px); }
     .btn_primary {
       background: var(--teal);
       color: white;
-      box-shadow: 0 8px 22px rgba(26,138,138,0.25);
+      box-shadow: 0 10px 26px rgba(26,138,138,0.22);
     }
-    .btn_primary:hover { box-shadow: 0 10px 26px rgba(26,138,138,0.32); }
+    .btn_primary:hover { box-shadow: 0 12px 30px rgba(26,138,138,0.30); background: var(--teal_deep); }
     .btn_ghost {
-      background: transparent;
+      background: rgba(255,255,255,0.4);
       color: var(--ink);
-      border: 1px solid rgba(15,17,23,0.18);
+      border: 1px solid rgba(15,17,23,0.16);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
     }
     .btn_ghost:hover { background: white; }
     .btn .arrow { transition: transform .15s ease; }
@@ -240,79 +229,49 @@
     }
     .sub_stats .dot { color: var(--teal); margin-right: 6px; }
 
-    /* phone frame
-       Explicit width/height (no aspect-ratio) avoids a Safari layout bug
-       where aspect-ratio in a grid item with align-items: center causes
-       width inflation from the row's stretched height. */
-    .phone {
+    /* hero diagram — bespoke SVG, app's visual vocabulary */
+    .hero_visual {
       position: relative;
-      width: 300px;
-      height: 612px;
-      max-width: 100%;
-      border-radius: 44px;
-      background: #0a0a0c;
-      padding: 10px;
+      padding: 28px 22px;
+      border-radius: 28px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.45) 100%);
+      border: 1px solid var(--line);
       box-shadow:
-        0 40px 80px rgba(15,17,23,0.22),
-        0 12px 30px rgba(15,17,23,0.14),
-        inset 0 0 0 1px rgba(255,255,255,0.04);
-      transform: rotate(-2deg);
-      transition: transform .5s ease;
+        0 30px 70px rgba(15,17,23,0.08),
+        0 12px 28px rgba(15,17,23,0.05),
+        inset 0 1px 0 rgba(255,255,255,0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
-    .phone:hover { transform: rotate(0deg); }
-    .phone_screen {
-      width: 100%; height: 100%;
-      border-radius: 34px;
-      overflow: hidden;
-      background: var(--teal_ink);
-    }
-    .phone_screen img {
-      width: 100%; height: 100%; object-fit: cover;
-      object-position: center top;
-    }
-    .phone::after {
+    .hero_visual::before {
       content: "";
       position: absolute;
-      top: 16px; left: 50%;
-      transform: translateX(-50%);
-      width: 96px; height: 28px;
-      border-radius: 18px;
-      background: #000;
-      z-index: 2;
+      inset: -1px;
+      border-radius: 29px;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(26,138,138,0.18), transparent 50%, rgba(232,160,32,0.10));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
     }
-    @media (max-width: 900px) {
-      .phone { width: 260px; height: 530px; transform: rotate(0deg); }
+    .hv_caption {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 16px;
     }
-
-    /* floating chips */
-    .float_card {
-      position: absolute;
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 12px 14px;
-      box-shadow: 0 12px 30px rgba(15,17,23,0.08);
-      font-size: 12px;
-    }
-    .float_card .fc_label {
-      font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--muted); font-weight: 600;
-      margin-bottom: 4px;
-    }
-    .float_card .fc_value {
-      font-family: 'EB Garamond', serif;
-      font-size: 20px; color: var(--ink);
-    }
-    .float_card.fc_1 { top: 8%; left: -28px; }
-    .float_card.fc_2 { bottom: 14%; right: -18px; }
-    .float_card.fc_2 .fc_value { color: var(--teal); }
-    @media (max-width: 900px) {
-      .float_card { display: none; }
+    .hv_caption::after {
+      content: ""; flex: 1; height: 1px; background: var(--line);
     }
 
     /* sections */
-    .section { padding: 96px 0; }
+    .section { padding: 96px 0; position: relative; }
     @media (max-width: 720px) { .section { padding: 64px 0; } }
+
     .section_label {
       display: flex; align-items: center; gap: 10px;
       font-size: 11px;
@@ -329,244 +288,184 @@
     .section_title {
       font-family: 'EB Garamond', serif;
       font-weight: 400;
-      font-size: clamp(32px, 4.4vw, 50px);
-      line-height: 1.1;
-      letter-spacing: -0.01em;
-      margin: 0 0 14px;
+      font-size: clamp(34px, 4.6vw, 52px);
+      line-height: 1.08;
+      letter-spacing: -0.012em;
+      margin: 0 0 16px;
       max-width: 720px;
     }
     .section_title em { font-style: italic; color: var(--teal); }
     .section_sub {
       font-family: 'EB Garamond', serif;
-      font-size: 18px;
+      font-size: 19px;
       color: var(--ink_soft);
-      max-width: 600px;
+      max-width: 620px;
       line-height: 1.55;
-      margin: 0 0 52px;
+      margin: 0 0 56px;
     }
 
-    /* empathy / why */
-    .empathy_grid {
+    /* WHY — single tinted band, no card grid */
+    .why {
+      background: var(--paper_2);
+      border-top: 1px solid var(--line_2);
+      border-bottom: 1px solid var(--line_2);
+    }
+    .why_grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 64px;
+      align-items: start;
     }
-    @media (max-width: 900px) { .empathy_grid { grid-template-columns: 1fr; } }
-
-    .empathy_card {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 28px;
-      transition: transform .2s ease, box-shadow .2s ease;
+    .why_grid > * { min-width: 0; }
+    @media (max-width: 900px) {
+      .why_grid { grid-template-columns: 1fr; gap: 36px; }
     }
-    .empathy_card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 16px 40px rgba(15,17,23,0.08);
+    .why_lines {
+      display: flex; flex-direction: column;
     }
-    .empathy_before {
-      font-size: 12px;
-      letter-spacing: 0.1em;
+    .why_line {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      column-gap: 32px;
+      align-items: baseline;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .why_line:first-child { padding-top: 0; }
+    .why_line:last-child { border-bottom: 0; padding-bottom: 0; }
+    .why_strike {
+      font-family: 'Satoshi', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 8px;
+      text-decoration: line-through;
+      text-decoration-color: rgba(138,143,154,0.45);
+      text-decoration-thickness: 1px;
+      text-align: right;
+      white-space: nowrap;
     }
-    .empathy_before s { color: rgba(138,143,154,0.6); }
-    .empathy_after {
+    .why_after {
       font-family: 'EB Garamond', serif;
-      font-size: 24px;
-      line-height: 1.25;
-      color: var(--ink);
-      margin-bottom: 14px;
-    }
-    .empathy_after em { font-style: italic; color: var(--teal); }
-    .empathy_body {
-      font-family: 'EB Garamond', serif;
-      font-size: 16px;
-      line-height: 1.55;
-      color: var(--ink_soft);
-    }
-
-    /* how it works (dark teal strip) */
-    .howto {
-      background: var(--teal_ink);
-      color: #e4e8eb;
-      border-radius: 32px;
-      padding: 80px 44px;
-      margin: 0 16px;
-      position: relative;
-      overflow: hidden;
-    }
-    @media (max-width: 720px) {
-      .howto { padding: 52px 24px; border-radius: 22px; margin: 0; }
-    }
-    .howto::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(500px 320px at 8% 10%, rgba(95,212,212,0.12), transparent 60%),
-        radial-gradient(400px 280px at 90% 86%, rgba(232,160,32,0.06), transparent 60%);
-      pointer-events: none;
-    }
-    .howto .section_label { color: rgba(255,255,255,0.6); }
-    .howto .section_label::after { background: rgba(255,255,255,0.1); }
-    .howto .section_title { color: white; }
-    .howto .section_title em { color: var(--teal_bright); }
-    .howto .section_sub { color: rgba(255,255,255,0.72); }
-
-    .step_row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 28px;
-      margin-top: 14px;
-    }
-    .step_row > * { min-width: 0; }
-    @media (max-width: 900px) {
-      .step_row { grid-template-columns: repeat(2, 1fr); gap: 32px 18px; }
-    }
-    @media (max-width: 520px) {
-      .step_row { grid-template-columns: 1fr 1fr; }
-    }
-    .step {
-      display: flex; flex-direction: column; align-items: stretch;
-      gap: 14px;
-    }
-    .step_phone {
-      width: 100%;
-      aspect-ratio: 210 / 428;
-      border-radius: 26px;
-      overflow: hidden;
-      background: #111;
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 18px 42px rgba(0,0,0,0.35);
-      transition: transform .25s ease;
-    }
-    .step_phone:hover { transform: translateY(-4px); }
-    .step_phone img {
-      width: 100%; height: 100%; object-fit: cover; object-position: center top;
-    }
-    .step_num {
-      font-family: 'EB Garamond', serif;
-      font-size: 32px;
-      font-weight: 400;
-      color: var(--teal_bright);
-      font-style: italic;
-      line-height: 1;
-    }
-    .step_title {
-      font-family: 'EB Garamond', serif;
-      font-size: 20px;
-      color: white;
-      margin: 0;
-      line-height: 1.2;
-    }
-    .step_body {
-      font-size: 13px;
-      color: rgba(255,255,255,0.65);
-      line-height: 1.5;
-    }
-
-    /* features */
-    .features {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-    }
-    @media (max-width: 900px) { .features { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 520px) { .features { grid-template-columns: 1fr; } }
-    .feature {
-      padding: 24px;
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-    }
-    .feat_icon {
-      width: 36px; height: 36px; border-radius: 10px;
-      display: grid; place-items: center;
-      margin-bottom: 14px;
-      font-size: 18px;
-    }
-    .feat_icon.teal { background: var(--teal_light); color: var(--teal); }
-    .feat_icon.amber { background: var(--amber_soft); color: var(--amber); }
-    .feat_title {
-      font-family: 'EB Garamond', serif;
-      font-size: 20px;
-      margin: 0 0 6px;
-      color: var(--ink);
-    }
-    .feat_body {
-      font-size: 14px;
-      line-height: 1.5;
-      color: var(--ink_soft);
-    }
-
-    /* pull quote */
-    .pull {
-      text-align: center;
-      padding: 72px 24px;
-    }
-    .pull_text {
-      font-family: 'EB Garamond', serif;
-      font-style: italic;
-      font-size: clamp(22px, 3vw, 30px);
+      font-size: clamp(20px, 2vw, 24px);
       line-height: 1.35;
       color: var(--ink);
-      max-width: 720px;
-      margin: 0 auto 18px;
+      margin: 0;
     }
-    .pull_text em { color: var(--teal); }
-    .pull_cite {
-      font-size: 12px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
+    .why_after em { font-style: italic; color: var(--teal); }
+    @media (max-width: 520px) {
+      .why_line { grid-template-columns: 1fr; row-gap: 8px; padding: 20px 0; }
+      .why_strike { text-align: left; }
     }
 
-    /* closing CTA */
+    /* HOW — bespoke diagram cards, no phone screenshots */
+    .unfold_grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 22px;
+    }
+    .unfold_grid > * { min-width: 0; }
+    @media (max-width: 900px) {
+      .unfold_grid { grid-template-columns: repeat(2, 1fr); gap: 22px; }
+    }
+    @media (max-width: 520px) {
+      .unfold_grid { grid-template-columns: 1fr; }
+    }
+
+    .unfold_card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 22px;
+      display: flex; flex-direction: column;
+      box-shadow: 0 12px 30px rgba(15,17,23,0.04);
+      transition: transform .25s ease, box-shadow .25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .unfold_card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, transparent, var(--teal_pale), transparent);
+      opacity: 0.7;
+    }
+    .unfold_card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 22px 50px rgba(15,17,23,0.08);
+    }
+    .uc_diagram {
+      height: 144px;
+      background: var(--teal_wash);
+      border-radius: 14px;
+      display: grid; place-items: center;
+      margin-bottom: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+    .uc_diagram svg { width: 100%; height: 100%; }
+    .uc_num {
+      font-family: 'EB Garamond', serif;
+      font-size: 14px;
+      font-style: italic;
+      color: var(--teal);
+      margin-bottom: 6px;
+    }
+    .uc_title {
+      font-family: 'EB Garamond', serif;
+      font-size: 22px;
+      color: var(--ink);
+      margin: 0 0 8px;
+      line-height: 1.2;
+    }
+    .uc_body {
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: var(--ink_soft);
+    }
+
+    /* CLOSING — premium dark teal with rich tint */
     .closing { padding: 96px 0 120px; }
     .closing_card {
-      background: var(--teal_ink);
+      background:
+        radial-gradient(700px 460px at 18% -10%, rgba(95,212,212,0.22), transparent 60%),
+        radial-gradient(500px 340px at 88% 110%, rgba(232,160,32,0.10), transparent 60%),
+        var(--teal_ink);
       border-radius: 28px;
-      padding: 72px 56px;
+      padding: 80px 56px;
       color: white;
       position: relative;
       overflow: hidden;
       text-align: center;
-    }
-    .closing_card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(500px 340px at 18% 0%, rgba(95,212,212,0.16), transparent 60%),
-        radial-gradient(400px 280px at 80% 100%, rgba(232,160,32,0.08), transparent 60%);
-      pointer-events: none;
+      box-shadow: 0 30px 70px rgba(10,42,42,0.28);
     }
     @media (max-width: 720px) {
-      .closing_card { padding: 48px 24px; border-radius: 20px; }
+      .closing_card { padding: 52px 24px; border-radius: 22px; }
     }
     .closing h2 {
       font-family: 'EB Garamond', serif;
       font-weight: 400;
-      font-size: clamp(30px, 4.4vw, 46px);
+      font-size: clamp(32px, 4.6vw, 50px);
       line-height: 1.15;
-      margin: 0 0 14px;
+      letter-spacing: -0.012em;
+      margin: 0 0 16px;
     }
     .closing h2 em { font-style: italic; color: var(--teal_bright); }
     .closing p {
       font-family: 'EB Garamond', serif;
-      font-size: 17px;
+      font-size: 18px;
       color: rgba(255,255,255,0.78);
       max-width: 480px;
-      margin: 0 auto 30px;
+      margin: 0 auto 32px;
       line-height: 1.55;
     }
     .closing .btn_primary {
       background: var(--teal_bright);
       color: var(--teal_ink);
-      box-shadow: 0 10px 26px rgba(95,212,212,0.18);
+      box-shadow: 0 12px 30px rgba(95,212,212,0.22);
     }
+    .closing .btn_primary:hover { background: white; }
 
     /* footer */
     footer {
@@ -599,14 +498,299 @@
     }
     .social_link:hover { transform: translateY(-2px); color: var(--teal); }
 
-    /* ornament */
-    .ornament {
-      display: flex; align-items: center; gap: 10px;
-      margin: 0 auto 22px;
-      max-width: 240px;
+    /* ---------- GLOSSARY HIGHLIGHT (matches iOS dlGlossarise) ---------- */
+    /* iOS rule: teal + semibold, NO underline. Underlines read as
+       hyperlinks-to-elsewhere; bold teal reads as in-place emphasis. */
+    .gloss {
+      color: #0f5a5a;
+      font-weight: 600;
+      font-style: normal;
+      cursor: pointer;
+      transition: color .15s ease;
     }
-    .ornament .r { flex: 1; height: 1px; background: var(--line); }
-    .ornament .d { width: 5px; height: 5px; border-radius: 50%; background: var(--teal); }
+    .gloss:hover { color: #1a8a8a; }
+
+    /* ---------- LIVE PREVIEW (interactive iOS prototype, GPT-3 few-shot) ---------- */
+    :root {
+      --gpt_paper: #f4ece0;
+      --gpt_edge:  #e2d8c6;
+      --gpt_correct: #1f7a4d;
+      --gpt_wrong:   #b6502a;
+    }
+    .gloss_demo { padding-top: 88px; padding-bottom: 88px; }
+    .gd_grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .gd_grid > * { min-width: 0; }
+    @media (max-width: 900px) {
+      .gd_grid { grid-template-columns: 1fr; gap: 40px; }
+    }
+    .gd_intro .section_label { margin-bottom: 18px; }
+    .gd_intro .section_title { margin-bottom: 18px; }
+    .gd_intro .section_sub { margin-bottom: 24px; }
+    .gd_paper_meta {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 8px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.5);
+    }
+    .gd_paper_meta strong { color: var(--ink_2); font-weight: 600; letter-spacing: 0.05em; text-transform: none; font-size: 13px; }
+    .gd_hint {
+      margin-top: 18px;
+      font-family: 'EB Garamond', serif;
+      font-size: 14px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .gd_phone_col {
+      display: flex; justify-content: center;
+      position: relative;
+    }
+    .gd_phone {
+      position: relative;
+      width: 340px;
+      height: 700px;
+      max-width: 100%;
+      border-radius: 48px;
+      background: #0a0a0c;
+      padding: 10px;
+      box-shadow:
+        0 40px 80px rgba(15,17,23,0.22),
+        0 12px 30px rgba(15,17,23,0.14),
+        inset 0 0 0 1px rgba(255,255,255,0.04);
+    }
+    .gd_phone::after {
+      content: "";
+      position: absolute;
+      top: 18px; left: 50%;
+      transform: translateX(-50%);
+      width: 110px; height: 30px;
+      border-radius: 18px;
+      background: #000;
+      z-index: 4;
+    }
+    .gd_screen {
+      width: 100%; height: 100%;
+      border-radius: 38px;
+      overflow: hidden;
+      background: var(--paper);
+      position: relative;
+      display: flex; flex-direction: column;
+    }
+    .gd_status { height: 52px; flex: 0 0 auto; }
+    .gd_proto {
+      flex: 1 1 auto;
+      padding: 6px 22px 22px;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    .gd_proto::-webkit-scrollbar { width: 0; }
+
+    .pt_eyebrow {
+      font-family: 'Satoshi', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+    .pt_title {
+      font-family: 'EB Garamond', serif;
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.18;
+      color: var(--ink);
+      margin: 0 0 8px;
+      letter-spacing: -0.01em;
+    }
+    .pt_title em { font-style: italic; color: var(--teal); }
+    .pt_sub {
+      font-family: 'EB Garamond', serif;
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: var(--muted);
+      margin: 0 0 16px;
+    }
+
+    .pt_panel {
+      background: var(--gpt_paper);
+      border: 1px solid var(--gpt_edge);
+      border-radius: 14px;
+      padding: 14px 14px 12px;
+      margin-bottom: 14px;
+      font-family: 'SF Mono', Menlo, ui-monospace, monospace;
+    }
+    .pt_panel_head {
+      display: flex; align-items: center; gap: 6px;
+      margin-bottom: 8px;
+    }
+    .pt_dot { width: 7px; height: 7px; border-radius: 50%; }
+    .pt_dot.r { background: rgba(182,80,42,0.65); }
+    .pt_dot.y { background: #d4b04c; }
+    .pt_dot.g { background: rgba(31,122,77,0.65); }
+    .pt_panel_label {
+      margin-left: auto;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      color: var(--ink_soft);
+    }
+    .pt_instr {
+      font-size: 12px;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .pt_line {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.7;
+      display: flex; gap: 6px;
+    }
+    .pt_line.is_query { color: var(--ink); }
+    .pt_line .pt_value { color: var(--muted); }
+    .pt_line.is_query .pt_value {
+      color: var(--teal_deep);
+      font-weight: 600;
+    }
+    .pt_caret {
+      display: inline-block; width: 7px; height: 14px;
+      background: var(--teal_deep); vertical-align: -2px;
+      animation: caret 1s steps(2) infinite;
+    }
+    @keyframes caret { 50% { opacity: 0; } }
+
+    .pt_seg {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .pt_seg button {
+      border: 1px solid var(--gpt_edge);
+      background: white;
+      color: rgba(15,17,23,0.75);
+      font-family: 'Satoshi', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 10px 6px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background .18s ease, color .18s ease, transform .15s ease, border-color .18s ease;
+    }
+    .pt_seg button:hover { transform: translateY(-1px); }
+    .pt_seg button.is_active {
+      background: var(--teal);
+      color: white;
+      border-color: var(--teal);
+      font-weight: 600;
+    }
+    .pt_caption {
+      font-family: 'EB Garamond', serif;
+      font-size: 12px;
+      font-style: italic;
+      color: var(--muted);
+      margin-bottom: 16px;
+      min-height: 18px;
+    }
+
+    .pt_acc_head {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .pt_acc_label {
+      font-family: 'Satoshi', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: rgba(26,138,138,0.85);
+    }
+    .pt_acc_value {
+      font-family: 'EB Garamond', serif;
+      font-size: 14px;
+      color: var(--ink);
+    }
+    .pt_acc_track {
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(26,138,138,0.12);
+      overflow: hidden;
+    }
+    .pt_acc_fill {
+      height: 100%;
+      background: linear-gradient(90deg, rgba(26,138,138,0.7), var(--teal));
+      border-radius: 999px;
+      transition: width .55s cubic-bezier(.22,.9,.35,1);
+    }
+    .pt_verdict {
+      font-family: 'EB Garamond', serif;
+      font-size: 12.5px;
+      line-height: 1.5;
+      margin: 12px 0 4px;
+      transition: color .25s ease;
+    }
+    .pt_verdict.ok    { color: var(--gpt_correct); }
+    .pt_verdict.bad   { color: var(--gpt_wrong); }
+
+    /* ---------- BESPOKE DIAGRAM ANIMATIONS ---------- */
+    @keyframes shimmer {
+      0%, 100% { opacity: 0.55; }
+      50% { opacity: 1; }
+    }
+    @keyframes flow_pulse {
+      0% { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: -16; }
+    }
+    @keyframes orbit {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    .orbit_group { transform-origin: center; animation: orbit 22s linear infinite; }
+    .pulse_dot { animation: shimmer 2.4s ease-in-out infinite; }
+    .flow_line { stroke-dasharray: 4 6; animation: flow_pulse 1.4s linear infinite; }
+
+    /* hero deck: each card breathes on its own phase */
+    @keyframes float_a { 0%,100% { transform: translate(0,0); } 50% { transform: translate(0,-4px); } }
+    @keyframes float_b { 0%,100% { transform: translate(0,0); } 50% { transform: translate(0,-6px); } }
+    @keyframes float_c { 0%,100% { transform: translate(0,0); } 50% { transform: translate(0,-3px); } }
+    .hv_card_back   { transform-origin: center; animation: float_a 6.5s ease-in-out infinite; }
+    .hv_card_middle { transform-origin: center; animation: float_b 5.2s ease-in-out -1.8s infinite; }
+    .hv_card_front  { transform-origin: center; animation: float_c 7.4s ease-in-out -0.9s infinite; }
+
+    /* drifting ambient teal particles around the deck */
+    @keyframes drift {
+      0%   { transform: translate(0,0); opacity: 0.0; }
+      30%  { opacity: 0.55; }
+      100% { transform: translate(-12px,-22px); opacity: 0; }
+    }
+    .hv_particle { transform-origin: center; animation: drift 5s ease-in-out infinite; }
+    .hv_particle.p2 { animation-delay: -1.6s; }
+    .hv_particle.p3 { animation-delay: -3.2s; }
+
+    /* highlighter sweep on abstract band */
+    @keyframes hl_sweep {
+      0%   { transform: scaleX(0); }
+      40%  { transform: scaleX(1); }
+      100% { transform: scaleX(1); }
+    }
+    .hv_hl_band { transform-origin: left center; animation: hl_sweep 2.4s ease-out 0.4s both; }
+
+    /* equation gentle pulse */
+    @keyframes eq_pulse {
+      0%,100% { opacity: 0.85; }
+      50% { opacity: 1; }
+    }
+    .hv_eq_glow { animation: eq_pulse 3.4s ease-in-out infinite; }
   </style>
 </head>
 <body>
@@ -630,148 +814,466 @@
 <section class="hero">
   <div class="wrap hero_grid">
     <div>
-      <img class="hero_logo" src="./assets/aprecis_app_icon.svg" alt="Aprecis logo" />
       <div class="eyebrow">A gentler way to read AI research</div>
       <h1 class="headline">
         Read the papers,<br />
         <span class="hl">five minutes</span> at a time.
       </h1>
       <p class="lede">
-        Aprecis turns fresh AI research into <em>swipeable</em> card decks. No jargon wall. No 40 page PDF. Just one clean idea a day, designed for the people who always wanted to understand the paper but couldn't bring themselves to open it.
+        Fresh AI research, made <em>swipeable</em>. Tap any <span class="gloss">term</span> to learn it on the spot.
       </p>
       <div class="btn_row">
         <a href="/join" class="btn btn_primary">Get early access <span class="arrow">→</span></a>
         <a href="#how" class="btn btn_ghost">See how it works</a>
       </div>
-      <div class="sub_stats">
-        <span><span class="dot">●</span>6 cards per paper</span>
-        <span><span class="dot">●</span>~5 min each</span>
-        <span><span class="dot">●</span>Free while in beta</span>
-      </div>
     </div>
 
-    <div class="hero_phone_col">
-      <div class="phone" aria-label="Aprecis lesson cover screen">
-        <div class="phone_screen">
-          <img src="./assets/screens/cover.jpg" alt="Today's lesson cover" />
+    <!-- HERO BESPOKE DIAGRAM: paper unfolding into a deck of cards -->
+    <div class="hero_visual" aria-hidden="true">
+      <div class="hv_caption">a paper, unfolded</div>
+
+      <svg viewBox="0 0 460 360" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="paperGrad" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0" stop-color="#ffffff"/>
+            <stop offset="1" stop-color="#f1ece2"/>
+          </linearGradient>
+          <linearGradient id="cardGrad" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0" stop-color="#ffffff"/>
+            <stop offset="1" stop-color="#e5f4f4"/>
+          </linearGradient>
+          <linearGradient id="tealCard" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0" stop-color="#1a8a8a"/>
+            <stop offset="1" stop-color="#0e3434"/>
+          </linearGradient>
+          <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#0a2a2a" flood-opacity="0.10"/>
+          </filter>
+          <filter id="deckGlow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="14" result="blur"/>
+            <feColorMatrix in="blur" type="matrix"
+              values="0 0 0 0 0.10
+                      0 0 0 0 0.55
+                      0 0 0 0 0.55
+                      0 0 0 0.5 0"/>
+          </filter>
+          <radialGradient id="deckHalo" cx="0.5" cy="0.55" r="0.55">
+            <stop offset="0" stop-color="#1a8a8a" stop-opacity="0.16"/>
+            <stop offset="1" stop-color="#1a8a8a" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <!-- soft halo underneath the deck -->
+        <ellipse cx="335" cy="200" rx="135" ry="120" fill="url(#deckHalo)"/>
+
+        <!-- LEFT: paper -->
+        <g filter="url(#softShadow)">
+          <rect x="20" y="44" width="150" height="200" rx="8" fill="url(#paperGrad)" stroke="rgba(15,17,23,0.08)"/>
+
+          <!-- top eyebrow + title -->
+          <text x="34" y="60" font-family="Satoshi, sans-serif" font-size="6" fill="#1a8a8a" letter-spacing="1.6" font-weight="700">PREPRINT · 6 H AGO</text>
+          <rect x="34" y="68" width="100" height="6" rx="2" fill="#0f1117" opacity="0.82"/>
+          <rect x="34" y="80" width="76" height="4" rx="2" fill="#0f1117" opacity="0.44"/>
+          <!-- author line -->
+          <rect x="34" y="92" width="60" height="3" rx="1.5" fill="#1a8a8a" opacity="0.65"/>
+
+          <!-- ABSTRACT label -->
+          <text x="34" y="110" font-family="Satoshi, sans-serif" font-size="6" fill="#8a8f9a" letter-spacing="1.4" font-weight="700">ABSTRACT</text>
+
+          <!-- abstract paragraph with one highlighted line -->
+          <g fill="#0f1117" opacity="0.18">
+            <rect x="34" y="116" width="122" height="3" rx="1.5"/>
+            <rect x="34" y="124" width="118" height="3" rx="1.5"/>
+          </g>
+          <!-- yellow highlight band, animated sweep -->
+          <rect class="hv_hl_band" x="34" y="131" width="110" height="7" rx="2" fill="#fde7a4" opacity="0.85"/>
+          <rect x="34" y="132" width="110" height="3" rx="1.5" fill="#0f1117" opacity="0.55"/>
+          <g fill="#0f1117" opacity="0.18">
+            <rect x="34" y="142" width="124" height="3" rx="1.5"/>
+            <rect x="34" y="150" width="80" height="3" rx="1.5"/>
+          </g>
+
+          <!-- FIG 1 + equation block -->
+          <text x="34" y="168" font-family="Satoshi, sans-serif" font-size="6" fill="#8a8f9a" letter-spacing="1.4" font-weight="700">FIG 1 · ATTENTION</text>
+          <g class="hv_eq_glow">
+            <rect x="34" y="172" width="122" height="26" rx="3" fill="#0f1117" opacity="0.05"/>
+            <!-- mini Q · K dots -->
+            <circle cx="48" cy="185" r="2.4" fill="#1a8a8a"/>
+            <circle cx="58" cy="185" r="2.4" fill="#1a8a8a" opacity="0.65"/>
+            <circle cx="68" cy="185" r="2.4" fill="#1a8a8a" opacity="0.4"/>
+            <text x="80" y="189" font-family="EB Garamond, serif" font-style="italic" font-size="12" fill="#0f1117" opacity="0.6">softmax(QKᵀ)V</text>
+          </g>
+
+          <!-- footnote rows -->
+          <g fill="#0f1117" opacity="0.18">
+            <rect x="34" y="208" width="120" height="3" rx="1.5"/>
+            <rect x="34" y="216" width="116" height="3" rx="1.5"/>
+            <rect x="34" y="224" width="84" height="3" rx="1.5"/>
+          </g>
+          <!-- corner label -->
+          <text x="34" y="240" font-family="Satoshi, sans-serif" font-size="7" fill="#8a8f9a" letter-spacing="1.4">arXiv:2511.04823</text>
+
+          <!-- dog-ear -->
+          <path d="M 156 234 L 170 234 L 170 248 Z" fill="#0f1117" opacity="0.06"/>
+          <path d="M 156 234 L 170 248 L 156 248 Z" fill="#ffffff"/>
+        </g>
+
+        <!-- ARROW PIPE: paper → cards, with trail dots + label -->
+        <g>
+          <!-- soft trail dots -->
+          <circle cx="184" cy="150" r="1.6" fill="#1a8a8a" opacity="0.35"/>
+          <circle cx="194" cy="160" r="1.6" fill="#1a8a8a" opacity="0.55"/>
+          <circle cx="204" cy="170" r="1.6" fill="#1a8a8a" opacity="0.75"/>
+          <path d="M 178 145 C 204 150, 204 180, 224 184" stroke="#1a8a8a" stroke-width="1.6" fill="none" class="flow_line" stroke-linecap="round"/>
+          <circle cx="224" cy="184" r="3" fill="#1a8a8a"/>
+          <circle cx="224" cy="184" r="6" fill="#1a8a8a" opacity="0.18" class="pulse_dot"/>
+          <text x="200" y="138" font-family="EB Garamond, serif" font-style="italic" font-size="10" fill="#1a8a8a" opacity="0.85">6 cards</text>
+        </g>
+
+        <!-- RIGHT: card deck (fanned), each card on its own breathe phase -->
+        <g transform="translate(260,40)">
+
+          <!-- BACK card: bespoke flow-diagram glimpse -->
+          <g class="hv_card_back" transform="translate(40,16)">
+            <g filter="url(#softShadow)" transform="rotate(8 70 110)">
+              <rect width="140" height="208" rx="14" fill="url(#cardGrad)" stroke="rgba(15,17,23,0.08)"/>
+              <text x="14" y="22" font-family="Satoshi, sans-serif" font-size="7" fill="#1a8a8a" letter-spacing="1.6" font-weight="700">DIAGRAM · 04 / 06</text>
+              <rect x="14" y="32" width="92" height="8" rx="2" fill="#0f1117" opacity="0.7"/>
+              <!-- mini flow nodes (matches app's FlowDiagram look) -->
+              <g transform="translate(14,52)">
+                <rect width="112" height="22" rx="6" fill="#e5f4f4"/>
+                <rect width="3" height="14" x="6" y="4" fill="#1a8a8a"/>
+                <rect width="60" height="3" x="14" y="9" rx="1.5" fill="#0f1117" opacity="0.6"/>
+                <rect width="40" height="2.5" x="14" y="15" rx="1.25" fill="#0f1117" opacity="0.3"/>
+              </g>
+              <g transform="translate(14,80)">
+                <rect width="112" height="22" rx="6" fill="#e5f4f4"/>
+                <rect width="3" height="14" x="6" y="4" fill="#1a8a8a"/>
+                <rect width="68" height="3" x="14" y="9" rx="1.5" fill="#0f1117" opacity="0.6"/>
+                <rect width="36" height="2.5" x="14" y="15" rx="1.25" fill="#0f1117" opacity="0.3"/>
+              </g>
+              <g transform="translate(14,108)">
+                <rect width="112" height="22" rx="6" fill="#e5f4f4"/>
+                <rect width="3" height="14" x="6" y="4" fill="#1a8a8a"/>
+                <rect width="52" height="3" x="14" y="9" rx="1.5" fill="#0f1117" opacity="0.6"/>
+                <rect width="44" height="2.5" x="14" y="15" rx="1.25" fill="#0f1117" opacity="0.3"/>
+              </g>
+              <!-- chevrons between rows -->
+              <path d="M 70 76 L 73 79 L 76 76" stroke="#1a8a8a" stroke-width="1.2" fill="none"/>
+              <path d="M 70 104 L 73 107 L 76 104" stroke="#1a8a8a" stroke-width="1.2" fill="none"/>
+            </g>
+          </g>
+
+          <!-- MIDDLE teal CORE IDEA card -->
+          <g class="hv_card_middle" transform="translate(20,8)">
+            <g filter="url(#softShadow)" transform="rotate(-3 70 110)">
+              <rect width="140" height="220" rx="14" fill="url(#tealCard)"/>
+              <text x="14" y="32" font-family="Satoshi, sans-serif" font-size="8" fill="#5fd4d4" letter-spacing="1.6" font-weight="700">CORE IDEA · 02 / 06</text>
+              <text x="14" y="64" font-family="EB Garamond, serif" font-style="italic" font-size="22" fill="white">Attention is</text>
+              <text x="14" y="88" font-family="EB Garamond, serif" font-style="italic" font-size="22" fill="white">just a</text>
+              <text x="14" y="112" font-family="EB Garamond, serif" font-style="italic" font-size="22" fill="#5fd4d4">weighted</text>
+              <text x="14" y="136" font-family="EB Garamond, serif" font-style="italic" font-size="22" fill="#5fd4d4">average.</text>
+
+              <!-- mini attention grid -->
+              <g transform="translate(14,158)">
+                <g>
+                  <rect width="14" height="14" rx="2" fill="#5fd4d4" opacity="0.18"/>
+                  <rect x="16" width="14" height="14" rx="2" fill="#5fd4d4" opacity="0.42"/>
+                  <rect x="32" width="14" height="14" rx="2" fill="#5fd4d4" opacity="0.86"/>
+                  <rect x="48" width="14" height="14" rx="2" fill="#5fd4d4" opacity="0.32"/>
+                  <rect x="64" width="14" height="14" rx="2" fill="#5fd4d4" opacity="0.18"/>
+                  <rect x="80" width="14" height="14" rx="2" fill="#5fd4d4" opacity="0.55"/>
+                  <rect x="96" width="14" height="14" rx="2" fill="#5fd4d4" opacity="0.24"/>
+                </g>
+                <g transform="translate(0,16)">
+                  <rect width="14" height="14" rx="2" fill="#5fd4d4" opacity="0.32"/>
+                  <rect x="16" width="14" height="14" rx="2" fill="#5fd4d4" opacity="0.92"/>
+                  <rect x="32" width="14" height="14" rx="2" fill="#5fd4d4" opacity="0.42"/>
+                  <rect x="48" width="14" height="14" rx="2" fill="#5fd4d4" opacity="0.18"/>
+                  <rect x="64" width="14" height="14" rx="2" fill="#5fd4d4" opacity="0.66"/>
+                  <rect x="80" width="14" height="14" rx="2" fill="#5fd4d4" opacity="0.22"/>
+                  <rect x="96" width="14" height="14" rx="2" fill="#5fd4d4" opacity="0.46"/>
+                </g>
+              </g>
+
+              <!-- pagination dots, bottom right -->
+              <g transform="translate(86,210)">
+                <circle cx="0" cy="0" r="2" fill="#5fd4d4"/>
+                <circle cx="8" cy="0" r="2" fill="#5fd4d4"/>
+                <circle cx="16" cy="0" r="2" fill="white" opacity="0.5"/>
+                <circle cx="24" cy="0" r="2" fill="white" opacity="0.3"/>
+                <circle cx="32" cy="0" r="2" fill="white" opacity="0.3"/>
+                <circle cx="40" cy="0" r="2" fill="white" opacity="0.3"/>
+              </g>
+            </g>
+          </g>
+
+          <!-- FRONT HOOK card -->
+          <g class="hv_card_front" transform="translate(0,30)">
+            <g filter="url(#softShadow)" transform="rotate(-12 70 110)">
+              <rect width="138" height="204" rx="14" fill="url(#cardGrad)" stroke="rgba(15,17,23,0.08)"/>
+
+              <!-- HOOK eyebrow + 5min amber pill -->
+              <text x="14" y="26" font-family="Satoshi, sans-serif" font-size="7" fill="#1a8a8a" letter-spacing="1.6" font-weight="700">HOOK · 01 / 06</text>
+              <g transform="translate(94,16)">
+                <rect width="32" height="14" rx="7" fill="#fbf1dc"/>
+                <text x="16" y="10.5" text-anchor="middle" font-family="Satoshi, sans-serif" font-size="7" fill="#7a5310" font-weight="700" letter-spacing="0.6">5 MIN</text>
+              </g>
+
+              <text x="14" y="58" font-family="EB Garamond, serif" font-style="italic" font-size="18" fill="#0f1117">Why does a</text>
+              <text x="14" y="78" font-family="EB Garamond, serif" font-style="italic" font-size="18" fill="#0f1117">model know</text>
+              <text x="14" y="98" font-family="EB Garamond, serif" font-style="italic" font-size="18" fill="#1a8a8a">where to look?</text>
+              <!-- hand-drawn underline accent -->
+              <path d="M 14 104 C 38 109, 80 100, 122 105" stroke="#e8a020" stroke-width="1.6" fill="none" stroke-linecap="round" opacity="0.85"/>
+
+              <!-- pulsing dot indicator + body lines -->
+              <circle cx="20" cy="142" r="4" fill="#1a8a8a" class="pulse_dot"/>
+              <rect x="32" y="138" width="60" height="8" rx="3" fill="#0f1117" opacity="0.14"/>
+              <rect x="32" y="152" width="84" height="6" rx="3" fill="#0f1117" opacity="0.10"/>
+              <rect x="14" y="172" width="50" height="6" rx="3" fill="#0f1117" opacity="0.10"/>
+
+              <!-- 'tap to begin' cue -->
+              <text x="14" y="196" font-family="Satoshi, sans-serif" font-size="6" fill="#8a8f9a" letter-spacing="1.4" font-weight="700">SWIPE →</text>
+            </g>
+          </g>
+        </g>
+
+        <!-- AMBIENT particles drifting around the deck -->
+        <g>
+          <circle class="hv_particle"    cx="300" cy="60"  r="2" fill="#1a8a8a" opacity="0.55"/>
+          <circle class="hv_particle p2" cx="420" cy="120" r="1.6" fill="#1a8a8a" opacity="0.55"/>
+          <circle class="hv_particle p3" cx="380" cy="280" r="1.8" fill="#e8a020" opacity="0.55"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE PREVIEW — interactive iOS card prototype, GPT-3 few-shot paper (Card 04) -->
+<section class="section gloss_demo" id="preview">
+  <div class="wrap">
+    <div class="gd_grid">
+      <div class="gd_intro">
+        <div class="section_label">In-context learning</div>
+        <h2 class="section_title">Read a <em>real</em> card.</h2>
+        <p class="section_sub">Toggle the prompt mode and watch the answer, accuracy, and verdict shift in real time.</p>
+        <p class="gd_hint">Language Models are Few-Shot Learners · Brown et al., 2020</p>
+      </div>
+
+      <div class="gd_phone_col">
+        <div class="gd_phone" aria-label="GPT-3 few-shot interactive prototype">
+          <div class="gd_screen">
+            <div class="gd_status"></div>
+            <div class="gd_proto">
+              <div class="pt_eyebrow">CARD 04 · IN-CONTEXT LEARNING</div>
+              <h3 class="pt_title">Same model. <em>Different prompts.</em></h3>
+              <p class="pt_sub">GPT-3's weights never change here. Toggle the demos and watch the answer get sharper.</p>
+
+              <div class="pt_panel" id="pt_prompt">
+                <div class="pt_panel_head">
+                  <span class="pt_dot r"></span>
+                  <span class="pt_dot y"></span>
+                  <span class="pt_dot g"></span>
+                  <span class="pt_panel_label">PROMPT</span>
+                </div>
+                <div class="pt_instr">Translate English to French.</div>
+                <div id="pt_lines"></div>
+              </div>
+
+              <div class="pt_seg" role="tablist">
+                <button type="button" data-shot="zero" class="is_active">0 shot</button>
+                <button type="button" data-shot="one">1 shot</button>
+                <button type="button" data-shot="few">Few shot</button>
+              </div>
+
+              <div class="pt_caption" id="pt_caption">Just the instruction. No demos.</div>
+
+              <div class="pt_acc_head">
+                <span class="pt_acc_label">ACCURACY</span>
+                <span class="pt_acc_value" id="pt_acc_val">50%</span>
+              </div>
+              <div class="pt_acc_track"><div class="pt_acc_fill" id="pt_acc_fill" style="width:50%"></div></div>
+
+              <p class="pt_verdict bad" id="pt_verdict">Half right. Got the language. Added an article it shouldn't have.</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="float_card fc_1">
-        <div class="fc_label">You'll learn</div>
-        <div class="fc_value" style="font-size:14px; line-height:1.35;">Why models<br />fabricate facts</div>
-      </div>
-      <div class="float_card fc_2">
-        <div class="fc_label">Earned</div>
-        <div class="fc_value">+50 XP</div>
-      </div>
     </div>
   </div>
 </section>
 
-<!-- EMPATHY / WHY -->
-<section class="section" id="why">
+<!-- WHY -->
+<section class="section why" id="why">
   <div class="wrap">
-    <div class="section_label">Built for the overwhelmed</div>
-    <h2 class="section_title">Research shouldn't feel like <em>homework</em>.</h2>
-    <p class="section_sub">Most people who care about AI never read the actual papers. Not because they couldn't, but because it's late, they're tired, and page three is already drowning in math notation. Aprecis meets you where you are.</p>
+    <div class="why_grid">
+      <div>
+        <div class="section_label">Built for the overwhelmed</div>
+        <h2 class="section_title">Research shouldn't feel like <em>homework</em>.</h2>
+      </div>
 
-    <div class="empathy_grid">
-      <article class="empathy_card">
-        <div class="empathy_before"><s>Too technical</s> &nbsp;→</div>
-        <h3 class="empathy_after">Every idea in plain <em>English</em>.</h3>
-        <p class="empathy_body">Each card gets a clear pass, a working analogy, and a diagram. The math is still there if you want it, but you never have to fight for the intuition.</p>
-      </article>
-      <article class="empathy_card">
-        <div class="empathy_before"><s>40 page PDF</s> &nbsp;→</div>
-        <h3 class="empathy_after">Six cards, about <em>five minutes</em>.</h3>
-        <p class="empathy_body">Every paper becomes a deck: one hook, three core ideas, one interactive check, one takeaway. You finish. You actually finish.</p>
-      </article>
-      <article class="empathy_card">
-        <div class="empathy_before"><s>Doomscrolling</s> &nbsp;→</div>
-        <h3 class="empathy_after">Learn something <em>real</em> today.</h3>
-        <p class="empathy_body">Same swipe gesture, but you leave a little smarter. One paper a day, no feed pressure, no catching up guilt. Come back when you want.</p>
-      </article>
+      <div class="why_lines">
+        <div class="why_line">
+          <div class="why_strike">Too technical</div>
+          <p class="why_after">Plain <em>English</em>. Math on the side.</p>
+        </div>
+        <div class="why_line">
+          <div class="why_strike">40 page PDF</div>
+          <p class="why_after">Six cards. <em>Five minutes</em>.</p>
+        </div>
+        <div class="why_line">
+          <div class="why_strike">Doomscrolling</div>
+          <p class="why_after">Same swipe. <em>Better</em> reward.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
+<!-- HOW IT UNFOLDS — bespoke diagrams, app's visual vocabulary -->
 <section class="section" id="how">
   <div class="wrap">
-    <div class="howto">
-      <div class="section_label">How a lesson goes</div>
-      <h2 class="section_title">A paper, <em>unfolded</em>.</h2>
-      <p class="section_sub">Each deck is six short cards. Swipe through at your pace, pause, tap around, come back later. Nothing expires.</p>
+    <div class="section_label">How a lesson unfolds</div>
+    <h2 class="section_title">Six cards. One <em>idea</em>.</h2>
+    <p class="section_sub">Same arc, every paper. Same diagrams the app actually uses.</p>
 
-      <div class="step_row">
-        <div class="step">
-          <div class="step_phone"><img src="./assets/screens/hook.jpg" alt="The hook card" /></div>
-          <div class="step_num">01</div>
-          <h3 class="step_title">The hook</h3>
-          <p class="step_body">One question that makes you actually want the answer.</p>
+    <div class="unfold_grid">
+
+      <!-- 01 HOOK — pulsing question dot -->
+      <div class="unfold_card">
+        <div class="uc_diagram">
+          <svg viewBox="0 0 200 144" xmlns="http://www.w3.org/2000/svg">
+            <!-- soft halo rings -->
+            <circle cx="100" cy="72" r="46" fill="none" stroke="#1a8a8a" stroke-width="1" opacity="0.12"/>
+            <circle cx="100" cy="72" r="34" fill="none" stroke="#1a8a8a" stroke-width="1" opacity="0.18"/>
+            <circle cx="100" cy="72" r="22" fill="none" stroke="#1a8a8a" stroke-width="1" opacity="0.25"/>
+            <!-- center dot -->
+            <circle cx="100" cy="72" r="8" fill="#1a8a8a" class="pulse_dot"/>
+            <!-- italic ? glyph above -->
+            <text x="100" y="42" text-anchor="middle" font-family="EB Garamond, serif" font-style="italic" font-size="20" fill="#0e3434" opacity="0.6">why?</text>
+          </svg>
         </div>
-        <div class="step">
-          <div class="step_phone"><img src="./assets/screens/analogy.jpg" alt="Analogy card" /></div>
-          <div class="step_num">02</div>
-          <h3 class="step_title">The analogy</h3>
-          <p class="step_body">A mental model you already own. The paper's idea borrows it.</p>
-        </div>
-        <div class="step">
-          <div class="step_phone"><img src="./assets/screens/fill.jpg" alt="Fill the blanks card" /></div>
-          <div class="step_num">03</div>
-          <h3 class="step_title">Quick check</h3>
-          <p class="step_body">Tap a few chips. Tiny effort, huge retention boost.</p>
-        </div>
-        <div class="step">
-          <div class="step_phone"><img src="./assets/screens/mcq.jpg" alt="Multiple choice card" /></div>
-          <div class="step_num">04</div>
-          <h3 class="step_title">The takeaway</h3>
-          <p class="step_body">One sentence you can repeat at dinner. That's the point.</p>
-        </div>
+        <div class="uc_num">01</div>
+        <h3 class="uc_title">The hook</h3>
+        <p class="uc_body">A question worth answering.</p>
       </div>
-    </div>
-  </div>
-</section>
 
-<!-- PULL QUOTE -->
-<section class="pull">
-  <div class="wrap">
-    <div class="ornament"><span class="r"></span><span class="d"></span><span class="r"></span></div>
-    <p class="pull_text">
-      "I always felt like the <em>smart people</em> were reading papers while I was reading tweets about the papers. Aprecis is the first thing that actually closes that gap."
-    </p>
-    <p class="pull_cite">· an early tester, on why this matters</p>
-  </div>
-</section>
+      <!-- 02 ANALOGY — two parallel shapes mapping to each other -->
+      <div class="unfold_card">
+        <div class="uc_diagram">
+          <svg viewBox="0 0 200 144" xmlns="http://www.w3.org/2000/svg">
+            <!-- left: familiar (book) -->
+            <g transform="translate(28,30)">
+              <rect width="52" height="84" rx="6" fill="white" stroke="#1a8a8a" stroke-width="1.2"/>
+              <rect x="8" y="14" width="36" height="3" rx="1.5" fill="#0f1117" opacity="0.5"/>
+              <rect x="8" y="22" width="28" height="3" rx="1.5" fill="#0f1117" opacity="0.3"/>
+              <rect x="8" y="36" width="36" height="3" rx="1.5" fill="#0f1117" opacity="0.3"/>
+              <rect x="8" y="44" width="32" height="3" rx="1.5" fill="#0f1117" opacity="0.3"/>
+              <rect x="8" y="52" width="36" height="3" rx="1.5" fill="#0f1117" opacity="0.3"/>
+              <text x="26" y="78" text-anchor="middle" font-family="Satoshi, sans-serif" font-size="6" fill="#8a8f9a" letter-spacing="1">YOU KNOW</text>
+            </g>
+            <!-- mapping lines -->
+            <g stroke="#1a8a8a" stroke-width="1.2" fill="none" opacity="0.7">
+              <path d="M 84 50 C 100 50, 100 56, 116 56" class="flow_line"/>
+              <path d="M 84 76 C 100 76, 100 88, 116 88" class="flow_line" style="animation-delay:.4s"/>
+            </g>
+            <!-- right: paper concept (stacked layers) -->
+            <g transform="translate(116,32)">
+              <rect width="56" height="14" rx="3" fill="#1a8a8a" opacity="0.85"/>
+              <rect y="20" width="56" height="14" rx="3" fill="#1a8a8a" opacity="0.6"/>
+              <rect y="40" width="56" height="14" rx="3" fill="#1a8a8a" opacity="0.4"/>
+              <rect y="60" width="56" height="14" rx="3" fill="#1a8a8a" opacity="0.25"/>
+              <text x="28" y="92" text-anchor="middle" font-family="Satoshi, sans-serif" font-size="6" fill="#8a8f9a" letter-spacing="1">THE PAPER</text>
+            </g>
+          </svg>
+        </div>
+        <div class="uc_num">02</div>
+        <h3 class="uc_title">The analogy</h3>
+        <p class="uc_body">A mental model you already own.</p>
+      </div>
 
-<!-- FEATURES -->
-<section class="section" style="padding-top: 24px;">
-  <div class="wrap">
-    <div class="section_label">What's inside</div>
-    <h2 class="section_title">Small pieces, intentionally <em>designed</em>.</h2>
-    <p class="section_sub">Every element exists to make the hardest step, starting, easier. Nothing more.</p>
+      <!-- 03 VISUAL — mini attention heatmap -->
+      <div class="unfold_card">
+        <div class="uc_diagram">
+          <svg viewBox="0 0 200 144" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(34,22)">
+              <!-- 6x6 heatmap -->
+              <g>
+                <!-- row 1 -->
+                <rect x="0" y="0" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.18"/>
+                <rect x="22" y="0" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.42"/>
+                <rect x="44" y="0" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.86"/>
+                <rect x="66" y="0" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.55"/>
+                <rect x="88" y="0" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.22"/>
+                <rect x="110" y="0" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.34"/>
+                <!-- row 2 -->
+                <rect x="0" y="16" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.32"/>
+                <rect x="22" y="16" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.92"/>
+                <rect x="44" y="16" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.42"/>
+                <rect x="66" y="16" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.18"/>
+                <rect x="88" y="16" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.66"/>
+                <rect x="110" y="16" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.26"/>
+                <!-- row 3 -->
+                <rect x="0" y="32" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.62"/>
+                <rect x="22" y="32" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.22"/>
+                <rect x="44" y="32" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.38"/>
+                <rect x="66" y="32" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.78"/>
+                <rect x="88" y="32" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.46"/>
+                <rect x="110" y="32" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.18"/>
+                <!-- row 4 -->
+                <rect x="0" y="48" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.18"/>
+                <rect x="22" y="48" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.34"/>
+                <rect x="44" y="48" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.55"/>
+                <rect x="66" y="48" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.94"/>
+                <rect x="88" y="48" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.32"/>
+                <rect x="110" y="48" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.22"/>
+                <!-- row 5 -->
+                <rect x="0" y="64" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.42"/>
+                <rect x="22" y="64" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.18"/>
+                <rect x="44" y="64" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.66"/>
+                <rect x="66" y="64" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.34"/>
+                <rect x="88" y="64" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.82"/>
+                <rect x="110" y="64" width="20" height="14" rx="2" fill="#1a8a8a" opacity="0.42"/>
+              </g>
+              <!-- legend bar -->
+              <rect x="0" y="86" width="64" height="3" rx="1.5" fill="url(#legendGrad)"/>
+              <text x="68" y="89" font-family="Satoshi, sans-serif" font-size="6" fill="#8a8f9a">low → high</text>
+              <defs>
+                <linearGradient id="legendGrad" x1="0" x2="1" y1="0" y2="0">
+                  <stop offset="0" stop-color="#1a8a8a" stop-opacity="0.05"/>
+                  <stop offset="1" stop-color="#1a8a8a" stop-opacity="0.95"/>
+                </linearGradient>
+              </defs>
+            </g>
+          </svg>
+        </div>
+        <div class="uc_num">03</div>
+        <h3 class="uc_title">The visual</h3>
+        <p class="uc_body">Drawn fresh for the paper.</p>
+      </div>
 
-    <div class="features">
-      <article class="feature">
-        <div class="feat_icon teal">◷</div>
-        <h3 class="feat_title">Fresh daily</h3>
-        <p class="feat_body">New papers from arXiv, GitHub, and research labs. Scored, deduped, ready by morning.</p>
-      </article>
-      <article class="feature">
-        <div class="feat_icon teal">✎</div>
-        <h3 class="feat_title">Visual diagrams</h3>
-        <p class="feat_body">Every core concept gets a hand drawn schematic. Tap a node, read the piece, move on.</p>
-      </article>
-      <article class="feature">
-        <div class="feat_icon amber">✦</div>
-        <h3 class="feat_title">Gentle streaks</h3>
-        <p class="feat_body">XP and streaks that reward showing up, not grinding. Miss a day? Nothing breaks.</p>
-      </article>
-      <article class="feature">
-        <div class="feat_icon teal">◉</div>
-        <h3 class="feat_title">Your own pace</h3>
-        <p class="feat_body">Browse a library at your leisure. Every finished deck stays, with progress saved.</p>
-      </article>
+      <!-- 04 TAKEAWAY — orbit / gathered insight -->
+      <div class="unfold_card">
+        <div class="uc_diagram">
+          <svg viewBox="0 0 200 144" xmlns="http://www.w3.org/2000/svg">
+            <!-- orbit ring -->
+            <g class="orbit_group" style="transform-origin: 100px 72px;">
+              <circle cx="100" cy="72" r="44" fill="none" stroke="#1a8a8a" stroke-width="1" stroke-dasharray="2 4" opacity="0.4"/>
+              <circle cx="144" cy="72" r="3" fill="#1a8a8a"/>
+              <circle cx="100" cy="28" r="3" fill="#e8a020"/>
+              <circle cx="56" cy="72" r="3" fill="#1a8a8a" opacity="0.7"/>
+              <circle cx="100" cy="116" r="3" fill="#1a8a8a" opacity="0.7"/>
+            </g>
+            <!-- center sealed insight -->
+            <circle cx="100" cy="72" r="18" fill="#0e3434"/>
+            <text x="100" y="76" text-anchor="middle" font-family="EB Garamond, serif" font-style="italic" font-size="14" fill="#5fd4d4">a.</text>
+          </svg>
+        </div>
+        <div class="uc_num">04</div>
+        <h3 class="uc_title">The takeaway</h3>
+        <p class="uc_body">One sentence to repeat at dinner.</p>
+      </div>
+
     </div>
   </div>
 </section>
@@ -781,7 +1283,7 @@
   <div class="wrap">
     <div class="closing_card">
       <h2>Tomorrow's paper, <em>five minutes</em> from now.</h2>
-      <p>We're rolling out the first batch of early access. Grab a spot and you'll get the iOS TestFlight link when the beta opens.</p>
+      <p>Grab a spot. TestFlight link lands the day beta opens.</p>
       <a href="/join" class="btn btn_primary">Get early access <span class="arrow">→</span></a>
     </div>
   </div>
@@ -816,6 +1318,110 @@
     </div>
   </div>
 </footer>
+
+<script>
+  // Live preview, GPT-3 few-shot Card 04 (port of GPT3PromptShotsView.swift)
+  (function () {
+    const scenes = {
+      zero: {
+        lines: [{ p: "cat →", v: "?", q: true }],
+        answer: "le chat",
+        accuracy: 50,
+        caption: "Just the instruction. No demos.",
+        verdict: "Half right. Got the language. Added an article it shouldn't have.",
+        ok: false,
+      },
+      one: {
+        lines: [
+          { p: "sea →", v: "mer", q: false },
+          { p: "cat →", v: "?",   q: true  },
+        ],
+        answer: "chat",
+        accuracy: 62,
+        caption: "One worked demo before the test.",
+        verdict: "One demo locked the format. Single-word answer this time.",
+        ok: true,
+      },
+      few: {
+        lines: [
+          { p: "sea →",   v: "mer",     q: false },
+          { p: "house →", v: "maison",  q: false },
+          { p: "song →",  v: "chanson", q: false },
+          { p: "cat →",   v: "?",       q: true  },
+        ],
+        answer: "chat",
+        accuracy: 78,
+        caption: "A handful of demos. The pattern locks in.",
+        verdict: "Pattern locked. The model uses the demos like a tiny program.",
+        ok: true,
+      },
+    };
+
+    const linesEl   = document.getElementById("pt_lines");
+    const captionEl = document.getElementById("pt_caption");
+    const accValEl  = document.getElementById("pt_acc_val");
+    const accFillEl = document.getElementById("pt_acc_fill");
+    const verdictEl = document.getElementById("pt_verdict");
+    const buttons   = document.querySelectorAll(".pt_seg button");
+    if (!linesEl) return;
+
+    let typeTimer = null;
+
+    function render(shotKey) {
+      const s = scenes[shotKey];
+
+      // lines
+      linesEl.innerHTML = "";
+      s.lines.forEach((ln, i) => {
+        const row = document.createElement("div");
+        row.className = "pt_line" + (ln.q ? " is_query" : "");
+        const isLast = ln.q;
+        row.innerHTML =
+          '<span class="pt_prefix">' + ln.p + '</span>' +
+          '<span class="pt_value"' + (isLast ? ' id="pt_query_value"' : '') + '>' +
+          (isLast ? '<span class="pt_caret"></span>' : ln.v) +
+          '</span>';
+        linesEl.appendChild(row);
+      });
+
+      // caption
+      captionEl.textContent = s.caption;
+
+      // accuracy
+      accValEl.textContent = s.accuracy + "%";
+      accFillEl.style.width = s.accuracy + "%";
+
+      // verdict
+      verdictEl.textContent = s.verdict;
+      verdictEl.classList.toggle("ok",  s.ok);
+      verdictEl.classList.toggle("bad", !s.ok);
+
+      // type the answer
+      if (typeTimer) clearTimeout(typeTimer);
+      const target = s.answer;
+      const queryValEl = document.getElementById("pt_query_value");
+      let i = 0;
+      const tick = () => {
+        if (!queryValEl) return;
+        i++;
+        const partial = target.slice(0, i);
+        queryValEl.innerHTML = partial + (i < target.length ? '<span class="pt_caret"></span>' : "");
+        if (i < target.length) typeTimer = setTimeout(tick, 60);
+      };
+      typeTimer = setTimeout(tick, 380);
+    }
+
+    buttons.forEach((b) => {
+      b.addEventListener("click", () => {
+        buttons.forEach((x) => x.classList.remove("is_active"));
+        b.classList.add("is_active");
+        render(b.dataset.shot);
+      });
+    });
+
+    render("zero");
+  })();
+</script>
 
 </body>
 </html>
