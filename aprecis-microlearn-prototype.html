@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Aprecis — Microlearn Prototype</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #f7f4ef;
+    --paper-2: #efeae1;
+    --ink: #0f1117;
+    --ink-2: #2a2d36;
+    --muted: #8a8f9a;
+    --line: #e6e1d6;
+    --teal: #1a8a8a;
+    --teal-deep: #0f5a5a;
+    --teal-light: #e8f5f5;
+    --amber: #e8a020;
+    --amber-light: #fbf1dc;
+    --rose: #d46a6a;
+    --card: #ffffff;
+    --serif: 'Lora', Georgia, serif;
+    --sans: 'Inter', -apple-system, system-ui, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+  html, body { background: #0c0c0d; color: #fff; font-family: var(--sans); min-height: 100vh; }
+  ::-webkit-scrollbar { display: none; }
+
+  .stage {
+    min-height: 100vh;
+    padding: 64px 48px 96px;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 0%, rgba(26,138,138,0.12), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(232,160,32,0.08), transparent 60%),
+      #0c0c0d;
+  }
+  .header {
+    max-width: 1200px;
+    margin: 0 auto 48px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 32px;
+  }
+  .brand {
+    font-family: var(--serif);
+    font-size: 34px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+  .brand em { color: #5fd4d4; font-style: italic; font-weight: 500; }
+  .brand-sub {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 16px;
+    color: #a9adb5;
+    margin-top: 6px;
+    max-width: 560px;
+    line-height: 1.45;
+  }
+  .legend {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: #8a8f9a;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .legend span { display: flex; align-items: center; gap: 6px; }
+  .legend span::before { content: ''; width: 8px; height: 8px; border-radius: 99px; background: #5fd4d4; }
+  .legend span.amber::before { background: var(--amber); }
+  .legend span.rose::before { background: var(--rose); }
+
+  .grid {
+    max-width: 1760px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 56px 40px;
+    justify-items: center;
+  }
+  @media (max-width: 1400px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 900px)  { .grid { grid-template-columns: 1fr; } }
+
+  .screen-wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .screen-label {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #6c717b;
+  }
+  .screen-label b { color: #e8e8ea; font-weight: 600; margin-right: 8px; }
+
+  /* ─────────── iPhone frame ─────────── */
+  .phone {
+    width: 390px;
+    height: 844px;
+    border-radius: 56px;
+    background: #111;
+    padding: 10px;
+    box-shadow:
+      0 0 0 2px #1f1f22,
+      0 30px 80px rgba(0,0,0,0.5),
+      0 10px 30px rgba(0,0,0,0.4);
+    position: relative;
+  }
+  .phone::before {
+    content: '';
+    position: absolute;
+    top: 8px; bottom: 8px; left: 8px; right: 8px;
+    border-radius: 48px;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
+  }
+  .screen {
+    width: 100%; height: 100%;
+    border-radius: 46px;
+    background: var(--paper);
+    color: var(--ink);
+    overflow: hidden;
+    position: relative;
+    display: flex; flex-direction: column;
+  }
+  .status {
+    height: 48px; padding: 0 30px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 15px; font-weight: 600; color: var(--ink);
+    flex-shrink: 0;
+  }
+  .status-right { display: flex; gap: 6px; align-items: center; }
+  .status-right .bars { display: flex; gap: 2px; align-items: flex-end; }
+  .status-right .bars i { width: 3px; background: var(--ink); border-radius: 1px; display: block; }
+  .status-right .bars i:nth-child(1){ height: 4px; }
+  .status-right .bars i:nth-child(2){ height: 6px; }
+  .status-right .bars i:nth-child(3){ height: 8px; }
+  .status-right .bars i:nth-child(4){ height: 10px; }
+  .status-right .bat {
+    width: 24px; height: 12px; border: 1px solid var(--ink); border-radius: 3px; position: relative; padding: 1px;
+  }
+  .status-right .bat::after {
+    content: ''; position: absolute; right: -3px; top: 3px; width: 2px; height: 4px;
+    background: var(--ink); border-radius: 0 2px 2px 0;
+  }
+  .status-right .bat i { display: block; height: 100%; width: 70%; background: var(--ink); border-radius: 1px; }
+  .notch {
+    position: absolute; top: 11px; left: 50%; transform: translateX(-50%);
+    width: 120px; height: 34px; background: #000; border-radius: 20px; z-index: 3;
+  }
+  .body { flex: 1; overflow: hidden; position: relative; }
+  .home-ind {
+    position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+    width: 134px; height: 5px; background: var(--ink); border-radius: 3px; opacity: 0.9;
+  }
+
+  /* ─────────── Shared bits ─────────── */
+  .row { display: flex; align-items: center; }
+  .between { justify-content: space-between; }
+  .gap-6 { gap: 6px; } .gap-8 { gap: 8px; } .gap-10 { gap: 10px; } .gap-12 { gap: 12px; }
+  .serif { font-family: var(--serif); letter-spacing: -0.01em; }
+  .muted { color: var(--muted); }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 10px; border-radius: 99px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+    background: var(--teal-light); color: var(--teal-deep);
+  }
+  .chip.amber { background: var(--amber-light); color: #7a5310; }
+  .chip.ghost { background: transparent; color: var(--muted); border: 1px solid var(--line); }
+  .dot { width: 4px; height: 4px; border-radius: 99px; background: currentColor; opacity: 0.4; }
+
+  /* progress dots */
+  .dots { display: flex; gap: 6px; align-items: center; }
+  .dots i {
+    display: block; height: 4px; border-radius: 99px; background: var(--line);
+    flex: 1; max-width: 32px;
+  }
+  .dots i.done { background: var(--teal); }
+  .dots i.active { background: var(--ink); }
+
+  /* tab bar */
+  .tabbar {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 86px; padding: 10px 24px 28px;
+    display: flex; justify-content: space-around; align-items: flex-start;
+    background: rgba(247,244,239,0.92);
+    backdrop-filter: blur(16px);
+    border-top: 1px solid var(--line);
+  }
+  .tab { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; color: var(--muted); font-weight: 600; letter-spacing: 0.04em; }
+  .tab .ic { width: 22px; height: 22px; stroke: var(--muted); fill: none; stroke-width: 1.6; }
+  .tab.active { color: var(--ink); }
+  .tab.active .ic { stroke: var(--ink); }
+
+  /* ────────────────────────────────────────────────────────
+     SCREEN 1 — Today / Home (streak + daily paper)
+  ──────────────────────────────────────────────────────── */
+  .s1-header {
+    padding: 14px 28px 6px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .s1-logo { font-family: var(--serif); font-size: 22px; font-weight: 600; color: var(--teal); letter-spacing: -0.02em; }
+  .s1-logo em { color: var(--ink); font-weight: 500; }
+  .s1-streak {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--amber-light); color: #7a5310;
+    padding: 6px 10px; border-radius: 99px;
+    font-size: 13px; font-weight: 700;
+  }
+  .s1-xp {
+    padding: 18px 28px 12px;
+  }
+  .s1-xp .row1 { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+  .s1-xp .lv { font-family: var(--serif); font-size: 14px; color: var(--ink); font-weight: 600; }
+  .s1-xp .xp { font-size: 12px; color: var(--muted); font-weight: 600; }
+  .s1-xp .bar { height: 6px; border-radius: 99px; background: var(--paper-2); overflow: hidden; }
+  .s1-xp .bar i { display: block; height: 100%; width: 72%; background: linear-gradient(90deg, var(--teal) 0%, #5fd4d4 100%); border-radius: 99px; }
+
+  .s1-section {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted); font-weight: 600;
+    padding: 16px 28px 10px;
+  }
+
+  .s1-daily {
+    margin: 0 20px 16px;
+    padding: 20px;
+    border-radius: 22px;
+    background: linear-gradient(160deg, #0f1117 0%, #1e2a3a 100%);
+    color: #fff; position: relative; overflow: hidden;
+  }
+  .s1-daily::before {
+    content: ''; position: absolute; right: -40px; top: -40px;
+    width: 160px; height: 160px; border-radius: 99px;
+    background: radial-gradient(circle at 30% 30%, rgba(95,212,212,0.35), transparent 70%);
+  }
+  .s1-daily .tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #5fd4d4; margin-bottom: 12px;
+  }
+  .s1-daily .tag::before {
+    content: ''; width: 6px; height: 6px; border-radius: 99px; background: #5fd4d4;
+    box-shadow: 0 0 0 4px rgba(95,212,212,0.2);
+  }
+  .s1-daily h2 {
+    font-family: var(--serif); font-size: 24px; font-weight: 600; line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .s1-daily p { font-size: 13px; color: #b9bec9; line-height: 1.5; margin-bottom: 18px; }
+  .s1-daily .meta { display: flex; gap: 14px; font-size: 11px; color: #8a8f9a; margin-bottom: 18px; font-weight: 500; }
+  .s1-daily .cta {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; padding: 13px; border-radius: 14px;
+    background: #5fd4d4; color: #0f1117;
+    font-weight: 700; font-size: 14px; letter-spacing: 0.02em;
+  }
+
+  .s1-list { padding: 0 20px; }
+  .s1-item {
+    padding: 14px 8px; border-bottom: 1px solid var(--line);
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .s1-item:last-child { border-bottom: none; }
+  .s1-ring {
+    width: 44px; height: 44px; flex-shrink: 0;
+    border-radius: 99px; display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .s1-ring svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+  .s1-ring circle { fill: none; stroke-width: 3; }
+  .s1-ring .bg { stroke: var(--paper-2); }
+  .s1-ring .fg { stroke: var(--teal); stroke-linecap: round; }
+  .s1-ring span { font-size: 11px; font-weight: 700; color: var(--ink); }
+  .s1-meta-line { display: flex; gap: 8px; font-size: 11px; color: var(--muted); font-weight: 500; }
+  .s1-title { font-family: var(--serif); font-size: 15px; font-weight: 600; line-height: 1.3; color: var(--ink); margin-bottom: 4px; }
+
+  /* ────────────────────────────────────────────────────────
+     SCREEN 2 — Paper intro (hook card, dots, start)
+  ──────────────────────────────────────────────────────── */
+  .s2-top { padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .s2-close { width: 32px; height: 32px; border-radius: 99px; background: var(--paper-2); display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--ink); }
+  .s2-dots { flex: 1; margin: 0 16px; }
+  .s2-heart { width: 32px; height: 32px; border-radius: 99px; background: var(--paper-2); display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--ink); }
+
+  .s2-hero {
+    margin: 8px 20px;
+    padding: 26px 22px 22px;
+    border-radius: 28px;
+    background: linear-gradient(155deg, #0f1117 0%, #1a2a2a 60%, #0f3a3a 100%);
+    color: #fff; position: relative; overflow: hidden;
+    flex: 1;
+    display: flex; flex-direction: column;
+  }
+  .s2-hero::after {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 85% 15%, rgba(95,212,212,0.25), transparent 40%),
+      radial-gradient(circle at 15% 90%, rgba(232,160,32,0.15), transparent 40%);
+    pointer-events: none;
+  }
+  .s2-hero-inner { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100%; }
+  .s2-type {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+    color: #5fd4d4; margin-bottom: 20px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .s2-type::before {
+    content: '01'; font-family: var(--serif); font-style: italic;
+    font-size: 26px; letter-spacing: 0; text-transform: none;
+    color: rgba(255,255,255,0.4); font-weight: 400;
+    margin-right: 4px;
+  }
+  .s2-hook {
+    font-family: var(--serif); font-size: 30px; font-weight: 600; line-height: 1.18;
+    margin-bottom: 18px; letter-spacing: -0.02em;
+  }
+  .s2-hook em { color: #5fd4d4; font-style: italic; font-weight: 500; }
+  .s2-sub { font-size: 14px; color: #d1d4dc; line-height: 1.55; margin-bottom: auto; }
+  .s2-hint {
+    margin-top: 22px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 0.08em; text-transform: uppercase;
+    font-weight: 600;
+  }
+  .s2-hint svg { animation: bounce 1.4s ease-in-out infinite; }
+  @keyframes bounce { 0%,100% { transform: translateY(0) } 50% { transform: translateY(4px) } }
+
+  .s2-foot {
+    padding: 14px 20px 24px;
+    display: flex; gap: 12px;
+  }
+  .s2-foot .btn {
+    flex: 1; padding: 14px; border-radius: 14px; font-weight: 700; font-size: 14px;
+    text-align: center;
+  }
+  .s2-foot .btn.primary { background: var(--ink); color: var(--paper); }
+  .s2-foot .btn.ghost { background: var(--paper-2); color: var(--ink); flex: 0 0 56px; }
+
+  /* ────────────────────────────────────────────────────────
+     SCREEN 3 — Interactive diagram (tap parts to learn)
+  ──────────────────────────────────────────────────────── */
+  .s3-top { padding: 14px 24px; display: flex; align-items: center; gap: 12px; }
+  .s3-top .back { width: 32px; height: 32px; border-radius: 99px; background: var(--paper-2); display: flex; align-items: center; justify-content: center; }
+  .s3-top .dots-wrap { flex: 1; }
+
+  .s3-hd {
+    padding: 8px 28px 14px;
+  }
+  .s3-kicker { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
+  .s3-title { font-family: var(--serif); font-size: 22px; font-weight: 600; line-height: 1.25; color: var(--ink); letter-spacing: -0.01em; }
+  .s3-title em { color: var(--teal); font-style: italic; font-weight: 500; }
+
+  .s3-diagram {
+    margin: 6px 20px 0;
+    padding: 18px;
+    border-radius: 22px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    position: relative;
+    aspect-ratio: 1;
+  }
+  .s3-diagram .hint {
+    position: absolute; top: 14px; right: 14px;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .s3-diagram .hint::before { content: ''; width: 6px; height: 6px; border-radius: 99px; background: var(--teal); animation: pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1);} 50% { opacity: 0.4; transform: scale(1.6);} }
+
+  .s3-node {
+    position: absolute;
+    padding: 8px 12px; border-radius: 10px;
+    font-size: 11px; font-weight: 600;
+    background: var(--paper-2); color: var(--ink-2);
+    border: 1px solid var(--line);
+    text-align: center; min-width: 56px;
+  }
+  .s3-node.active {
+    background: var(--teal); color: #fff; border-color: var(--teal);
+    box-shadow: 0 0 0 6px rgba(26,138,138,0.15), 0 8px 20px rgba(26,138,138,0.25);
+    transform: scale(1.05);
+  }
+  .s3-node.dim { opacity: 0.45; }
+
+  .s3-expl {
+    margin: 16px 20px 0;
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: var(--teal-light);
+    border-left: 3px solid var(--teal);
+  }
+  .s3-expl .lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal-deep); margin-bottom: 6px; }
+  .s3-expl .t { font-family: var(--serif); font-size: 15px; color: var(--ink); line-height: 1.45; font-weight: 500; }
+  .s3-expl .t b { color: var(--teal-deep); font-weight: 600; }
+
+  /* ────────────────────────────────────────────────────────
+     SCREEN 4 — Fill-in-the-blank
+  ──────────────────────────────────────────────────────── */
+  .s4-hd { padding: 18px 28px 8px; }
+  .s4-q-label { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+
+  .s4-prompt {
+    margin: 10px 24px 0;
+    padding: 22px;
+    border-radius: 20px;
+    background: var(--card);
+    border: 1px solid var(--line);
+  }
+  .s4-q {
+    font-family: var(--serif); font-size: 19px; line-height: 1.45; color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .s4-blank {
+    display: inline-block; min-width: 92px;
+    padding: 3px 10px; margin: 0 2px;
+    background: var(--paper-2);
+    border-bottom: 2px solid var(--teal);
+    border-radius: 8px 8px 0 0;
+    text-align: center;
+    font-family: var(--sans); font-size: 15px; font-weight: 600;
+    color: var(--teal-deep);
+    vertical-align: baseline;
+  }
+  .s4-blank.empty { color: transparent; }
+  .s4-blank.empty::before {
+    content: '___'; color: var(--muted); letter-spacing: 0.1em;
+  }
+
+  .s4-lbl { padding: 18px 28px 10px; font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+
+  .s4-chips {
+    padding: 0 20px;
+    display: flex; flex-wrap: wrap; gap: 10px;
+  }
+  .s4-chip {
+    padding: 11px 16px; border-radius: 12px;
+    background: var(--card); border: 1px solid var(--line);
+    font-size: 14px; font-weight: 600; color: var(--ink);
+  }
+  .s4-chip.used { background: transparent; border-style: dashed; color: var(--muted); }
+  .s4-chip.wrong { background: #fbe8e8; border-color: var(--rose); color: #8a2a2a; text-decoration: line-through; text-decoration-color: var(--rose); }
+
+  .s4-foot {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 16px 20px 28px;
+    background: linear-gradient(to top, var(--paper) 60%, transparent);
+  }
+  .s4-submit {
+    width: 100%; padding: 15px; border-radius: 14px;
+    background: var(--ink); color: var(--paper);
+    font-weight: 700; font-size: 15px; letter-spacing: 0.02em;
+    text-align: center;
+  }
+
+  /* ────────────────────────────────────────────────────────
+     SCREEN 5 — Multiple choice with explanation reveal
+  ──────────────────────────────────────────────────────── */
+  .s5-q {
+    margin: 10px 24px 0;
+    padding: 22px;
+    border-radius: 20px;
+    background: var(--card); border: 1px solid var(--line);
+  }
+  .s5-q .kicker { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--amber); margin-bottom: 8px; }
+  .s5-q .kicker::before { content: '◆ '; color: var(--amber); }
+  .s5-q .qt { font-family: var(--serif); font-size: 20px; line-height: 1.4; color: var(--ink); font-weight: 600; letter-spacing: -0.01em; }
+
+  .s5-opts { padding: 18px 20px 0; display: flex; flex-direction: column; gap: 10px; }
+  .s5-opt {
+    padding: 14px 16px; border-radius: 14px;
+    background: var(--card); border: 1.5px solid var(--line);
+    display: flex; align-items: center; gap: 12px;
+    font-size: 14px; font-weight: 500; color: var(--ink-2); line-height: 1.4;
+  }
+  .s5-opt .marker {
+    flex-shrink: 0;
+    width: 24px; height: 24px; border-radius: 8px;
+    background: var(--paper-2); color: var(--muted);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.02em;
+  }
+  .s5-opt.correct { background: #ecf7ec; border-color: #4a9c4a; color: #1e4a1e; font-weight: 600; }
+  .s5-opt.correct .marker { background: #4a9c4a; color: #fff; }
+  .s5-opt.wrong   { background: #fbeeee; border-color: var(--rose); color: #6a2323; }
+  .s5-opt.wrong .marker { background: var(--rose); color: #fff; }
+
+  .s5-exp {
+    margin: 18px 20px 0;
+    padding: 16px 18px;
+    border-radius: 16px;
+    background: #ecf7ec;
+    border-left: 3px solid #4a9c4a;
+  }
+  .s5-exp .lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #2e6a2e; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+  .s5-exp .t { font-family: var(--serif); font-size: 14px; color: var(--ink); line-height: 1.5; }
+
+  /* ────────────────────────────────────────────────────────
+     SCREEN 6 — Completion / XP / streak celebration
+  ──────────────────────────────────────────────────────── */
+  .s6 {
+    flex: 1;
+    display: flex; flex-direction: column;
+    padding: 20px 24px 120px;
+    position: relative;
+    background:
+      radial-gradient(ellipse 80% 40% at 50% 0%, rgba(232,160,32,0.2), transparent 70%),
+      radial-gradient(ellipse 70% 50% at 50% 100%, rgba(26,138,138,0.18), transparent 70%),
+      var(--paper);
+  }
+  .s6-burst {
+    margin: 24px auto 0;
+    width: 220px; height: 220px; position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .s6-burst::before {
+    content: ''; position: absolute; inset: 18px;
+    border-radius: 99px;
+    background: linear-gradient(135deg, var(--amber) 0%, var(--teal) 100%);
+    box-shadow: 0 20px 60px rgba(26,138,138,0.35), 0 10px 30px rgba(232,160,32,0.25);
+  }
+  .s6-burst svg { position: absolute; inset: 0; }
+  .s6-burst .core {
+    position: relative; z-index: 2;
+    width: 120px; height: 120px; border-radius: 99px;
+    background: var(--paper);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: inset 0 0 0 1px rgba(15,17,23,0.08);
+  }
+  .s6-burst .core .xpnum {
+    font-family: var(--serif); font-size: 48px; font-weight: 600; color: var(--ink);
+    letter-spacing: -0.03em; line-height: 1;
+  }
+  .s6-burst .core .xplbl {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.2em; color: var(--teal);
+    margin-top: 2px;
+  }
+
+  .s6-title {
+    font-family: var(--serif); font-size: 28px; font-weight: 600;
+    color: var(--ink); text-align: center; margin-top: 22px;
+    letter-spacing: -0.02em; line-height: 1.2;
+  }
+  .s6-sub {
+    font-family: var(--serif); font-style: italic;
+    font-size: 15px; color: var(--muted);
+    text-align: center; margin-top: 6px;
+  }
+
+  .s6-stats {
+    margin-top: 26px;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .s6-stat {
+    padding: 14px 10px;
+    border-radius: 16px;
+    background: var(--card); border: 1px solid var(--line);
+    text-align: center;
+  }
+  .s6-stat .v { font-family: var(--serif); font-size: 22px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; line-height: 1.1; }
+  .s6-stat .l { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+
+  .s6-streak-card {
+    margin-top: 18px;
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #2a1810 0%, #5a3a10 100%);
+    color: #fff;
+    display: flex; align-items: center; gap: 14px;
+    position: relative; overflow: hidden;
+  }
+  .s6-streak-card::before {
+    content: ''; position: absolute; right: -20px; top: -20px;
+    width: 100px; height: 100px; border-radius: 99px;
+    background: radial-gradient(circle at 30% 30%, rgba(255,180,80,0.4), transparent 70%);
+  }
+  .s6-streak-card .flame { font-size: 28px; position: relative; z-index: 1; }
+  .s6-streak-card .txt { position: relative; z-index: 1; flex: 1; }
+  .s6-streak-card .txt .n { font-family: var(--serif); font-size: 18px; font-weight: 600; }
+  .s6-streak-card .txt .n em { color: #ffb870; font-style: italic; }
+  .s6-streak-card .txt .d { font-size: 12px; color: #d9c9b0; margin-top: 2px; }
+
+  .s6-cta {
+    position: absolute; bottom: 24px; left: 20px; right: 20px;
+    display: flex; gap: 10px;
+  }
+  .s6-cta button {
+    flex: 1; padding: 15px; border: none;
+    border-radius: 14px; font-weight: 700; font-size: 14px;
+    letter-spacing: 0.01em;
+  }
+  .s6-cta .primary { background: var(--ink); color: var(--paper); }
+  .s6-cta .ghost { background: var(--paper-2); color: var(--ink); flex: 0 0 56px; font-size: 18px; }
+
+  /* notes under each phone */
+  .notes {
+    max-width: 360px;
+    font-size: 12px; color: #8a8f9a; line-height: 1.6;
+    font-family: var(--sans);
+  }
+  .notes b { color: #dfe2e8; font-weight: 600; }
+
+  .caption-big {
+    max-width: 1200px; margin: 24px auto 0;
+    font-family: var(--serif); font-style: italic;
+    font-size: 16px; color: #a9adb5;
+    border-left: 2px solid rgba(95,212,212,0.5);
+    padding: 10px 0 10px 18px;
+  }
+
+  .footer-note {
+    max-width: 1200px; margin: 64px auto 0;
+    padding: 24px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    font-size: 13px; color: #a9adb5; line-height: 1.6;
+  }
+  .footer-note h3 {
+    font-family: var(--serif); font-size: 18px; color: #fff;
+    font-weight: 600; margin-bottom: 10px; letter-spacing: -0.01em;
+  }
+  .footer-note h3 em { color: #5fd4d4; font-style: italic; font-weight: 500; }
+  .footer-note ul { list-style: none; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 24px; margin-top: 12px; }
+  .footer-note li { padding-left: 18px; position: relative; }
+  .footer-note li::before { content: '→'; position: absolute; left: 0; color: #5fd4d4; }
+  .footer-note li b { color: #e8e8ea; font-weight: 600; }
+</style>
+</head>
+
+<body>
+
+<div class="stage">
+
+  <!-- ────────────── HEADER ────────────── -->
+  <div class="header">
+    <div>
+      <div class="brand">aprecis<em>.</em> <span style="font-family:var(--sans); font-size:13px; font-weight:500; color:#6c717b; letter-spacing:0.08em; text-transform:uppercase; margin-left:12px; vertical-align: middle;">microlearn v2 — mimo-inspired</span></div>
+      <div class="brand-sub">The layer between doomscrolling and reading pre-prints. One idea per screen. Tap, swipe, answer — instead of reading an abstract.</div>
+    </div>
+    <div class="legend">
+      <span>Teal — learn</span>
+      <span class="amber">Amber — streak &amp; XP</span>
+      <span class="rose">Rose — mistake feedback</span>
+    </div>
+  </div>
+
+  <div class="caption-big">
+    "Don't make me read. Make me tap, reveal, guess, and earn." — Each paper is a 2-minute interactive deck, not an abstract.
+  </div>
+
+  <div style="height:32px;"></div>
+
+  <!-- ────────────── GRID ────────────── -->
+  <div class="grid">
+
+    <!-- ═══════════════════════ SCREEN 1 — TODAY ═══════════════════════ -->
+    <div class="screen-wrap">
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="screen">
+          <div class="status">
+            <span>9:41</span>
+            <div class="status-right">
+              <div class="bars"><i></i><i></i><i></i><i></i></div>
+              <div class="bat"><i></i></div>
+            </div>
+          </div>
+
+          <div class="body">
+            <div class="s1-header">
+              <div class="s1-logo">aprecis<em>.</em></div>
+              <div class="s1-streak">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#e8a020"><path d="M12 2s4 4 4 9c0 3-2 5-4 5s-4-2-4-5c0-5 4-9 4-9zm-2 15c-3 1-5 4-5 7h14c0-3-2-6-5-7 0 2-2 3-2 3s-2-1-2-3z"/></svg>
+                7
+              </div>
+            </div>
+
+            <div class="s1-xp">
+              <div class="row1">
+                <span class="lv">Level 4 · <em style="color:var(--muted); font-style:italic; font-weight:500;">Curious Reader</em></span>
+                <span class="xp">285 / 400 XP</span>
+              </div>
+              <div class="bar"><i></i></div>
+            </div>
+
+            <div class="s1-section">Today's paper</div>
+
+            <div class="s1-daily">
+              <div class="tag">Fresh · 4 hours ago</div>
+              <h2>Why do transformers <em style="color:#5fd4d4; font-style:italic;">hallucinate</em>?</h2>
+              <p>A new theory from DeepMind: models fabricate when attention heads collapse to a single token. 6 cards, 2 min.</p>
+              <div class="meta">
+                <span>◔ 2 min</span>
+                <span>✦ 6 cards</span>
+                <span>+50 XP</span>
+              </div>
+              <div class="cta">
+                Start learning
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f1117" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </div>
+            </div>
+
+            <div class="s1-section">Continue</div>
+            <div class="s1-list">
+              <div class="s1-item">
+                <div class="s1-ring">
+                  <svg width="44" height="44"><circle class="bg" cx="22" cy="22" r="18"/><circle class="fg" cx="22" cy="22" r="18" stroke-dasharray="113" stroke-dashoffset="45"/></svg>
+                  <span>60%</span>
+                </div>
+                <div style="flex:1;">
+                  <div class="s1-title">Mixture of Experts: routing at scale</div>
+                  <div class="s1-meta-line"><span>Meta AI</span><span>·</span><span>3 of 6 cards</span></div>
+                </div>
+              </div>
+              <div class="s1-item">
+                <div class="s1-ring">
+                  <svg width="44" height="44"><circle class="bg" cx="22" cy="22" r="18"/><circle class="fg" cx="22" cy="22" r="18" stroke-dasharray="113" stroke-dashoffset="90"/></svg>
+                  <span>20%</span>
+                </div>
+                <div style="flex:1;">
+                  <div class="s1-title">How LLMs compress human writing</div>
+                  <div class="s1-meta-line"><span>Anthropic</span><span>·</span><span>1 of 5 cards</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tabbar">
+            <div class="tab active">
+              <svg class="ic" viewBox="0 0 24 24"><path d="M3 12 12 3l9 9M5 10v10h14V10"/></svg>
+              Today
+            </div>
+            <div class="tab">
+              <svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+              Explore
+            </div>
+            <div class="tab">
+              <svg class="ic" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+              Library
+            </div>
+            <div class="tab">
+              <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
+              You
+            </div>
+          </div>
+          <div class="home-ind"></div>
+        </div>
+      </div>
+      <div class="screen-label"><b>01</b> Today · streak + daily paper</div>
+      <div class="notes"><b>Mimo pattern:</b> one paper per day (not a feed), XP bar at top, streak flame. Continue row with radial progress rings mirrors Mimo's course path. Feed removed — decision fatigue kills retention.</div>
+    </div>
+
+    <!-- ═══════════════════════ SCREEN 2 — HOOK ═══════════════════════ -->
+    <div class="screen-wrap">
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="screen">
+          <div class="status">
+            <span>9:41</span>
+            <div class="status-right">
+              <div class="bars"><i></i><i></i><i></i><i></i></div>
+              <div class="bat"><i></i></div>
+            </div>
+          </div>
+
+          <div class="body" style="display:flex; flex-direction:column;">
+            <div class="s2-top">
+              <div class="s2-close">✕</div>
+              <div class="s2-dots dots">
+                <i class="active"></i><i></i><i></i><i></i><i></i><i></i>
+              </div>
+              <div class="s2-heart">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f1117" stroke-width="2"><path d="M12 21s-8-5-8-12a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 7-8 12-8 12Z"/></svg>
+              </div>
+            </div>
+
+            <div class="s2-hero">
+              <div class="s2-hero-inner">
+                <div class="s2-type">The hook</div>
+                <div class="s2-hook">
+                  What if a language model's <em>wildest lies</em> come from a single broken neuron?
+                </div>
+                <div class="s2-sub">
+                  DeepMind traced 80% of factual hallucinations to attention-head "collapse" — when one head over-weights a single token and drowns out the rest.
+                </div>
+                <div class="s2-hint">
+                  Swipe up to continue
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="s2-foot">
+              <div class="btn ghost">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0f1117" stroke-width="2" style="display:block; margin:auto;"><path d="M4 4v16M4 12h14l-4-4M18 12l-4 4"/></svg>
+              </div>
+              <div class="btn primary">Show me why →</div>
+            </div>
+          </div>
+
+          <div class="home-ind"></div>
+        </div>
+      </div>
+      <div class="screen-label"><b>02</b> Hook · card 1 of 6</div>
+      <div class="notes"><b>Mimo pattern:</b> each card is a single provocation — never a wall of text. Progress dots, close button (no shame to quit), heart to save. The subtitle is the <i>only</i> paragraph in the deck — everything else is interactive.</div>
+    </div>
+
+    <!-- ═══════════════════════ SCREEN 3 — TAP DIAGRAM ═══════════════════════ -->
+    <div class="screen-wrap">
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="screen">
+          <div class="status">
+            <span>9:41</span>
+            <div class="status-right">
+              <div class="bars"><i></i><i></i><i></i><i></i></div>
+              <div class="bat"><i></i></div>
+            </div>
+          </div>
+
+          <div class="body">
+            <div class="s3-top">
+              <div class="back">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f1117" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>
+              </div>
+              <div class="dots-wrap dots">
+                <i class="done"></i><i class="done"></i><i class="active"></i><i></i><i></i><i></i>
+              </div>
+            </div>
+
+            <div class="s3-hd">
+              <div class="s3-kicker">03 · Tap to explore</div>
+              <div class="s3-title">How an attention head <em>collapses</em></div>
+            </div>
+
+            <div class="s3-diagram">
+              <div class="hint">Tap Q</div>
+
+              <!-- Query box (active, being tapped) -->
+              <div class="s3-node active" style="top: 18%; left: 12%;">Query<br><span style="font-size:9px; opacity:0.8; font-weight:500;">"Paris"</span></div>
+
+              <!-- Keys -->
+              <div class="s3-node" style="top: 18%; right: 12%;">Key K₁<br><span style="font-size:9px; opacity:0.6; font-weight:500;">"France"</span></div>
+              <div class="s3-node dim" style="top: 42%; right: 12%;">Key K₂<br><span style="font-size:9px; opacity:0.6; font-weight:500;">"city"</span></div>
+              <div class="s3-node dim" style="top: 66%; right: 12%;">Key K₃<br><span style="font-size:9px; opacity:0.6; font-weight:500;">"river"</span></div>
+
+              <!-- Output / collapse -->
+              <div class="s3-node" style="bottom: 12%; left: 50%; transform: translateX(-50%); background: #fbeeee; border-color: var(--rose); color: #8a2a2a;">⚠ Collapse</div>
+
+              <!-- SVG edges -->
+              <svg width="100%" height="100%" viewBox="0 0 300 300" preserveAspectRatio="none" style="position:absolute; inset:0; z-index:-1;">
+                <path d="M 90 70 Q 150 70 210 70" stroke="#1a8a8a" stroke-width="2.5" fill="none"/>
+                <path d="M 90 70 Q 150 140 210 140" stroke="#e6e1d6" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
+                <path d="M 90 70 Q 150 210 210 210" stroke="#e6e1d6" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
+                <path d="M 210 85 Q 210 180 160 240" stroke="#d46a6a" stroke-width="2" fill="none"/>
+              </svg>
+            </div>
+
+            <div class="s3-expl">
+              <div class="lbl">✦ In plain english</div>
+              <div class="t">The <b>Query</b> asks: "what's related to Paris?" — but when one Key dominates the <b>softmax</b>, the head stops looking at the others. One voice drowns out the room.</div>
+            </div>
+          </div>
+
+          <div class="home-ind"></div>
+        </div>
+      </div>
+      <div class="screen-label"><b>03</b> Interactive diagram · tap a part</div>
+      <div class="notes"><b>Mimo pattern:</b> instead of reading how attention works, you tap each node and the plain-english explanation rewrites itself. Kinaesthetic, not textual. Replaces the whole "Methods" section of a paper with ~12 taps.</div>
+    </div>
+
+    <!-- ═══════════════════════ SCREEN 4 — FILL BLANK ═══════════════════════ -->
+    <div class="screen-wrap">
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="screen">
+          <div class="status">
+            <span>9:41</span>
+            <div class="status-right">
+              <div class="bars"><i></i><i></i><i></i><i></i></div>
+              <div class="bat"><i></i></div>
+            </div>
+          </div>
+
+          <div class="body">
+            <div class="s3-top">
+              <div class="back">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f1117" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>
+              </div>
+              <div class="dots-wrap dots">
+                <i class="done"></i><i class="done"></i><i class="done"></i><i class="active"></i><i></i><i></i>
+              </div>
+            </div>
+
+            <div class="s4-hd">
+              <div class="s4-q-label">04 · Fill the blanks</div>
+            </div>
+
+            <div class="s4-prompt">
+              <div class="s4-q">
+                When a head <span class="s4-blank">collapses</span>, its softmax<br>puts nearly all its weight on one<br><span class="s4-blank">token</span>, producing a<br>confident but <span class="s4-blank empty"></span> output.
+              </div>
+            </div>
+
+            <div class="s4-lbl">Tap to fill →</div>
+
+            <div class="s4-chips">
+              <div class="s4-chip used">collapses</div>
+              <div class="s4-chip used">token</div>
+              <div class="s4-chip">wrong</div>
+              <div class="s4-chip">noisy</div>
+              <div class="s4-chip wrong">smooth</div>
+              <div class="s4-chip">layer</div>
+              <div class="s4-chip">gradient</div>
+            </div>
+
+            <div class="s4-foot">
+              <div class="s4-submit">Check answer</div>
+            </div>
+          </div>
+
+          <div class="home-ind"></div>
+        </div>
+      </div>
+      <div class="screen-label"><b>04</b> Fill-in-the-blank · active recall</div>
+      <div class="notes"><b>Mimo pattern:</b> forces you to actively reconstruct the idea instead of skim it. Wrong picks (rose-crossed) give instant visual feedback. Every paper deck ends with 1–2 recall cards — that's what makes it <i>stick</i> vs. TikTok.</div>
+    </div>
+
+    <!-- ═══════════════════════ SCREEN 5 — MULTIPLE CHOICE ═══════════════════════ -->
+    <div class="screen-wrap">
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="screen">
+          <div class="status">
+            <span>9:41</span>
+            <div class="status-right">
+              <div class="bars"><i></i><i></i><i></i><i></i></div>
+              <div class="bat"><i></i></div>
+            </div>
+          </div>
+
+          <div class="body">
+            <div class="s3-top">
+              <div class="back">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f1117" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>
+              </div>
+              <div class="dots-wrap dots">
+                <i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="active"></i><i></i>
+              </div>
+            </div>
+
+            <div class="s5-q">
+              <div class="kicker">05 · Quick check</div>
+              <div class="qt">So — what does the paper propose as a fix?</div>
+            </div>
+
+            <div class="s5-opts">
+              <div class="s5-opt">
+                <div class="marker">A</div>
+                Train the model on more data
+              </div>
+              <div class="s5-opt correct">
+                <div class="marker">B</div>
+                Add an entropy penalty to the softmax to prevent collapse
+              </div>
+              <div class="s5-opt wrong">
+                <div class="marker">C</div>
+                Remove low-weight attention heads entirely
+              </div>
+              <div class="s5-opt">
+                <div class="marker">D</div>
+                Replace attention with convolutions
+              </div>
+            </div>
+
+            <div class="s5-exp">
+              <div class="lbl">✓ Correct — nice catch</div>
+              <div class="t">The entropy penalty rewards the head for spreading attention across tokens, directly fixing the collapse. Option C would hurt — some "narrow" heads are actually useful.</div>
+            </div>
+          </div>
+
+          <div class="tabbar" style="background: rgba(247,244,239,0.5); border-top: none; height: auto; padding: 14px 20px 28px;">
+            <button style="flex:1; padding:14px; border:none; border-radius:14px; background:var(--ink); color:var(--paper); font-weight:700; font-size:14px; letter-spacing: 0.02em;">Continue →  <span style="color:#5fd4d4; margin-left:8px; font-family: var(--serif); font-style: italic;">+10 XP</span></button>
+          </div>
+          <div class="home-ind"></div>
+        </div>
+      </div>
+      <div class="screen-label"><b>05</b> Quick check · MCQ with reveal</div>
+      <div class="notes"><b>Mimo pattern:</b> wrong answer doesn't fail you — it teaches. Correct option lights green, chosen-wrong lights rose, explanation appears below. +10 XP for the right answer, +5 for trying.</div>
+    </div>
+
+    <!-- ═══════════════════════ SCREEN 6 — DONE ═══════════════════════ -->
+    <div class="screen-wrap">
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="screen">
+          <div class="status">
+            <span>9:41</span>
+            <div class="status-right">
+              <div class="bars"><i></i><i></i><i></i><i></i></div>
+              <div class="bat"><i></i></div>
+            </div>
+          </div>
+
+          <div class="body">
+            <div class="s6">
+              <div class="s6-burst">
+                <svg width="220" height="220" viewBox="0 0 220 220">
+                  <g stroke="#e8a020" stroke-width="2" stroke-linecap="round" opacity="0.8">
+                    <line x1="110" y1="10"  x2="110" y2="26"/>
+                    <line x1="110" y1="194" x2="110" y2="210"/>
+                    <line x1="10"  y1="110" x2="26"  y2="110"/>
+                    <line x1="194" y1="110" x2="210" y2="110"/>
+                    <line x1="38"  y1="38"  x2="50"  y2="50"/>
+                    <line x1="182" y1="38"  x2="170" y2="50"/>
+                    <line x1="38"  y1="182" x2="50"  y2="170"/>
+                    <line x1="182" y1="182" x2="170" y2="170"/>
+                  </g>
+                </svg>
+                <div class="core">
+                  <div style="text-align:center;">
+                    <div class="xpnum">+50</div>
+                    <div class="xplbl">XP EARNED</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="s6-title">You finished the deck.</div>
+              <div class="s6-sub">"Hallucination isn't random — it's a broken softmax."</div>
+
+              <div class="s6-stats">
+                <div class="s6-stat"><div class="v">6/6</div><div class="l">Cards</div></div>
+                <div class="s6-stat"><div class="v">1:48</div><div class="l">Time</div></div>
+                <div class="s6-stat"><div class="v">83%</div><div class="l">Accuracy</div></div>
+              </div>
+
+              <div class="s6-streak-card">
+                <div class="flame">🔥</div>
+                <div class="txt">
+                  <div class="n">Streak → <em>8 days</em></div>
+                  <div class="d">Come back tomorrow for a paper on diffusion models.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="s6-cta">
+              <div class="s6-cta .ghost" style="flex:0 0 56px; padding:15px; border-radius:14px; background:var(--paper-2); color:var(--ink); font-size:18px; text-align:center; font-weight:700;">↗</div>
+              <button class="primary">Read full paper on arXiv ↗</button>
+            </div>
+          </div>
+
+          <div class="home-ind"></div>
+        </div>
+      </div>
+      <div class="screen-label"><b>06</b> Complete · XP, streak, one takeaway</div>
+      <div class="notes"><b>Mimo pattern:</b> celebration moment. <i>One</i> crystallized takeaway in serif italic — that's the sentence you'll remember tomorrow. Streak card primes return tomorrow. CTA to arXiv only appears after completion — reward, not blocker.</div>
+    </div>
+
+  </div><!-- /grid -->
+
+  <!-- ────────────── FOOTER NOTES ────────────── -->
+  <div class="footer-note">
+    <h3>Why this works — <em>what Mimo gets right</em></h3>
+    <p>Mimo's retention secret isn't gamification — it's that <b>reading is never the primary action</b>. You tap, you guess, you type, you rearrange. Aprecis v2 applies this to AI research:</p>
+    <ul>
+      <li><b>One paper per day, not a feed.</b> Removes decision fatigue (the kind that drives doomscrolling in the first place).</li>
+      <li><b>6 cards · 2 minutes · &lt;40 words per screen.</b> Hard ceiling — if a concept won't fit, split it.</li>
+      <li><b>Every card has an interaction.</b> Tap-to-reveal, fill-blank, MCQ, drag-to-sort, or tap-on-diagram. No passive reading screens.</li>
+      <li><b>XP + streak + level.</b> Return driver. Not a trick — it's the difference between "I should read more papers" and actually doing it.</li>
+      <li><b>The serif italic takeaway.</b> The single sentence that survives the deck. Shown at the end, not the beginning — so it lands, not prefaces.</li>
+      <li><b>arXiv link is the reward.</b> Flip the hierarchy: the paper unlocks <i>after</i> you've understood the shape of the idea, not as the starting point.</li>
+    </ul>
+  </div>
+
+</div>
+
+</body>
+</html>

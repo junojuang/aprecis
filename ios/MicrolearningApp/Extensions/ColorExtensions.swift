@@ -1,15 +1,39 @@
 import SwiftUI
 
-// MARK: - Brand Palette
+// MARK: - Brand Palette (Light Editorial)
 
-/// Electric blue — primary accent
-let accentBlue   = Color(hex: "4d9cff")
-/// Deep space black — app background
-let pageBg       = Color(hex: "04080f")
-/// Lifted card surface
-let cardSurface  = Color(hex: "0c1422")
-/// Urgency accent — "Before It Matters" badge
-let urgentColor  = Color(hex: "ff3b5c")
+/// Cream paper background
+let paperBg     = Color(hex: "f7f4ef")
+/// Dark ink, primary text
+let inkColor    = Color(hex: "0f1117")
+/// Primary teal accent
+let tealAccent  = Color(hex: "1a8a8a")
+/// Light teal, tag backgrounds, tinted areas
+let tealLight   = Color(hex: "e8f5f5")
+/// Mid teal
+let tealMid     = Color(hex: "2db8b8")
+/// Amber accent
+let amberAccent = Color(hex: "e8a020")
+/// Muted text
+let mutedText   = Color(hex: "8a8f9a")
+/// Card surface
+let cardBg      = Color.white
+/// Border
+let borderColor = Color(hex: "0f1117").opacity(0.1)
+
+/// Green used when a read-progress bar is near 100% (success cue).
+let progressGreen = Color(hex: "2a7a4a")
+
+/// Color for the reading-progress top bar. Stays teal for most of the page,
+/// warms to amber above 70%, lands on green above 95%, a subtle "nearly there"
+/// → "done" cue. Used by HomeView, PaperDetailView, BundleDetailView.
+func progressBarColor(_ progress: Double) -> Color {
+    switch progress {
+    case ..<0.7:  return tealAccent
+    case ..<0.95: return amberAccent
+    default:      return progressGreen
+    }
+}
 
 // MARK: - Hex Init
 

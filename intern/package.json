@@ -1,0 +1,17 @@
+{
+  "name": "aprecis-intern",
+  "version": "1.0.0",
+  "description": "Sources AI Instagram posts and generates post ideas for Aprecis",
+  "main": "index.ts",
+  "scripts": {
+    "run": "ts-node index.ts"
+  },
+  "dependencies": {
+    "openai": "^4.20.0"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.0",
+    "typescript": "^5.3.0",
+    "@types/node": "^20.0.0"
+  }
+}

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { background: transparent; font-family: -apple-system, system-ui, sans-serif; overflow: hidden; }
+#root { padding: 8px 2px 4px; }
+
+/* ───── FLOW ───── */
+.flow-node {
+  background: linear-gradient(135deg, #1a7a7a 0%, #2db8b8 100%);
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  padding: 12px 16px;
+  border-radius: 12px;
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.3;
+  box-shadow: 0 4px 18px rgba(26,138,138,0.30);
+  opacity: 0;
+  transform: translateY(8px) scale(0.94);
+  transition: opacity 0.38s ease, transform 0.38s ease;
+  user-select: none;
+  cursor: default;
+}
+.flow-node.in { opacity: 1; transform: translateY(0) scale(1); }
+.flow-node:active { transform: scale(0.97) !important; }
+
+.flow-connector {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 3px 0 2px;
+  opacity: 0; transition: opacity 0.3s;
+}
+.flow-connector.in { opacity: 1; }
+.flow-line {
+  width: 2px; height: 0; background: linear-gradient(to bottom, #1a8a8a, #45d4d4);
+  border-radius: 1px; transition: height 0.4s ease;
+}
+.flow-connector.in .flow-line { height: 16px; }
+.flow-edge-label {
+  font-size: 9px; font-weight: 700; color: #9ab;
+  letter-spacing: 0.5px; text-transform: uppercase; padding: 2px 6px;
+}
+.flow-arrowhead {
+  width: 0; height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 8px solid #2db8b8;
+  margin-top: 1px;
+}
+
+/* ───── DIAGRAM (DAG / SVG) ───── */
+.diagram-wrap { width: 100%; }
+.diagram-wrap svg { display: block; width: 100%; overflow: visible; }
+
+/* ───── COMPARISON ───── */
+.cmp-heads {
+  display: grid; grid-template-columns: 1fr 8px 1fr; margin-bottom: 10px;
+}
+.cmp-head { font-size: 9px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; text-align: center; padding: 4px 0; }
+.cmp-head.l { color: #999; }
+.cmp-head.r { color: #1a8a8a; }
+
+.cmp-row { display: grid; grid-template-columns: 1fr 8px 1fr; margin-bottom: 7px; }
+.cmp-cell {
+  padding: 10px 12px; border-radius: 10px;
+  font-size: 12px; font-weight: 500; text-align: center; line-height: 1.35;
+  opacity: 0; transition: opacity 0.42s ease, transform 0.42s ease;
+}
+.cmp-cell.l { background: #f0efed; color: #666; transform: translateX(-12px); }
+.cmp-cell.r { background: #e3f3f3; color: #166060; font-weight: 600; transform: translateX(12px); }
+.cmp-cell.in { opacity: 1; transform: translateX(0); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+var NS = 'http://www.w3.org/2000/svg';
+
+function renderConcept(data) {
+  var root = document.getElementById('root');
+  root.innerHTML = '';
+  if (!data || !data.nodes || !data.nodes.length) return;
+  if (data.type === 'flow') renderFlow(root, data);
+  else if (data.type === 'diagram') renderDiagram(root, data);
+  else if (data.type === 'comparison') renderComparison(root, data);
+  // Report content height back to SwiftUI
+  setTimeout(function() {
+    var h = root.getBoundingClientRect().height + 20;
+    if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.resize) {
+      window.webkit.messageHandlers.resize.postMessage(Math.ceil(h));
+    }
+  }, 650);
+}
+
+/* ═══════════════════════ FLOW ═══════════════════════ */
+function flowOrder(data) {
+  var toSet = {};
+  data.edges.forEach(function(e) { toSet[e.to] = true; });
+  var rootId = null;
+  for (var i = 0; i < data.nodes.length; i++) {
+    if (!toSet[data.nodes[i].id]) { rootId = data.nodes[i].id; break; }
+  }
+  if (!rootId) rootId = data.nodes[0].id;
+  var res = [], seen = {};
+  var cur = rootId;
+  for (;;) {
+    var node = null;
+    for (var i = 0; i < data.nodes.length; i++) { if (data.nodes[i].id === cur) { node = data.nodes[i]; break; } }
+    if (!node || seen[cur]) break;
+    res.push(node); seen[cur] = true;
+    var next = null;
+    for (var i = 0; i < data.edges.length; i++) {
+      if (data.edges[i].from === cur && !seen[data.edges[i].to]) { next = data.edges[i].to; break; }
+    }
+    if (!next) break;
+    cur = next;
+  }
+  data.nodes.forEach(function(n) { if (!seen[n.id]) res.push(n); });
+  return res;
+}
+
+function renderFlow(root, data) {
+  var nodes = flowOrder(data);
+  nodes.forEach(function(node, i) {
+    var el = document.createElement('div');
+    el.className = 'flow-node';
+    el.textContent = node.label;
+    root.appendChild(el);
+    setTimeout(function() { el.classList.add('in'); }, 60 + i * 120);
+
+    if (i < nodes.length - 1) {
+      var next = nodes[i + 1];
+      var edge = null;
+      for (var j = 0; j < data.edges.length; j++) {
+        if (data.edges[j].from === node.id && data.edges[j].to === next.id) { edge = data.edges[j]; break; }
+      }
+      var conn = document.createElement('div');
+      conn.className = 'flow-connector';
+      conn.innerHTML = '<div class="flow-line"></div>' +
+        (edge && edge.label ? '<div class="flow-edge-label">' + edge.label + '</div>' : '') +
+        '<div class="flow-arrowhead"></div>';
+      root.appendChild(conn);
+      setTimeout(function(c) { return function() { c.classList.add('in'); }; }(conn), 120 + i * 120);
+    }
+  });
+}
+
+/* ═══════════════════════ DIAGRAM ═══════════════════════ */
+function renderDiagram(root, data) {
+  var NW = 116, NH = 40, HG = 14, VG = 62, PV = 14, PH = 8;
+
+  // BFS depth
+  var toSet = {};
+  data.edges.forEach(function(e) { toSet[e.to] = true; });
+  var depths = {};
+  var queue = [];
+  data.nodes.forEach(function(n) { if (!toSet[n.id]) queue.push([n.id, 0]); });
+  if (!queue.length) queue.push([data.nodes[0].id, 0]);
+  for (var qi = 0; qi < queue.length; qi++) {
+    var id = queue[qi][0], d = queue[qi][1];
+    if (id in depths) continue;
+    depths[id] = d;
+    data.edges.forEach(function(e) { if (e.from === id && !(e.to in depths)) queue.push([e.to, d + 1]); });
+  }
+  data.nodes.forEach(function(n) {
+    if (!(n.id in depths)) {
+      var vals = Object.values(depths);
+      depths[n.id] = vals.length ? Math.max.apply(null, vals) + 1 : 0;
+    }
+  });
+
+  var maxD = 0;
+  Object.values(depths).forEach(function(d) { if (d > maxD) maxD = d; });
+  var layers = [];
+  for (var d = 0; d <= maxD; d++) {
+    layers.push(data.nodes.filter(function(n) { return depths[n.id] === d; }));
+  }
+
+  var maxLayerW = 0;
+  layers.forEach(function(l) { if (l.length > maxLayerW) maxLayerW = l.length; });
+  var svgW = Math.max(maxLayerW * (NW + HG) - HG + PH * 2, 260);
+  var svgH = PV + layers.length * NH + (layers.length - 1) * VG + PV + 16;
+
+  var pos = {};
+  layers.forEach(function(layer, li) {
+    var y = PV + li * (NH + VG) + NH / 2;
+    var tw = layer.length * NW + (layer.length - 1) * HG;
+    var x0 = (svgW - tw) / 2 + NW / 2;
+    layer.forEach(function(n, ni) { pos[n.id] = { x: x0 + ni * (NW + HG), y: y }; });
+  });
+
+  var svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('width', '100%');
+  svg.setAttribute('height', svgH);
+  svg.setAttribute('viewBox', '0 0 ' + svgW + ' ' + svgH);
+  svg.style.overflow = 'visible';
+
+  // Defs: arrow markers
+  var defs = document.createElementNS(NS, 'defs');
+  function makeMarker(id, color, opacity) {
+    var m = document.createElementNS(NS, 'marker');
+    m.setAttribute('id', id); m.setAttribute('markerWidth', '9'); m.setAttribute('markerHeight', '9');
+    m.setAttribute('refX', '7'); m.setAttribute('refY', '3'); m.setAttribute('orient', 'auto');
+    var p = document.createElementNS(NS, 'path');
+    p.setAttribute('d', 'M0,0 L0,6 L8,3 z');
+    p.setAttribute('fill', color); p.setAttribute('opacity', opacity);
+    m.appendChild(p); defs.appendChild(m);
+  }
+  makeMarker('arr', '#1a8a8a', '0.75');
+  makeMarker('arr-hl', '#e8a020', '1');
+  svg.appendChild(defs);
+
+  var edgesG = document.createElementNS(NS, 'g');
+  var nodesG = document.createElementNS(NS, 'g');
+  svg.appendChild(edgesG);
+  svg.appendChild(nodesG);
+
+  var edgePaths = {};
+  data.edges.forEach(function(edge, ei) {
+    var f = pos[edge.from], t = pos[edge.to];
+    if (!f || !t) return;
+    var x1 = f.x, y1 = f.y + NH / 2, x2 = t.x, y2 = t.y - NH / 2 - 7;
+    var d;
+    if (Math.abs(x1 - x2) < 2) {
+      d = 'M' + x1 + ',' + y1 + ' L' + x2 + ',' + y2;
+    } else {
+      var m = (y1 + y2) / 2;
+      d = 'M' + x1 + ',' + y1 + ' C' + x1 + ',' + m + ' ' + x2 + ',' + m + ' ' + x2 + ',' + y2;
+    }
+    var path = document.createElementNS(NS, 'path');
+    path.setAttribute('d', d); path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', '#1a8a8a'); path.setAttribute('stroke-width', '1.8');
+    path.setAttribute('stroke-linecap', 'round'); path.setAttribute('opacity', '0.65');
+    path.setAttribute('marker-end', 'url(#arr)');
+    edgesG.appendChild(path);
+
+    // Animate edge drawing via stroke-dashoffset
+    var len = path.getTotalLength ? Math.max(path.getTotalLength(), 10) : 60;
+    path.style.strokeDasharray = len;
+    path.style.strokeDashoffset = len;
+    path.style.transition = 'stroke-dashoffset 0.5s ease ' + (0.25 + ei * 0.1) + 's';
+    setTimeout(function(p) { return function() { p.style.strokeDashoffset = '0'; }; }(path), 30);
+
+    if (edge.label) {
+      var mid = path.getPointAtLength ? path.getPointAtLength(len / 2) : { x: (x1+x2)/2, y: (y1+y2)/2 };
+      var txt = document.createElementNS(NS, 'text');
+      txt.setAttribute('x', mid.x + 7); txt.setAttribute('y', mid.y);
+      txt.setAttribute('font-size', '9.5'); txt.setAttribute('fill', '#888');
+      txt.setAttribute('font-weight', '700'); txt.setAttribute('dominant-baseline', 'central');
+      txt.setAttribute('font-family', '-apple-system, system-ui, sans-serif');
+      txt.textContent = edge.label;
+      edgesG.appendChild(txt);
+    }
+
+    edgePaths[edge.from + '>' + edge.to] = path;
+  });
+
+  var nodeRects = {};
+  data.nodes.forEach(function(node, ni) {
+    var p = pos[node.id];
+    if (!p) return;
+    var g = document.createElementNS(NS, 'g');
+    g.setAttribute('transform', 'translate(' + p.x + ',' + p.y + ')');
+    g.style.opacity = '0';
+    g.style.transition = 'opacity 0.35s ease ' + (0.1 + ni * 0.07) + 's';
+    g.style.cursor = 'pointer';
+
+    // Drop shadow rect
+    var shadow = document.createElementNS(NS, 'rect');
+    shadow.setAttribute('x', -NW/2+2); shadow.setAttribute('y', -NH/2+4);
+    shadow.setAttribute('width', NW); shadow.setAttribute('height', NH);
+    shadow.setAttribute('rx', '10'); shadow.setAttribute('fill', 'rgba(26,138,138,0.18)');
+
+    var rect = document.createElementNS(NS, 'rect');
+    rect.setAttribute('x', -NW/2); rect.setAttribute('y', -NH/2);
+    rect.setAttribute('width', NW); rect.setAttribute('height', NH);
+    rect.setAttribute('rx', '10'); rect.setAttribute('fill', '#1a8a8a');
+
+    // Text (wrap at ~15 chars)
+    var words = node.label.split(' '), lines = [], line = '';
+    words.forEach(function(w) {
+      if ((line + w).length > 15 && line) { lines.push(line.trim()); line = w + ' '; }
+      else line += w + ' ';
+    });
+    if (line.trim()) lines.push(line.trim());
+    var lh = 13;
+    var tg = document.createElementNS(NS, 'g');
+    lines.forEach(function(l, li) {
+      var t = document.createElementNS(NS, 'text');
+      t.setAttribute('x', '0');
+      t.setAttribute('y', ((li - (lines.length - 1) / 2) * lh) + '');
+      t.setAttribute('font-size', lines.length > 1 ? '10.5' : '12');
+      t.setAttribute('fill', 'white'); t.setAttribute('font-weight', '600');
+      t.setAttribute('text-anchor', 'middle'); t.setAttribute('dominant-baseline', 'central');
+      t.setAttribute('font-family', '-apple-system, system-ui, sans-serif');
+      t.textContent = l;
+      tg.appendChild(t);
+    });
+
+    g.appendChild(shadow); g.appendChild(rect); g.appendChild(tg);
+    nodesG.appendChild(g);
+    nodeRects[node.id] = { g: g, rect: rect };
+
+    // Tap: highlight connected edges & node
+    g.addEventListener('click', function(nid, r) {
+      return function() {
+        var myEdgeKeys = {};
+        data.edges.forEach(function(e) {
+          if (e.from === nid || e.to === nid) myEdgeKeys[e.from + '>' + e.to] = true;
+        });
+        Object.keys(nodeRects).forEach(function(id) {
+          nodeRects[id].rect.setAttribute('fill', id === nid ? '#e8a020' : '#1a8a8a');
+        });
+        Object.keys(edgePaths).forEach(function(key) {
+          var hl = !!myEdgeKeys[key];
+          edgePaths[key].setAttribute('stroke', hl ? '#e8a020' : '#1a8a8a');
+          edgePaths[key].setAttribute('opacity', hl ? '1' : '0.2');
+          edgePaths[key].setAttribute('stroke-width', hl ? '2.5' : '1.8');
+          edgePaths[key].setAttribute('marker-end', 'url(#arr' + (hl ? '-hl' : '') + ')');
+        });
+      };
+    }(node.id, rect));
+
+    setTimeout(function(gEl) { return function() { gEl.style.opacity = '1'; }; }(g), 30 + ni * 75);
+  });
+
+  var wrap = document.createElement('div');
+  wrap.className = 'diagram-wrap';
+  wrap.appendChild(svg);
+  root.appendChild(wrap);
+}
+
+/* ═══════════════════════ COMPARISON ═══════════════════════ */
+function renderComparison(root, data) {
+  var mid = Math.ceil(data.nodes.length / 2);
+  var left = data.nodes.slice(0, mid);
+  var right = data.nodes.slice(mid);
+
+  var heads = document.createElement('div');
+  heads.className = 'cmp-heads';
+  heads.innerHTML = '<div class="cmp-head l">▸ Before</div><div></div><div class="cmp-head r">★ This Paper</div>';
+  root.appendChild(heads);
+
+  var n = Math.max(left.length, right.length);
+  for (var i = 0; i < n; i++) {
+    var row = document.createElement('div');
+    row.className = 'cmp-row';
+    var lc = document.createElement('div'); lc.className = 'cmp-cell l'; lc.textContent = left[i] ? left[i].label : '';
+    var div = document.createElement('div');
+    var rc = document.createElement('div'); rc.className = 'cmp-cell r'; rc.textContent = right[i] ? right[i].label : '';
+    row.appendChild(lc); row.appendChild(div); row.appendChild(rc);
+    root.appendChild(row);
+    setTimeout(function(l, r) { return function() { l.classList.add('in'); r.classList.add('in'); }; }(lc, rc), 80 + i * 110);
+  }
+}
+</script>
+</body>
+</html>

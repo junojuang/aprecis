@@ -1,0 +1,2771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Aprecis — Full Flow Prototype</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #f7f4ef;
+    --paper-2: #efeae1;
+    --paper-3: #e6e1d6;
+    --ink: #0f1117;
+    --ink-2: #2a2d36;
+    --ink-3: #4a4e58;
+    --muted: #8a8f9a;
+    --muted-2: #b0b4bc;
+    --line: #e6e1d6;
+    --line-2: #dcd6c8;
+    --teal: #1a8a8a;
+    --teal-deep: #0f5a5a;
+    --teal-light: #e8f5f5;
+    --teal-bright: #5fd4d4;
+    --amber: #e8a020;
+    --amber-light: #fbf1dc;
+    --amber-deep: #7a5310;
+    --rose: #d46a6a;
+    --rose-light: #fbe8e8;
+    --green: #4a9c4a;
+    --green-light: #ecf7ec;
+    --card: #ffffff;
+    --serif: 'Lora', Georgia, serif;
+    --sans: 'Inter', -apple-system, system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+  html, body { background: #0a0a0b; color: #fff; font-family: var(--sans); min-height: 100vh; }
+  ::-webkit-scrollbar { height: 10px; width: 10px; }
+  ::-webkit-scrollbar-track { background: #0a0a0b; }
+  ::-webkit-scrollbar-thumb { background: #1f1f22; border-radius: 99px; }
+
+  .stage {
+    min-height: 100vh;
+    padding: 56px 48px 120px;
+    background:
+      radial-gradient(ellipse 100% 60% at 50% 0%, rgba(26,138,138,0.10), transparent 70%),
+      radial-gradient(ellipse 80% 40% at 0% 40%, rgba(232,160,32,0.06), transparent 70%),
+      radial-gradient(ellipse 80% 40% at 100% 70%, rgba(95,212,212,0.06), transparent 70%),
+      #0a0a0b;
+  }
+
+  /* ── HEADER ─────────────────────────────────── */
+  .header {
+    max-width: 1600px;
+    margin: 0 auto 48px;
+  }
+  .kicker {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--teal-bright);
+    margin-bottom: 12px;
+  }
+  .brand-row {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    gap: 48px; flex-wrap: wrap;
+  }
+  .brand {
+    font-family: var(--serif); font-size: 52px; font-weight: 600;
+    letter-spacing: -0.03em; color: #fff; line-height: 1;
+  }
+  .brand em { color: var(--teal-bright); font-style: italic; font-weight: 500; }
+  .lede {
+    font-family: var(--serif); font-style: italic;
+    font-size: 20px; color: #b0b4bc; line-height: 1.5;
+    max-width: 680px;
+    border-left: 2px solid rgba(95,212,212,0.4);
+    padding-left: 20px;
+  }
+
+  .meta-row {
+    margin-top: 40px;
+    display: flex; gap: 40px; flex-wrap: wrap;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .meta-item { max-width: 280px; }
+  .meta-item .label {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+    text-transform: uppercase; color: #6c717b; margin-bottom: 8px;
+  }
+  .meta-item .value {
+    font-family: var(--serif); font-size: 16px; color: #e8e8ea;
+    line-height: 1.5;
+  }
+  .meta-item .value b { color: var(--teal-bright); font-weight: 500; font-style: italic; }
+
+  /* ── SECTION ──────────────────────────────── */
+  .section {
+    max-width: 1760px;
+    margin: 0 auto 80px;
+  }
+  .section-hd {
+    display: flex; align-items: flex-end; gap: 24px;
+    margin-bottom: 36px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .section-num {
+    font-family: var(--serif); font-style: italic;
+    font-size: 64px; font-weight: 400; line-height: 0.9;
+    color: rgba(95,212,212,0.5);
+    letter-spacing: -0.03em;
+  }
+  .section-title {
+    font-family: var(--serif); font-size: 32px; font-weight: 600;
+    color: #fff; letter-spacing: -0.02em; line-height: 1.15;
+  }
+  .section-title em { color: var(--teal-bright); font-style: italic; font-weight: 500; }
+  .section-desc {
+    font-size: 14px; color: #8a8f9a; margin-left: auto; max-width: 420px;
+    text-align: right; line-height: 1.5; padding-bottom: 4px;
+  }
+
+  /* ── FLOW GRID ───────────────────────────── */
+  .flow {
+    display: flex; flex-wrap: wrap;
+    gap: 40px 28px;
+    align-items: flex-start;
+  }
+
+  .fnode {
+    display: flex; flex-direction: column; gap: 12px;
+    width: 340px;
+    position: relative;
+  }
+  .fnode.wide { width: 720px; }
+
+  /* arrow connector between phones (horizontal) */
+  .fnode::after {
+    content: '';
+    position: absolute; top: 360px; right: -26px;
+    width: 24px; height: 24px;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235fd4d4' stroke-width='1.5'><path d='M5 12h14M13 5l7 7-7 7'/></svg>") center/contain no-repeat;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  .fnode.noarrow::after { display: none; }
+
+  /* ── PHONE ───────────────────────────────── */
+  .phone {
+    width: 340px; height: 720px;
+    border-radius: 48px;
+    background: #111;
+    padding: 9px;
+    box-shadow:
+      0 0 0 2px #1f1f22,
+      0 24px 60px rgba(0,0,0,0.45),
+      0 8px 24px rgba(0,0,0,0.35);
+    position: relative;
+  }
+  .phone::before {
+    content: ''; position: absolute;
+    top: 7px; bottom: 7px; left: 7px; right: 7px;
+    border-radius: 41px; pointer-events: none;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
+  }
+  .screen {
+    width: 100%; height: 100%;
+    border-radius: 40px;
+    background: var(--paper);
+    color: var(--ink);
+    overflow: hidden;
+    position: relative;
+    display: flex; flex-direction: column;
+  }
+  .notch {
+    position: absolute; top: 10px; left: 50%;
+    transform: translateX(-50%);
+    width: 104px; height: 30px;
+    background: #000; border-radius: 18px; z-index: 10;
+  }
+  .status {
+    height: 42px; padding: 0 26px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 13px; font-weight: 600; color: var(--ink);
+    flex-shrink: 0;
+    padding-top: 4px;
+  }
+  .status.dark { color: #fff; }
+  .status .right { display: flex; gap: 5px; align-items: center; }
+  .status .bars { display: flex; gap: 2px; align-items: flex-end; }
+  .status .bars i { width: 2.5px; background: currentColor; border-radius: 1px; display: block; }
+  .status .bars i:nth-child(1){ height: 3px; }
+  .status .bars i:nth-child(2){ height: 5px; }
+  .status .bars i:nth-child(3){ height: 7px; }
+  .status .bars i:nth-child(4){ height: 9px; }
+  .status .bat {
+    width: 22px; height: 11px; border: 1px solid currentColor;
+    border-radius: 3px; position: relative; padding: 1px;
+  }
+  .status .bat::after {
+    content: ''; position: absolute; right: -3px; top: 3px;
+    width: 2px; height: 4px; background: currentColor; border-radius: 0 2px 2px 0;
+  }
+  .status .bat i { display: block; height: 100%; width: 70%; background: currentColor; border-radius: 1px; }
+
+  .body { flex: 1; overflow: hidden; position: relative; }
+  .home-ind {
+    position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%);
+    width: 120px; height: 4px; background: var(--ink); border-radius: 3px; opacity: 0.85;
+    z-index: 20;
+  }
+  .home-ind.light { background: #fff; opacity: 0.7; }
+
+  .screen.dark { background: #0f1117; color: #fff; }
+  .screen.teal { background: linear-gradient(170deg, #0f3a3a 0%, #0a2a2a 100%); color: #fff; }
+
+  /* ── LABEL UNDER PHONE ────────────────────── */
+  .label {
+    font-size: 11px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: #6c717b;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .label b {
+    font-family: var(--serif); font-style: italic; font-weight: 500;
+    color: #e8e8ea; letter-spacing: 0; text-transform: none;
+    font-size: 15px; margin-right: 2px;
+  }
+  .label .pill {
+    padding: 2px 8px; border-radius: 99px;
+    background: rgba(95,212,212,0.15); color: var(--teal-bright);
+    font-weight: 600; letter-spacing: 0.06em;
+  }
+  .note {
+    font-size: 12px; color: #8a8f9a; line-height: 1.55;
+    max-width: 320px;
+  }
+  .note b { color: #dfe2e8; font-weight: 600; }
+
+  /* ── UTIL ────────────────────────────────── */
+  .row { display: flex; align-items: center; }
+  .col { display: flex; flex-direction: column; }
+  .between { justify-content: space-between; }
+  .center { justify-content: center; align-items: center; }
+
+  /* tab bar */
+  .tabbar {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 78px; padding: 8px 20px 22px;
+    display: flex; justify-content: space-around; align-items: flex-start;
+    background: rgba(247,244,239,0.94);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--line);
+  }
+  .tab { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 9px; color: var(--muted); font-weight: 600; letter-spacing: 0.04em; }
+  .tab .ic { width: 20px; height: 20px; stroke: var(--muted); fill: none; stroke-width: 1.7; }
+  .tab.active { color: var(--ink); }
+  .tab.active .ic { stroke: var(--ink); }
+
+  /* dots progress */
+  .dots { display: flex; gap: 5px; align-items: center; flex: 1; }
+  .dots i { flex: 1; height: 3px; border-radius: 99px; background: var(--line); max-width: 28px; }
+  .dots i.done { background: var(--teal); }
+  .dots i.active { background: var(--ink); }
+  .dots.dark i { background: rgba(255,255,255,0.15); }
+  .dots.dark i.done { background: var(--teal-bright); }
+  .dots.dark i.active { background: #fff; }
+
+  /* ───────────────────────────────────────────── */
+  /*  ONBOARDING SCREENS                           */
+  /* ───────────────────────────────────────────── */
+
+  /* O1 — Splash */
+  .o1 {
+    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 0 32px;
+    background:
+      radial-gradient(ellipse 80% 40% at 50% 30%, rgba(26,138,138,0.12), transparent 60%),
+      var(--paper);
+    position: relative;
+  }
+  .o1 .logo {
+    font-family: var(--serif); font-size: 68px; font-weight: 600;
+    letter-spacing: -0.04em; color: var(--teal);
+    line-height: 1;
+  }
+  .o1 .logo em { font-style: italic; font-weight: 500; color: var(--ink); }
+  .o1 .tag {
+    margin-top: 22px;
+    font-family: var(--serif); font-style: italic;
+    font-size: 17px; color: var(--muted); text-align: center;
+    line-height: 1.5; max-width: 240px;
+  }
+  .o1 .loader {
+    position: absolute; bottom: 90px;
+    width: 28px; height: 28px;
+    border: 2px solid var(--line);
+    border-top-color: var(--teal);
+    border-radius: 99px;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* O2 — Welcome */
+  .o2 { flex: 1; display: flex; flex-direction: column; padding: 20px 28px 24px; }
+  .o2 .logo-sm { font-family: var(--serif); font-size: 22px; font-weight: 600; color: var(--teal); letter-spacing: -0.02em; }
+  .o2 .logo-sm em { color: var(--ink); font-weight: 500; }
+  .o2 .hero-art {
+    margin: 24px -10px 20px;
+    height: 170px; position: relative;
+    border-radius: 20px;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(95,212,212,0.35), transparent 60%),
+      radial-gradient(circle at 75% 70%, rgba(232,160,32,0.3), transparent 55%),
+      linear-gradient(160deg, #1a2a2a 0%, #0f3a3a 100%);
+    overflow: hidden;
+  }
+  .o2 .hero-art svg { position: absolute; inset: 0; opacity: 0.6; }
+  .o2 .hero-art .pap {
+    position: absolute; width: 100px; height: 128px;
+    border-radius: 10px; background: #fff;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+  .o2 .hero-art .pap.p1 { left: 30px; top: 24px; transform: rotate(-10deg); background: var(--paper); }
+  .o2 .hero-art .pap.p2 { left: 110px; top: 18px; transform: rotate(4deg); }
+  .o2 .hero-art .pap.p3 { left: 190px; top: 32px; transform: rotate(12deg); background: var(--teal); }
+  .o2 .hero-art .pap .l { height: 4px; margin: 8px 10px 0; border-radius: 2px; background: rgba(15,17,23,0.18); }
+  .o2 .hero-art .pap.p3 .l { background: rgba(255,255,255,0.3); }
+  .o2 .hero-art .pap .l.short { width: 40%; }
+  .o2 .hero-title {
+    font-family: var(--serif); font-size: 26px; font-weight: 600;
+    line-height: 1.2; letter-spacing: -0.02em;
+    color: var(--ink); margin-top: 8px;
+  }
+  .o2 .hero-title em { color: var(--teal); font-style: italic; font-weight: 500; }
+  .o2 .hero-sub {
+    font-family: var(--serif); font-style: italic;
+    font-size: 14px; color: var(--muted); margin-top: 10px; line-height: 1.5;
+  }
+  .o2 .benefits { margin-top: 22px; display: flex; flex-direction: column; gap: 12px; }
+  .o2 .ben { display: flex; gap: 12px; align-items: flex-start; }
+  .o2 .ben .ic {
+    flex-shrink: 0; width: 32px; height: 32px; border-radius: 10px;
+    background: var(--teal-light); color: var(--teal-deep);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700;
+  }
+  .o2 .ben .tx { flex: 1; }
+  .o2 .ben .t { font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1.35; }
+  .o2 .ben .d { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+  .o2 .cta {
+    margin-top: auto;
+    padding: 14px; border-radius: 14px; background: var(--ink); color: var(--paper);
+    text-align: center; font-weight: 700; font-size: 14px;
+  }
+  .o2 .signin { margin-top: 12px; text-align: center; font-size: 12px; color: var(--muted); }
+  .o2 .signin b { color: var(--teal); font-weight: 600; }
+
+  /* O3 — Interests */
+  .o3 { flex: 1; display: flex; flex-direction: column; padding: 20px 24px 24px; }
+  .o3 .top { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .o3 .top .back {
+    width: 30px; height: 30px; border-radius: 99px; background: var(--paper-2);
+    display: flex; align-items: center; justify-content: center; font-size: 14px;
+  }
+  .o3 .top .step { font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .o3 .progress { height: 3px; background: var(--line); border-radius: 99px; margin: 14px 0 20px; overflow: hidden; }
+  .o3 .progress i { display: block; height: 100%; width: 40%; background: var(--teal); border-radius: 99px; }
+  .o3 .q { font-family: var(--serif); font-size: 22px; font-weight: 600; line-height: 1.25; color: var(--ink); letter-spacing: -0.01em; }
+  .o3 .q em { color: var(--teal); font-style: italic; font-weight: 500; }
+  .o3 .qhint { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .o3 .grid {
+    margin-top: 22px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .o3 .chip {
+    padding: 12px; border-radius: 14px;
+    background: var(--card); border: 1.5px solid var(--line);
+    display: flex; flex-direction: column; gap: 6px;
+    font-size: 12px; font-weight: 600; color: var(--ink);
+    position: relative;
+  }
+  .o3 .chip .em { font-size: 20px; }
+  .o3 .chip.sel { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .o3 .chip.sel::after {
+    content: '✓'; position: absolute; top: 8px; right: 10px;
+    color: var(--teal-bright); font-weight: 700; font-size: 12px;
+  }
+  .o3 .cta {
+    margin-top: auto; padding: 14px; border-radius: 14px; background: var(--ink); color: var(--paper);
+    text-align: center; font-weight: 700; font-size: 14px;
+  }
+  .o3 .cta.dis { background: var(--paper-3); color: var(--muted); }
+
+  /* O4 — Level */
+  .o4 { flex: 1; display: flex; flex-direction: column; padding: 20px 24px 24px; }
+  .o4 .opt {
+    padding: 16px; border-radius: 16px;
+    background: var(--card); border: 1.5px solid var(--line);
+    margin-bottom: 10px; position: relative;
+  }
+  .o4 .opt.sel { border-color: var(--teal); background: var(--teal-light); }
+  .o4 .opt .t { font-family: var(--serif); font-size: 16px; font-weight: 600; color: var(--ink); line-height: 1.25; }
+  .o4 .opt .d { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+  .o4 .opt .tags { margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .o4 .opt .tag {
+    font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 99px;
+    background: var(--paper-2); color: var(--ink-3);
+    letter-spacing: 0.04em;
+  }
+  .o4 .opt.sel .tag { background: rgba(26,138,138,0.15); color: var(--teal-deep); }
+  .o4 .opt::after {
+    content: ''; position: absolute; top: 16px; right: 16px;
+    width: 18px; height: 18px; border-radius: 99px;
+    border: 1.5px solid var(--line);
+  }
+  .o4 .opt.sel::after {
+    background: var(--teal);
+    border-color: var(--teal);
+    box-shadow: inset 0 0 0 4px #fff;
+  }
+
+  /* O5 — Reminder */
+  .o5 { flex: 1; display: flex; flex-direction: column; padding: 20px 24px 24px; }
+  .o5 .art {
+    margin: 18px auto 20px;
+    width: 160px; height: 160px; border-radius: 99px;
+    background: linear-gradient(140deg, #1a8a8a, #5fd4d4);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 20px 50px rgba(26,138,138,0.3);
+    position: relative;
+  }
+  .o5 .art .bell {
+    width: 80px; height: 80px; background: #fff; border-radius: 50% 50% 10px 10px;
+    position: relative;
+  }
+  .o5 .art .bell::after {
+    content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
+    width: 14px; height: 10px; background: #fff; border-radius: 0 0 6px 6px;
+  }
+  .o5 .art .bell::before {
+    content: ''; position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+    width: 10px; height: 10px; background: #fff; border-radius: 99px;
+  }
+  .o5 .time-pick {
+    margin: 14px 0;
+    padding: 18px 22px; border-radius: 18px;
+    background: var(--card); border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .o5 .time-pick .l { font-size: 13px; font-weight: 600; color: var(--ink); }
+  .o5 .time-pick .t { font-family: var(--serif); font-size: 26px; font-weight: 600; color: var(--teal); letter-spacing: -0.01em; }
+  .o5 .days { display: flex; gap: 6px; margin-top: 6px; }
+  .o5 .days i {
+    flex: 1; text-align: center; padding: 8px 0; border-radius: 10px;
+    font-size: 11px; font-weight: 700; background: var(--paper-2); color: var(--muted);
+  }
+  .o5 .days i.on { background: var(--ink); color: var(--paper); }
+
+  /* ───────────────────────────────────────────── */
+  /*  DAILY LOOP SCREENS                           */
+  /* ───────────────────────────────────────────── */
+
+  /* D1 — Today */
+  .d1-hd { padding: 12px 22px 4px; display: flex; align-items: center; justify-content: space-between; }
+  .d1-hd .logo { font-family: var(--serif); font-size: 20px; font-weight: 600; color: var(--teal); letter-spacing: -0.02em; }
+  .d1-hd .logo em { color: var(--ink); font-weight: 500; }
+  .d1-hd .streak {
+    display: flex; align-items: center; gap: 5px;
+    background: var(--amber-light); color: var(--amber-deep);
+    padding: 5px 9px; border-radius: 99px;
+    font-size: 12px; font-weight: 700;
+  }
+  .d1-greet { padding: 8px 22px 0; font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--muted); }
+  .d1-xp { padding: 12px 22px 10px; }
+  .d1-xp .xp-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; font-size: 11px; font-weight: 600; }
+  .d1-xp .xp-row .lvl { color: var(--ink); font-family: var(--serif); font-size: 12px; }
+  .d1-xp .xp-row .pts { color: var(--muted); font-family: var(--mono); font-size: 11px; }
+  .d1-xp .bar { height: 5px; background: var(--paper-2); border-radius: 99px; overflow: hidden; }
+  .d1-xp .bar i { display: block; height: 100%; width: 72%; background: linear-gradient(90deg, var(--teal), var(--teal-bright)); border-radius: 99px; }
+  .d1-sec { padding: 14px 22px 8px; font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+  .d1-daily {
+    margin: 0 16px 14px;
+    padding: 18px;
+    border-radius: 20px;
+    background: linear-gradient(155deg, #0f1117 0%, #1e2a3a 60%, #0f3a3a 100%);
+    color: #fff; position: relative; overflow: hidden;
+  }
+  .d1-daily::before {
+    content: ''; position: absolute; right: -40px; top: -40px;
+    width: 140px; height: 140px; border-radius: 99px;
+    background: radial-gradient(circle at 30% 30%, rgba(95,212,212,0.35), transparent 70%);
+  }
+  .d1-daily .tg { font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal-bright); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+  .d1-daily .tg::before { content: ''; width: 5px; height: 5px; border-radius: 99px; background: var(--teal-bright); box-shadow: 0 0 0 4px rgba(95,212,212,0.2); }
+  .d1-daily h2 { font-family: var(--serif); font-size: 20px; font-weight: 600; line-height: 1.2; margin-bottom: 8px; }
+  .d1-daily h2 em { color: var(--teal-bright); font-style: italic; font-weight: 500; }
+  .d1-daily p { font-size: 12px; color: #b9bec9; line-height: 1.5; margin-bottom: 14px; }
+  .d1-daily .mm { display: flex; gap: 12px; font-size: 10px; color: #8a8f9a; margin-bottom: 14px; font-weight: 500; }
+  .d1-daily .cta { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 11px; border-radius: 12px; background: var(--teal-bright); color: #0f1117; font-weight: 700; font-size: 13px; }
+  .d1-list { padding: 0 16px; }
+  .d1-item { padding: 10px 8px; border-bottom: 1px solid var(--line); display: flex; gap: 12px; align-items: center; }
+  .d1-item:last-child { border-bottom: none; }
+  .d1-item .ring { width: 38px; height: 38px; flex-shrink: 0; border-radius: 99px; display: flex; align-items: center; justify-content: center; position: relative; }
+  .d1-item .ring svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+  .d1-item .ring circle { fill: none; stroke-width: 2.5; }
+  .d1-item .ring .bg { stroke: var(--paper-2); }
+  .d1-item .ring .fg { stroke: var(--teal); stroke-linecap: round; }
+  .d1-item .ring span { font-size: 10px; font-weight: 700; color: var(--ink); }
+  .d1-item .ttl { font-family: var(--serif); font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1.3; margin-bottom: 2px; }
+  .d1-item .sub { font-size: 10px; color: var(--muted); font-weight: 500; }
+
+  /* D2 — Paper preview */
+  .d2-top { padding: 14px 22px 6px; display: flex; align-items: center; justify-content: space-between; }
+  .d2-close { width: 28px; height: 28px; border-radius: 99px; background: var(--paper-2); display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .d2-kebab { width: 28px; height: 28px; border-radius: 99px; background: var(--paper-2); display: flex; align-items: center; justify-content: center; font-size: 18px; letter-spacing: 1px; color: var(--ink); font-weight: 700; }
+  .d2-cover {
+    margin: 10px 16px 0;
+    height: 150px; border-radius: 18px;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(95,212,212,0.4), transparent 55%),
+      radial-gradient(circle at 80% 70%, rgba(232,160,32,0.35), transparent 55%),
+      linear-gradient(135deg, #0f1117 0%, #1a2a2a 100%);
+    position: relative; overflow: hidden;
+  }
+  .d2-cover svg { position: absolute; inset: 0; }
+  .d2-meta-top { padding: 14px 22px 0; display: flex; gap: 6px; }
+  .d2-meta-top .tag { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 8px; border-radius: 99px; background: var(--teal-light); color: var(--teal-deep); }
+  .d2-title { padding: 10px 22px 6px; font-family: var(--serif); font-size: 20px; font-weight: 600; line-height: 1.2; color: var(--ink); letter-spacing: -0.01em; }
+  .d2-auth { padding: 0 22px; font-size: 11px; color: var(--muted); font-weight: 500; }
+  .d2-stats { margin: 14px 22px; padding: 14px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); display: flex; justify-content: space-around; }
+  .d2-stats .st { text-align: center; }
+  .d2-stats .st .v { font-family: var(--serif); font-size: 17px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+  .d2-stats .st .l { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+  .d2-cards-prev { padding: 0 22px; margin-bottom: 14px; }
+  .d2-cards-prev .lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .d2-cards-prev .cc { display: flex; gap: 6px; }
+  .d2-cards-prev .cc i {
+    flex: 1; height: 52px; border-radius: 8px; background: var(--paper-2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; color: var(--muted);
+  }
+  .d2-cards-prev .cc i:nth-child(1) { background: var(--teal); color: #fff; }
+  .d2-cards-prev .cc i:nth-child(2) { background: var(--ink); color: #fff; }
+  .d2-cta { position: absolute; bottom: 16px; left: 16px; right: 16px; padding: 14px; border-radius: 14px; background: var(--ink); color: var(--paper); text-align: center; font-weight: 700; font-size: 14px; }
+
+  /* D3 — Hook (dark teal) */
+  .dark-top { padding: 12px 20px 0; display: flex; align-items: center; gap: 10px; }
+  .dark-top .close { width: 28px; height: 28px; border-radius: 99px; background: rgba(255,255,255,0.1); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .dark-top .heart { width: 28px; height: 28px; border-radius: 99px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; }
+  .d3-content { padding: 36px 28px 28px; flex: 1; display: flex; flex-direction: column; color: #fff; }
+  .d3-num { font-family: var(--serif); font-style: italic; font-size: 42px; color: rgba(255,255,255,0.35); line-height: 1; margin-bottom: 20px; letter-spacing: -0.02em; }
+  .d3-type { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal-bright); margin-bottom: 14px; }
+  .d3-hook { font-family: var(--serif); font-size: 28px; font-weight: 600; line-height: 1.18; letter-spacing: -0.02em; margin-bottom: 16px; }
+  .d3-hook em { color: var(--teal-bright); font-style: italic; font-weight: 500; }
+  .d3-sub { font-size: 13px; color: #d1d4dc; line-height: 1.55; }
+  .d3-hint { margin-top: auto; font-size: 11px; color: rgba(255,255,255,0.45); letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+  /* D4 — Core idea (tap-reveal chunks) */
+  .d4-top { padding: 14px 20px 8px; display: flex; align-items: center; gap: 10px; }
+  .d4-top .back { width: 28px; height: 28px; border-radius: 99px; background: var(--paper-2); display: flex; align-items: center; justify-content: center; font-size: 12px; }
+  .d4-kicker { padding: 4px 22px; font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); }
+  .d4-title { padding: 4px 22px 16px; font-family: var(--serif); font-size: 22px; font-weight: 600; line-height: 1.25; color: var(--ink); letter-spacing: -0.01em; }
+  .d4-title em { color: var(--teal); font-style: italic; font-weight: 500; }
+  .d4-list { padding: 0 16px; display: flex; flex-direction: column; gap: 10px; }
+  .d4-item {
+    padding: 14px 16px; border-radius: 14px;
+    background: var(--card); border: 1px solid var(--line);
+    display: flex; gap: 12px; align-items: flex-start;
+    position: relative;
+  }
+  .d4-item .n {
+    flex-shrink: 0;
+    width: 26px; height: 26px; border-radius: 99px;
+    background: var(--paper-2); color: var(--muted);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    font-family: var(--serif); font-style: italic;
+  }
+  .d4-item.open .n { background: var(--teal); color: #fff; }
+  .d4-item .t { font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1.4; }
+  .d4-item .d { font-size: 12px; color: var(--ink-3); margin-top: 8px; line-height: 1.55; display: none; }
+  .d4-item.open .d { display: block; }
+  .d4-item .chev { position: absolute; top: 16px; right: 16px; color: var(--muted); font-size: 11px; }
+  .d4-item.open .chev { transform: rotate(180deg); }
+  .d4-next { position: absolute; bottom: 16px; left: 16px; right: 16px; padding: 13px; border-radius: 14px; background: var(--ink); color: var(--paper); text-align: center; font-weight: 700; font-size: 13px; }
+
+  /* D5 — ELI5 / analogy */
+  .d5 { flex: 1; display: flex; flex-direction: column; }
+  .d5-illus {
+    margin: 10px 16px 16px;
+    height: 180px; border-radius: 18px;
+    background: var(--amber-light);
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .d5-illus svg { width: 80%; height: 80%; }
+  .d5-illus .cap { position: absolute; bottom: 10px; left: 14px; font-size: 10px; font-weight: 600; color: var(--amber-deep); letter-spacing: 0.08em; text-transform: uppercase; }
+  .d5-kicker { padding: 0 22px 4px; font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--amber); }
+  .d5-kicker::before { content: '◆ '; color: var(--amber); }
+  .d5-t { padding: 4px 22px 10px; font-family: var(--serif); font-size: 20px; font-weight: 600; line-height: 1.3; color: var(--ink); letter-spacing: -0.01em; }
+  .d5-t em { color: var(--amber-deep); font-style: italic; font-weight: 500; }
+  .d5-body { padding: 0 22px; font-size: 14px; color: var(--ink-3); line-height: 1.6; font-family: var(--serif); }
+  .d5-body b { color: var(--ink); font-weight: 600; background: var(--amber-light); padding: 0 4px; border-radius: 3px; }
+
+  /* D6 — Interactive diagram */
+  .d6-hd { padding: 14px 22px 4px; }
+  .d6-hd .k { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); margin-bottom: 6px; }
+  .d6-hd .t { font-family: var(--serif); font-size: 19px; font-weight: 600; line-height: 1.25; color: var(--ink); letter-spacing: -0.01em; }
+  .d6-hd .t em { color: var(--teal); font-style: italic; font-weight: 500; }
+  .d6-diag {
+    margin: 8px 16px 0; padding: 14px;
+    border-radius: 18px; background: var(--card); border: 1px solid var(--line);
+    position: relative; aspect-ratio: 1.05;
+  }
+  .d6-hint { position: absolute; top: 10px; right: 12px; font-size: 9px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 5px; }
+  .d6-hint::before { content: ''; width: 5px; height: 5px; border-radius: 99px; background: var(--teal); animation: pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.5); } }
+  .d6-node { position: absolute; padding: 7px 10px; border-radius: 9px; font-size: 10px; font-weight: 600; text-align: center; background: var(--paper-2); color: var(--ink-2); border: 1px solid var(--line); min-width: 50px; }
+  .d6-node.active { background: var(--teal); color: #fff; border-color: var(--teal); box-shadow: 0 0 0 5px rgba(26,138,138,0.15); transform: scale(1.08); }
+  .d6-node.dim { opacity: 0.5; }
+  .d6-expl { margin: 12px 16px; padding: 12px 14px; border-radius: 14px; background: var(--teal-light); border-left: 3px solid var(--teal); }
+  .d6-expl .l { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal-deep); margin-bottom: 4px; }
+  .d6-expl .tx { font-family: var(--serif); font-size: 13px; color: var(--ink); line-height: 1.45; font-weight: 500; }
+  .d6-expl .tx b { color: var(--teal-deep); font-weight: 600; }
+
+  /* D7 — Fill blank */
+  .d7-hd { padding: 14px 22px 4px; font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+  .d7-q { margin: 8px 16px 0; padding: 18px; border-radius: 18px; background: var(--card); border: 1px solid var(--line); }
+  .d7-q .qt { font-family: var(--serif); font-size: 16px; line-height: 1.55; color: var(--ink); letter-spacing: -0.005em; }
+  .d7-blank { display: inline-block; min-width: 74px; padding: 2px 8px; margin: 0 1px; background: var(--paper-2); border-bottom: 2px solid var(--teal); border-radius: 6px 6px 0 0; text-align: center; font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--teal-deep); vertical-align: baseline; }
+  .d7-blank.empty { color: transparent; }
+  .d7-blank.empty::before { content: '___'; color: var(--muted); letter-spacing: 0.1em; }
+  .d7-lbl { padding: 14px 22px 8px; font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+  .d7-chips { padding: 0 16px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .d7-chip { padding: 9px 13px; border-radius: 11px; background: var(--card); border: 1px solid var(--line); font-size: 13px; font-weight: 600; color: var(--ink); }
+  .d7-chip.used { background: transparent; border-style: dashed; color: var(--muted); }
+  .d7-chip.wrong { background: var(--rose-light); border-color: var(--rose); color: #8a2a2a; text-decoration: line-through; }
+
+  /* D8 — MCQ */
+  .d8-hd { padding: 14px 22px 4px; }
+  .d8-hd .k { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--amber); margin-bottom: 6px; }
+  .d8-q { margin: 8px 16px 0; padding: 18px; border-radius: 18px; background: var(--card); border: 1px solid var(--line); font-family: var(--serif); font-size: 17px; font-weight: 600; line-height: 1.35; color: var(--ink); letter-spacing: -0.01em; }
+  .d8-opts { padding: 14px 16px 0; display: flex; flex-direction: column; gap: 8px; }
+  .d8-opt { padding: 12px 14px; border-radius: 12px; background: var(--card); border: 1.5px solid var(--line); display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--ink-2); line-height: 1.4; font-weight: 500; }
+  .d8-opt .m { flex-shrink: 0; width: 22px; height: 22px; border-radius: 7px; background: var(--paper-2); color: var(--muted); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; }
+  .d8-opt.right { background: var(--green-light); border-color: var(--green); color: #1e4a1e; font-weight: 600; }
+  .d8-opt.right .m { background: var(--green); color: #fff; }
+  .d8-opt.bad { background: var(--rose-light); border-color: var(--rose); color: #6a2323; }
+  .d8-opt.bad .m { background: var(--rose); color: #fff; }
+
+  /* D9 — Complete */
+  .d9 { flex: 1; display: flex; flex-direction: column; padding: 20px 22px 90px; position: relative; background: radial-gradient(ellipse 80% 40% at 50% 0%, rgba(232,160,32,0.18), transparent 70%), radial-gradient(ellipse 70% 40% at 50% 100%, rgba(26,138,138,0.15), transparent 70%), var(--paper); }
+  .d9-burst { margin: 16px auto 0; width: 180px; height: 180px; position: relative; display: flex; align-items: center; justify-content: center; }
+  .d9-burst::before { content: ''; position: absolute; inset: 16px; border-radius: 99px; background: linear-gradient(135deg, var(--amber), var(--teal)); box-shadow: 0 18px 50px rgba(26,138,138,0.3); }
+  .d9-burst .core { position: relative; z-index: 2; width: 100px; height: 100px; border-radius: 99px; background: var(--paper); display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 0 0 1px rgba(15,17,23,0.08); }
+  .d9-burst .core .v { font-family: var(--serif); font-size: 38px; font-weight: 600; color: var(--ink); letter-spacing: -0.03em; line-height: 1; }
+  .d9-burst .core .l { font-size: 8px; font-weight: 700; letter-spacing: 0.2em; color: var(--teal); margin-top: 2px; }
+  .d9 .title { font-family: var(--serif); font-size: 22px; font-weight: 600; color: var(--ink); text-align: center; margin-top: 18px; letter-spacing: -0.01em; }
+  .d9 .take { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--muted); text-align: center; margin-top: 6px; padding: 0 20px; line-height: 1.5; }
+  .d9 .stats { margin-top: 22px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .d9 .stat { padding: 10px 6px; border-radius: 12px; background: var(--card); border: 1px solid var(--line); text-align: center; }
+  .d9 .stat .v { font-family: var(--serif); font-size: 18px; font-weight: 600; color: var(--ink); }
+  .d9 .stat .l { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+  .d9 .streak { margin-top: 14px; padding: 14px; border-radius: 16px; background: linear-gradient(135deg, #2a1810, #5a3a10); color: #fff; display: flex; align-items: center; gap: 12px; position: relative; overflow: hidden; }
+  .d9 .streak::before { content: ''; position: absolute; right: -20px; top: -20px; width: 80px; height: 80px; border-radius: 99px; background: radial-gradient(circle at 30% 30%, rgba(255,180,80,0.4), transparent 70%); }
+  .d9 .streak .f { font-size: 24px; position: relative; z-index: 1; }
+  .d9 .streak .tx { position: relative; z-index: 1; flex: 1; }
+  .d9 .streak .n { font-family: var(--serif); font-size: 15px; font-weight: 600; }
+  .d9 .streak .n em { color: #ffb870; font-style: italic; }
+  .d9 .streak .d { font-size: 11px; color: #d9c9b0; margin-top: 1px; }
+  .d9 .cta { position: absolute; bottom: 16px; left: 16px; right: 16px; display: flex; gap: 8px; }
+  .d9 .cta button { flex: 1; padding: 13px; border: none; border-radius: 12px; font-weight: 700; font-size: 13px; }
+  .d9 .cta .primary { background: var(--ink); color: var(--paper); }
+  .d9 .cta .g { background: var(--paper-2); color: var(--ink); flex: 0 0 48px; font-size: 16px; }
+
+  /* ───────────────────────────────────────────── */
+  /*  DISCOVERY SCREENS                            */
+  /* ───────────────────────────────────────────── */
+
+  /* E1 — Explore */
+  .e1-top { padding: 14px 22px 6px; display: flex; justify-content: space-between; align-items: center; }
+  .e1-top .h { font-family: var(--serif); font-size: 26px; font-weight: 600; color: var(--ink); letter-spacing: -0.02em; }
+  .e1-top .av { width: 30px; height: 30px; border-radius: 99px; background: var(--teal); color: #fff; display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 12px; font-weight: 600; }
+  .e1-search { margin: 10px 16px 0; padding: 10px 14px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+  .e1-chips { margin: 12px 0; padding: 0 16px; display: flex; gap: 6px; overflow: hidden; flex-wrap: nowrap; }
+  .e1-chips i { white-space: nowrap; padding: 6px 11px; border-radius: 99px; background: var(--card); border: 1px solid var(--line); font-size: 11px; font-weight: 600; color: var(--ink-2); }
+  .e1-chips i.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .e1-sec { padding: 10px 22px 8px; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); display: flex; justify-content: space-between; }
+  .e1-sec span { color: var(--teal); font-size: 10px; font-weight: 700; }
+  .e1-trending { padding: 0 16px; display: flex; gap: 10px; overflow-x: hidden; }
+  .e1-card { flex-shrink: 0; width: 160px; padding: 12px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); }
+  .e1-card .cov { height: 80px; border-radius: 10px; margin-bottom: 10px; }
+  .e1-card .cov.c1 { background: linear-gradient(135deg, #0f1117, #1a2a2a); }
+  .e1-card .cov.c2 { background: linear-gradient(135deg, var(--teal), var(--teal-bright)); }
+  .e1-card .cov.c3 { background: linear-gradient(135deg, var(--amber), #e8c370); }
+  .e1-card .tg { font-size: 9px; font-weight: 700; color: var(--teal); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+  .e1-card .tt { font-family: var(--serif); font-size: 12px; font-weight: 600; color: var(--ink); line-height: 1.3; margin-bottom: 6px; }
+  .e1-card .mt { font-size: 10px; color: var(--muted); font-weight: 500; }
+  .e1-cat-grid { padding: 10px 16px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .e1-cat { padding: 14px 12px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px; }
+  .e1-cat .em { font-size: 20px; }
+  .e1-cat .t { font-size: 12px; font-weight: 700; color: var(--ink); }
+  .e1-cat .n { font-size: 10px; color: var(--muted); font-weight: 500; }
+
+  /* E2 — Search */
+  .e2-top { padding: 12px 16px 6px; display: flex; align-items: center; gap: 8px; }
+  .e2-top .back { width: 28px; height: 28px; border-radius: 99px; background: var(--paper-2); display: flex; align-items: center; justify-content: center; }
+  .e2-top .inp { flex: 1; padding: 9px 12px; border-radius: 10px; background: var(--card); border: 1px solid var(--line); font-size: 13px; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+  .e2-top .inp i { color: var(--muted); font-style: italic; }
+  .e2-top .inp::after { content: '|'; color: var(--teal); animation: blink 1s steps(2) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .e2-filters { padding: 10px 16px 4px; display: flex; gap: 6px; overflow: hidden; }
+  .e2-filters i { white-space: nowrap; padding: 5px 10px; border-radius: 99px; background: var(--card); border: 1px solid var(--line); font-size: 10px; font-weight: 600; color: var(--ink-2); display: flex; align-items: center; gap: 4px; }
+  .e2-filters i.on { background: var(--teal); color: #fff; border-color: var(--teal); }
+  .e2-sec { padding: 10px 22px 4px; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+  .e2-res { padding: 0 16px; }
+  .e2-row { padding: 12px 6px; border-bottom: 1px solid var(--line); display: flex; gap: 12px; }
+  .e2-row .cov { flex-shrink: 0; width: 44px; height: 56px; border-radius: 8px; background: linear-gradient(135deg, #0f1117, #1a2a2a); }
+  .e2-row .cov.t1 { background: linear-gradient(135deg, var(--teal), var(--teal-bright)); }
+  .e2-row .cov.t2 { background: linear-gradient(135deg, var(--amber), #e8c370); }
+  .e2-row .tt { font-family: var(--serif); font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1.3; margin-bottom: 4px; }
+  .e2-row .tt b { background: rgba(26,138,138,0.2); color: var(--teal-deep); padding: 0 2px; border-radius: 3px; }
+  .e2-row .mt { font-size: 10px; color: var(--muted); font-weight: 500; display: flex; gap: 6px; }
+  .e2-row .mt i::before { content: '·'; margin: 0 4px; }
+  .e2-row .mt i:first-child::before { display: none; }
+
+  /* E3 — Add paper */
+  .e3-top { padding: 14px 22px 6px; display: flex; align-items: center; justify-content: space-between; }
+  .e3-top .h { font-family: var(--serif); font-size: 22px; font-weight: 600; color: var(--ink); letter-spacing: -0.02em; }
+  .e3-top .x { width: 28px; height: 28px; border-radius: 99px; background: var(--paper-2); display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .e3-sub { padding: 2px 22px 14px; font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--muted); }
+  .e3-inp-w { margin: 0 16px; padding: 14px; border-radius: 14px; background: var(--card); border: 1.5px solid var(--teal); }
+  .e3-inp-w .l { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal-deep); margin-bottom: 6px; }
+  .e3-inp-w .v { font-family: var(--mono); font-size: 13px; color: var(--ink); word-break: break-all; line-height: 1.4; }
+  .e3-inp-w .v::after { content: '|'; color: var(--teal); animation: blink 1s steps(2) infinite; }
+  .e3-paste { margin: 8px 16px 0; padding: 10px; border-radius: 10px; background: rgba(26,138,138,0.1); color: var(--teal-deep); text-align: center; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .e3-or { padding: 18px 22px 10px; display: flex; align-items: center; gap: 10px; }
+  .e3-or .line { flex: 1; height: 1px; background: var(--line); }
+  .e3-or .t { font-size: 10px; color: var(--muted); font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; }
+  .e3-srcs { padding: 0 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .e3-src { padding: 14px 12px; border-radius: 12px; background: var(--card); border: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px; }
+  .e3-src .em { font-size: 18px; }
+  .e3-src .t { font-size: 12px; font-weight: 700; color: var(--ink); }
+  .e3-src .d { font-size: 10px; color: var(--muted); }
+  .e3-cta { position: absolute; bottom: 16px; left: 16px; right: 16px; padding: 14px; border-radius: 14px; background: var(--ink); color: var(--paper); text-align: center; font-weight: 700; font-size: 14px; }
+
+  /* E4 — Processing */
+  .e4 { flex: 1; display: flex; flex-direction: column; padding: 30px 24px; align-items: center; justify-content: center; }
+  .e4 .paper-anim {
+    width: 140px; height: 170px; position: relative; margin-bottom: 32px;
+  }
+  .e4 .paper-anim .pap {
+    position: absolute; inset: 0; border-radius: 12px; background: var(--card);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    display: flex; flex-direction: column; padding: 16px 14px;
+  }
+  .e4 .paper-anim .pap::before {
+    content: ''; position: absolute; inset: -2px;
+    border: 2px solid var(--teal);
+    border-radius: 14px; opacity: 0.4;
+    animation: pulseScale 2s ease-in-out infinite;
+  }
+  @keyframes pulseScale { 0%,100% { transform: scale(1); opacity: 0.4; } 50% { transform: scale(1.08); opacity: 0; } }
+  .e4 .paper-anim .pap .line { height: 4px; background: var(--paper-2); border-radius: 2px; margin-bottom: 5px; }
+  .e4 .paper-anim .pap .line.s { width: 60%; }
+  .e4 .paper-anim .pap .line.te { background: var(--teal); width: 70%; }
+  .e4 .t { font-family: var(--serif); font-size: 20px; font-weight: 600; color: var(--ink); text-align: center; letter-spacing: -0.01em; }
+  .e4 .t em { color: var(--teal); font-style: italic; font-weight: 500; }
+  .e4 .sub { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--muted); text-align: center; margin-top: 8px; }
+  .e4 .steps { margin-top: 28px; width: 100%; display: flex; flex-direction: column; gap: 10px; }
+  .e4 .step { padding: 10px 14px; border-radius: 12px; background: var(--card); border: 1px solid var(--line); display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--muted); }
+  .e4 .step.done { color: var(--ink); }
+  .e4 .step.active { background: var(--teal-light); border-color: var(--teal); color: var(--teal-deep); font-weight: 600; }
+  .e4 .step .ic { width: 18px; height: 18px; border-radius: 99px; background: var(--paper-2); display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--muted); }
+  .e4 .step.done .ic { background: var(--green); color: #fff; }
+  .e4 .step.active .ic { background: var(--teal); color: #fff; }
+  .e4 .step.active .ic::after { content: ''; width: 8px; height: 8px; border: 1.5px solid #fff; border-top-color: transparent; border-radius: 99px; animation: spin 0.8s linear infinite; }
+
+  /* ───────────────────────────────────────────── */
+  /*  LIBRARY & PROFILE                            */
+  /* ───────────────────────────────────────────── */
+
+  /* L1 — Library */
+  .l1-top { padding: 14px 22px 6px; display: flex; align-items: center; justify-content: space-between; }
+  .l1-top .h { font-family: var(--serif); font-size: 24px; font-weight: 600; color: var(--ink); letter-spacing: -0.02em; }
+  .l1-top .ic { display: flex; gap: 8px; }
+  .l1-top .ic i { width: 30px; height: 30px; border-radius: 99px; background: var(--paper-2); display: flex; align-items: center; justify-content: center; font-size: 13px; }
+  .l1-tabs { padding: 6px 22px 12px; display: flex; gap: 18px; border-bottom: 1px solid var(--line); }
+  .l1-tabs i { padding: 8px 0; font-size: 12px; font-weight: 600; color: var(--muted); position: relative; }
+  .l1-tabs i.on { color: var(--ink); }
+  .l1-tabs i.on::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: var(--ink); border-radius: 99px; }
+  .l1-tabs i .c { background: var(--paper-2); color: var(--ink); padding: 1px 6px; border-radius: 99px; font-size: 10px; margin-left: 4px; }
+  .l1-tabs i.on .c { background: var(--teal); color: #fff; }
+  .l1-list { padding: 0 16px; }
+  .l1-item { padding: 12px 6px; border-bottom: 1px solid var(--line); display: flex; gap: 12px; }
+  .l1-item .cov { flex-shrink: 0; width: 48px; height: 60px; border-radius: 8px; background: linear-gradient(135deg, #0f1117, #1a2a2a); display: flex; align-items: center; justify-content: center; }
+  .l1-item .cov.c2 { background: linear-gradient(135deg, var(--teal), var(--teal-bright)); }
+  .l1-item .cov.c3 { background: linear-gradient(135deg, var(--amber), #e8c370); }
+  .l1-item .cov.c4 { background: linear-gradient(135deg, #7a5fd4, #b09fec); }
+  .l1-item .inf { flex: 1; }
+  .l1-item .t { font-family: var(--serif); font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1.3; margin-bottom: 3px; }
+  .l1-item .m { font-size: 10px; color: var(--muted); font-weight: 500; display: flex; gap: 6px; align-items: center; margin-bottom: 6px; }
+  .l1-item .bar { height: 3px; background: var(--paper-2); border-radius: 99px; overflow: hidden; max-width: 160px; }
+  .l1-item .bar i { display: block; height: 100%; background: var(--teal); border-radius: 99px; }
+  .l1-item .pct { font-size: 9px; font-weight: 700; color: var(--teal); letter-spacing: 0.08em; margin-top: 3px; }
+
+  /* L2 — Glossary */
+  .l2-top { padding: 14px 22px 6px; display: flex; align-items: center; justify-content: space-between; }
+  .l2-top .h { font-family: var(--serif); font-size: 22px; font-weight: 600; color: var(--ink); letter-spacing: -0.02em; }
+  .l2-top .h em { color: var(--teal); font-style: italic; font-weight: 500; }
+  .l2-top .cnt { font-size: 11px; color: var(--muted); font-weight: 600; }
+  .l2-sub { padding: 2px 22px 14px; font-family: var(--serif); font-style: italic; font-size: 12px; color: var(--muted); }
+  .l2-sec { padding: 10px 22px 6px; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+  .l2-list { padding: 0 16px; }
+  .l2-item { padding: 12px 14px; border-radius: 12px; background: var(--card); border: 1px solid var(--line); margin-bottom: 8px; display: flex; gap: 12px; align-items: center; }
+  .l2-item .t { font-family: var(--serif); font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+  .l2-item .d { font-size: 11px; color: var(--muted); line-height: 1.45; }
+  .l2-item .mast { flex-shrink: 0; font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); padding: 4px 8px; background: var(--teal-light); border-radius: 99px; }
+  .l2-item .mast.lr { color: var(--amber-deep); background: var(--amber-light); }
+
+  /* P1 — Profile */
+  .p1-top { padding: 16px 22px 10px; display: flex; align-items: center; gap: 12px; }
+  .p1-top .av { width: 56px; height: 56px; border-radius: 99px; background: linear-gradient(135deg, var(--teal), var(--teal-bright)); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 22px; color: #fff; font-weight: 600; flex-shrink: 0; }
+  .p1-top .n { font-family: var(--serif); font-size: 18px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+  .p1-top .h { font-size: 11px; color: var(--muted); font-weight: 500; }
+  .p1-top .st { width: 30px; height: 30px; border-radius: 99px; background: var(--paper-2); display: flex; align-items: center; justify-content: center; font-size: 14px; margin-left: auto; }
+  .p1-level { margin: 0 16px 14px; padding: 14px; border-radius: 16px; background: linear-gradient(135deg, #0f1117 0%, #1a3a3a 100%); color: #fff; position: relative; overflow: hidden; }
+  .p1-level::before { content: ''; position: absolute; right: -30px; top: -30px; width: 100px; height: 100px; border-radius: 99px; background: radial-gradient(circle at 30% 30%, rgba(95,212,212,0.3), transparent 70%); }
+  .p1-level .r { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; position: relative; z-index: 1; }
+  .p1-level .r .lv { font-family: var(--serif); font-size: 13px; font-weight: 600; }
+  .p1-level .r .nm { font-family: var(--serif); font-style: italic; color: var(--teal-bright); font-size: 14px; font-weight: 500; }
+  .p1-level .bar { height: 6px; background: rgba(255,255,255,0.1); border-radius: 99px; overflow: hidden; position: relative; z-index: 1; }
+  .p1-level .bar i { display: block; height: 100%; width: 72%; background: var(--teal-bright); border-radius: 99px; }
+  .p1-level .xp { margin-top: 6px; font-size: 10px; color: #b0b4bc; font-family: var(--mono); font-weight: 500; position: relative; z-index: 1; }
+  .p1-stats { margin: 0 16px 14px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .p1-stat { padding: 12px 6px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); text-align: center; }
+  .p1-stat .v { font-family: var(--serif); font-size: 20px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+  .p1-stat .v em { color: var(--amber); font-style: italic; font-weight: 500; }
+  .p1-stat .l { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+  .p1-sec { padding: 6px 22px 6px; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+  .p1-cal { padding: 0 16px; display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; }
+  .p1-cal i { aspect-ratio: 1; border-radius: 3px; background: var(--paper-2); }
+  .p1-cal i.l1 { background: rgba(26,138,138,0.2); }
+  .p1-cal i.l2 { background: rgba(26,138,138,0.45); }
+  .p1-cal i.l3 { background: rgba(26,138,138,0.75); }
+  .p1-cal i.l4 { background: var(--teal); }
+  .p1-cal-l { padding: 8px 22px 2px; display: flex; justify-content: flex-end; gap: 4px; font-size: 9px; color: var(--muted); align-items: center; }
+  .p1-cal-l .k { display: flex; gap: 2px; }
+  .p1-cal-l .k i { width: 8px; height: 8px; border-radius: 2px; background: var(--paper-2); display: block; }
+  .p1-cal-l .k i.l1 { background: rgba(26,138,138,0.2); }
+  .p1-cal-l .k i.l2 { background: rgba(26,138,138,0.45); }
+  .p1-cal-l .k i.l3 { background: rgba(26,138,138,0.75); }
+  .p1-cal-l .k i.l4 { background: var(--teal); }
+
+  /* P2 — Streak detail */
+  .p2-top { padding: 14px 22px 10px; display: flex; align-items: center; gap: 10px; }
+  .p2-top .back { width: 28px; height: 28px; border-radius: 99px; background: var(--paper-2); display: flex; align-items: center; justify-content: center; font-size: 12px; }
+  .p2-top .h { font-family: var(--serif); font-size: 18px; font-weight: 600; color: var(--ink); }
+  .p2-hero { margin: 0 16px 14px; padding: 22px; border-radius: 18px; background: linear-gradient(135deg, #2a1810 0%, #5a3a10 100%); color: #fff; position: relative; overflow: hidden; text-align: center; }
+  .p2-hero::before { content: ''; position: absolute; right: -40px; top: -40px; width: 140px; height: 140px; border-radius: 99px; background: radial-gradient(circle at 30% 30%, rgba(255,180,80,0.4), transparent 70%); }
+  .p2-hero .f { font-size: 52px; position: relative; z-index: 1; }
+  .p2-hero .n { font-family: var(--serif); font-size: 36px; font-weight: 600; letter-spacing: -0.02em; margin-top: 4px; position: relative; z-index: 1; }
+  .p2-hero .n em { color: #ffb870; font-style: italic; font-weight: 500; }
+  .p2-hero .d { font-size: 12px; color: #d9c9b0; margin-top: 2px; position: relative; z-index: 1; }
+  .p2-sec { padding: 6px 22px; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+  .p2-week { padding: 0 22px; display: flex; gap: 6px; margin-top: 4px; }
+  .p2-day { flex: 1; padding: 10px 0; border-radius: 10px; text-align: center; background: var(--paper-2); }
+  .p2-day.on { background: var(--ink); color: var(--paper); }
+  .p2-day.on .ic { color: var(--amber); }
+  .p2-day .lb { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .p2-day.on .lb { color: var(--paper-3); }
+  .p2-day .ic { font-size: 16px; margin-top: 3px; }
+  .p2-list { padding: 8px 16px; }
+  .p2-row { padding: 12px 10px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 10px; font-size: 12px; }
+  .p2-row .d { font-family: var(--serif); font-size: 14px; font-weight: 600; color: var(--ink); flex: 1; }
+  .p2-row .c { color: var(--muted); font-weight: 500; font-size: 11px; }
+  .p2-row .c em { color: var(--amber); font-style: italic; font-weight: 500; }
+
+  /* P3 — Settings */
+  .p3-top { padding: 14px 22px 10px; display: flex; align-items: center; gap: 10px; }
+  .p3-top .back { width: 28px; height: 28px; border-radius: 99px; background: var(--paper-2); display: flex; align-items: center; justify-content: center; font-size: 12px; }
+  .p3-top .h { font-family: var(--serif); font-size: 18px; font-weight: 600; color: var(--ink); }
+  .p3-sec { padding: 14px 22px 6px; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+  .p3-list { padding: 0 16px; }
+  .p3-row { padding: 12px 14px; background: var(--card); border: 1px solid var(--line); border-bottom: none; display: flex; align-items: center; gap: 12px; }
+  .p3-row:first-child { border-radius: 12px 12px 0 0; }
+  .p3-row:last-child { border-radius: 0 0 12px 12px; border-bottom: 1px solid var(--line); }
+  .p3-row .ic { width: 28px; height: 28px; border-radius: 8px; background: var(--teal-light); color: var(--teal-deep); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+  .p3-row .tx { flex: 1; }
+  .p3-row .t { font-size: 13px; font-weight: 600; color: var(--ink); }
+  .p3-row .d { font-size: 10px; color: var(--muted); margin-top: 1px; }
+  .p3-row .val { font-size: 12px; color: var(--muted); font-weight: 500; }
+  .p3-row .chev { color: var(--muted); font-size: 11px; }
+  .p3-toggle { width: 36px; height: 22px; background: var(--teal); border-radius: 99px; position: relative; }
+  .p3-toggle::after { content: ''; position: absolute; top: 2px; right: 2px; width: 18px; height: 18px; border-radius: 99px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+  .p3-toggle.off { background: var(--paper-3); }
+  .p3-toggle.off::after { right: auto; left: 2px; }
+
+  /* ── FOOTER ─────────────────────────────── */
+  .footer-note {
+    max-width: 1200px; margin: 96px auto 0;
+    padding: 32px; border-radius: 20px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    color: #c0c4cc; line-height: 1.7; font-size: 14px;
+  }
+  .footer-note h3 { font-family: var(--serif); font-size: 24px; font-weight: 600; color: #fff; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .footer-note h3 em { color: var(--teal-bright); font-style: italic; font-weight: 500; }
+  .footer-note .grid3 { margin-top: 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .footer-note h4 { font-family: var(--serif); font-size: 16px; color: #fff; font-weight: 600; margin-bottom: 8px; }
+  .footer-note ul { list-style: none; }
+  .footer-note li { padding-left: 18px; position: relative; font-size: 13px; color: #a9adb5; margin-bottom: 6px; }
+  .footer-note li::before { content: '→'; position: absolute; left: 0; color: var(--teal-bright); }
+  .footer-note li b { color: #e8e8ea; font-weight: 600; }
+
+  @media (max-width: 900px) {
+    .footer-note .grid3 { grid-template-columns: 1fr; }
+    .fnode::after { display: none; }
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     LIVE HERO — Section 02 interactive feature mockup
+     ═══════════════════════════════════════════════════════ */
+  .live-hero {
+    margin: 0 0 56px;
+    padding: 36px 40px 44px;
+    border-radius: 24px;
+    background:
+      radial-gradient(ellipse 80% 60% at 15% 0%, rgba(26,138,138,0.16), transparent 70%),
+      radial-gradient(ellipse 60% 50% at 100% 100%, rgba(232,160,32,0.10), transparent 70%),
+      rgba(255,255,255,0.025);
+    border: 1px solid rgba(95,212,212,0.18);
+    position: relative;
+    overflow: hidden;
+  }
+  .live-hero::before {
+    content: 'LIVE'; position: absolute; top: 26px; right: 30px;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.24em;
+    color: var(--teal-bright); padding: 5px 10px 5px 18px; border-radius: 99px;
+    background: rgba(95,212,212,0.12); border: 1px solid rgba(95,212,212,0.28);
+    z-index: 2;
+  }
+  .live-hero::after {
+    content: ''; position: absolute; top: 35px; right: 79px;
+    width: 6px; height: 6px; border-radius: 99px;
+    background: var(--teal-bright); box-shadow: 0 0 0 4px rgba(95,212,212,0.22);
+    animation: pulse 1.4s ease-in-out infinite; z-index: 3;
+  }
+  .live-intro { margin-bottom: 32px; max-width: 720px; }
+  .live-intro .lbl {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--teal-bright); margin-bottom: 12px;
+  }
+  .live-intro h3 {
+    font-family: var(--serif); font-size: 30px; font-weight: 600;
+    color: #fff; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 12px;
+  }
+  .live-intro h3 em { color: var(--teal-bright); font-style: italic; font-weight: 500; }
+  .live-intro p { font-size: 14px; color: #b0b4bc; line-height: 1.6; max-width: 620px; }
+  .live-intro p i { color: #dfe2e8; font-style: italic; }
+
+  .live-stage {
+    display: grid; grid-template-columns: 340px 1fr;
+    gap: 56px; align-items: start;
+  }
+  .live-phone-wrap { display: flex; flex-direction: column; gap: 14px; width: 340px; }
+
+  /* scrubber under the phone */
+  .live-scrubber {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px;
+    padding: 10px; border-radius: 14px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+  }
+  .live-scrubber .th {
+    height: 50px; border-radius: 9px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 3px; cursor: pointer; transition: all 0.18s ease; position: relative;
+  }
+  .live-scrubber .th .n { font-family: var(--serif); font-style: italic; font-size: 15px; color: #6c717b; line-height: 1; }
+  .live-scrubber .th .l { font-size: 8px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #6c717b; }
+  .live-scrubber .th.done { background: rgba(26,138,138,0.18); border-color: rgba(26,138,138,0.4); }
+  .live-scrubber .th.done .n, .live-scrubber .th.done .l { color: var(--teal-bright); }
+  .live-scrubber .th.done::after {
+    content: '✓'; position: absolute; top: 3px; right: 4px;
+    font-size: 8px; color: var(--teal-bright); font-weight: 700;
+  }
+  .live-scrubber .th.active { background: var(--teal); border-color: var(--teal-bright); box-shadow: 0 0 0 3px rgba(95,212,212,0.22); }
+  .live-scrubber .th.active .n, .live-scrubber .th.active .l { color: #fff; }
+  .live-scrubber .th:hover { transform: translateY(-1px); }
+  .live-scrubber .th.locked { cursor: not-allowed; opacity: 0.45; }
+  .live-scrubber .th.locked:hover { transform: none; }
+
+  /* right-side controls */
+  .live-controls { padding-top: 4px; max-width: 540px; }
+  .live-controls .step {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--teal-bright); margin-bottom: 10px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .live-controls .step em {
+    font-family: var(--serif); font-style: italic; font-size: 18px;
+    font-weight: 500; color: #fff; letter-spacing: 0; text-transform: none;
+    margin: 0 3px;
+  }
+  .live-controls .step .sep { color: rgba(255,255,255,0.2); }
+  .live-controls .step .name { color: #e8e8ea; letter-spacing: 0.04em; }
+  .live-controls h4 {
+    font-family: var(--serif); font-size: 28px; font-weight: 600; color: #fff;
+    letter-spacing: -0.02em; line-height: 1.22; margin-bottom: 16px;
+  }
+  .live-controls h4 em { color: var(--teal-bright); font-style: italic; font-weight: 500; }
+  .live-controls .why {
+    font-size: 14px; color: #c0c4cc; line-height: 1.65; margin-bottom: 22px;
+    border-left: 2px solid rgba(95,212,212,0.35); padding-left: 18px;
+  }
+  .live-controls .why b { color: #fff; font-weight: 600; }
+  .live-controls .why i { color: #e0e3ea; font-style: italic; }
+
+  .live-meta {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    margin-bottom: 20px; padding: 16px 0;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .live-meta .m .v {
+    font-family: var(--serif); font-size: 22px; font-weight: 600;
+    color: #fff; letter-spacing: -0.01em; line-height: 1;
+  }
+  .live-meta .m .v em { color: var(--teal-bright); font-style: italic; font-weight: 500; }
+  .live-meta .m .l {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #6c717b; margin-top: 8px;
+  }
+
+  .live-hint {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px 16px; border-radius: 12px;
+    background: rgba(232,160,32,0.07);
+    border: 1px solid rgba(232,160,32,0.22);
+    margin-bottom: 22px;
+    font-size: 13px; color: #d9c9b0; line-height: 1.5;
+    transition: all 0.2s ease;
+  }
+  .live-hint.done { background: rgba(74,156,74,0.1); border-color: rgba(74,156,74,0.3); color: #c5e5c5; }
+  .live-hint.info { background: rgba(26,138,138,0.1); border-color: rgba(26,138,138,0.3); color: #b8d8d8; }
+  .live-hint .ic {
+    flex-shrink: 0; width: 24px; height: 24px; border-radius: 99px;
+    background: var(--amber); color: #2a1810;
+    font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .live-hint.done .ic { background: var(--green); color: #fff; }
+  .live-hint.info .ic { background: var(--teal); color: #fff; }
+  .live-hint b { color: #fff; font-weight: 600; }
+  .live-hint kbd {
+    font-family: var(--mono); font-size: 10px; font-weight: 600;
+    padding: 2px 6px; border-radius: 4px;
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+    color: #e8e8ea; margin: 0 2px;
+  }
+
+  .live-ctrl-row { display: flex; gap: 10px; }
+  .live-ctrl-row button {
+    border: none; padding: 13px 18px; border-radius: 12px;
+    font-family: var(--sans); font-weight: 700; font-size: 13px;
+    letter-spacing: 0.02em; cursor: pointer; transition: all 0.15s ease;
+  }
+  .live-btn-g {
+    background: rgba(255,255,255,0.05); color: #e8e8ea;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    padding: 13px 16px !important; flex: 0 0 auto;
+  }
+  .live-btn-g:hover:not(:disabled) { background: rgba(255,255,255,0.1); }
+  .live-btn-g:disabled { opacity: 0.35; cursor: not-allowed; }
+  .live-btn-p {
+    background: var(--teal-bright); color: #0f1117; flex: 1;
+    box-shadow: 0 8px 20px rgba(95,212,212,0.22);
+  }
+  .live-btn-p:hover:not(:disabled) { background: #7ae0e0; transform: translateY(-1px); box-shadow: 0 10px 24px rgba(95,212,212,0.28); }
+  .live-btn-p:disabled {
+    background: rgba(255,255,255,0.06); color: #4a4e58; cursor: not-allowed;
+    box-shadow: none; transform: none;
+  }
+  .live-btn-p .req { font-weight: 500; opacity: 0.7; margin-left: 4px; }
+
+  /* ── LIVE PHONE internals ───────────────────────────── */
+  .live-phone { transition: all 0.3s ease; }
+  .live-phone .screen {
+    overflow: hidden; transition: background 0.35s ease, color 0.35s ease;
+  }
+  .live-phone .screen.mode-teal { background: linear-gradient(170deg, #0f3a3a 0%, #0a2a2a 100%); color: #fff; }
+  .live-phone .screen.mode-paper { background: var(--paper); color: var(--ink); }
+  .live-phone .screen.mode-complete {
+    background:
+      radial-gradient(ellipse 80% 40% at 50% 0%, rgba(232,160,32,0.22), transparent 70%),
+      radial-gradient(ellipse 70% 40% at 50% 100%, rgba(26,138,138,0.18), transparent 70%),
+      var(--paper);
+    color: var(--ink);
+  }
+  .live-phone .status.dyn { color: var(--ink); transition: color 0.3s ease; }
+  .live-phone .screen.mode-teal .status.dyn { color: #fff; }
+  .live-phone .home-ind.dyn { background: var(--ink); opacity: 0.85; transition: background 0.3s ease; }
+  .live-phone .screen.mode-teal .home-ind.dyn { background: #fff; opacity: 0.72; }
+
+  /* card panels swap in/out inside .body */
+  .lc-panel {
+    position: absolute; inset: 0;
+    display: none; flex-direction: column;
+    animation: lcFade 0.32s ease-out both;
+  }
+  .lc-panel.active { display: flex; }
+  @keyframes lcFade {
+    0%   { opacity: 0; transform: translateY(8px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  /* per-card hover affordances */
+  .lc-d4 .d4-item { cursor: pointer; transition: all 0.2s ease; user-select: none; }
+  .lc-d4 .d4-item:hover:not(.open) { border-color: var(--teal); transform: translateY(-1px); }
+  .lc-d4 .d4-item.open { border-color: var(--teal); background: #fafcfc; }
+  .lc-d4 .d4-progress {
+    padding: 8px 22px 12px; display: flex; align-items: center; gap: 10px;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .lc-d4 .d4-progress .pbar { flex: 1; height: 3px; background: var(--paper-2); border-radius: 99px; overflow: hidden; }
+  .lc-d4 .d4-progress .pbar i { display: block; height: 100%; background: var(--teal); border-radius: 99px; transition: width 0.32s ease; }
+
+  .lc-d6 .d6-node { cursor: pointer; transition: all 0.22s ease; user-select: none; }
+  .lc-d6 .d6-node:hover:not(.active):not(.visited) { background: var(--paper-3); transform: scale(1.04); }
+  .lc-d6 .d6-node.visited { opacity: 1; background: var(--teal-light); color: var(--teal-deep); border-color: var(--teal); }
+  .lc-d6 .d6-node.visited.active { background: var(--teal); color: #fff; }
+  .lc-d6 .d6-counter {
+    position: absolute; top: 10px; left: 12px;
+    font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--teal); padding: 3px 8px; border-radius: 99px;
+    background: var(--teal-light); z-index: 2;
+  }
+
+  .lc-d7 .d7-chip { cursor: pointer; transition: all 0.15s ease; user-select: none; }
+  .lc-d7 .d7-chip:hover:not(.used):not(.wrong) { border-color: var(--teal); transform: translateY(-1px); }
+  .lc-d7 .d7-chip.correct { background: var(--green-light); border-color: var(--green); color: #1e4a1e; }
+  .lc-d7 .d7-blank { cursor: default; transition: all 0.2s ease; }
+  .lc-d7 .d7-blank.correct { background: var(--green-light); border-bottom-color: var(--green); color: #1e4a1e; }
+  .lc-d7 .d7-blank.wrong { background: var(--rose-light); border-bottom-color: var(--rose); color: #8a2a2a; }
+
+  .lc-d8 .d8-opt { cursor: pointer; transition: all 0.15s ease; user-select: none; }
+  .lc-d8 .d8-opt:hover:not(.right):not(.bad):not(.locked) { border-color: var(--teal); background: var(--teal-light); transform: translateY(-1px); }
+  .lc-d8 .d8-opt.locked { cursor: default; }
+
+  /* dot progress inside the phone */
+  .lc-dots { display: flex; gap: 5px; align-items: center; flex: 1; }
+  .lc-dots i {
+    flex: 1; height: 3px; border-radius: 99px;
+    background: var(--line); max-width: 32px;
+    transition: background 0.25s ease;
+  }
+  .lc-dots.dk i { background: rgba(255,255,255,0.18); }
+  .lc-dots i.done { background: var(--teal); }
+  .lc-dots.dk i.done { background: var(--teal-bright); }
+  .lc-dots i.active { background: var(--ink); }
+  .lc-dots.dk i.active { background: #fff; }
+
+  /* "next" footer button inside the phone, per card */
+  .lc-next {
+    position: absolute; bottom: 16px; left: 16px; right: 16px;
+    padding: 13px; border-radius: 14px;
+    background: var(--ink); color: var(--paper);
+    text-align: center; font-weight: 700; font-size: 13px;
+    cursor: pointer; transition: all 0.15s ease; user-select: none;
+    z-index: 5;
+  }
+  .lc-next:hover:not(.dis) { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+  .lc-next.dis { background: var(--paper-3); color: var(--muted); cursor: not-allowed; }
+  .lc-next.teal { background: var(--teal); color: #fff; }
+  .lc-next.amber { background: var(--amber); color: #2a1810; }
+
+  /* shake animation for wrong answers */
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-4px); }
+    40%, 80% { transform: translateX(4px); }
+  }
+  .lc-shake { animation: shake 0.32s ease-out; }
+
+  @media (max-width: 1100px) {
+    .live-stage { grid-template-columns: 1fr; gap: 36px; }
+    .live-phone-wrap { margin: 0 auto; }
+    .live-controls { max-width: 100%; }
+  }
+
+  /* ── Section 02 flow grid: small UX refinements ─────── */
+  .section-hd .section-desc.tight { max-width: 460px; }
+  .flow-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+    text-transform: uppercase; color: #6c717b;
+    padding: 4px 10px; border-radius: 99px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 20px;
+  }
+  .flow-tag::before { content: ''; width: 5px; height: 5px; border-radius: 99px; background: var(--teal-bright); }
+</style>
+</head>
+
+<body>
+
+<div class="stage">
+
+  <!-- ═══════════════════ HEADER ═══════════════════ -->
+  <div class="header">
+    <div class="kicker">Aprecis · v3 · end-to-end flow</div>
+    <div class="brand-row">
+      <div>
+        <div class="brand">aprecis<em>.</em></div>
+      </div>
+      <div class="lede">
+        A high-fidelity walkthrough of every screen — from the first launch to the hundredth paper. 22 screens, 4 flows, one continuous experience.
+      </div>
+    </div>
+    <div class="meta-row">
+      <div class="meta-item">
+        <div class="label">Audience</div>
+        <div class="value">Curious non-researchers drowning in AI content — the people for whom reading a <b>preprint abstract</b> is too much friction.</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Core loop</div>
+        <div class="value">Daily paper → 2-minute interactive deck → <b>XP + streak</b> → come back tomorrow.</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Design north star</div>
+        <div class="value">Mimo's "<b>reading is never the primary action</b>" — every card is a tap, guess, or rearrange.</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Retention lever</div>
+        <div class="value">Serif-italic <b>takeaway sentence</b> at the end of each deck — the one idea you'll remember tomorrow.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SECTION 1: ONBOARDING ═══════════════════ -->
+  <div class="section">
+    <div class="section-hd">
+      <div class="section-num">01</div>
+      <div>
+        <div class="section-title">First run — <em>from cold download to first paper</em></div>
+      </div>
+      <div class="section-desc">5 steps · 45 seconds. No account required up front. Calibrate interest + level so the first paper isn't a random shot in the dark.</div>
+    </div>
+
+    <div class="flow">
+
+      <!-- O1 Splash -->
+      <div class="fnode">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="status"><span>9:41</span><div class="right"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="bat"><i></i></div></div></div>
+            <div class="body">
+              <div class="o1">
+                <div class="logo">a<em>.</em></div>
+                <div class="tag">the layer between<br>doomscroll and pre-print</div>
+                <div class="loader"></div>
+              </div>
+            </div>
+            <div class="home-ind"></div>
+          </div>
+        </div>
+        <div class="label"><b>01</b> <span class="pill">splash</span></div>
+        <div class="note">Brand beat. Cream background, serif logo — no "Get Started" button yet. Transitions into welcome on its own (1.2s).</div>
+      </div>
+
+      <!-- O2 Welcome -->
+      <div class="fnode">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="status"><span>9:41</span><div class="right"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="bat"><i></i></div></div></div>
+            <div class="body">
+              <div class="o2">
+                <div class="logo-sm">aprecis<em>.</em></div>
+                <div class="hero-art">
+                  <div class="pap p1"><div class="l"></div><div class="l"></div><div class="l short"></div></div>
+                  <div class="pap p2"><div class="l"></div><div class="l short"></div><div class="l"></div></div>
+                  <div class="pap p3"><div class="l"></div><div class="l"></div><div class="l short"></div></div>
+                </div>
+                <div class="hero-title">AI research, turned into <em>2-minute decks</em>.</div>
+                <div class="hero-sub">You don't have to read the paper. You just have to <i>get</i> it.</div>
+                <div class="benefits">
+                  <div class="ben"><div class="ic">◔</div><div class="tx"><div class="t">One paper per day</div><div class="d">No feed, no infinite scroll.</div></div></div>
+                  <div class="ben"><div class="ic">◆</div><div class="tx"><div class="t">Tap, don't read</div><div class="d">Every card is interactive.</div></div></div>
+                  <div class="ben"><div class="ic">✦</div><div class="tx"><div class="t">Build a 7-day streak</div><div class="d">Real understanding, compounded.</div></div></div>
+                </div>
+                <div class="cta">Get started</div>
+                <div class="signin">Already have an account? <b>Sign in</b></div>
+              </div>
+            </div>
+            <div class="home-ind"></div>
+          </div>
+        </div>
+        <div class="label"><b>02</b> <span class="pill">welcome</span></div>
+        <div class="note">Single hero illustration + 3 specific benefits. No password wall — sign-in is secondary. Goal: get to interests fast.</div>
+      </div>
+
+      <!-- O3 Interests -->
+      <div class="fnode">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="status"><span>9:41</span><div class="right"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="bat"><i></i></div></div></div>
+            <div class="body">
+              <div class="o3">
+                <div class="top">
+                  <div class="back">←</div>
+                  <div class="step">Step 2 of 4</div>
+                </div>
+                <div class="progress"><i></i></div>
+                <div class="q">What are you most <em>curious</em> about?</div>
+                <div class="qhint">Pick at least 3. We'll calibrate your feed.</div>
+                <div class="grid">
+                  <div class="chip sel"><span class="em">🧠</span>LLMs &amp; Chatbots</div>
+                  <div class="chip"><span class="em">🎨</span>Image &amp; Video</div>
+                  <div class="chip sel"><span class="em">🤖</span>Agents &amp; Tools</div>
+                  <div class="chip"><span class="em">🔬</span>Biology / Med</div>
+                  <div class="chip sel"><span class="em">🔐</span>AI Safety</div>
+                  <div class="chip"><span class="em">⚡</span>Efficiency</div>
+                  <div class="chip"><span class="em">🎮</span>Reinforcement</div>
+                  <div class="chip"><span class="em">🛠️</span>Eng. &amp; Ops</div>
+                </div>
+                <div class="cta">Continue · 3 picked</div>
+              </div>
+            </div>
+            <div class="home-ind"></div>
+          </div>
+        </div>
+        <div class="label"><b>03</b> <span class="pill">interests</span></div>
+        <div class="note">CTA updates live with count — disabled until ≥3 picked. Back arrow + step counter so users feel in control.</div>
+      </div>
+
+      <!-- O4 Level -->
+      <div class="fnode">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="status"><span>9:41</span><div class="right"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="bat"><i></i></div></div></div>
+            <div class="body">
+              <div class="o3">
+                <div class="top"><div class="back">←</div><div class="step">Step 3 of 4</div></div>
+                <div class="progress"><i style="width:65%;"></i></div>
+                <div class="q">How <em>deep</em> do you want to go?</div>
+                <div class="qhint">We'll tune the analogies and math density.</div>
+                <div class="o4" style="padding: 18px 0 0;">
+                  <div class="opt">
+                    <div class="t">Curious beginner</div>
+                    <div class="d">"Explain it like I'm smart but new." Analogies first, math last.</div>
+                    <div class="tags"><div class="tag">Plain English</div><div class="tag">Visual-first</div></div>
+                  </div>
+                  <div class="opt sel">
+                    <div class="t">Builder / engineer</div>
+                    <div class="d">"Give me intuition and enough to ship code." Some formulas, real tradeoffs.</div>
+                    <div class="tags"><div class="tag">Pseudocode</div><div class="tag">Tradeoffs</div></div>
+                  </div>
+                  <div class="opt">
+                    <div class="t">Researcher</div>
+                    <div class="d">"Don't hide the math." Formal notation, ablations, open questions.</div>
+                    <div class="tags"><div class="tag">Math-heavy</div><div class="tag">Citations</div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="home-ind"></div>
+          </div>
+        </div>
+        <div class="label"><b>04</b> <span class="pill">calibrate</span></div>
+        <div class="note">Drives the LLM pipeline's tone. Same paper → three very different decks depending on this pick. Changeable later in Settings.</div>
+      </div>
+
+      <!-- O5 Notifications -->
+      <div class="fnode noarrow">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="status"><span>9:41</span><div class="right"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="bat"><i></i></div></div></div>
+            <div class="body">
+              <div class="o3">
+                <div class="top"><div class="back">←</div><div class="step">Step 4 of 4</div></div>
+                <div class="progress"><i style="width:90%;"></i></div>
+                <div class="q">When should we <em>tap you</em> on the shoulder?</div>
+                <div class="qhint">2 min a day. Miss a day, the streak resets.</div>
+                <div class="o5" style="padding: 18px 0 0;">
+                  <div class="art">
+                    <div class="bell"></div>
+                  </div>
+                  <div class="time-pick">
+                    <div class="l">Daily reminder</div>
+                    <div class="t">8:30 AM</div>
+                  </div>
+                  <div class="o3" style="padding:0;">
+                    <div class="qhint" style="margin-bottom:8px;">Active days</div>
+                    <div class="days">
+                      <i class="on">M</i><i class="on">T</i><i class="on">W</i><i class="on">T</i><i class="on">F</i><i>S</i><i>S</i>
+                    </div>
+                  </div>
+                  <div class="cta" style="margin-top:auto;">Enable reminders</div>
+                </div>
+              </div>
+            </div>
+            <div class="home-ind"></div>
+          </div>
+        </div>
+        <div class="label"><b>05</b> <span class="pill">habit setup</span></div>
+        <div class="note">Sets habit expectations up front: this is a daily-use app, not a Netflix. Weekday default (skip weekends = default) reduces streak anxiety.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SECTION 2: DAILY LOOP ═══════════════════ -->
+  <div class="section">
+    <div class="section-hd">
+      <div class="section-num">02</div>
+      <div>
+        <div class="section-title">The daily loop — <em>today's paper in six cards</em></div>
+      </div>
+      <div class="section-desc tight">9 screens, ~2 minutes. Every card has exactly one interaction. Leave remembering one sentence — not a 12-page PDF.</div>
+    </div>
+
+    <!-- ─── LIVE INTERACTIVE FEATURE MOCKUP ─── -->
+    <div class="live-hero">
+      <div class="live-intro">
+        <div class="lbl">Interactive feature mockup</div>
+        <h3>Tap through <em>today's deck</em> — the six cards, wired up.</h3>
+        <p>This is the daily-loop flow running at device size. Open the accordion, tap the attention map, fill the blanks, answer the quiz. Every interaction is live — it's what the user <i>actually feels</i> in the 2 minutes they spend with today's paper.</p>
+      </div>
+
+      <div class="live-stage">
+        <div class="live-phone-wrap">
+          <div class="phone live-phone" id="livePhone">
+            <div class="notch"></div>
+            <div class="screen mode-teal" id="liveScreen">
+              <div class="status dyn"><span>9:41</span><div class="right"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="bat"><i></i></div></div></div>
+
+              <div class="body" style="overflow: hidden;">
+
+                <!-- ─── CARD 1: HOOK ─── -->
+                <div class="lc-panel active" data-card="1">
+                  <div class="dark-top">
+                    <div class="close">✕</div>
+                    <div class="lc-dots dk"><i class="active"></i><i></i><i></i><i></i><i></i><i></i></div>
+                    <div class="heart"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 21s-8-5-8-12a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 7-8 12-8 12Z"/></svg></div>
+                  </div>
+                  <div class="d3-content">
+                    <div class="d3-num">01</div>
+                    <div class="d3-type">The hook</div>
+                    <div class="d3-hook">What if a model's <em>wildest lies</em> come from a single broken neuron?</div>
+                    <div class="d3-sub">DeepMind traced 80% of factual hallucinations to attention-head "collapse" — when one head over-weights a single token and drowns out the rest of the sentence.</div>
+                    <div class="d3-hint">▲ Swipe up to continue</div>
+                  </div>
+                </div>
+
+                <!-- ─── CARD 2: CORE IDEA ─── -->
+                <div class="lc-panel lc-d4" data-card="2">
+                  <div class="d4-top">
+                    <div class="back">←</div>
+                    <div class="lc-dots"><i class="done"></i><i class="active"></i><i></i><i></i><i></i><i></i></div>
+                  </div>
+                  <div class="d4-kicker">Card 02 · Core idea</div>
+                  <div class="d4-title">Three things that break <em>at once</em></div>
+                  <div class="d4-progress"><span id="lcD4Count">0/3 opened</span><div class="pbar"><i id="lcD4Bar" style="width:0%"></i></div></div>
+                  <div class="d4-list">
+                    <div class="d4-item" data-acc="1"><div class="n">i</div><div style="flex:1;"><div class="t">Attention concentrates on one token</div><div class="d">Softmax across the head's 512 tokens collapses — one position gets weight ≈ 1, the rest ≈ 0. Normally spread is ~0.2 per cluster.</div></div><div class="chev">⌄</div></div>
+                    <div class="d4-item" data-acc="2"><div class="n">ii</div><div style="flex:1;"><div class="t">Downstream layers lose signal</div><div class="d">With 95%+ of attention on one token, the residual stream for other positions gets starved. Layer N+1 builds features from near-zero vectors.</div></div><div class="chev">⌄</div></div>
+                    <div class="d4-item" data-acc="3"><div class="n">iii</div><div style="flex:1;"><div class="t">Model doubles down in confidence</div><div class="d">The logit for the predicted token is sharpened, not widened — so the model outputs the wrong answer with <i>higher</i> confidence than a balanced head would.</div></div><div class="chev">⌄</div></div>
+                  </div>
+                  <div class="lc-next dis" id="lcD4Next">Open all three to continue</div>
+                </div>
+
+                <!-- ─── CARD 3: ELI5 ─── -->
+                <div class="lc-panel" data-card="3">
+                  <div class="d4-top">
+                    <div class="back">←</div>
+                    <div class="lc-dots"><i class="done"></i><i class="done"></i><i class="active"></i><i></i><i></i><i></i></div>
+                  </div>
+                  <div class="d5">
+                    <div class="d5-illus">
+                      <svg viewBox="0 0 200 160">
+                        <g stroke="#7a5310" stroke-width="2" fill="none">
+                          <rect x="70" y="60" width="60" height="40" rx="8" fill="#e8a020" stroke="#7a5310"/>
+                          <path d="M130 70 L160 55 L160 105 L130 90 Z" fill="#e8a020"/>
+                          <circle cx="100" cy="80" r="8" fill="#fff"/>
+                          <circle cx="30" cy="40" r="10" fill="#fbf1dc"/><path d="M26 40 Q30 44 34 40"/>
+                          <circle cx="40" cy="120" r="10" fill="#fbf1dc"/><path d="M36 120 Q40 124 44 120"/>
+                          <circle cx="170" cy="30" r="10" fill="#fbf1dc"/><path d="M166 30 Q170 34 174 30"/>
+                          <circle cx="180" cy="130" r="10" fill="#fbf1dc"/><path d="M176 130 Q180 134 184 130"/>
+                          <path d="M55 80 L40 50" stroke-dasharray="3 3" opacity="0.4"/>
+                          <path d="M55 80 L40 110" stroke-dasharray="3 3" opacity="0.4"/>
+                          <path d="M145 80 L175 45" stroke-dasharray="3 3" opacity="0.4"/>
+                          <path d="M145 80 L175 120" stroke-dasharray="3 3" opacity="0.4"/>
+                        </g>
+                      </svg>
+                      <div class="cap">Analogy — one loud voice drowns the room</div>
+                    </div>
+                    <div class="d5-kicker">Card 03 · Like I'm 10</div>
+                    <div class="d5-t">Imagine a meeting where <em>one person starts shouting</em>.</div>
+                    <div class="d5-body">
+                      Attention heads are a <b>committee</b>. Each one casts a weighted vote on what word matters next. When a head collapses, it's like one committee member grabs the mic and <b>shouts over everyone</b>. The rest stop talking — and the chair (the next layer) mishears the room.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ─── CARD 4: INTERACTIVE DIAGRAM ─── -->
+                <div class="lc-panel lc-d6" data-card="4">
+                  <div class="d4-top">
+                    <div class="back">←</div>
+                    <div class="lc-dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="active"></i><i></i><i></i></div>
+                  </div>
+                  <div class="d6-hd"><div class="k">Card 04 · Tap to explore</div><div class="t">How a head <em>collapses</em></div></div>
+                  <div class="d6-diag" id="lcD6Diag" style="min-height:240px;">
+                    <div class="d6-counter"><span id="lcD6Count">0/4</span> visited</div>
+                    <div class="d6-hint" id="lcD6Hint">Tap Q</div>
+                    <div class="d6-node" data-node="q" style="top:14%; left:10%;">Query<br><span style="font-size:8px; opacity:0.7;">"Paris"</span></div>
+                    <div class="d6-node" data-node="k1" style="top:14%; right:10%;">K₁<br><span style="font-size:8px; opacity:0.6;">"France"</span></div>
+                    <div class="d6-node" data-node="k2" style="top:42%; right:10%;">K₂</div>
+                    <div class="d6-node" data-node="k3" style="top:65%; right:10%;">K₃</div>
+                    <div class="d6-node" style="bottom:8%; left:50%; transform:translateX(-50%); background:var(--rose-light); border-color:var(--rose); color:#8a2a2a; pointer-events:none;">⚠ Collapse</div>
+                    <svg width="100%" height="100%" viewBox="0 0 300 300" preserveAspectRatio="none" style="position:absolute; inset:0; z-index:0; pointer-events:none;">
+                      <path id="lcEdgeQ-K1" d="M 80 60 Q 150 60 210 60" stroke="#e6e1d6" stroke-width="2" fill="none"/>
+                      <path id="lcEdgeQ-K2" d="M 80 60 Q 150 140 210 140" stroke="#e6e1d6" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
+                      <path id="lcEdgeQ-K3" d="M 80 60 Q 150 210 210 210" stroke="#e6e1d6" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
+                      <path d="M 210 80 Q 210 180 160 240" stroke="#d46a6a" stroke-width="2" fill="none"/>
+                    </svg>
+                  </div>
+                  <div class="d6-expl">
+                    <div class="l" id="lcD6Lbl">Tap a node</div>
+                    <div class="tx" id="lcD6Tx">Four nodes form one attention head. Tap each to see its role — the explanation rewrites as you go.</div>
+                  </div>
+                </div>
+
+                <!-- ─── CARD 5: FILL THE BLANKS ─── -->
+                <div class="lc-panel lc-d7" data-card="5">
+                  <div class="d4-top">
+                    <div class="back">←</div>
+                    <div class="lc-dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="active"></i><i></i></div>
+                  </div>
+                  <div class="d7-hd">Card 05 · Fill the blanks</div>
+                  <div class="d7-q">
+                    <div class="qt">When a head <span class="d7-blank empty" data-blank="0"></span>, its softmax puts near-total weight on one <span class="d7-blank empty" data-blank="1"></span>, producing a confident but <span class="d7-blank empty" data-blank="2"></span> output.</div>
+                  </div>
+                  <div class="d7-lbl" id="lcD7Lbl">Tap chips to fill in order →</div>
+                  <div class="d7-chips" id="lcD7Chips">
+                    <div class="d7-chip" data-chip="collapses" data-ok="0">collapses</div>
+                    <div class="d7-chip" data-chip="token" data-ok="1">token</div>
+                    <div class="d7-chip" data-chip="wrong" data-ok="2">wrong</div>
+                    <div class="d7-chip" data-chip="noisy">noisy</div>
+                    <div class="d7-chip" data-chip="smooth">smooth</div>
+                    <div class="d7-chip" data-chip="layer">layer</div>
+                    <div class="d7-chip" data-chip="gradient">gradient</div>
+                    <div class="d7-chip" data-chip="sharp">sharp</div>
+                  </div>
+                  <div class="lc-next dis" id="lcD7Next">Fill all three</div>
+                </div>
+
+                <!-- ─── CARD 6: MCQ ─── -->
+                <div class="lc-panel lc-d8" data-card="6">
+                  <div class="d4-top">
+                    <div class="back">←</div>
+                    <div class="lc-dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="active"></i></div>
+                  </div>
+                  <div class="d8-hd"><div class="k">◆ Card 06 · Quick check</div></div>
+                  <div class="d8-q">So — what does the paper propose as a <em style="color:var(--amber-deep); font-style:italic;">fix</em>?</div>
+                  <div class="d8-opts" id="lcD8Opts">
+                    <div class="d8-opt" data-mcq="A"><div class="m">A</div>Train the model on more data</div>
+                    <div class="d8-opt" data-mcq="B" data-correct="1"><div class="m">B</div>Add an entropy penalty to the softmax</div>
+                    <div class="d8-opt" data-mcq="C"><div class="m">C</div>Remove low-weight heads entirely</div>
+                    <div class="d8-opt" data-mcq="D"><div class="m">D</div>Replace attention with convolutions</div>
+                  </div>
+                  <div class="d6-expl" id="lcD8Fb" style="margin-top:14px; display:none;">
+                    <div class="l" id="lcD8FbL">✓ Correct</div>
+                    <div class="tx" id="lcD8FbT">—</div>
+                  </div>
+                  <div class="lc-next dis" id="lcD8Next">Pick an answer</div>
+                </div>
+
+                <!-- ─── COMPLETE ─── -->
+                <div class="lc-panel" data-card="7">
+                  <div class="d9">
+                    <div class="d9-burst"><div class="core"><div class="v">+50</div><div class="l">XP EARNED</div></div></div>
+                    <div class="title">You finished the deck.</div>
+                    <div class="take">"Hallucination isn't random — it's a broken softmax."</div>
+                    <div class="stats">
+                      <div class="stat"><div class="v">6/6</div><div class="l">Cards</div></div>
+                      <div class="stat"><div class="v" id="lcFinalTime">1:48</div><div class="l">Time</div></div>
+                      <div class="stat"><div class="v" id="lcFinalAcc">83%</div><div class="l">Accuracy</div></div>
+                    </div>
+                    <div class="streak"><div class="f">🔥</div><div class="tx"><div class="n">Streak → <em>8 days</em></div><div class="d">Come back tomorrow for diffusion models.</div></div></div>
+                  </div>
+                  <div class="d9 cta">
+                    <button class="g">↗</button>
+                    <button class="primary">Read on arXiv ↗</button>
+                  </div>
+                </div>
+
+              </div>
+              <div class="home-ind dyn"></div>
+            </div>
+          </div>
+
+          <!-- Scrubber -->
+          <div class="live-scrubber" id="liveScrub">
+            <div class="th active" data-go="1"><div class="n">i</div><div class="l">Hook</div></div>
+            <div class="th" data-go="2"><div class="n">ii</div><div class="l">Core</div></div>
+            <div class="th" data-go="3"><div class="n">iii</div><div class="l">ELI5</div></div>
+            <div class="th" data-go="4"><div class="n">iv</div><div class="l">Map</div></div>
+            <div class="th" data-go="5"><div class="n">v</div><div class="l">Recall</div></div>
+            <div class="th" data-go="6"><div class="n">vi</div><div class="l">Quiz</div></div>
+          </div>
+        </div>
+
+        <div class="live-controls">
+          <div class="step">Card <em id="liveStepN">1</em> of 6 <span class="sep">·</span> <span class="name" id="liveStepT">The hook</span></div>
+          <h4 id="liveTitle">Why the <em>hook</em> leads every deck</h4>
+          <p class="why" id="liveWhy">One italic sentence, one clarifying paragraph — the only pure-prose card in the six. <b>Load-bearing:</b> if the hook misses, the user bounces. So it's the only card allowed to be purely passive. Every card after this demands an action.</p>
+          <div class="live-meta" id="liveMeta">
+            <div class="m"><div class="v"><em id="liveDwell">~18s</em></div><div class="l">Typical dwell</div></div>
+            <div class="m"><div class="v"><em id="liveRate">94%</em></div><div class="l">Continue rate</div></div>
+            <div class="m"><div class="v"><em id="liveInter">Swipe</em></div><div class="l">Interaction</div></div>
+          </div>
+          <div class="live-hint" id="liveHint"><div class="ic">→</div><div id="liveHintTx">Swipe up, press <kbd>→</kbd>, tap a scrubber tile, or press <b>Next card</b> to see the three-part mechanism revealed.</div></div>
+          <div class="live-ctrl-row">
+            <button class="live-btn-g" id="livePrev">← Back</button>
+            <button class="live-btn-g" id="liveReset">↺ Restart</button>
+            <button class="live-btn-p" id="liveNext">Next card →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-tag">The full 9-screen flow map</div>
+
+    <div class="flow">
+
+      <!-- D1 Today -->
+      <div class="fnode">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="status"><span>9:41</span><div class="right"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="bat"><i></i></div></div></div>
+            <div class="body" style="padding-bottom: 78px;">
+              <div class="d1-hd">
+                <div class="logo">aprecis<em>.</em></div>
+                <div class="streak">🔥 7</div>
+              </div>
+              <div class="d1-greet">Good morning, Juno.</div>
+              <div class="d1-xp">
+                <div class="xp-row"><div class="lvl">Level 4 · <em style="color:var(--muted); font-weight:500; font-style:italic;">Curious reader</em></div><div class="pts">285 / 400</div></div>
+                <div class="bar"><i></i></div>
+              </div>
+              <div class="d1-sec">Today's paper</div>
+              <div class="d1-daily">
+                <div class="tg">Fresh · 4 hours ago</div>
+                <h2>Why transformers <em>hallucinate</em></h2>
+                <p>DeepMind traces 80% of fabrications to a single failure mode: attention-head collapse.</p>
+                <div class="mm"><span>◔ 2 min</span><span>✦ 6 cards</span><span>+50 XP</span></div>
+                <div class="cta">Start learning →</div>
+              </div>
+              <div class="d1-sec">Continue</div>
+              <div class="d1-list">
+                <div class="d1-item">
+                  <div class="ring"><svg width="38" height="38"><circle class="bg" cx="19" cy="19" r="15"/><circle class="fg" cx="19" cy="19" r="15" stroke-dasharray="94" stroke-dashoffset="38"/></svg><span>60%</span></div>
+                  <div><div class="ttl">Mixture of Experts: routing</div><div class="sub">Meta AI · 3 of 6 cards</div></div>
+                </div>
+                <div class="d1-item">
+                  <div class="ring"><svg width="38" height="38"><circle class="bg" cx="19" cy="19" r="15"/><circle class="fg" cx="19" cy="19" r="15" stroke-dasharray="94" stroke-dashoffset="75"/></svg><span>20%</span></div>
+                  <div><div class="ttl">How LLMs compress text</div><div class="sub">Anthropic · 1 of 5 cards</div></div>
+                </div>
+              </div>
+            </div>
+            <div class="tabbar">
+              <div class="tab active"><svg class="ic" viewBox="0 0 24 24"><path d="M3 12 12 3l9 9M5 10v10h14V10"/></svg>Today</div>
+              <div class="tab"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>Explore</div>
+              <div class="tab"><svg class="ic" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Library</div>
+              <div class="tab"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>You</div>
+            </div>
+            <div class="home-ind"></div>
+          </div>
+        </div>
+        <div class="label"><b>06</b> <span class="pill">today / home</span></div>
+        <div class="note">Daily paper = the hero. Continue-row only for <i>partially complete</i> decks, not a feed of unread stuff.</div>
+      </div>
+
+      <!-- D2 Paper preview -->
+      <div class="fnode">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="status"><span>9:41</span><div class="right"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="bat"><i></i></div></div></div>
+            <div class="body">
+              <div class="d2-top"><div class="d2-close">✕</div><div class="d2-kebab">⋯</div></div>
+              <div class="d2-cover">
+                <svg viewBox="0 0 300 150" preserveAspectRatio="none">
+                  <g stroke="rgba(95,212,212,0.6)" fill="none" stroke-width="1.2">
+                    <circle cx="60" cy="75" r="8"/><circle cx="120" cy="50" r="6"/><circle cx="180" cy="85" r="7"/><circle cx="240" cy="60" r="9"/>
+                    <path d="M60 75 L120 50 L180 85 L240 60"/>
+                  </g>
+                </svg>
+              </div>
+              <div class="d2-meta-top"><div class="tag">LLM · Mechanistic</div><div class="tag" style="background:var(--amber-light); color:var(--amber-deep);">Fresh</div></div>
+              <div class="d2-title">Why transformers hallucinate — <em style="color:var(--teal); font-style:italic; font-weight:500;">a mechanistic theory</em></div>
+              <div class="d2-auth">DeepMind · Chen et al. · arXiv:2404.12876</div>
+              <div class="d2-stats">
+                <div class="st"><div class="v">6</div><div class="l">Cards</div></div>
+                <div class="st"><div class="v">~2min</div><div class="l">To read</div></div>
+                <div class="st"><div class="v">+50</div><div class="l">XP</div></div>
+                <div class="st"><div class="v">⭑⭑⭑</div><div class="l">Depth</div></div>
+              </div>
+              <div class="d2-cards-prev">
+                <div class="lbl">What's inside</div>
+                <div class="cc"><i>✨</i><i>◆</i><i>○</i><i>○</i><i>○</i><i>○</i></div>
+              </div>
+              <div class="d2-cta">Start 2-min deck →</div>
+            </div>
+            <div class="home-ind"></div>
+          </div>
+        </div>
+        <div class="label"><b>07</b> <span class="pill">paper preview</span></div>
+        <div class="note">Low-commitment preview: sets the cost ("2 min · 6 cards") so starting feels trivial. Cover art is LLM-generated per paper.</div>
+      </div>
+
+      <!-- D3 Hook -->
+      <div class="fnode">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen teal">
+            <div class="status dark"><span>9:41</span><div class="right"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="bat"><i></i></div></div></div>
+            <div class="body">
+              <div class="dark-top">
+                <div class="close">✕</div>
+                <div class="dots dark"><i class="active"></i><i></i><i></i><i></i><i></i><i></i></div>
+                <div class="heart"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 21s-8-5-8-12a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 7-8 12-8 12Z"/></svg></div>
+              </div>
+              <div class="d3-content">
+                <div class="d3-num">01</div>
+                <div class="d3-type">The hook</div>
+                <div class="d3-hook">What if a model's <em>wildest lies</em> come from a single broken neuron?</div>
+                <div class="d3-sub">DeepMind traced 80% of factual hallucinations to attention-head "collapse" — when one head over-weights a single token and drowns out the rest of the sentence.</div>
+                <div class="d3-hint">▲ Swipe up to continue</div>
+              </div>
+            </div>
+            <div class="home-ind light"></div>
+          </div>
+        </div>
+        <div class="label"><b>08</b> <span class="pill">card 01 · hook</span></div>
+        <div class="note">Dark teal to differentiate from the cream reading surface. Serif italic hook + one clarifying paragraph. <i>Only</i> prose card in the deck.</div>
+      </div>
+
+      <!-- D4 Core idea -->
+      <div class="fnode">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="status"><span>9:41</span><div class="right"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="bat"><i></i></div></div></div>
+            <div class="body">
+              <div class="d4-top">
+                <div class="back">←</div>
+                <div class="dots"><i class="done"></i><i class="active"></i><i></i><i></i><i></i><i></i></div>
+              </div>
+              <div class="d4-kicker">Card 02 · Core idea</div>
+              <div class="d4-title">Three things that break <em>at once</em></div>
+              <div class="d4-list">
+                <div class="d4-item open"><div class="n">i</div><div style="flex:1;"><div class="t">Attention concentrates on one token</div><div class="d">Softmax across the head's 512 tokens collapses — one position gets weight ≈ 1, the rest ≈ 0. Normally spread is ~0.2 per cluster.</div></div><div class="chev">⌄</div></div>
+                <div class="d4-item"><div class="n">ii</div><div style="flex:1;"><div class="t">Downstream layers lose signal</div></div><div class="chev">⌄</div></div>
+                <div class="d4-item"><div class="n">iii</div><div style="flex:1;"><div class="t">Model doubles down in confidence</div></div><div class="chev">⌄</div></div>
+              </div>
+            </div>
+            <div class="d4-next">Got it →</div>
+            <div class="home-ind"></div>
+          </div>
+        </div>
+        <div class="label"><b>09</b> <span class="pill">card 02 · tap reveal</span></div>
+        <div class="note">Accordion = active recall. User taps each roman numeral to reveal detail — otherwise they're skimming. Can't advance until all 3 are opened.</div>
+      </div>
+
+      <!-- D5 ELI5 -->
+      <div class="fnode">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="status"><span>9:41</span><div class="right"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="bat"><i></i></div></div></div>
+            <div class="body">
+              <div class="d4-top">
+                <div class="back">←</div>
+                <div class="dots"><i class="done"></i><i class="done"></i><i class="active"></i><i></i><i></i><i></i></div>
+              </div>
+              <div class="d5">
+                <div class="d5-illus">
+                  <svg viewBox="0 0 200 160">
+                    <g stroke="#7a5310" stroke-width="2" fill="none">
+                      <!-- microphone/megaphone -->
+                      <rect x="70" y="60" width="60" height="40" rx="8" fill="#e8a020" stroke="#7a5310"/>
+                      <path d="M130 70 L160 55 L160 105 L130 90 Z" fill="#e8a020"/>
+                      <circle cx="100" cy="80" r="8" fill="#fff"/>
+                      <!-- mouths around -->
+                      <circle cx="30" cy="40" r="10" fill="#fbf1dc"/><path d="M26 40 Q30 44 34 40"/>
+                      <circle cx="40" cy="120" r="10" fill="#fbf1dc"/><path d="M36 120 Q40 124 44 120"/>
+                      <circle cx="170" cy="30" r="10" fill="#fbf1dc"/><path d="M166 30 Q170 34 174 30"/>
+                      <circle cx="180" cy="130" r="10" fill="#fbf1dc"/><path d="M176 130 Q180 134 184 130"/>
+                      <!-- waves -->
+                      <path d="M55 80 L40 50" stroke-dasharray="3 3" opacity="0.4"/>
+                      <path d="M55 80 L40 110" stroke-dasharray="3 3" opacity="0.4"/>
+                      <path d="M145 80 L175 45" stroke-dasharray="3 3" opacity="0.4"/>
+                      <path d="M145 80 L175 120" stroke-dasharray="3 3" opacity="0.4"/>
+                    </g>
+                  </svg>
+                  <div class="cap">Analogy — one loud voice drowns the room</div>
+                </div>
+                <div class="d5-kicker">Card 03 · Like I'm 10</div>
+                <div class="d5-t">Imagine a meeting where <em>one person starts shouting</em>.</div>
+                <div class="d5-body">
+                  Attention heads are a <b>committee</b>. Each one casts a weighted vote on what word matters next. When a head collapses, it's like one committee member grabs the mic and <b>shouts over everyone</b>. The rest stop talking — and the chair (the next layer) mishears the room.
+                </div>
+              </div>
+            </div>
+            <div class="home-ind"></div>
+          </div>
+        </div>
+        <div class="label"><b>10</b> <span class="pill">card 03 · analogy</span></div>
+        <div class="note">Amber accent to signal "simplified." LLM-generated illustration sits above the analogy. Phrase highlights (b) let the eye grab the load-bearing nouns.</div>
+      </div>
+
+      <!-- D6 Interactive diagram -->
+      <div class="fnode">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="status"><span>9:41</span><div class="right"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="bat"><i></i></div></div></div>
+            <div class="body">
+              <div class="d4-top">
+                <div class="back">←</div>
+                <div class="dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="active"></i><i></i><i></i></div>
+              </div>
+              <div class="d6-hd"><div class="k">Card 04 · Tap to explore</div><div class="t">How a head <em>collapses</em></div></div>
+              <div class="d6-diag">
+                <div class="d6-hint">Tap Q</div>
+                <div class="d6-node active" style="top:15%; left:10%;">Query<br><span style="font-size:8px; opacity:0.85;">"Paris"</span></div>
+                <div class="d6-node" style="top:15%; right:10%;">K₁<br><span style="font-size:8px; opacity:0.6;">"France"</span></div>
+                <div class="d6-node dim" style="top:42%; right:10%;">K₂</div>
+                <div class="d6-node dim" style="top:65%; right:10%;">K₃</div>
+                <div class="d6-node" style="bottom:10%; left:50%; transform:translateX(-50%); background:var(--rose-light); border-color:var(--rose); color:#8a2a2a;">⚠ Collapse</div>
+                <svg width="100%" height="100%" viewBox="0 0 300 300" preserveAspectRatio="none" style="position:absolute; inset:0; z-index:-1;">
+                  <path d="M 80 60 Q 150 60 210 60" stroke="#1a8a8a" stroke-width="2.5" fill="none"/>
+                  <path d="M 80 60 Q 150 140 210 140" stroke="#e6e1d6" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
+                  <path d="M 80 60 Q 150 210 210 210" stroke="#e6e1d6" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
+                  <path d="M 210 80 Q 210 180 160 240" stroke="#d46a6a" stroke-width="2" fill="none"/>
+                </svg>
+              </div>
+              <div class="d6-expl">
+                <div class="l">✦ In plain English</div>
+                <div class="tx">The <b>Query</b> asks "what's related to Paris?" — when one <b>Key</b> dominates the softmax, the head stops looking at the others. <i>One voice drowns the room.</i></div>
+              </div>
+            </div>
+            <div class="home-ind"></div>
+          </div>
+        </div>
+        <div class="label"><b>11</b> <span class="pill">card 04 · interactive diagram</span></div>
+        <div class="note">Tap a node → the explanation below rewrites itself. Replaces the "Methods" section of the paper with 6–8 taps. Progress dot only fills after all nodes visited.</div>
+      </div>
+
+      <!-- D7 Fill blank -->
+      <div class="fnode">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="status"><span>9:41</span><div class="right"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="bat"><i></i></div></div></div>
+            <div class="body">
+              <div class="d4-top">
+                <div class="back">←</div>
+                <div class="dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="active"></i><i></i></div>
+              </div>
+              <div class="d7-hd">Card 05 · Fill the blanks</div>
+              <div class="d7-q">
+                <div class="qt">When a head <span class="d7-blank">collapses</span>, its softmax puts near-total weight on one <span class="d7-blank">token</span>, producing a confident but <span class="d7-blank empty"></span> output.</div>
+              </div>
+              <div class="d7-lbl">Tap to fill →</div>
+              <div class="d7-chips">
+                <div class="d7-chip used">collapses</div>
+                <div class="d7-chip used">token</div>
+                <div class="d7-chip">wrong</div>
+                <div class="d7-chip">noisy</div>
+                <div class="d7-chip wrong">smooth</div>
+                <div class="d7-chip">layer</div>
+                <div class="d7-chip">gradient</div>
+                <div class="d7-chip">sharp</div>
+              </div>
+              <div class="d4-next">Check answer</div>
+            </div>
+            <div class="home-ind"></div>
+          </div>
+        </div>
+        <div class="label"><b>12</b> <span class="pill">card 05 · fill blank</span></div>
+        <div class="note">Forces reconstruction, not skim. Wrong picks strike through in rose + haptic buzz; right ones fill and lock. 2 of 3 blanks filled so far.</div>
+      </div>
+
+      <!-- D8 MCQ -->
+      <div class="fnode">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="status"><span>9:41</span><div class="right"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="bat"><i></i></div></div></div>
+            <div class="body">
+              <div class="d4-top">
+                <div class="back">←</div>
+                <div class="dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="active"></i></div>
+              </div>
+              <div class="d8-hd"><div class="k">◆ Card 06 · Quick check</div></div>
+              <div class="d8-q">So — what does the paper propose as a fix?</div>
+              <div class="d8-opts">
+                <div class="d8-opt"><div class="m">A</div>Train the model on more data</div>
+                <div class="d8-opt right"><div class="m">B</div>Add an entropy penalty to the softmax</div>
+                <div class="d8-opt bad"><div class="m">C</div>Remove low-weight heads entirely</div>
+                <div class="d8-opt"><div class="m">D</div>Replace attention with convolutions</div>
+              </div>
+              <div class="d6-expl" style="background: var(--green-light); border-color: var(--green); margin-top: 14px;">
+                <div class="l" style="color:#2e6a2e;">✓ Correct — nice catch</div>
+                <div class="tx">The entropy penalty rewards the head for <b style="color:#2e6a2e;">spreading attention</b>. Option C would hurt — some narrow heads are actually useful.</div>
+              </div>
+            </div>
+            <div class="home-ind"></div>
+          </div>
+        </div>
+        <div class="label"><b>13</b> <span class="pill">card 06 · MCQ</span></div>
+        <div class="note">Wrong answers don't fail — they <i>teach</i>. Correct lights green, selected-wrong lights rose, explanation appears. +10 XP for first-try correct.</div>
+      </div>
+
+      <!-- D9 Complete -->
+      <div class="fnode noarrow">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="status"><span>9:41</span><div class="right"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="bat"><i></i></div></div></div>
+            <div class="body">
+              <div class="d9">
+                <div class="d9-burst"><div class="core"><div class="v">+50</div><div class="l">XP EARNED</div></div></div>
+                <div class="title">You finished the deck.</div>
+                <div class="take">"Hallucination isn't random — it's a broken softmax."</div>
+                <div class="stats">
+                  <div class="stat"><div class="v">6/6</div><div class="l">Cards</div></div>
+                  <div class="stat"><div class="v">1:48</div><div class="l">Time</div></div>
+                  <div class="stat"><div class="v">83%</div><div class="l">Accuracy</div></div>
+                </div>
+                <div class="streak"><div class="f">🔥</div><div class="tx"><div class="n">Streak → <em>8 days</em></div><div class="d">Come back tomorrow for diffusion models.</div></div></div>
+              </div>
+            </div>
+            <div class="d9 cta">
+              <button class="g">↗</button>
+              <button class="primary">Read on arXiv ↗</button>
+            </div>
+            <div class="home-ind"></div>
+          </div>
+        </div>
+        <div class="label"><b>14</b> <span class="pill">complete</span></div>
+        <div class="note">Serif-italic takeaway = the one sentence that survives tomorrow. arXiv link is the <i>reward</i>, not the entry point.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SECTION 3: DISCOVERY ═══════════════════ -->
+  <div class="section">
+    <div class="section-hd">
+      <div class="section-num">03</div>
+      <div>
+        <div class="section-title">Discovery — <em>when you want more than today's paper</em></div>
+      </div>
+      <div class="section-desc">Explore, search, and drop in an arXiv URL. The only feed in the app — and it's <i>off</i> the main path.</div>
+    </div>
+
+    <div class="flow">
+
+      <!-- E1 Explore -->
+      <div class="fnode">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="status"><span>9:41</span><div class="right"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="bat"><i></i></div></div></div>
+            <div class="body" style="padding-bottom: 78px;">
+              <div class="e1-top"><div class="h">Explore</div><div class="av">J</div></div>
+              <div class="e1-search"><span>🔍</span><span>Search papers, concepts, authors…</span></div>
+              <div class="e1-chips">
+                <i class="on">For you</i><i>Trending</i><i>New</i><i>Unread</i><i>Short</i>
+              </div>
+              <div class="e1-sec">Trending this week <span>See all</span></div>
+              <div class="e1-trending">
+                <div class="e1-card"><div class="cov c2"></div><div class="tg">LLM</div><div class="tt">Constitutional AI v3</div><div class="mt">Anthropic · 3 min</div></div>
+                <div class="e1-card"><div class="cov c1"></div><div class="tg">Vision</div><div class="tt">Diffusion at 4K, faster</div><div class="mt">Stability · 2 min</div></div>
+                <div class="e1-card"><div class="cov c3"></div><div class="tg">Agents</div><div class="tt">Tool-use hierarchies</div><div class="mt">OpenAI · 4 min</div></div>
+              </div>
+              <div class="e1-sec" style="margin-top:4px;">Browse by topic</div>
+              <div class="e1-cat-grid">
+                <div class="e1-cat"><div class="em">🧠</div><div class="t">LLMs</div><div class="n">248 papers</div></div>
+                <div class="e1-cat"><div class="em">🎨</div><div class="t">Image</div><div class="n">112 papers</div></div>
+                <div class="e1-cat"><div class="em">🤖</div><div class="t">Agents</div><div class="n">87 papers</div></div>
+                <div class="e1-cat"><div class="em">🔐</div><div class="t">Safety</div><div class="n">64 papers</div></div>
+              </div>
+            </div>
+            <div class="tabbar">
+              <div class="tab"><svg class="ic" viewBox="0 0 24 24"><path d="M3 12 12 3l9 9M5 10v10h14V10"/></svg>Today</div>
+              <div class="tab active"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>Explore</div>
+              <div class="tab"><svg class="ic" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Library</div>
+              <div class="tab"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>You</div>
+            </div>
+            <div class="home-ind"></div>
+          </div>
+        </div>
+        <div class="label"><b>15</b> <span class="pill">explore</span></div>
+        <div class="note">"For you" tab is personalized, not algorithmic-addictive. Topics let users drill — an opt-in feed.</div>
+      </div>
+
+      <!-- E2 Search -->
+      <div class="fnode">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="status"><span>9:41</span><div class="right"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="bat"><i></i></div></div></div>
+            <div class="body">
+              <div class="e2-top"><div class="back">←</div><div class="inp"><span style="color:var(--muted);">🔍</span><span>attention</span></div></div>
+              <div class="e2-filters">
+                <i class="on">Type: All</i><i>arXiv</i><i>GitHub</i><i>Last 30d</i><i>⋯</i>
+              </div>
+              <div class="e2-sec">8 results</div>
+              <div class="e2-res">
+                <div class="e2-row">
+                  <div class="cov t1"></div>
+                  <div style="flex:1;">
+                    <div class="tt">Why transformers hallucinate — a mechanistic theory of <b>attention</b> collapse</div>
+                    <div class="mt"><i>DeepMind</i><i>2 min</i><i>Fresh</i></div>
+                  </div>
+                </div>
+                <div class="e2-row">
+                  <div class="cov"></div>
+                  <div style="flex:1;">
+                    <div class="tt">Grouped-query <b>attention</b>: tradeoffs at 70B</div>
+                    <div class="mt"><i>Meta</i><i>3 min</i><i>2d ago</i></div>
+                  </div>
+                </div>
+                <div class="e2-row">
+                  <div class="cov t2"></div>
+                  <div style="flex:1;">
+                    <div class="tt">FlashAttention-3: GPU-aware <b>attention</b> kernels</div>
+                    <div class="mt"><i>Tri Dao</i><i>4 min</i><i>Last week</i></div>
+                  </div>
+                </div>
+                <div class="e2-row">
+                  <div class="cov t1"></div>
+                  <div style="flex:1;">
+                    <div class="tt">Sparse <b>attention</b> for long context</div>
+                    <div class="mt"><i>Stanford</i><i>3 min</i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="home-ind"></div>
+          </div>
+        </div>
+        <div class="label"><b>16</b> <span class="pill">search</span></div>
+        <div class="note">Filters as chips, not a separate screen. Matches highlighted inline. Results always include the 2-min tag — the friction-reducer.</div>
+      </div>
+
+      <!-- E3 Add paper -->
+      <div class="fnode">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="status"><span>9:41</span><div class="right"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="bat"><i></i></div></div></div>
+            <div class="body">
+              <div class="e3-top"><div class="h">Add a paper</div><div class="x">✕</div></div>
+              <div class="e3-sub">Drop a URL, we'll build the deck.</div>
+              <div class="e3-inp-w">
+                <div class="l">arXiv URL</div>
+                <div class="v">arxiv.org/abs/2404.12876</div>
+              </div>
+              <div class="e3-paste">📋 Paste from clipboard</div>
+              <div class="e3-or"><div class="line"></div><div class="t">OR BROWSE</div><div class="line"></div></div>
+              <div class="e3-srcs">
+                <div class="e3-src"><div class="em">📄</div><div class="t">arXiv</div><div class="d">Preprints</div></div>
+                <div class="e3-src"><div class="em">💬</div><div class="t">Papers with Code</div><div class="d">+ repo</div></div>
+                <div class="e3-src"><div class="em">🐙</div><div class="t">GitHub</div><div class="d">README</div></div>
+                <div class="e3-src"><div class="em">🐦</div><div class="t">Twitter thread</div><div class="d">Experimental</div></div>
+              </div>
+              <div class="e3-cta">Cook the deck →</div>
+            </div>
+            <div class="home-ind"></div>
+          </div>
+        </div>
+        <div class="label"><b>17</b> <span class="pill">add paper</span></div>
+        <div class="note">URL-first (paste the thing you're stuck on). Source grid is the "I don't have a URL" fallback. No text/PDF upload in v1 — scope creep.</div>
+      </div>
+
+      <!-- E4 Processing -->
+      <div class="fnode noarrow">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="status"><span>9:41</span><div class="right"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="bat"><i></i></div></div></div>
+            <div class="body">
+              <div class="e4">
+                <div class="paper-anim">
+                  <div class="pap">
+                    <div class="line te"></div>
+                    <div class="line"></div><div class="line"></div><div class="line s"></div>
+                    <div class="line te" style="margin-top:10px; width:50%;"></div>
+                    <div class="line"></div><div class="line s"></div><div class="line"></div>
+                  </div>
+                </div>
+                <div class="t">Cooking your <em>deck</em></div>
+                <div class="sub">"Why transformers hallucinate"<br>This usually takes 12–18 seconds.</div>
+                <div class="steps">
+                  <div class="step done"><div class="ic">✓</div>Fetched paper (22 pages)</div>
+                  <div class="step done"><div class="ic">✓</div>Extracted core ideas</div>
+                  <div class="step active"><div class="ic"></div>Generating analogy &amp; visual</div>
+                  <div class="step"><div class="ic">○</div>Packaging 6 cards</div>
+                </div>
+              </div>
+            </div>
+            <div class="home-ind"></div>
+          </div>
+        </div>
+        <div class="label"><b>18</b> <span class="pill">processing</span></div>
+        <div class="note">Makes the pipeline <i>feel</i> like cooking. Honest latency + visible stages &gt; a spinning wheel. "Analogy &amp; visual" is the slow stage.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SECTION 4: LIBRARY & PROFILE ═══════════════════ -->
+  <div class="section">
+    <div class="section-hd">
+      <div class="section-num">04</div>
+      <div>
+        <div class="section-title">Library &amp; you — <em>the receipts of learning</em></div>
+      </div>
+      <div class="section-desc">What you've read, what stuck, and who you're becoming. Every metric is a receipt — streaks, glossary, level. Never a vanity score.</div>
+    </div>
+
+    <div class="flow">
+
+      <!-- L1 Library -->
+      <div class="fnode">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="status"><span>9:41</span><div class="right"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="bat"><i></i></div></div></div>
+            <div class="body" style="padding-bottom: 78px;">
+              <div class="l1-top"><div class="h">Library</div><div class="ic"><i>🔍</i><i>⊘</i></div></div>
+              <div class="l1-tabs"><i class="on">Saved <span class="c">12</span></i><i>In progress <span class="c">2</span></i><i>Done <span class="c">47</span></i></div>
+              <div class="l1-list">
+                <div class="l1-item">
+                  <div class="cov c2"></div>
+                  <div class="inf">
+                    <div class="t">Constitutional AI v3 — self-improvement via critique</div>
+                    <div class="m"><span>Anthropic</span><span>·</span><span>saved 2d ago</span></div>
+                    <div class="bar"><i style="width: 0%;"></i></div>
+                  </div>
+                </div>
+                <div class="l1-item">
+                  <div class="cov c3"></div>
+                  <div class="inf">
+                    <div class="t">Mixture of Experts: routing at scale</div>
+                    <div class="m"><span>Meta AI</span><span>·</span><span>3 of 6 cards</span></div>
+                    <div class="bar"><i style="width: 60%;"></i></div>
+                    <div class="pct">60% — 3:20 left</div>
+                  </div>
+                </div>
+                <div class="l1-item">
+                  <div class="cov c4"></div>
+                  <div class="inf">
+                    <div class="t">FlashAttention-3 — GPU-aware kernels</div>
+                    <div class="m"><span>Tri Dao</span><span>·</span><span>saved 5d ago</span></div>
+                    <div class="bar"><i style="width: 0%;"></i></div>
+                  </div>
+                </div>
+                <div class="l1-item">
+                  <div class="cov"></div>
+                  <div class="inf">
+                    <div class="t">Grouped-query attention tradeoffs</div>
+                    <div class="m"><span>Meta</span><span>·</span><span>saved 6d ago</span></div>
+                    <div class="bar"><i style="width: 0%;"></i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tabbar">
+              <div class="tab"><svg class="ic" viewBox="0 0 24 24"><path d="M3 12 12 3l9 9M5 10v10h14V10"/></svg>Today</div>
+              <div class="tab"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>Explore</div>
+              <div class="tab active"><svg class="ic" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Library</div>
+              <div class="tab"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>You</div>
+            </div>
+            <div class="home-ind"></div>
+          </div>
+        </div>
+        <div class="label"><b>19</b> <span class="pill">library</span></div>
+        <div class="note">Three-tab segmented: Saved (bookmarks), In-progress (ghost reminders), Done (history). Progress bar shows exactly where you stopped.</div>
+      </div>
+
+      <!-- L2 Glossary -->
+      <div class="fnode">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="status"><span>9:41</span><div class="right"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="bat"><i></i></div></div></div>
+            <div class="body">
+              <div class="l2-top"><div class="h">Your <em>glossary</em></div><div class="cnt">34 terms</div></div>
+              <div class="l2-sub">Concepts you've actually met in a deck.</div>
+              <div class="l2-sec">Mastered (12)</div>
+              <div class="l2-list">
+                <div class="l2-item">
+                  <div style="flex:1;"><div class="t">Softmax</div><div class="d">A squashing function that turns any vector into a probability distribution.</div></div>
+                  <div class="mast">Mastered</div>
+                </div>
+                <div class="l2-item">
+                  <div style="flex:1;"><div class="t">Attention head</div><div class="d">A single "voter" inside a transformer layer that looks at other tokens.</div></div>
+                  <div class="mast">Mastered</div>
+                </div>
+                <div class="l2-item">
+                  <div style="flex:1;"><div class="t">Entropy penalty</div><div class="d">A loss term that rewards spreading probability mass — prevents collapse.</div></div>
+                  <div class="mast lr">Learning</div>
+                </div>
+              </div>
+              <div class="l2-sec" style="margin-top:6px;">Learning (8)</div>
+              <div class="l2-list">
+                <div class="l2-item">
+                  <div style="flex:1;"><div class="t">LoRA</div><div class="d">Low-rank adapters — a way to fine-tune without touching full weights.</div></div>
+                  <div class="mast lr">Learning</div>
+                </div>
+              </div>
+            </div>
+            <div class="home-ind"></div>
+          </div>
+        </div>
+        <div class="label"><b>20</b> <span class="pill">glossary</span></div>
+        <div class="note">Every term you've encountered in a deck lives here with its 1-line definition. Mastered = correctly used in a quick-check 2+ times.</div>
+      </div>
+
+      <!-- P1 Profile -->
+      <div class="fnode">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="status"><span>9:41</span><div class="right"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="bat"><i></i></div></div></div>
+            <div class="body" style="padding-bottom: 78px;">
+              <div class="p1-top">
+                <div class="av">JP</div>
+                <div><div class="n">Juno Park</div><div class="h">Joined 11 days ago</div></div>
+                <div class="st">⚙</div>
+              </div>
+              <div class="p1-level">
+                <div class="r"><div class="lv">Level 4</div><div class="nm">Curious reader</div></div>
+                <div class="bar"><i></i></div>
+                <div class="xp">285 / 400 XP · 115 to level 5</div>
+              </div>
+              <div class="p1-stats">
+                <div class="p1-stat"><div class="v"><em>🔥 8</em></div><div class="l">Streak</div></div>
+                <div class="p1-stat"><div class="v">47</div><div class="l">Papers</div></div>
+                <div class="p1-stat"><div class="v">34</div><div class="l">Terms</div></div>
+              </div>
+              <div class="p1-sec">Last 100 days</div>
+              <div class="p1-cal">
+                <i></i><i class="l1"></i><i class="l2"></i><i class="l1"></i><i></i><i class="l3"></i><i class="l2"></i><i class="l1"></i><i></i><i class="l2"></i>
+                <i class="l3"></i><i class="l2"></i><i></i><i class="l4"></i><i class="l4"></i><i class="l3"></i><i class="l1"></i><i class="l2"></i><i></i><i class="l2"></i>
+                <i class="l3"></i><i class="l4"></i><i class="l2"></i><i class="l1"></i><i></i><i></i><i class="l2"></i><i class="l3"></i><i class="l2"></i><i class="l1"></i>
+                <i class="l2"></i><i class="l4"></i><i class="l3"></i><i class="l2"></i><i class="l1"></i><i></i><i class="l3"></i><i class="l2"></i><i class="l1"></i><i class="l4"></i>
+                <i class="l3"></i><i class="l2"></i><i class="l1"></i><i class="l4"></i><i class="l3"></i><i class="l2"></i><i class="l4"></i><i class="l3"></i><i class="l4"></i><i class="l4"></i>
+                <i class="l4"></i><i class="l4"></i><i class="l4"></i><i class="l4"></i><i class="l3"></i><i class="l4"></i><i class="l4"></i><i class="l4"></i><i class="l4"></i><i class="l4"></i>
+              </div>
+              <div class="p1-cal-l">less <div class="k"><i></i><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i></div> more</div>
+            </div>
+            <div class="tabbar">
+              <div class="tab"><svg class="ic" viewBox="0 0 24 24"><path d="M3 12 12 3l9 9M5 10v10h14V10"/></svg>Today</div>
+              <div class="tab"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>Explore</div>
+              <div class="tab"><svg class="ic" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Library</div>
+              <div class="tab active"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>You</div>
+            </div>
+            <div class="home-ind"></div>
+          </div>
+        </div>
+        <div class="label"><b>21</b> <span class="pill">profile · you</span></div>
+        <div class="note">GitHub-style activity calendar. Level name ("Curious reader") is narrative, not numeric. Streak is prominent but not bragging — it's for <i>you</i>.</div>
+      </div>
+
+      <!-- P2 Streak detail -->
+      <div class="fnode">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="status"><span>9:41</span><div class="right"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="bat"><i></i></div></div></div>
+            <div class="body">
+              <div class="p2-top"><div class="back">←</div><div class="h">Your streak</div></div>
+              <div class="p2-hero">
+                <div class="f">🔥</div>
+                <div class="n"><em>8</em> days</div>
+                <div class="d">Personal best. Don't break it tomorrow.</div>
+              </div>
+              <div class="p2-sec">This week</div>
+              <div class="p2-week">
+                <div class="p2-day on"><div class="lb">M</div><div class="ic">🔥</div></div>
+                <div class="p2-day on"><div class="lb">T</div><div class="ic">🔥</div></div>
+                <div class="p2-day on"><div class="lb">W</div><div class="ic">🔥</div></div>
+                <div class="p2-day on"><div class="lb">T</div><div class="ic">🔥</div></div>
+                <div class="p2-day on"><div class="lb">F</div><div class="ic">🔥</div></div>
+                <div class="p2-day"><div class="lb">S</div><div class="ic" style="color:var(--muted);">○</div></div>
+                <div class="p2-day"><div class="lb">S</div><div class="ic" style="color:var(--muted);">○</div></div>
+              </div>
+              <div class="p2-sec" style="margin-top:14px;">Recent</div>
+              <div class="p2-list">
+                <div class="p2-row"><div class="d">Today</div><div class="c">Hallucination theory · <em>+50</em></div></div>
+                <div class="p2-row"><div class="d">Yesterday</div><div class="c">LoRA tradeoffs · <em>+40</em></div></div>
+                <div class="p2-row"><div class="d">Mon</div><div class="c">Flash-attention · <em>+50</em></div></div>
+                <div class="p2-row"><div class="d">Sun</div><div class="c">Grouped-query · <em>+30</em></div></div>
+              </div>
+            </div>
+            <div class="home-ind"></div>
+          </div>
+        </div>
+        <div class="label"><b>22</b> <span class="pill">streak detail</span></div>
+        <div class="note">One "freeze" per week — you can miss a day without breaking the streak. Prevents rage-quits. Weekend off by default (from onboarding).</div>
+      </div>
+
+      <!-- P3 Settings -->
+      <div class="fnode noarrow">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="status"><span>9:41</span><div class="right"><div class="bars"><i></i><i></i><i></i><i></i></div><div class="bat"><i></i></div></div></div>
+            <div class="body">
+              <div class="p3-top"><div class="back">←</div><div class="h">Settings</div></div>
+              <div class="p3-sec">Learning</div>
+              <div class="p3-list">
+                <div class="p3-row"><div class="ic">◔</div><div class="tx"><div class="t">Daily reminder</div><div class="d">8:30 AM · Mon–Fri</div></div><div class="val">On</div><div class="chev">›</div></div>
+                <div class="p3-row"><div class="ic">✦</div><div class="tx"><div class="t">Depth</div><div class="d">Builder / engineer</div></div><div class="val">Edit</div><div class="chev">›</div></div>
+                <div class="p3-row"><div class="ic">◆</div><div class="tx"><div class="t">Topics</div><div class="d">LLMs, Agents, Safety</div></div><div class="val">3</div><div class="chev">›</div></div>
+              </div>
+              <div class="p3-sec">Experience</div>
+              <div class="p3-list">
+                <div class="p3-row"><div class="ic">☽</div><div class="tx"><div class="t">Dark mode</div><div class="d">Use system setting</div></div><div class="p3-toggle"></div></div>
+                <div class="p3-row"><div class="ic">♫</div><div class="tx"><div class="t">Sound &amp; haptics</div><div class="d">On successful answers</div></div><div class="p3-toggle"></div></div>
+                <div class="p3-row"><div class="ic">Aa</div><div class="tx"><div class="t">Reading size</div><div class="d">Medium</div></div><div class="val">M</div><div class="chev">›</div></div>
+              </div>
+              <div class="p3-sec">Account</div>
+              <div class="p3-list">
+                <div class="p3-row"><div class="ic">✉</div><div class="tx"><div class="t">justin@pohtm.com</div><div class="d">Synced with iCloud</div></div><div class="chev">›</div></div>
+                <div class="p3-row"><div class="ic">↗</div><div class="tx"><div class="t">Sign out</div></div></div>
+              </div>
+            </div>
+            <div class="home-ind"></div>
+          </div>
+        </div>
+        <div class="label"><b>23</b> <span class="pill">settings</span></div>
+        <div class="note">Depth + topics live here (same as onboarding). Dark mode is system-follow by default — the cream aesthetic stays default most of the time.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════ FOOTER ═══════════════════ -->
+  <div class="footer-note">
+    <h3>Reading the <em>flow</em> as a whole</h3>
+    <p style="max-width:860px;">Aprecis isn't a reader, a feed, or a course. It's a <b>2-minute daily appointment</b> with one idea, wrapped in an interactive surface that makes reading feel like tapping. Every screen on this board defends that promise.</p>
+    <div class="grid3">
+      <div>
+        <h4>The three jobs</h4>
+        <ul>
+          <li><b>Capture attention</b> — the hook card and streak flame compete with TikTok for the same 2 minutes.</li>
+          <li><b>Transfer a single idea</b> — each deck is designed around one load-bearing sentence.</li>
+          <li><b>Build a habit</b> — streak, level, glossary are receipts that compound over weeks.</li>
+        </ul>
+      </div>
+      <div>
+        <h4>What's deliberately missing</h4>
+        <ul>
+          <li><b>No infinite feed.</b> "Explore" is a drawer, not the home screen.</li>
+          <li><b>No comments or social.</b> Removes the outrage vector entirely.</li>
+          <li><b>No PDF reader.</b> arXiv is the reward link — app stays light.</li>
+          <li><b>No push beyond 1/day.</b> Respect is the moat.</li>
+        </ul>
+      </div>
+      <div>
+        <h4>What to build next</h4>
+        <ul>
+          <li><b>Voice deck</b> — the same 6 cards as a 90-second audio summary for commutes.</li>
+          <li><b>Weekly digest email</b> — the 5 takeaway sentences from the week in serif italic.</li>
+          <li><b>Share card</b> — export the takeaway sentence as a 9:16 image for social.</li>
+          <li><b>Paper clusters</b> — when you finish 3 related decks, unlock a "concept map" review.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(() => {
+  const CARDS = [
+    {
+      n: 1, name: 'The hook', mode: 'mode-teal',
+      title: 'Why the <em>hook</em> leads every deck',
+      why: 'One italic sentence, one clarifying paragraph — the only pure-prose card in the six. <b>Load-bearing:</b> if the hook misses, the user bounces. So it\'s the only card allowed to be purely passive. Every card after this demands an action.',
+      dwell: '~18s', rate: '94%', inter: 'Swipe',
+      hint: 'Swipe up, press <kbd>→</kbd>, tap a scrubber tile, or press <b>Next card</b> to see the three-part mechanism.',
+      hintKind: '', requires: () => true
+    },
+    {
+      n: 2, name: 'Core idea', mode: 'mode-paper',
+      title: 'Active recall through <em>accordion reveal</em>',
+      why: 'Three bullets collapsed, tap-to-expand. Forces the eye to <b>commit before reading</b> — skimmers can\'t slip past. The <i>Next</i> button is gated on all three being opened, so the user can\'t fake progress.',
+      dwell: '~26s', rate: '88%', inter: 'Tap × 3',
+      hint: 'Tap each roman numeral to reveal detail. <b>All three must open</b> before you can continue.',
+      hintKind: '', requires: s => s.d4Opened.size >= 3
+    },
+    {
+      n: 3, name: 'Like I\'m 10', mode: 'mode-paper',
+      title: 'The <em>analogy</em> that survives tomorrow',
+      why: 'Amber signals "simplified." LLM-generated illustration sits above the prose. The <b>bolded nouns</b> aren\'t ornament — they\'re the words the user is being asked to carry into Card 5\'s fill-the-blank. Rehearsal without feeling like rehearsal.',
+      dwell: '~22s', rate: '91%', inter: 'Read',
+      hint: 'Read through, then continue. This card plants the vocabulary you\'ll reuse in the recall card.',
+      hintKind: 'info', requires: () => true
+    },
+    {
+      n: 4, name: 'Tap to explore', mode: 'mode-paper',
+      title: 'Replace the <em>Methods</em> section with 4 taps',
+      why: 'The paper\'s "how" compressed to one interactive diagram. Tap each node → the plain-English caption rewrites itself. Covers what would take 2 pages of figures. Progress dot only fills once all 4 nodes are visited.',
+      dwell: '~34s', rate: '82%', inter: 'Tap × 4',
+      hint: 'Tap each node (Q, K₁, K₂, K₃) — the explanation below updates each time. <b>All four</b> to continue.',
+      hintKind: '', requires: s => s.d6Visited.size >= 4
+    },
+    {
+      n: 5, name: 'Fill the blanks', mode: 'mode-paper',
+      title: 'Recall, not recognition',
+      why: 'Forces reconstruction from memory, not a skim. Wrong chips still fill — but flash rose + strike through. Right ones lock green. This is the single highest-retention card in the deck; it\'s where real learning measurement happens.',
+      dwell: '~30s', rate: '79%', inter: 'Tap × 3',
+      hint: 'Tap chips to drop them into the blanks in order. Wrong picks get feedback — you can keep going.',
+      hintKind: '', requires: s => s.d7Filled.length >= 3
+    },
+    {
+      n: 6, name: 'Quick check', mode: 'mode-paper',
+      title: 'Wrong answers <em>teach</em>, don\'t fail',
+      why: 'Not a gatekeeping quiz. Whichever option you pick, the right one lights green and the wrong ones turn rose with the <b>why-it\'s-wrong</b> explanation. First-try correct = +10 XP bonus — but even a wrong answer advances you.',
+      dwell: '~20s', rate: '96%', inter: 'Tap × 1',
+      hint: 'Pick one. The result reveals immediately — either way, you continue.',
+      hintKind: '', requires: s => s.d8Answer !== null
+    },
+    {
+      n: 7, name: 'Deck complete', mode: 'mode-complete',
+      title: 'The <em>takeaway sentence</em> is the retention lever',
+      why: 'Serif-italic single sentence — the <b>one idea</b> the user carries into tomorrow. Stats are soft (accuracy isn\'t a grade, it\'s a souvenir). The arXiv link is the <i>reward</i>, not the entry point — offered only after the 2-minute commitment is honored.',
+      dwell: '~12s', rate: '—', inter: 'Save / share',
+      hint: 'You\'re done. Press <b>Restart</b> to replay the deck from the top, or pop back a card with <kbd>←</kbd>.',
+      hintKind: 'done', requires: () => true
+    }
+  ];
+
+  const phone = document.getElementById('livePhone');
+  if (!phone) return;
+  const screen = document.getElementById('liveScreen');
+  const panels = phone.querySelectorAll('.lc-panel');
+  const scrub = document.getElementById('liveScrub');
+  const scrubItems = scrub.querySelectorAll('.th');
+  const btnPrev = document.getElementById('livePrev');
+  const btnNext = document.getElementById('liveNext');
+  const btnReset = document.getElementById('liveReset');
+
+  const els = {
+    stepN: document.getElementById('liveStepN'),
+    stepT: document.getElementById('liveStepT'),
+    title: document.getElementById('liveTitle'),
+    why: document.getElementById('liveWhy'),
+    dwell: document.getElementById('liveDwell'),
+    rate: document.getElementById('liveRate'),
+    inter: document.getElementById('liveInter'),
+    hint: document.getElementById('liveHint'),
+    hintTx: document.getElementById('liveHintTx')
+  };
+
+  const state = {
+    cur: 1,
+    maxReached: 1,
+    d4Opened: new Set(),
+    d6Visited: new Set(),
+    d7Filled: [],
+    d8Answer: null,
+    d8Locked: false,
+    wrongCount: 0
+  };
+
+  function renderPanelState() {
+    panels.forEach(p => {
+      const n = +p.dataset.card;
+      p.classList.toggle('active', n === state.cur);
+    });
+    const m = CARDS[state.cur - 1].mode;
+    screen.classList.remove('mode-teal', 'mode-paper', 'mode-complete');
+    screen.classList.add(m);
+  }
+
+  function renderSide() {
+    const c = CARDS[state.cur - 1];
+    els.stepN.textContent = c.n;
+    els.stepT.textContent = c.name;
+    els.title.innerHTML = c.title;
+    els.why.innerHTML = c.why;
+    els.dwell.textContent = c.dwell;
+    els.rate.textContent = c.rate;
+    els.inter.textContent = c.inter;
+
+    const met = c.requires(state);
+    els.hint.className = 'live-hint' + (c.hintKind ? ' ' + c.hintKind : '') + (met && state.cur < 7 ? ' done' : '');
+    const icon = (met && state.cur < 7) ? '✓' : (c.hintKind === 'done' ? '★' : (c.hintKind === 'info' ? 'i' : '→'));
+    els.hint.innerHTML = `<div class="ic">${icon}</div><div>${met && state.cur < 7 && state.cur > 1 ? '<b>Great —</b> requirement met. Press <b>Next</b>, tap a scrubber tile, or press <kbd>→</kbd>.' : c.hint}</div>`;
+
+    // scrubber
+    scrubItems.forEach(t => {
+      const n = +t.dataset.go;
+      t.classList.remove('active', 'done', 'locked');
+      if (n === state.cur) t.classList.add('active');
+      else if (n < state.cur) t.classList.add('done');
+      if (n > state.maxReached) t.classList.add('locked');
+    });
+
+    // buttons
+    btnPrev.disabled = state.cur === 1;
+    const canAdvance = c.requires(state) && state.cur < 7;
+    btnNext.disabled = !canAdvance;
+    btnNext.innerHTML = state.cur === 6 ? (canAdvance ? 'See results →' : 'Pick an answer<span class="req"> to continue</span>')
+                     : state.cur === 7 ? 'Complete'
+                     : (canAdvance ? 'Next card →' : nextLabelNeeds(state.cur));
+  }
+
+  function nextLabelNeeds(cur) {
+    if (cur === 2) return `Open all three<span class="req"> — ${state.d4Opened.size}/3</span>`;
+    if (cur === 4) return `Visit all four nodes<span class="req"> — ${state.d6Visited.size}/4</span>`;
+    if (cur === 5) return `Fill all three<span class="req"> — ${state.d7Filled.length}/3</span>`;
+    return 'Next card →';
+  }
+
+  function go(n) {
+    if (n < 1 || n > 7) return;
+    if (n > state.maxReached + 1) return;
+    state.cur = n;
+    if (n > state.maxReached) state.maxReached = n;
+    renderPanelState();
+    renderSide();
+  }
+
+  btnNext.addEventListener('click', () => {
+    const c = CARDS[state.cur - 1];
+    if (c.requires(state) && state.cur < 7) go(state.cur + 1);
+  });
+  btnPrev.addEventListener('click', () => go(state.cur - 1));
+  btnReset.addEventListener('click', () => {
+    state.cur = 1; state.maxReached = 1;
+    state.d4Opened = new Set();
+    state.d6Visited = new Set();
+    state.d7Filled = [];
+    state.d8Answer = null; state.d8Locked = false; state.wrongCount = 0;
+
+    // reset dom states
+    phone.querySelectorAll('.lc-d4 .d4-item').forEach(i => i.classList.remove('open'));
+    document.getElementById('lcD4Count').textContent = '0/3 opened';
+    document.getElementById('lcD4Bar').style.width = '0%';
+    document.getElementById('lcD4Next').classList.add('dis');
+    document.getElementById('lcD4Next').textContent = 'Open all three to continue';
+
+    phone.querySelectorAll('.lc-d6 .d6-node').forEach(n => { n.classList.remove('visited', 'active'); });
+    document.getElementById('lcD6Count').textContent = '0/4';
+    document.getElementById('lcD6Lbl').textContent = 'Tap a node';
+    document.getElementById('lcD6Tx').innerHTML = 'Four nodes form one attention head. Tap each to see its role — the explanation rewrites as you go.';
+    document.getElementById('lcD6Hint').style.display = '';
+
+    phone.querySelectorAll('.lc-d7 .d7-chip').forEach(c => { c.classList.remove('used', 'wrong', 'correct'); });
+    phone.querySelectorAll('.lc-d7 .d7-blank').forEach(b => {
+      b.classList.remove('correct', 'wrong');
+      b.classList.add('empty');
+      b.textContent = '';
+    });
+    document.getElementById('lcD7Next').classList.add('dis');
+    document.getElementById('lcD7Next').textContent = 'Fill all three';
+    document.getElementById('lcD7Lbl').textContent = 'Tap chips to fill in order →';
+
+    phone.querySelectorAll('.lc-d8 .d8-opt').forEach(o => o.classList.remove('right', 'bad', 'locked'));
+    document.getElementById('lcD8Fb').style.display = 'none';
+    document.getElementById('lcD8Next').classList.add('dis');
+    document.getElementById('lcD8Next').textContent = 'Pick an answer';
+
+    renderPanelState();
+    renderSide();
+  });
+
+  // scrubber click
+  scrubItems.forEach(t => {
+    t.addEventListener('click', () => {
+      const n = +t.dataset.go;
+      if (n > state.maxReached) return;
+      go(n);
+    });
+  });
+
+  // card 1: swipe up / tap continues
+  panels[0].addEventListener('click', (e) => {
+    if (e.target.closest('.close') || e.target.closest('.heart')) return;
+    go(2);
+  });
+
+  // card 2: accordion
+  phone.querySelectorAll('.lc-d4 .d4-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const id = item.dataset.acc;
+      const was = item.classList.contains('open');
+      item.classList.toggle('open');
+      if (!was) state.d4Opened.add(id);
+      const n = state.d4Opened.size;
+      document.getElementById('lcD4Count').textContent = `${n}/3 opened`;
+      document.getElementById('lcD4Bar').style.width = `${(n / 3) * 100}%`;
+      const nb = document.getElementById('lcD4Next');
+      if (n >= 3) { nb.classList.remove('dis'); nb.textContent = 'Got it →'; }
+      else { nb.textContent = `Open all three to continue (${n}/3)`; }
+      renderSide();
+    });
+  });
+  document.getElementById('lcD4Next').addEventListener('click', () => {
+    if (state.d4Opened.size >= 3) go(3);
+  });
+
+  // card 3: tap anywhere to continue (except back)
+  panels[2].addEventListener('click', (e) => {
+    if (e.target.closest('.back')) { go(2); return; }
+    go(4);
+  });
+
+  // card 4: interactive diagram
+  const nodeData = {
+    q:  { label: 'Query · "Paris"',     tx: 'The <b>Query</b> asks "what\'s related to Paris?" — it\'s the token asking around for context. In a healthy head, its attention spreads across K₁, K₂, K₃.' },
+    k1: { label: 'Key 1 · "France"',    tx: 'When <b>K₁</b> dominates the softmax, the head stops looking at K₂ and K₃. <i>One voice drowns the room</i> — and downstream layers only hear K₁.' },
+    k2: { label: 'Key 2 · suppressed',  tx: '<b>K₂</b> should contribute ~30% of the signal — but post-collapse, its weight drops to &lt; 2%. It\'s in the sentence, but the head can\'t see it.' },
+    k3: { label: 'Key 3 · suppressed',  tx: '<b>K₃</b> — same fate as K₂. The residual stream at this position has near-zero content. Next layer builds features from noise.' }
+  };
+  phone.querySelectorAll('.lc-d6 .d6-node[data-node]').forEach(n => {
+    n.addEventListener('click', () => {
+      const id = n.dataset.node;
+      phone.querySelectorAll('.lc-d6 .d6-node').forEach(x => x.classList.remove('active'));
+      n.classList.add('active', 'visited');
+      state.d6Visited.add(id);
+      document.getElementById('lcD6Count').textContent = `${state.d6Visited.size}/4`;
+      document.getElementById('lcD6Lbl').textContent = nodeData[id].label;
+      document.getElementById('lcD6Tx').innerHTML = nodeData[id].tx;
+      if (state.d6Visited.size >= 1) document.getElementById('lcD6Hint').style.display = 'none';
+      renderSide();
+    });
+  });
+
+  // card 5: fill blanks
+  const blanks = phone.querySelectorAll('.lc-d7 .d7-blank');
+  phone.querySelectorAll('.lc-d7 .d7-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      if (chip.classList.contains('used') || chip.classList.contains('wrong')) return;
+      const nextIdx = state.d7Filled.length;
+      if (nextIdx >= 3) return;
+      const want = String(nextIdx);
+      const ok = chip.dataset.ok === want;
+      const blank = blanks[nextIdx];
+      blank.textContent = chip.dataset.chip;
+      blank.classList.remove('empty');
+      if (ok) {
+        chip.classList.add('used', 'correct');
+        blank.classList.add('correct');
+        state.d7Filled.push({chip: chip.dataset.chip, ok: true});
+      } else {
+        chip.classList.add('wrong');
+        blank.classList.add('wrong');
+        state.wrongCount++;
+        // remove from blank after a beat, but still count as filled
+        setTimeout(() => {
+          blank.classList.remove('wrong');
+          blank.classList.add('empty');
+          blank.textContent = '';
+        }, 900);
+        const phoneEl = document.getElementById('livePhone');
+        phoneEl.classList.add('lc-shake');
+        setTimeout(() => phoneEl.classList.remove('lc-shake'), 340);
+        return; // don't advance index on wrong
+      }
+      document.getElementById('lcD7Lbl').textContent =
+        state.d7Filled.length >= 3 ? '✓ All three correct — press Check.' : `Tap chips to fill in order → (${state.d7Filled.length}/3)`;
+      const nb = document.getElementById('lcD7Next');
+      if (state.d7Filled.length >= 3) { nb.classList.remove('dis'); nb.textContent = 'Check answer →'; }
+      renderSide();
+    });
+  });
+  document.getElementById('lcD7Next').addEventListener('click', () => {
+    if (state.d7Filled.length >= 3) go(6);
+  });
+
+  // card 6: MCQ
+  phone.querySelectorAll('.lc-d8 .d8-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      if (state.d8Locked) return;
+      const picked = opt.dataset.mcq;
+      state.d8Answer = picked;
+      state.d8Locked = true;
+      const right = phone.querySelector('.lc-d8 .d8-opt[data-correct="1"]');
+      right.classList.add('right');
+      if (picked !== 'B') {
+        opt.classList.add('bad');
+        state.wrongCount++;
+      }
+      phone.querySelectorAll('.lc-d8 .d8-opt').forEach(o => o.classList.add('locked'));
+      const fb = document.getElementById('lcD8Fb');
+      fb.style.display = '';
+      if (picked === 'B') {
+        fb.style.background = 'var(--green-light)';
+        fb.style.borderLeft = '3px solid var(--green)';
+        document.getElementById('lcD8FbL').textContent = '✓ Correct — nice catch';
+        document.getElementById('lcD8FbL').style.color = '#2e6a2e';
+        document.getElementById('lcD8FbT').innerHTML = 'The entropy penalty rewards the head for <b style="color:#2e6a2e;">spreading attention</b>. Option C would hurt — some narrow heads are actually useful.';
+      } else {
+        fb.style.background = 'var(--rose-light)';
+        fb.style.borderLeft = '3px solid var(--rose)';
+        document.getElementById('lcD8FbL').textContent = '× Not quite — the answer is B';
+        document.getElementById('lcD8FbL').style.color = '#8a2a2a';
+        document.getElementById('lcD8FbT').innerHTML = 'The paper proposes an <b>entropy penalty on the softmax</b> — it rewards heads for spreading attention instead of collapsing onto one token.';
+      }
+      const nb = document.getElementById('lcD8Next');
+      nb.classList.remove('dis');
+      nb.textContent = 'See results →';
+      renderSide();
+    });
+  });
+  document.getElementById('lcD8Next').addEventListener('click', () => {
+    if (state.d8Answer !== null) {
+      // update final stats on complete screen
+      const totalWrong = state.wrongCount;
+      const total = 4; // 3 blanks + 1 MCQ
+      const acc = Math.max(0, Math.round(((total - totalWrong) / total) * 100));
+      document.getElementById('lcFinalAcc').textContent = acc + '%';
+      go(7);
+    }
+  });
+
+  // keyboard
+  document.addEventListener('keydown', (e) => {
+    if (!document.querySelector('.live-hero')) return;
+    // only respond when focus isn't in an input
+    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+    if (e.key === 'ArrowRight') {
+      const c = CARDS[state.cur - 1];
+      if (c.requires(state) && state.cur < 7) { go(state.cur + 1); e.preventDefault(); }
+    } else if (e.key === 'ArrowLeft') {
+      if (state.cur > 1) { go(state.cur - 1); e.preventDefault(); }
+    } else if (e.key === 'r' || e.key === 'R') {
+      btnReset.click();
+    }
+  });
+
+  // initial render
+  renderPanelState();
+  renderSide();
+})();
+</script>
+
+</body>
+</html>

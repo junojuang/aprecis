@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Aprecis 100: The AI Canon</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    font-family: "Iowan Old Style", "Palatino", Georgia, serif;
+    font-size: 10.5pt;
+    line-height: 1.45;
+    color: #1a1a1a;
+    background: #fbf8f1;
+    margin: 0;
+  }
+  .cover {
+    page-break-after: always;
+    padding: 60mm 0 0 0;
+    text-align: center;
+  }
+  .cover h1 {
+    font-size: 42pt;
+    margin: 0 0 10mm 0;
+    letter-spacing: -0.5pt;
+    color: #0a3d3a;
+  }
+  .cover .sub {
+    font-size: 14pt;
+    color: #555;
+    font-style: italic;
+    margin: 0 0 6mm 0;
+  }
+  .cover .meta {
+    font-size: 10pt;
+    color: #888;
+    margin-top: 30mm;
+  }
+  .cover .tagline {
+    font-size: 16pt;
+    color: #0a3d3a;
+    margin: 14mm auto;
+    max-width: 130mm;
+    line-height: 1.4;
+  }
+  h2.era {
+    font-size: 16pt;
+    color: #0a3d3a;
+    border-bottom: 1.5pt solid #0a3d3a;
+    padding-bottom: 2mm;
+    margin-top: 12mm;
+    margin-bottom: 6mm;
+    page-break-after: avoid;
+  }
+  h2.era .years {
+    font-size: 11pt;
+    color: #888;
+    font-weight: normal;
+    font-style: italic;
+    float: right;
+  }
+  .paper {
+    margin: 0 0 5mm 0;
+    page-break-inside: avoid;
+  }
+  .paper .num {
+    display: inline-block;
+    width: 9mm;
+    color: #b8966a;
+    font-weight: bold;
+    font-size: 11pt;
+  }
+  .paper .title {
+    font-weight: bold;
+    color: #1a1a1a;
+  }
+  .paper .cite {
+    color: #555;
+    font-size: 9.5pt;
+  }
+  .paper .why {
+    margin: 1mm 0 0 9mm;
+    color: #2a2a2a;
+  }
+  hr.thin {
+    border: none;
+    border-top: 0.5pt solid #ddd;
+    margin: 8mm 0;
+  }
+  .toc {
+    page-break-after: always;
+  }
+  .toc h2 {
+    font-size: 18pt;
+    color: #0a3d3a;
+    margin-bottom: 8mm;
+  }
+  .toc ul { list-style: none; padding: 0; }
+  .toc li {
+    padding: 1.5mm 0;
+    border-bottom: 0.25pt dotted #ccc;
+    display: flex;
+    justify-content: space-between;
+    font-size: 11pt;
+  }
+  .toc li .count {
+    color: #888;
+    font-style: italic;
+  }
+  .footer {
+    text-align: center;
+    color: #888;
+    font-size: 9pt;
+    margin-top: 18mm;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <h1>The Aprecis 100</h1>
+  <div class="sub">The AI Canon</div>
+  <div class="tagline">
+    100 papers that built artificial intelligence,
+    from the first artificial neuron (1943)
+    to the reasoning models of today.
+  </div>
+  <div class="meta">
+    Reference draft, v0.1<br>
+    Aprecis, 2026
+  </div>
+</section>
+
+<section class="toc">
+  <h2>Contents</h2>
+  <ul>
+    <li><span>Era 1: Foundations</span><span class="count">1943 to 1985, 8 papers</span></li>
+    <li><span>Era 2: Early Networks</span><span class="count">1986 to 1999, 10 papers</span></li>
+    <li><span>Era 3: Pre-Deep-Learning Groundwork</span><span class="count">2001 to 2014, 8 papers</span></li>
+    <li><span>Era 4: Deep Learning Explosion</span><span class="count">2014 to 2017, 16 papers</span></li>
+    <li><span>Era 5: Transformer Era</span><span class="count">2017 to 2019, 12 papers</span></li>
+    <li><span>Era 6: Scale Era</span><span class="count">2020 to 2022, 18 papers</span></li>
+    <li><span>Era 7: Modern Frontier</span><span class="count">2023 to 2026, 28 papers</span></li>
+  </ul>
+</section>
+
+<h2 class="era">Era 1: Foundations <span class="years">1943 to 1985</span></h2>
+
+<div class="paper">
+  <div><span class="num">1.</span><span class="title">A Logical Calculus of Ideas Immanent in Nervous Activity</span></div>
+  <div class="cite" style="margin-left:9mm">McCulloch and Pitts, 1943</div>
+  <div class="why">First mathematical model of a neuron. Proved that networks of artificial neurons could compute logical functions. The seed of every neural network that followed.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">2.</span><span class="title">Computing Machinery and Intelligence</span></div>
+  <div class="cite" style="margin-left:9mm">Turing, 1950</div>
+  <div class="why">Defined the question (can machines think?) and the Turing Test. Set the field's north star for 70 years.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">3.</span><span class="title">The Perceptron: A Probabilistic Model for Information Storage and Organization</span></div>
+  <div class="cite" style="margin-left:9mm">Rosenblatt, 1958</div>
+  <div class="why">First learning machine. Showed that weights could be adjusted automatically from data. The press called it "the embryo of an electronic computer that thinks."</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">4.</span><span class="title">Some Studies in Machine Learning Using the Game of Checkers</span></div>
+  <div class="cite" style="margin-left:9mm">Samuel, 1959</div>
+  <div class="why">First program to learn from self-play. Coined the term "machine learning."</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">5.</span><span class="title">Perceptrons: An Introduction to Computational Geometry</span></div>
+  <div class="cite" style="margin-left:9mm">Minsky and Papert, 1969</div>
+  <div class="why">Proved perceptrons cannot learn XOR. Killed neural-network funding and triggered the first AI winter. Cultural villain, vindicated 30 years later.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">6.</span><span class="title">Beyond Regression: New Tools for Prediction and Analysis in the Behavioral Sciences</span></div>
+  <div class="cite" style="margin-left:9mm">Werbos, 1974 (PhD thesis)</div>
+  <div class="why">Invented backpropagation. Sat ignored for a decade.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">7.</span><span class="title">Neural Networks and Physical Systems with Emergent Collective Computational Abilities</span></div>
+  <div class="cite" style="margin-left:9mm">Hopfield, 1982</div>
+  <div class="why">Showed networks could store memories like a physicist's system. Reignited mainstream interest in neural networks.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">8.</span><span class="title">Learning Representations by Back-Propagating Errors</span></div>
+  <div class="cite" style="margin-left:9mm">Rumelhart, Hinton, Williams, 1986</div>
+  <div class="why">Popularized backpropagation. The shot heard around connectionism.</div>
+</div>
+
+<h2 class="era">Era 2: Early Networks <span class="years">1986 to 1999</span></h2>
+
+<div class="paper">
+  <div><span class="num">9.</span><span class="title">Backpropagation Applied to Handwritten Zip Code Recognition</span></div>
+  <div class="cite" style="margin-left:9mm">LeCun et al., 1989</div>
+  <div class="why">First convolutional network. Postal automation became the first commercial neural-net deployment.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">10.</span><span class="title">Finding Structure in Time</span></div>
+  <div class="cite" style="margin-left:9mm">Elman, 1990</div>
+  <div class="why">Simple recurrent network. Showed neural nets could handle sequences with memory.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">11.</span><span class="title">Support-Vector Networks</span></div>
+  <div class="cite" style="margin-left:9mm">Cortes and Vapnik, 1995</div>
+  <div class="why">Support Vector Machines. Dominated machine learning for a decade and sidelined neural networks again.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">12.</span><span class="title">Long Short-Term Memory</span></div>
+  <div class="cite" style="margin-left:9mm">Hochreiter and Schmidhuber, 1997</div>
+  <div class="why">Solved the vanishing gradient problem. Powered every recurrent net for 20 years until transformers arrived.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">13.</span><span class="title">Gradient-Based Learning Applied to Document Recognition (LeNet-5)</span></div>
+  <div class="cite" style="margin-left:9mm">LeCun, Bottou, Bengio, Haffner, 1998</div>
+  <div class="why">Defined the modern CNN architecture: conv, pool, conv, pool, fully connected.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">14.</span><span class="title">The Anatomy of a Large-Scale Hypertextual Web Search Engine</span></div>
+  <div class="cite" style="margin-left:9mm">Brin and Page, 1998</div>
+  <div class="why">PageRank. Showed machine learning at web scale. Built Google.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">15.</span><span class="title">Random Forests</span></div>
+  <div class="cite" style="margin-left:9mm">Breiman, 2001</div>
+  <div class="why">Ensemble methods. Won every Kaggle competition for a decade.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">16.</span><span class="title">Greedy Function Approximation: A Gradient Boosting Machine</span></div>
+  <div class="cite" style="margin-left:9mm">Friedman, 2001</div>
+  <div class="why">Gradient boosting. Foundation of XGBoost. Still the king of tabular data.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">17.</span><span class="title">A Neural Probabilistic Language Model</span></div>
+  <div class="cite" style="margin-left:9mm">Bengio et al., 2003</div>
+  <div class="why">First neural language model. Direct ancestor of GPT.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">18.</span><span class="title">Reducing the Dimensionality of Data with Neural Networks</span></div>
+  <div class="cite" style="margin-left:9mm">Hinton and Salakhutdinov, 2006</div>
+  <div class="why">Deep Belief Networks. First time "deep" learning actually worked. Started the deep-learning revival.</div>
+</div>
+
+<h2 class="era">Era 3: Pre-Deep-Learning Groundwork <span class="years">2001 to 2014</span></h2>
+
+<div class="paper">
+  <div><span class="num">19.</span><span class="title">ImageNet: A Large-Scale Hierarchical Image Database</span></div>
+  <div class="cite" style="margin-left:9mm">Deng, Dong, Socher, Li, Li, Fei-Fei, 2009</div>
+  <div class="why">The dataset that enabled everything. No ImageNet, no AlexNet, no deep-learning boom. Datasets matter more than algorithms.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">20.</span><span class="title">ImageNet Classification with Deep Convolutional Neural Networks (AlexNet)</span></div>
+  <div class="cite" style="margin-left:9mm">Krizhevsky, Sutskever, Hinton, 2012</div>
+  <div class="why">The big-bang moment. A 10-point error reduction on ImageNet shocked the field. GPUs plus data plus depth equals revolution.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">21.</span><span class="title">Improving Neural Networks by Preventing Co-adaptation of Feature Detectors (Dropout)</span></div>
+  <div class="cite" style="margin-left:9mm">Hinton et al., 2012</div>
+  <div class="why">Regularization that finally let deep networks generalize instead of overfitting.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">22.</span><span class="title">Efficient Estimation of Word Representations in Vector Space (Word2Vec)</span></div>
+  <div class="cite" style="margin-left:9mm">Mikolov et al., 2013</div>
+  <div class="why">Words as vectors. "King minus Man plus Woman equals Queen." Defined modern NLP.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">23.</span><span class="title">Adam: A Method for Stochastic Optimization</span></div>
+  <div class="cite" style="margin-left:9mm">Kingma and Ba, 2014</div>
+  <div class="why">The optimizer everyone still uses. One of the most cited papers in modern machine learning.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">24.</span><span class="title">Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift</span></div>
+  <div class="cite" style="margin-left:9mm">Ioffe and Szegedy, 2015</div>
+  <div class="why">Made very deep networks trainable. Standard ingredient in nearly every architecture after.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">25.</span><span class="title">GloVe: Global Vectors for Word Representation</span></div>
+  <div class="cite" style="margin-left:9mm">Pennington, Socher, Manning, 2014</div>
+  <div class="why">Alternative to Word2Vec built from co-occurrence statistics. Widely used in production NLP.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">26.</span><span class="title">Auto-Encoding Variational Bayes (VAE)</span></div>
+  <div class="cite" style="margin-left:9mm">Kingma and Welling, 2013</div>
+  <div class="why">Probabilistic generative models with latent variables. Foundation of all latent-space thinking.</div>
+</div>
+
+<h2 class="era">Era 4: Deep Learning Explosion <span class="years">2014 to 2017</span></h2>
+
+<div class="paper">
+  <div><span class="num">27.</span><span class="title">Sequence to Sequence Learning with Neural Networks</span></div>
+  <div class="cite" style="margin-left:9mm">Sutskever, Vinyals, Le, 2014</div>
+  <div class="why">Encoder-decoder architecture. Defined modern translation, summarization, and dialogue systems.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">28.</span><span class="title">Neural Machine Translation by Jointly Learning to Align and Translate</span></div>
+  <div class="cite" style="margin-left:9mm">Bahdanau, Cho, Bengio, 2014</div>
+  <div class="why">First attention mechanism. The conceptual seed of transformers.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">29.</span><span class="title">Generative Adversarial Networks</span></div>
+  <div class="cite" style="margin-left:9mm">Goodfellow et al., 2014</div>
+  <div class="why">Two networks fighting. Launched the generative-modeling era. Yann LeCun called it "the coolest idea in machine learning in 20 years."</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">30.</span><span class="title">Going Deeper with Convolutions (GoogLeNet, Inception)</span></div>
+  <div class="cite" style="margin-left:9mm">Szegedy et al., 2014</div>
+  <div class="why">Showed clever architecture beats raw depth. Inception modules became a standard pattern.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">31.</span><span class="title">Very Deep Convolutional Networks for Large-Scale Image Recognition (VGG)</span></div>
+  <div class="cite" style="margin-left:9mm">Simonyan and Zisserman, 2014</div>
+  <div class="why">Proved depth alone could help. Simple, hugely influential, easy to teach.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">32.</span><span class="title">Deep Residual Learning for Image Recognition (ResNet)</span></div>
+  <div class="cite" style="margin-left:9mm">He, Zhang, Ren, Sun, 2015</div>
+  <div class="why">Skip connections enabled 1000-plus-layer networks. The most cited paper of the 2010s.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">33.</span><span class="title">Playing Atari with Deep Reinforcement Learning (DQN)</span></div>
+  <div class="cite" style="margin-left:9mm">Mnih et al., 2013</div>
+  <div class="why">Deep RL beat humans at Atari games. Started DeepMind's rise to prominence.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">34.</span><span class="title">Mastering the Game of Go with Deep Neural Networks and Tree Search (AlphaGo)</span></div>
+  <div class="cite" style="margin-left:9mm">Silver et al., 2016</div>
+  <div class="why">Beat Lee Sedol 4 to 1. A cultural earthquake in Asia. Convinced governments that AI was real.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">35.</span><span class="title">U-Net: Convolutional Networks for Biomedical Image Segmentation</span></div>
+  <div class="cite" style="margin-left:9mm">Ronneberger, Fischer, Brox, 2015</div>
+  <div class="why">Standard for biomedical segmentation. Underpins the architecture of every modern diffusion model.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">36.</span><span class="title">Fast R-CNN</span></div>
+  <div class="cite" style="margin-left:9mm">Girshick, 2015</div>
+  <div class="why">Defined modern object detection.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">37.</span><span class="title">You Only Look Once: Unified, Real-Time Object Detection (YOLO)</span></div>
+  <div class="cite" style="margin-left:9mm">Redmon, Divvala, Girshick, Farhadi, 2015</div>
+  <div class="why">Real-time object detection. Spawned an industry of computer-vision startups.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">38.</span><span class="title">A Neural Algorithm of Artistic Style</span></div>
+  <div class="cite" style="margin-left:9mm">Gatys, Ecker, Bethge, 2015</div>
+  <div class="why">Neural style transfer. The first viral consumer AI moment.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">39.</span><span class="title">FaceNet: A Unified Embedding for Face Recognition and Clustering</span></div>
+  <div class="cite" style="margin-left:9mm">Schroff, Kalenichenko, Philbin, 2015</div>
+  <div class="why">Face recognition at human level. Triplet loss became standard.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">40.</span><span class="title">WaveNet: A Generative Model for Raw Audio</span></div>
+  <div class="cite" style="margin-left:9mm">van den Oord et al., 2016</div>
+  <div class="why">Raw audio generation. Powered Google Assistant voice.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">41.</span><span class="title">Unsupervised Representation Learning with Deep Convolutional GANs (DCGAN)</span></div>
+  <div class="cite" style="margin-left:9mm">Radford, Metz, Chintala, 2015</div>
+  <div class="why">Made GANs actually trainable. Launched the generative-image wave.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">42.</span><span class="title">Mask R-CNN</span></div>
+  <div class="cite" style="margin-left:9mm">He, Gkioxari, Dollar, Girshick, 2017</div>
+  <div class="why">Instance segmentation standard.</div>
+</div>
+
+<h2 class="era">Era 5: Transformer Era <span class="years">2017 to 2019</span></h2>
+
+<div class="paper">
+  <div><span class="num">43.</span><span class="title">Attention Is All You Need</span></div>
+  <div class="cite" style="margin-left:9mm">Vaswani et al., 2017</div>
+  <div class="why">The transformer. Arguably the single most important paper of modern AI. Killed recurrent nets and birthed GPT, BERT, and everything since.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">44.</span><span class="title">BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</span></div>
+  <div class="cite" style="margin-left:9mm">Devlin, Chang, Lee, Toutanova, 2018</div>
+  <div class="why">Bidirectional pretraining. Dominated NLP benchmarks overnight. Google Search runs on it.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">45.</span><span class="title">Improving Language Understanding by Generative Pre-Training (GPT-1)</span></div>
+  <div class="cite" style="margin-left:9mm">Radford, Narasimhan, Salimans, Sutskever, 2018</div>
+  <div class="why">First GPT. Proved generative pretraining works for NLP.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">46.</span><span class="title">Language Models are Unsupervised Multitask Learners (GPT-2)</span></div>
+  <div class="cite" style="margin-left:9mm">Radford et al., 2019</div>
+  <div class="why">1.5 billion parameters. OpenAI initially refused to release the model as "too dangerous." A marketing masterstroke.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">47.</span><span class="title">Deep Contextualized Word Representations (ELMo)</span></div>
+  <div class="cite" style="margin-left:9mm">Peters et al., 2018</div>
+  <div class="why">Contextual embeddings. The bridge between Word2Vec and BERT.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">48.</span><span class="title">Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer (T5)</span></div>
+  <div class="cite" style="margin-left:9mm">Raffel et al., 2019</div>
+  <div class="why">Text-to-text framework. Unified all NLP tasks under one model.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">49.</span><span class="title">RoBERTa: A Robustly Optimized BERT Pretraining Approach</span></div>
+  <div class="cite" style="margin-left:9mm">Liu et al., 2019</div>
+  <div class="why">Showed BERT was undertrained. Recipe matters as much as architecture.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">50.</span><span class="title">Mastering the Game of Go Without Human Knowledge (AlphaGo Zero)</span></div>
+  <div class="cite" style="margin-left:9mm">Silver et al., 2017</div>
+  <div class="why">Mastered Go with zero human data. Pure self-play.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">51.</span><span class="title">A General Reinforcement Learning Algorithm that Masters Chess, Shogi, and Go through Self-Play (AlphaZero)</span></div>
+  <div class="cite" style="margin-left:9mm">Silver et al., 2017</div>
+  <div class="why">Same algorithm beats chess, shogi, and Go. The generality moment.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">52.</span><span class="title">Proximal Policy Optimization Algorithms (PPO)</span></div>
+  <div class="cite" style="margin-left:9mm">Schulman et al., 2017</div>
+  <div class="why">The reinforcement-learning workhorse. Powers RLHF.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">53.</span><span class="title">The Lottery Ticket Hypothesis: Finding Sparse, Trainable Neural Networks</span></div>
+  <div class="cite" style="margin-left:9mm">Frankle and Carbin, 2018</div>
+  <div class="why">Sparse subnetworks exist that match full-network performance. Reshaped pruning research.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">54.</span><span class="title">A Style-Based Generator Architecture for Generative Adversarial Networks (StyleGAN)</span></div>
+  <div class="cite" style="margin-left:9mm">Karras, Laine, Aila, 2019</div>
+  <div class="why">Photorealistic faces. "This Person Does Not Exist" became the public's first deepfake panic.</div>
+</div>
+
+<h2 class="era">Era 6: Scale Era <span class="years">2020 to 2022</span></h2>
+
+<div class="paper">
+  <div><span class="num">55.</span><span class="title">Language Models are Few-Shot Learners (GPT-3)</span></div>
+  <div class="cite" style="margin-left:9mm">Brown et al., 2020</div>
+  <div class="why">175 billion parameters. In-context learning emerged. The "scale is all you need" moment that birthed the modern LLM industry.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">56.</span><span class="title">Scaling Laws for Neural Language Models</span></div>
+  <div class="cite" style="margin-left:9mm">Kaplan et al., 2020</div>
+  <div class="why">Predictable loss versus compute curves. Made scale a science instead of a guess.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">57.</span><span class="title">Training Compute-Optimal Large Language Models (Chinchilla)</span></div>
+  <div class="cite" style="margin-left:9mm">Hoffmann et al., 2022</div>
+  <div class="why">GPT-3 was undertrained. Reshaped how every lab trains LLMs.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">58.</span><span class="title">Denoising Diffusion Probabilistic Models (DDPM)</span></div>
+  <div class="cite" style="margin-left:9mm">Ho, Jain, Abbeel, 2020</div>
+  <div class="why">Made diffusion practical. The foundation of every modern image model.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">59.</span><span class="title">Learning Transferable Visual Models From Natural Language Supervision (CLIP)</span></div>
+  <div class="cite" style="margin-left:9mm">Radford et al., 2021</div>
+  <div class="why">Joint image-text embedding. Powers DALL-E, Stable Diffusion, and modern image search.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">60.</span><span class="title">Zero-Shot Text-to-Image Generation (DALL-E)</span></div>
+  <div class="cite" style="margin-left:9mm">Ramesh et al., 2021</div>
+  <div class="why">Text-to-image at scale. The public's first jaw-drop at generative AI.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">61.</span><span class="title">High-Resolution Image Synthesis with Latent Diffusion Models (Stable Diffusion)</span></div>
+  <div class="cite" style="margin-left:9mm">Rombach et al., 2022</div>
+  <div class="why">Open-source DALL-E. Democratized image generation overnight.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">62.</span><span class="title">Evaluating Large Language Models Trained on Code (Codex)</span></div>
+  <div class="cite" style="margin-left:9mm">Chen et al., 2021</div>
+  <div class="why">Powered GitHub Copilot. The first "AI does my job" moment for software engineers.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">63.</span><span class="title">Highly Accurate Protein Structure Prediction with AlphaFold</span></div>
+  <div class="cite" style="margin-left:9mm">Jumper et al., 2021</div>
+  <div class="why">Solved a 50-year biology problem. Nobel-prize-worthy. Legitimized AI for science.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">64.</span><span class="title">An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale (ViT)</span></div>
+  <div class="cite" style="margin-left:9mm">Dosovitskiy et al., 2020</div>
+  <div class="why">Transformer beats CNNs at vision. Unified architectures across modalities.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">65.</span><span class="title">Masked Autoencoders Are Scalable Vision Learners (MAE)</span></div>
+  <div class="cite" style="margin-left:9mm">He et al., 2021</div>
+  <div class="why">Self-supervised vision at scale. Vision's BERT moment.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">66.</span><span class="title">Training Language Models to Follow Instructions with Human Feedback (InstructGPT)</span></div>
+  <div class="cite" style="margin-left:9mm">Ouyang et al., 2022</div>
+  <div class="why">RLHF. Made GPT actually useful. The direct precursor of ChatGPT.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">67.</span><span class="title">Chain-of-Thought Prompting Elicits Reasoning in Large Language Models</span></div>
+  <div class="cite" style="margin-left:9mm">Wei et al., 2022</div>
+  <div class="why">"Think step by step." Free reasoning. Started prompt engineering as a discipline.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">68.</span><span class="title">PaLM: Scaling Language Modeling with Pathways</span></div>
+  <div class="cite" style="margin-left:9mm">Chowdhery et al., 2022</div>
+  <div class="why">540 billion parameters. Google's scale flag-plant.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">69.</span><span class="title">Flamingo: A Visual Language Model for Few-Shot Learning</span></div>
+  <div class="cite" style="margin-left:9mm">Alayrac et al., 2022</div>
+  <div class="why">Few-shot multimodal. Set the template for GPT-4V and modern vision-language models.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">70.</span><span class="title">Robust Speech Recognition via Large-Scale Weak Supervision (Whisper)</span></div>
+  <div class="cite" style="margin-left:9mm">Radford et al., 2022</div>
+  <div class="why">Open-source ASR at human level. Killed Otter, Rev, and a generation of transcription startups overnight.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">71.</span><span class="title">Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks (RAG)</span></div>
+  <div class="cite" style="margin-left:9mm">Lewis et al., 2020</div>
+  <div class="why">Combine retrieval and LLM. Powers most enterprise AI today.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">72.</span><span class="title">Constitutional AI: Harmlessness from AI Feedback</span></div>
+  <div class="cite" style="margin-left:9mm">Bai et al., 2022</div>
+  <div class="why">Anthropic. RLAIF (AI feedback in place of human feedback). The technique behind Claude.</div>
+</div>
+
+<h2 class="era">Era 7: Modern Frontier <span class="years">2023 to 2026</span></h2>
+
+<div class="paper">
+  <div><span class="num">73.</span><span class="title">ChatGPT Launch and System Card</span></div>
+  <div class="cite" style="margin-left:9mm">OpenAI, 2022 to 2023</div>
+  <div class="why">Not a research paper but a moment. 100 million users in 2 months. The fastest consumer-tech adoption in history.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">74.</span><span class="title">GPT-4 Technical Report</span></div>
+  <div class="cite" style="margin-left:9mm">OpenAI, 2023</div>
+  <div class="why">Multimodal. No architecture details revealed. Marked the closed-frontier era.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">75.</span><span class="title">LLaMA: Open and Efficient Foundation Language Models</span></div>
+  <div class="cite" style="margin-left:9mm">Touvron et al., 2023</div>
+  <div class="why">Open weights at frontier-adjacent quality. The Meta versus OpenAI war began here.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">76.</span><span class="title">LLaMA 2: Open Foundation and Fine-Tuned Chat Models</span></div>
+  <div class="cite" style="margin-left:9mm">Touvron et al., 2023</div>
+  <div class="why">Commercially usable, RLHF in the open. Sparked the open-source LLM ecosystem.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">77.</span><span class="title">Mistral 7B</span></div>
+  <div class="cite" style="margin-left:9mm">Jiang et al., 2023</div>
+  <div class="why">Small models punching far above their weight. Europe's first frontier-AI moment.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">78.</span><span class="title">Mixtral of Experts (Mixtral 8x7B)</span></div>
+  <div class="cite" style="margin-left:9mm">Jiang et al., 2024</div>
+  <div class="why">Open Mixture-of-Experts. Sparse compute went mainstream.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">79.</span><span class="title">Mamba: Linear-Time Sequence Modeling with Selective State Spaces</span></div>
+  <div class="cite" style="margin-left:9mm">Gu and Dao, 2023</div>
+  <div class="why">A real challenger to transformers. State-space models went mainstream.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">80.</span><span class="title">Direct Preference Optimization (DPO)</span></div>
+  <div class="cite" style="margin-left:9mm">Rafailov et al., 2023</div>
+  <div class="why">RLHF without RL. Simpler, often better. Largely replaced PPO for alignment.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">81.</span><span class="title">Toolformer: Language Models Can Teach Themselves to Use Tools</span></div>
+  <div class="cite" style="margin-left:9mm">Schick et al., 2023</div>
+  <div class="why">LLMs self-learn to use tools. Birthed the agents era.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">82.</span><span class="title">ReAct: Synergizing Reasoning and Acting in Language Models</span></div>
+  <div class="cite" style="margin-left:9mm">Yao et al., 2022</div>
+  <div class="why">Think-then-act loop. The agent-loop template every framework now uses.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">83.</span><span class="title">Tree of Thoughts: Deliberate Problem Solving with Large Language Models</span></div>
+  <div class="cite" style="margin-left:9mm">Yao et al., 2023</div>
+  <div class="why">Search over reasoning trees. Foundation for o1-style reasoning models.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">84.</span><span class="title">Learning to Reason with LLMs (o1)</span></div>
+  <div class="cite" style="margin-left:9mm">OpenAI, 2024</div>
+  <div class="why">Test-time compute. Reasoning models became a distinct product category.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">85.</span><span class="title">DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning</span></div>
+  <div class="cite" style="margin-left:9mm">DeepSeek, 2025</div>
+  <div class="why">Open reasoning model from China. RL-from-scratch worked. Wiped 600 billion dollars off Nvidia in one day.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">86.</span><span class="title">Sora Technical Report</span></div>
+  <div class="cite" style="margin-left:9mm">OpenAI, 2024</div>
+  <div class="why">Video diffusion transformers. Hollywood-panic moment.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">87.</span><span class="title">Video Generation Models as World Simulators</span></div>
+  <div class="cite" style="margin-left:9mm">Brooks et al., 2024</div>
+  <div class="why">Frames video models as physics simulators. Opened a new research direction.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">88.</span><span class="title">A Generalist Agent (Gato)</span></div>
+  <div class="cite" style="margin-left:9mm">Reed et al., 2022</div>
+  <div class="why">One model, 600 tasks. The generalist-agent thesis stated plainly.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">89.</span><span class="title">Voyager: An Open-Ended Embodied Agent with Large Language Models</span></div>
+  <div class="cite" style="margin-left:9mm">Wang et al., 2023</div>
+  <div class="why">LLM lives in Minecraft, learns skills. Embodied-agent proof-of-concept.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">90.</span><span class="title">SWE-bench: Can Language Models Resolve Real-World GitHub Issues?</span></div>
+  <div class="cite" style="margin-left:9mm">Jimenez et al., 2023</div>
+  <div class="why">Benchmark for AI fixing real GitHub issues. Defined modern agent evaluation.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">91.</span><span class="title">Scaling Monosemanticity / Towards Monosemanticity</span></div>
+  <div class="cite" style="margin-left:9mm">Anthropic, 2024</div>
+  <div class="why">Mechanistic interpretability at scale. We can finally see what features LLMs learn internally.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">92.</span><span class="title">In-Context Learning and Induction Heads</span></div>
+  <div class="cite" style="margin-left:9mm">Olsson et al., 2022</div>
+  <div class="why">Discovered the circuit behind in-context learning. Interpretability landmark.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">93.</span><span class="title">Sleeper Agents: Training Deceptive LLMs that Persist Through Safety Training</span></div>
+  <div class="cite" style="margin-left:9mm">Anthropic, 2024</div>
+  <div class="why">Models can hide misaligned behavior through training. Alignment alarm bell.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">94.</span><span class="title">Weak-to-Strong Generalization</span></div>
+  <div class="cite" style="margin-left:9mm">OpenAI, 2023</div>
+  <div class="why">Can weak supervisors align stronger models? Foundation of the superalignment agenda.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">95.</span><span class="title">Gemini 1.5: Unlocking Multimodal Understanding Across Millions of Tokens of Context</span></div>
+  <div class="cite" style="margin-left:9mm">Google DeepMind, 2024</div>
+  <div class="why">1 million plus token context. The long-context era began.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">96.</span><span class="title">The Claude 3 Model Family</span></div>
+  <div class="cite" style="margin-left:9mm">Anthropic, 2024</div>
+  <div class="why">Constitutional AI at frontier scale. Vibes-based benchmarks (taste) became a thing.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">97.</span><span class="title">The Llama 3 Herd of Models</span></div>
+  <div class="cite" style="margin-left:9mm">Meta, 2024</div>
+  <div class="why">70B and 405B parameters. Open weights at GPT-4 class. Cemented the open-frontier movement.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">98.</span><span class="title">Grok and the Real-Time Data Moat</span></div>
+  <div class="cite" style="margin-left:9mm">xAI, 2024</div>
+  <div class="why">Real-time training on X data. Articulated the new data-moat thesis.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">99.</span><span class="title">AlphaProof and AlphaGeometry 2: Olympiad-Level Mathematical Reasoning</span></div>
+  <div class="cite" style="margin-left:9mm">DeepMind, 2024</div>
+  <div class="why">Olympic-level math via neuro-symbolic reasoning. AI does formal proofs.</div>
+</div>
+
+<div class="paper">
+  <div><span class="num">100.</span><span class="title">The Current Frontier (rotating slot)</span></div>
+  <div class="cite" style="margin-left:9mm">Updated quarterly</div>
+  <div class="why">Reserved for the most recent landmark when a user reaches the top of the canon. Updates four times a year. Marketing line: the canon is alive. Subscribers always finish at the actual frontier.</div>
+</div>
+
+<div class="footer">
+  The Aprecis 100, v0.1, reference draft. Aprecis 2026.
+</div>
+
+</body>
+</html>

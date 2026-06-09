@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img" aria-label="Aprecis app icon">
+  <!-- dark teal rounded square fills the entire canvas, no padding -->
+  <rect x="0" y="0" width="100" height="100" rx="22" ry="22" fill="#0e3434"/>
+  <!-- italic serif 'a' centered. Georgia gives a near-identical glyph to the
+       original on macOS / iOS / most modern systems; falls back to system serif. -->
+  <text x="50" y="50"
+        text-anchor="middle"
+        dominant-baseline="central"
+        font-family="Georgia, 'EB Garamond', 'Times New Roman', serif"
+        font-style="italic"
+        font-weight="500"
+        font-size="64"
+        fill="#6fb3a8"
+        letter-spacing="0">a</text>
+</svg>
