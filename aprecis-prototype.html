@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Aprecis – Feature Concepts</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0e0e0e;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:48px 32px;gap:40px;flex-wrap:wrap;font-family:-apple-system,system-ui,sans-serif;}
+::-webkit-scrollbar{display:none;}
+*{-ms-overflow-style:none;scrollbar-width:none;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes dash{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+input[type=range]{height:3px;cursor:pointer;border-radius:99px;}
+label{display:block;font-size:11px;color:#888;margin-bottom:4px;font-family:-apple-system,system-ui;}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel">
+
+// iOS.jsx — Simplified iOS 26 (Liquid Glass) device frame
+// Based on the iOS 26 UI Kit + Figma status bar spec. No assets, no deps.
+// Exports: IOSDevice, IOSStatusBar, IOSNavBar, IOSGlassPill, IOSList, IOSListRow, IOSKeyboard
+
+// ─────────────────────────────────────────────────────────────
+// Status bar
+// ─────────────────────────────────────────────────────────────
+function IOSStatusBar({ dark = false, time = '9:41' }) {
+  const c = dark ? '#fff' : '#000';
+  return (
+    <div style={{
+      display: 'flex', gap: 154, alignItems: 'center', justifyContent: 'center',
+      padding: '21px 24px 19px', boxSizing: 'border-box',
+      position: 'relative', zIndex: 20, width: '100%',
+    }}>
+      <div style={{ flex: 1, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: 1.5 }}>
+        <span style={{
+          fontFamily: '-apple-system, "SF Pro", system-ui', fontWeight: 590,
+          fontSize: 17, lineHeight: '22px', color: c,
+        }}>{time}</span>
+      </div>
+      <div style={{ flex: 1, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, paddingTop: 1, paddingRight: 1 }}>
+        <svg width="19" height="12" viewBox="0 0 19 12">
+          <rect x="0" y="7.5" width="3.2" height="4.5" rx="0.7" fill={c}/>
+          <rect x="4.8" y="5" width="3.2" height="7" rx="0.7" fill={c}/>
+          <rect x="9.6" y="2.5" width="3.2" height="9.5" rx="0.7" fill={c}/>
+          <rect x="14.4" y="0" width="3.2" height="12" rx="0.7" fill={c}/>
+        </svg>
+        <svg width="17" height="12" viewBox="0 0 17 12">
+          <path d="M8.5 3.2C10.8 3.2 12.9 4.1 14.4 5.6L15.5 4.5C13.7 2.7 11.2 1.5 8.5 1.5C5.8 1.5 3.3 2.7 1.5 4.5L2.6 5.6C4.1 4.1 6.2 3.2 8.5 3.2Z" fill={c}/>
+          <path d="M8.5 6.8C9.9 6.8 11.1 7.3 12 8.2L13.1 7.1C11.8 5.9 10.2 5.1 8.5 5.1C6.8 5.1 5.2 5.9 3.9 7.1L5 8.2C5.9 7.3 7.1 6.8 8.5 6.8Z" fill={c}/>
+          <circle cx="8.5" cy="10.5" r="1.5" fill={c}/>
+        </svg>
+        <svg width="27" height="13" viewBox="0 0 27 13">
+          <rect x="0.5" y="0.5" width="23" height="12" rx="3.5" stroke={c} strokeOpacity="0.35" fill="none"/>
+          <rect x="2" y="2" width="20" height="9" rx="2" fill={c}/>
+          <path d="M25 4.5V8.5C25.8 8.2 26.5 7.2 26.5 6.5C26.5 5.8 25.8 4.8 25 4.5Z" fill={c} fillOpacity="0.4"/>
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// Liquid glass pill — blur + tint + shine
+// ─────────────────────────────────────────────────────────────
+function IOSGlassPill({ children, dark = false, style = {} }) {
+  return (
+    <div style={{
+      height: 44, minWidth: 44, borderRadius: 9999,
+      position: 'relative', overflow: 'hidden',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      boxShadow: dark
+        ? '0 2px 6px rgba(0,0,0,0.35), 0 6px 16px rgba(0,0,0,0.2)'
+        : '0 1px 3px rgba(0,0,0,0.07), 0 3px 10px rgba(0,0,0,0.06)',
+      ...style,
+    }}>
+      <div style={{
+        position: 'absolute', inset: 0, borderRadius: 9999,
+        backdropFilter: 'blur(12px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(12px) saturate(180%)',
+        background: dark ? 'rgba(120,120,128,0.28)' : 'rgba(255,255,255,0.5)',
+      }} />
+      <div style={{
+        position: 'absolute', inset: 0, borderRadius: 9999,
+        boxShadow: dark
+          ? 'inset 1.5px 1.5px 1px rgba(255,255,255,0.15), inset -1px -1px 1px rgba(255,255,255,0.08)'
+          : 'inset 1.5px 1.5px 1px rgba(255,255,255,0.7), inset -1px -1px 1px rgba(255,255,255,0.4)',
+        border: dark ? '0.5px solid rgba(255,255,255,0.15)' : '0.5px solid rgba(0,0,0,0.06)',
+      }} />
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', padding: '0 4px' }}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// Navigation bar — glass pills + large title
+// ─────────────────────────────────────────────────────────────
+function IOSNavBar({ title = 'Title', dark = false, trailingIcon = true }) {
+  const muted = dark ? 'rgba(255,255,255,0.6)' : '#404040';
+  const text = dark ? '#fff' : '#000';
+  const pillIcon = (content) => (
+    <IOSGlassPill dark={dark}>
+      <div style={{ width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {content}
+      </div>
+    </IOSGlassPill>
+  );
+  return (
+    <div style={{
+      display: 'flex', flexDirection: 'column', gap: 10,
+      paddingTop: 62, paddingBottom: 10, position: 'relative', zIndex: 5,
+    }}>
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '0 16px',
+      }}>
+        {pillIcon(
+          <svg width="12" height="20" viewBox="0 0 12 20" fill="none" style={{ marginLeft: -1 }}>
+            <path d="M10 2L2 10l8 8" stroke={muted} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        )}
+        {trailingIcon && pillIcon(
+          <svg width="22" height="6" viewBox="0 0 22 6">
+            <circle cx="3" cy="3" r="2.5" fill={muted}/>
+            <circle cx="11" cy="3" r="2.5" fill={muted}/>
+            <circle cx="19" cy="3" r="2.5" fill={muted}/>
+          </svg>
+        )}
+      </div>
+      <div style={{
+        padding: '0 16px',
+        fontFamily: '-apple-system, system-ui',
+        fontSize: 34, fontWeight: 700, lineHeight: '41px',
+        color: text, letterSpacing: 0.4,
+      }}>{title}</div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// Grouped list (inset card, r:26) + row (52px)
+// ─────────────────────────────────────────────────────────────
+function IOSListRow({ title, detail, icon, chevron = true, isLast = false, dark = false }) {
+  const text = dark ? '#fff' : '#000';
+  const sec = dark ? 'rgba(235,235,245,0.6)' : 'rgba(60,60,67,0.6)';
+  const ter = dark ? 'rgba(235,235,245,0.3)' : 'rgba(60,60,67,0.3)';
+  const sep = dark ? 'rgba(84,84,88,0.65)' : 'rgba(60,60,67,0.12)';
+  return (
+    <div style={{
+      display: 'flex', alignItems: 'center', minHeight: 52,
+      padding: '0 16px', position: 'relative',
+      fontFamily: '-apple-system, system-ui', fontSize: 17,
+      letterSpacing: -0.43,
+    }}>
+      {icon && (
+        <div style={{
+          width: 30, height: 30, borderRadius: 7, background: icon,
+          marginRight: 12, flexShrink: 0,
+        }} />
+      )}
+      <div style={{ flex: 1, color: text }}>{title}</div>
+      {detail && <span style={{ color: sec, marginRight: 6 }}>{detail}</span>}
+      {chevron && (
+        <svg width="8" height="14" viewBox="0 0 8 14" style={{ flexShrink: 0 }}>
+          <path d="M1 1l6 6-6 6" stroke={ter} strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      )}
+      {!isLast && (
+        <div style={{
+          position: 'absolute', bottom: 0, right: 0,
+          left: icon ? 58 : 16, height: 0.5, background: sep,
+        }} />
+      )}
+    </div>
+  );
+}
+
+function IOSList({ header, children, dark = false }) {
+  const hc = dark ? 'rgba(235,235,245,0.6)' : 'rgba(60,60,67,0.6)';
+  const bg = dark ? '#1C1C1E' : '#fff';
+  return (
+    <div>
+      {header && (
+        <div style={{
+          fontFamily: '-apple-system, system-ui', fontSize: 13,
+          color: hc, textTransform: 'uppercase',
+          padding: '8px 36px 6px', letterSpacing: -0.08,
+        }}>{header}</div>
+      )}
+      <div style={{
+        background: bg, borderRadius: 26,
+        margin: '0 16px', overflow: 'hidden',
+      }}>{children}</div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// Device frame
+// ─────────────────────────────────────────────────────────────
+function IOSDevice({
+  children, width = 402, height = 874, dark = false,
+  title, keyboard = false,
+}) {
+  return (
+    <div style={{
+      width, height, borderRadius: 48, overflow: 'hidden',
+      position: 'relative', background: dark ? '#000' : '#F2F2F7',
+      boxShadow: '0 40px 80px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.12)',
+      fontFamily: '-apple-system, system-ui, sans-serif',
+      WebkitFontSmoothing: 'antialiased',
+    }}>
+      {/* dynamic island */}
+      <div style={{
+        position: 'absolute', top: 11, left: '50%', transform: 'translateX(-50%)',
+        width: 126, height: 37, borderRadius: 24, background: '#000', zIndex: 50,
+      }} />
+      {/* status bar (absolute) */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10 }}>
+        <IOSStatusBar dark={dark} />
+      </div>
+      {/* nav + content */}
+      <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+        {title !== undefined && <IOSNavBar title={title} dark={dark} />}
+        <div style={{ flex: 1, overflow: 'auto' }}>{children}</div>
+        {keyboard && <IOSKeyboard dark={dark} />}
+      </div>
+      {/* home indicator — always on top */}
+      <div style={{
+        position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 60,
+        height: 34, display: 'flex', justifyContent: 'center', alignItems: 'flex-end',
+        paddingBottom: 8, pointerEvents: 'none',
+      }}>
+        <div style={{
+          width: 139, height: 5, borderRadius: 100,
+          background: dark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.25)',
+        }} />
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// Keyboard — iOS 26 liquid glass
+// ─────────────────────────────────────────────────────────────
+function IOSKeyboard({ dark = false }) {
+  const glyph = dark ? 'rgba(255,255,255,0.7)' : '#595959';
+  const sugg = dark ? 'rgba(255,255,255,0.6)' : '#333';
+  const keyBg = dark ? 'rgba(255,255,255,0.22)' : 'rgba(255,255,255,0.85)';
+
+  const icons = {
+    shift: <svg width="19" height="17" viewBox="0 0 19 17"><path d="M9.5 1L1 9.5h4.5V16h8V9.5H18L9.5 1z" fill={glyph}/></svg>,
+    del: <svg width="23" height="17" viewBox="0 0 23 17"><path d="M7 1h13a2 2 0 012 2v11a2 2 0 01-2 2H7l-6-7.5L7 1z" fill="none" stroke={glyph} strokeWidth="1.6" strokeLinejoin="round"/><path d="M10 5l7 7M17 5l-7 7" stroke={glyph} strokeWidth="1.6" strokeLinecap="round"/></svg>,
+    ret: <svg width="20" height="14" viewBox="0 0 20 14"><path d="M18 1v6H4m0 0l4-4M4 7l4 4" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  };
+
+  const key = (content, { w, flex, ret, fs = 25, k } = {}) => (
+    <div key={k} style={{
+      height: 42, borderRadius: 8.5,
+      flex: flex ? 1 : undefined, width: w, minWidth: 0,
+      background: ret ? '#08f' : keyBg,
+      boxShadow: '0 1px 0 rgba(0,0,0,0.075)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      fontFamily: '-apple-system, "SF Compact", system-ui',
+      fontSize: fs, fontWeight: 458, color: ret ? '#fff' : glyph,
+    }}>{content}</div>
+  );
+
+  const row = (keys, pad = 0) => (
+    <div style={{ display: 'flex', gap: 6.5, justifyContent: 'center', padding: `0 ${pad}px` }}>
+      {keys.map(l => key(l, { flex: true, k: l }))}
+    </div>
+  );
+
+  return (
+    <div style={{
+      position: 'relative', zIndex: 15, borderRadius: 27, overflow: 'hidden',
+      padding: '11px 0 2px',
+      display: 'flex', flexDirection: 'column', alignItems: 'center',
+      boxShadow: dark
+        ? '0 -2px 20px rgba(0,0,0,0.09)'
+        : '0 -1px 6px rgba(0,0,0,0.018), 0 -3px 20px rgba(0,0,0,0.012)',
+    }}>
+      <div style={{
+        position: 'absolute', inset: 0, borderRadius: 27,
+        backdropFilter: 'blur(12px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(12px) saturate(180%)',
+        background: dark ? 'rgba(120,120,128,0.14)' : 'rgba(255,255,255,0.25)',
+      }} />
+      <div style={{
+        position: 'absolute', inset: 0, borderRadius: 27,
+        boxShadow: dark
+          ? 'inset 1.5px 1.5px 1px rgba(255,255,255,0.15)'
+          : 'inset 1.5px 1.5px 1px rgba(255,255,255,0.7), inset -1px -1px 1px rgba(255,255,255,0.4)',
+        border: dark ? '0.5px solid rgba(255,255,255,0.15)' : '0.5px solid rgba(0,0,0,0.06)',
+        pointerEvents: 'none',
+      }} />
+      <div style={{
+        display: 'flex', gap: 20, alignItems: 'center',
+        padding: '8px 22px 13px', width: '100%', boxSizing: 'border-box',
+        position: 'relative',
+      }}>
+        {['"The"', 'the', 'to'].map((w, i) => (
+          <React.Fragment key={i}>
+            {i > 0 && <div style={{ width: 1, height: 25, background: '#ccc', opacity: 0.3 }} />}
+            <div style={{
+              flex: 1, textAlign: 'center',
+              fontFamily: '-apple-system, system-ui', fontSize: 17,
+              color: sugg, letterSpacing: -0.43, lineHeight: '22px',
+            }}>{w}</div>
+          </React.Fragment>
+        ))}
+      </div>
+      <div style={{
+        display: 'flex', flexDirection: 'column', gap: 13,
+        padding: '0 6.5px', width: '100%', boxSizing: 'border-box',
+        position: 'relative',
+      }}>
+        {row(['q','w','e','r','t','y','u','i','o','p'])}
+        {row(['a','s','d','f','g','h','j','k','l'], 20)}
+        <div style={{ display: 'flex', gap: 14.25, alignItems: 'center' }}>
+          {key(icons.shift, { w: 45, k: 'shift' })}
+          <div style={{ display: 'flex', gap: 6.5, flex: 1 }}>
+            {['z','x','c','v','b','n','m'].map(l => key(l, { flex: true, k: l }))}
+          </div>
+          {key(icons.del, { w: 45, k: 'del' })}
+        </div>
+        <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+          {key('ABC', { w: 92.25, fs: 18, k: 'abc' })}
+          {key('', { flex: true, k: 'space' })}
+          {key(icons.ret, { w: 92.25, ret: true, k: 'ret' })}
+        </div>
+      </div>
+      <div style={{ height: 56, width: '100%', position: 'relative' }} />
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BRAND
+═══════════════════════════════════════════════════════════════ */
+const C = {
+  paper:'#f7f4ef', ink:'#0f1117', teal:'#1a8a8a', tealLight:'#e8f5f5',
+  tealMid:'#2db8b8', amber:'#e8a020', amberLight:'#fef3e2',
+  muted:'#8a8f9a', card:'#ffffff', border:'rgba(15,17,23,0.08)',
+};
+const serif = '"Lora", "Georgia", serif';
+
+/* ═══════════════════════════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════════════════════════ */
+const BUNDLES = [
+  { id:'ml-interview', title:'10 Papers for ML Interviews', subtitle:'The canon every ML engineer must know cold',
+    count:10, done:3, mins:140, level:'Intermediate', bg:'#0d2137', accent:'#4a9eed',
+    tags:['Transformers','Optimization','RL'], papers:['attention','lora','rlhf'] },
+  { id:'foundation-models', title:'Foundation Models Explained', subtitle:'From language models to multimodal systems',
+    count:6, done:1, mins:72, level:'Beginner', bg:'#1f0d37', accent:'#9b72ef',
+    tags:['LLMs','CLIP','Diffusion'], papers:['attention'] },
+  { id:'rl-fundamentals', title:'RL from First Principles', subtitle:'Build intuition for reinforcement learning',
+    count:8, done:0, mins:105, level:'Advanced', bg:'#0d2b0d', accent:'#4fc860',
+    tags:['Policy Gradient','Q-Learning','PPO'], papers:['rlhf'] },
+];
+
+const PAPERS = [
+  { id:'attention', title:'Attention Is All You Need',
+    hook:'Every AI you use today exists because of one idea from 2017.',
+    source:'ARXIV', date:'Jun 2017', tag:'Transformers', mins:6,
+    summary:"Google researchers replaced sequential memory with a single 'attention' mechanism — letting every word look at every other word at once. It became the foundation of GPT, Claude, and every modern AI.",
+    concepts:[
+      { id:'self-attn', num:1, title:'Self-Attention Mechanism',
+        body:'Every word computes a relevance score against every other word simultaneously. "It" attends to "the cat" — not by position, but by learned semantic similarity.',
+        diagram:'attention-heatmap', diagramLabel:'Token × Token Attention Matrix — tap a row' },
+      { id:'multihead', num:2, title:'Multi-Head Attention',
+        body:"Transformers run 8 parallel attention operations. Each head captures a different relationship type: syntax, coreference, semantics. Their outputs are concatenated and projected.",
+        diagram:'multihead-viz', diagramLabel:'8 heads, each learning different patterns' },
+      { id:'pos-enc', num:3, title:'Positional Encoding',
+        body:"With no recurrence, the model is position-blind. Sinusoidal embeddings give each position a unique frequency fingerprint — letting the model infer relative distances.",
+        diagram:'sine-waves', diagramLabel:'Position encoded as overlapping sine waves' },
+    ]},
+  { id:'lora', title:'LoRA: Low-Rank Adaptation of Large Language Models',
+    hook:'Fine-tune a 7B model on your laptop. With 0.01% of the parameters.',
+    source:'ARXIV', date:'Oct 2021', tag:'Fine-Tuning', mins:5,
+    summary:"Hu et al. observed that weight changes during fine-tuning are inherently low-rank. LoRA injects tiny trainable matrix pairs into each layer — matching full fine-tuning quality at a fraction of the cost.",
+    concepts:[
+      { id:'prob', num:1, title:'The Full Fine-Tuning Problem',
+        body:"Fine-tuning GPT-3 means updating 175B parameters — millions in compute. LoRA's insight: adaptation changes are low-rank. You don't need to touch the full weight matrix.",
+        diagram:'matrix-compare', diagramLabel:'Full fine-tuning vs LoRA parameter count' },
+      { id:'decomp', num:2, title:'Low-Rank Decomposition',
+        body:'Instead of updating W (d×d), LoRA trains two small matrices: A (d×r) and B (r×d). Their product BA approximates the update — with r as small as 4.',
+        diagram:'matrix-factorization', diagramLabel:'ΔW ≈ B × A, where r=4 vs d=4096' },
+      { id:'rank', num:3, title:'Choosing Rank r',
+        body:'r controls expressiveness vs efficiency. r=4 handles most tasks. r=16 for complex domain shifts. r=64 rivals full fine-tuning at 1% the compute cost.',
+        diagram:'rank-curve', diagramLabel:'Quality vs Parameters — the LoRA sweet spot' },
+    ]},
+  { id:'rlhf', title:'Learning to Summarize from Human Feedback',
+    hook:"ChatGPT's secret: it didn't just learn language — it learned what humans prefer.",
+    source:'ARXIV', date:'Sep 2020', tag:'RLHF', mins:7,
+    summary:"Stiennon et al. showed that pure language modeling produces fluent but unhelpful text. By training a reward model on human preferences and using PPO, they created an AI that humans actually preferred.",
+    concepts:[
+      { id:'reward', num:1, title:'Training a Reward Model',
+        body:"Humans compare pairs of AI outputs and label the better one. A reward model trains on these signals — becoming a tireless proxy judge that scores outputs without human involvement.",
+        diagram:'reward-pairs', diagramLabel:'Human preference → reward model training' },
+      { id:'ppo', num:2, title:'The PPO Optimization Loop',
+        body:'The LM is updated with PPO to maximize reward while staying close to the base model via KL penalty. The penalty acts as a leash — preventing reward hacking and mode collapse.',
+        diagram:'rlhf-loop', diagramLabel:'Three-phase RLHF training cycle — tap each phase' },
+      { id:'kl', num:3, title:'KL Divergence as Alignment Anchor',
+        body:"Without constraints, models exploit scoring shortcuts — repeating high-scoring phrases meaninglessly. KL divergence measures how far the fine-tuned policy has drifted from safe ground.",
+        diagram:'kl-distributions', diagramLabel:'Drag to see policy drift and KL penalty' },
+    ]},
+];
+
+/* ═══════════════════════════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════════════════════════ */
+function hexRgb(h){ const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16); return `${r},${g},${b}`; }
+
+function MatrixGrid({rows,cols,fill,fillOpacity,label,borderColor}){
+  const cellW=Math.min(52/cols,10), cellH=Math.min(52/rows,10);
+  const ops=React.useMemo(()=>Array.from({length:rows*cols},(_,i)=>fillOpacity+((i*13+7)%10)*0.014),[rows,cols,fillOpacity]);
+  return(
+    <div style={{position:'relative',display:'inline-block'}}>
+      <div style={{display:'grid',gridTemplateColumns:`repeat(${cols},${cellW}px)`,gap:1,border:`1.5px solid ${borderColor}`,borderRadius:4,padding:2}}>
+        {ops.map((op,i)=><div key={i} style={{width:cellW,height:cellH,background:fill,opacity:op,borderRadius:1}}/>)}
+      </div>
+      {label&&<div style={{position:'absolute',top:-9,right:-5,fontSize:9,fontWeight:700,color:borderColor,background:'white',padding:'0 2px'}}>{label}</div>}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DIAGRAMS
+═══════════════════════════════════════════════════════════════ */
+
+/* 1 ── Attention Heatmap */
+function DiagAttentionHeatmap(){
+  const [activeRow,setActiveRow]=React.useState(null);
+  const [vis,setVis]=React.useState(false);
+  React.useEffect(()=>{const t=setTimeout(()=>setVis(true),80);return()=>clearTimeout(t);},[]);
+  const tokens=['The','cat','sat','on','the','mat'];
+  const W=[[.82,.07,.04,.03,.02,.02],[.09,.68,.09,.05,.05,.04],[.03,.28,.43,.11,.09,.06],[.03,.05,.14,.70,.04,.04],[.42,.06,.05,.06,.35,.06],[.03,.11,.28,.06,.10,.42]];
+  const cell=36;
+  return(
+    <div style={{padding:'12px 6px 6px'}}>
+      <div style={{display:'flex',marginLeft:32,marginBottom:2}}>
+        {tokens.map((t,j)=><div key={j} style={{width:cell,fontSize:7,color:activeRow===j?C.teal:C.muted,textAlign:'center',fontWeight:600,transition:'color .2s'}}>{t}</div>)}
+      </div>
+      {W.map((row,i)=>(
+        <div key={i} style={{display:'flex',alignItems:'center',marginBottom:2,cursor:'pointer'}} onClick={()=>setActiveRow(activeRow===i?null:i)}>
+          <div style={{width:28,fontSize:7,color:activeRow===i?C.teal:C.muted,fontWeight:600,textAlign:'right',paddingRight:4,transition:'color .2s'}}>{tokens[i]}</div>
+          {row.map((w,j)=>{
+            const hot=activeRow===i;
+            const alpha=hot?Math.min(w*1.35,.98):w*.88;
+            return(
+              <div key={j} style={{width:cell-2,height:cell-2,margin:1,borderRadius:4,background:`rgba(26,138,138,${alpha})`,opacity:vis?(activeRow!==null&&!hot?.35:1):0,transition:`opacity ${.28+(i*6+j)*.012}s ease, background .2s`,display:'flex',alignItems:'center',justifyContent:'center'}}>
+                {hot&&w>.12&&<span style={{fontSize:6.5,color:w>.35?'white':C.teal,fontWeight:700}}>{Math.round(w*100)}</span>}
+              </div>
+            );
+          })}
+        </div>
+      ))}
+      <div style={{display:'flex',alignItems:'center',gap:6,marginTop:10,marginLeft:32}}>
+        <div style={{width:56,height:6,borderRadius:3,background:`linear-gradient(to right, rgba(26,138,138,.05), rgba(26,138,138,.95))`}}/>
+        <span style={{fontSize:7.5,color:C.muted}}>low → high attention</span>
+        <span style={{marginLeft:'auto',fontSize:7.5,color:activeRow!==null?C.teal:C.muted,fontStyle:'italic'}}>{activeRow!==null?`"${tokens[activeRow]}" attends →`:'tap row'}</span>
+      </div>
+    </div>
+  );
+}
+
+/* 2 ── Multi-Head Attention */
+function DiagMultiHead(){
+  const [active,setActive]=React.useState(null);
+  const heads=[
+    {name:'Syntax',color:'#1a8a8a',pat:[.80,.05,.10,.03,.01,.01]},
+    {name:'Coref', color:'#e8a020',pat:[.02,.04,.01,.04,.82,.07]},
+    {name:'Semantic',color:'#7b4ba4',pat:[.04,.72,.10,.04,.05,.05]},
+    {name:'Position',color:'#c0573c',pat:[.01,.16,.70,.09,.03,.01]},
+    {name:'Entity', color:'#2d7abf',pat:[.08,.02,.01,.01,.02,.86]},
+    {name:'Topic',  color:'#2a8a4a',pat:[.19,.15,.14,.16,.19,.17]},
+    {name:'Dep',    color:'#8a4a1a',pat:[.01,.02,.04,.01,.88,.04]},
+    {name:'Long',   color:'#5a1a8a',pat:[.09,.01,.01,.01,.04,.84]},
+  ];
+  const tokens=['The','cat','sat','on','the','mat'];
+  return(
+    <div style={{padding:'10px 6px'}}>
+      <div style={{fontSize:8,fontWeight:700,color:C.muted,letterSpacing:.6,textAlign:'center',marginBottom:10,textTransform:'uppercase'}}>Tap a head to inspect</div>
+      {heads.map((h,i)=>{
+        const isA=active===i;
+        return(
+          <div key={i} onClick={()=>setActive(active===i?null:i)} style={{display:'flex',alignItems:'center',gap:5,marginBottom:4,cursor:'pointer'}}>
+            <div style={{width:40,fontSize:6.5,fontWeight:700,color:isA?h.color:C.muted,textAlign:'right',lineHeight:1.3,transition:'color .2s'}}>H{i+1}<br/><span style={{fontWeight:400}}>{h.name}</span></div>
+            {h.pat.map((w,j)=>(
+              <div key={j} style={{flex:1,height:isA?26:16,borderRadius:3,background:`rgba(${hexRgb(h.color)},${w*.92+.04})`,transition:'height .22s',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                {isA&&w>.2&&<span style={{fontSize:6,color:'white',fontWeight:700}}>{tokens[j]}</span>}
+              </div>
+            ))}
+          </div>
+        );
+      })}
+      {active!==null&&<div style={{marginTop:8,padding:'5px 10px',background:C.tealLight,borderRadius:8,fontSize:8.5,color:C.teal,fontWeight:600}}>Head {active+1} · {heads[active].name}: learns {['subject-verb agreement','pronoun→noun links','word meaning similarity','adjacent word context','named entity focus','global topic signal','dependency structure','long-range context'][active]}</div>}
+    </div>
+  );
+}
+
+/* 3 ── Positional Sine Waves */
+function DiagSineWaves(){
+  const [prog,setProg]=React.useState(0);
+  React.useEffect(()=>{let s,raf;const fn=(ts)=>{if(!s)s=ts;const p=Math.min((ts-s)/1600,1);setProg(p);if(p<1)raf=requestAnimationFrame(fn);};raf=requestAnimationFrame(fn);return()=>cancelAnimationFrame(raf);},[]);
+  const W=244,H=76;
+  const waves=[{f:1,c:C.teal,lw:2,o:.95,lbl:'dim 0 (f=1×)'},{f:2,c:C.amber,lw:1.6,o:.85,lbl:'dim 1 (f=2×)'},{f:4,c:'#7b4ba4',lw:1.4,o:.75,lbl:'dim 2 (f=4×)'},{f:8,c:'#2d7abf',lw:1.2,o:.65,lbl:'dim 3 (f=8×)'}];
+  const path=(f,p)=>{const steps=Math.round(60*p);if(!steps)return'';const pts=Array.from({length:steps+1},(_,i)=>{const x=(i/60)*W,y=H/2-Math.sin(i*f*Math.PI/30)*(H/2-10);return`${i===0?'M':'L'}${x.toFixed(1)},${y.toFixed(1)}`;});return pts.join(' ');};
+  return(
+    <div style={{padding:'10px 6px 6px'}}>
+      <svg width="100%" viewBox={`0 0 ${W} ${H+20}`} style={{overflow:'visible'}}>
+        {[0,H/4,H/2,H*3/4,H].map(y=><line key={y} x1={0} y1={y} x2={W} y2={y} stroke={C.border} strokeWidth=".5"/>)}
+        {[0,1,2,3,4].map(i=><text key={i} x={i*W/4} y={H+14} fontSize="7" fill={C.muted} textAnchor="middle">pos {i*15}</text>)}
+        {waves.map((w,i)=><path key={i} d={path(w.f,prog)} stroke={w.c} strokeWidth={w.lw} fill="none" strokeOpacity={w.o} strokeLinecap="round"/>)}
+      </svg>
+      <div style={{display:'flex',flexWrap:'wrap',gap:'6px 14px',marginTop:6}}>
+        {waves.map((w,i)=><div key={i} style={{display:'flex',alignItems:'center',gap:4}}><div style={{width:14,height:2.5,borderRadius:1,background:w.c,opacity:w.o}}/><span style={{fontSize:7.5,color:C.muted}}>{w.lbl}</span></div>)}
+      </div>
+    </div>
+  );
+}
+
+/* 4 ── Matrix Compare (LoRA) */
+function DiagMatrixCompare(){
+  return(
+    <div style={{display:'flex',gap:10,padding:'12px 4px',alignItems:'flex-start',justifyContent:'center'}}>
+      <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:6}}>
+        <span style={{fontSize:7.5,fontWeight:700,color:C.muted,letterSpacing:.5,textTransform:'uppercase'}}>Full Fine-Tune</span>
+        <MatrixGrid rows={8} cols={8} fill="#888" fillOpacity={.12} label="W" borderColor="#aaa"/>
+        <div style={{fontSize:7.5,color:C.muted,textAlign:'center'}}>4096 × 4096<br/><span style={{color:'#c44',fontWeight:700}}>16.7M params</span></div>
+      </div>
+      <div style={{paddingTop:32,fontSize:12,color:C.muted}}>vs</div>
+      <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:6}}>
+        <span style={{fontSize:7.5,fontWeight:700,color:C.teal,letterSpacing:.5,textTransform:'uppercase'}}>LoRA (r=4)</span>
+        <div style={{display:'flex',alignItems:'center',gap:4}}>
+          <MatrixGrid rows={8} cols={2} fill={C.teal} fillOpacity={.35} label="A" borderColor={C.teal}/>
+          <span style={{fontSize:10,color:C.muted}}>×</span>
+          <MatrixGrid rows={2} cols={8} fill={C.amber} fillOpacity={.35} label="B" borderColor={C.amber}/>
+        </div>
+        <div style={{fontSize:7.5,color:C.muted,textAlign:'center'}}>4096×4 + 4×4096<br/><span style={{color:C.teal,fontWeight:700}}>32K params (0.2%)</span></div>
+      </div>
+    </div>
+  );
+}
+
+/* 5 ── Matrix Factorization animation */
+function DiagMatrixFactor(){
+  const [step,setStep]=React.useState(0);
+  React.useEffect(()=>{const ts=[setTimeout(()=>setStep(1),300),setTimeout(()=>setStep(2),800),setTimeout(()=>setStep(3),1300)];return()=>ts.forEach(clearTimeout);},[]);
+  const show=(s,extra={})=>({opacity:step>=s?1:0,transform:step>=s?'translateY(0)':'translateY(6px)',transition:'opacity .45s, transform .45s',...extra});
+  return(
+    <div style={{padding:'12px 8px'}}>
+      <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:10,fontSize:12,marginBottom:14}}>
+        <span style={{...show(1),color:C.muted}}>W₀</span>
+        <span style={{...show(1),color:C.muted,transitionDelay:'.05s'}}>+</span>
+        <span style={{...show(2),color:C.teal,fontWeight:700}}>B</span>
+        <span style={{...show(2),color:C.muted,transitionDelay:'.05s'}}>×</span>
+        <span style={{...show(2),color:C.amber,fontWeight:700,transitionDelay:'.08s'}}>A</span>
+        <span style={{...show(3),color:C.muted,transitionDelay:'.05s'}}>=</span>
+        <span style={{...show(3),color:C.ink,fontWeight:700,transitionDelay:'.08s'}}>W</span>
+      </div>
+      <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8}}>
+        <div style={{...show(1),textAlign:'center'}}><MatrixGrid rows={8} cols={8} fill="#999" fillOpacity={.1} label="W₀" borderColor="#bbb"/><div style={{fontSize:6.5,color:C.muted,marginTop:3}}>d×d · frozen</div></div>
+        <span style={{...show(1),fontSize:13,color:C.muted}}>+</span>
+        <div style={{...show(2),textAlign:'center'}}><MatrixGrid rows={8} cols={2} fill={C.teal} fillOpacity={.42} label="B" borderColor={C.teal}/><div style={{fontSize:6.5,color:C.teal,marginTop:3}}>d×r</div></div>
+        <span style={{...show(2),fontSize:13,color:C.muted}}>×</span>
+        <div style={{...show(2),textAlign:'center',transitionDelay:'.08s'}}><MatrixGrid rows={2} cols={8} fill={C.amber} fillOpacity={.42} label="A" borderColor={C.amber}/><div style={{fontSize:6.5,color:C.amber,marginTop:3}}>r×d</div></div>
+      </div>
+      <div style={{...show(3),marginTop:12,padding:'7px 10px',background:C.tealLight,borderRadius:9,fontSize:8.5,color:C.teal,textAlign:'center',transitionDelay:'.1s'}}>r=4 instead of d=4096 → <strong>1024× fewer trainable params</strong></div>
+    </div>
+  );
+}
+
+/* 6 ── Rank Tradeoff Curve */
+function DiagRankCurve(){
+  const [hov,setHov]=React.useState(null);
+  const W=240,H=90;
+  const pts=[{r:1,q:70,l:'r=1',d:'style only'},{r:4,q:87,l:'r=4',d:'sweet spot ★'},{r:8,q:92,l:'r=8',d:'most tasks'},{r:16,q:95,l:'r=16',d:'domain shift'},{r:64,q:96.5,l:'r=64',d:'near full FT'},{r:512,q:97.2,l:'full FT',d:'175B params'}];
+  const xs=[.05,.22,.37,.52,.72,.92];
+  const xp=i=>xs[i]*W, yp=q=>H-((q-65)/35)*(H-14);
+  const line='M'+pts.map((p,i)=>`${xp(i)},${yp(p.q)}`).join(' L');
+  const area=`${line} L${xp(5)},${H} L${xp(0)},${H} Z`;
+  return(
+    <div style={{padding:'10px 6px 6px'}}>
+      <svg width="100%" viewBox={`0 0 ${W} ${H+28}`} style={{overflow:'visible'}}>
+        {[75,85,95].map(q=><g key={q}><line x1={0} y1={yp(q)} x2={W} y2={yp(q)} stroke={C.border} strokeWidth=".5" strokeDasharray="3,2"/><text x={-3} y={yp(q)} fontSize="7" fill={C.muted} textAnchor="end" dominantBaseline="central">{q}%</text></g>)}
+        <path d={area} fill={C.teal} fillOpacity=".07"/>
+        <path d={line} stroke={C.teal} strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+        {pts.map((p,i)=>{const x=xp(i),y=yp(p.q),sweet=p.r===4,h=hov===i;return(
+          <g key={i} onMouseEnter={()=>setHov(i)} onMouseLeave={()=>setHov(null)} style={{cursor:'pointer'}}>
+            <circle cx={x} cy={y} r={sweet?7:h?5.5:4} fill={sweet?C.amber:h?C.teal:'white'} stroke={sweet?C.amber:C.teal} strokeWidth="1.5" style={{transition:'r .2s'}}/>
+            <text x={x} y={y-11} fontSize="7" fill={sweet?C.amber:C.muted} textAnchor="middle" fontWeight={sweet?'700':'400'}>{p.l}</text>
+            {(sweet||h)&&<text x={x} y={y+17} fontSize="7" fill={sweet?C.amber:C.teal} textAnchor="middle" fontStyle="italic">{p.d}</text>}
+          </g>
+        );})}
+        <text x={W/2} y={H+25} fontSize="7.5" fill={C.muted} textAnchor="middle">Rank r (log scale) →</text>
+      </svg>
+      <div style={{marginTop:4,padding:'6px 10px',background:C.amberLight,borderRadius:8,fontSize:8.5,color:'#b07014',textAlign:'center'}}>★ r=4 gives 87% of full fine-tuning quality at 0.2% the parameters</div>
+    </div>
+  );
+}
+
+/* 7 ── Reward Pairs (RLHF) */
+function DiagRewardPairs(){
+  const [picked,setPicked]=React.useState(null);
+  const [trained,setTrained]=React.useState(false);
+  const pick=(i)=>{if(picked!==null)return;setPicked(i);setTimeout(()=>setTrained(true),700);};
+  const responses=[
+    {l:'A',txt:'Researchers found mice exposed to the compound lived 40% longer, suggesting potential anti-aging properties worthy of further study.',good:true},
+    {l:'B',txt:'Mice lived longer. Very good findings. Anti-aging stuff. Interesting research from scientists.',good:false},
+  ];
+  return(
+    <div style={{padding:'10px 6px'}}>
+      <div style={{fontSize:8,fontWeight:700,color:C.muted,letterSpacing:.5,textAlign:'center',marginBottom:10,textTransform:'uppercase'}}>Pick the better summary</div>
+      <div style={{display:'flex',gap:8,marginBottom:12}}>
+        {responses.map((r,i)=>{const sel=picked===i,rej=picked!==null&&picked!==i;return(
+          <div key={i} onClick={()=>pick(i)} style={{flex:1,padding:'8px 9px',border:`1.5px solid ${sel?C.teal:C.border}`,borderRadius:10,background:sel?C.tealLight:'white',cursor:picked?'default':'pointer',opacity:rej?.4:1,transition:'all .3s',position:'relative'}}>
+            <div style={{fontSize:7,fontWeight:700,color:sel?C.teal:C.muted,marginBottom:4}}>Response {r.l}</div>
+            <div style={{fontSize:8,color:C.ink,lineHeight:1.55}}>{r.txt}</div>
+            {sel&&<div style={{position:'absolute',top:-7,right:-7,width:17,height:17,borderRadius:'50%',background:C.teal,display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{fontSize:9,color:'white',fontWeight:700}}>✓</span></div>}
+          </div>
+        );})}
+      </div>
+      <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:6,opacity:picked!==null?1:.3,transition:'opacity .4s'}}>
+        <svg width="16" height="18" viewBox="0 0 16 18"><path d="M8 0v12M3 8l5 6 5-6" stroke={C.teal} strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        <div style={{padding:'7px 20px',background:trained?C.teal:'#eee',borderRadius:20,fontSize:9,fontWeight:700,color:trained?'white':C.muted,transition:'all .45s'}}>Reward Model</div>
+        {trained&&<div style={{display:'flex',gap:20,marginTop:4,animation:'fadeUp .35s ease'}}>
+          <div style={{textAlign:'center'}}><div style={{fontSize:14,fontWeight:700,color:C.teal,fontFamily:serif}}>0.84</div><div style={{fontSize:7.5,color:C.muted}}>score A</div></div>
+          <div style={{textAlign:'center'}}><div style={{fontSize:14,fontWeight:700,color:'#c44',fontFamily:serif}}>0.29</div><div style={{fontSize:7.5,color:C.muted}}>score B</div></div>
+        </div>}
+      </div>
+      {!picked&&<div style={{fontSize:8,color:C.muted,textAlign:'center',marginTop:8,fontStyle:'italic'}}>tap the better response to train the model →</div>}
+    </div>
+  );
+}
+
+/* 8 ── RLHF Loop */
+function DiagRLHFLoop(){
+  const [active,setActive]=React.useState(0);
+  React.useEffect(()=>{const iv=setInterval(()=>setActive(a=>(a+1)%3),1800);return()=>clearInterval(iv);},[]);
+  const cx=100,cy=88,R=54,br=26;
+  const phases=[
+    {id:0,short:'SFT',full:'Supervised Fine-Tuning',desc:'Train on high-quality human demonstrations',c:'#2d7abf',a:270},
+    {id:1,short:'RM',full:'Reward Model Training',desc:'Learn human preferences from ranked pairs',c:C.amber,a:30},
+    {id:2,short:'PPO',full:'Proximal Policy Optimization',desc:'Maximize reward with KL divergence constraint',c:C.teal,a:150},
+  ];
+  const pt=(ang)=>{const r=(ang-90)*Math.PI/180;return{x:cx+R*Math.cos(r),y:cy+R*Math.sin(r)};};
+  const arcD=(a1,a2)=>{const rr=R,s=pt(a1),e=pt(a2),sr=(a1-90)*Math.PI/180,er=(a2-90)*Math.PI/180;const sx=cx+rr*Math.cos(sr),sy=cy+rr*Math.sin(sr),ex=cx+rr*Math.cos(er),ey=cy+rr*Math.sin(er);const lg=((a2-a1+360)%360)>180?1:0;return`M${sx},${sy} A${rr},${rr} 0 ${lg},1 ${ex},${ey}`;};
+  return(
+    <div style={{padding:'6px 0 4px'}}>
+      <svg width="100%" viewBox="0 0 200 195">
+        <circle cx={cx} cy={cy} r={R} fill="none" stroke={C.border} strokeWidth="18"/>
+        {phases.map((p,i)=>{const next=phases[(i+1)%3];const isA=active===i;return(
+          <path key={i} d={arcD(p.a+18,next.a-18)} fill="none" stroke={p.c} strokeWidth={isA?7:3} strokeLinecap="round" opacity={isA?1:.28} style={{transition:'stroke-width .4s,opacity .4s'}}/>
+        );})}
+        {phases.map((p,i)=>{const pos=pt(p.a);const isA=active===i;return(
+          <g key={i} onClick={()=>setActive(i)} style={{cursor:'pointer'}}>
+            <circle cx={pos.x} cy={pos.y} r={br} fill={isA?p.c:'white'} stroke={p.c} strokeWidth="2" style={{filter:isA?`drop-shadow(0 0 8px ${p.c}55)`:undefined,transition:'all .4s'}}/>
+            <text x={pos.x} y={pos.y-5} fontSize="10" fontWeight="700" fill={isA?'white':p.c} textAnchor="middle" dominantBaseline="central" style={{transition:'fill .4s'}}>{p.short}</text>
+            <text x={pos.x} y={pos.y+8} fontSize="6" fill={isA?'rgba(255,255,255,.75)':C.muted} textAnchor="middle">Phase {i+1}</text>
+          </g>
+        );})}
+        <text x={cx} y={cy-5} fontSize="8.5" fill={C.ink} textAnchor="middle" fontWeight="600">RLHF</text>
+        <text x={cx} y={cy+7} fontSize="7" fill={C.muted} textAnchor="middle">training loop</text>
+        <text x={cx} y={165} fontSize="8.5" fill={phases[active].c} textAnchor="middle" fontWeight="600">{phases[active].full}</text>
+        <text x={cx} y={179} fontSize="7.5" fill={C.muted} textAnchor="middle">{phases[active].desc}</text>
+      </svg>
+    </div>
+  );
+}
+
+/* 9 ── KL Distribution */
+function DiagKLDistrib(){
+  const [drift,setDrift]=React.useState(0);
+  const W=244,H=78;
+  const gauss=(x,m,s)=>Math.exp(-.5*((x-m)/s)**2);
+  const baseMu=W*.32,driftedMu=baseMu+drift*W*.36,sigma=W*.11;
+  const curve=(mu,s,sc=1)=>{const n=50;return Array.from({length:n+1},(_,i)=>{const x=(i/n)*W,y=H-gauss(x,mu,s)*(H-12)*sc;return`${i===0?'M':'L'}${x.toFixed(1)},${y.toFixed(1)}`;}).join(' ');};
+  const kl=(drift*2.8).toFixed(2);
+  const danger=drift>.55;
+  return(
+    <div style={{padding:'10px 6px 4px'}}>
+      <svg width="100%" viewBox={`0 0 ${W} ${H+8}`} style={{overflow:'visible'}}>
+        <path d={curve(baseMu,sigma)} stroke="#aaa" strokeWidth="1.5" fill="rgba(160,160,160,.12)" strokeDasharray="4,2"/>
+        <path d={curve(driftedMu,sigma*.88,.95)} stroke={danger?'#c44':C.teal} strokeWidth="2" fill={`rgba(${danger?'200,68,68':'26,138,138'},.13)`} style={{transition:'stroke .3s,fill .3s'}}/>
+        <text x={baseMu} y={H-gauss(baseMu,baseMu,sigma)*(H-12)-9} fontSize="7.5" fill="#aaa" textAnchor="middle">π_ref</text>
+        <text x={driftedMu} y={H-gauss(driftedMu,driftedMu,sigma*.88)*(H-12)*.95-9} fontSize="7.5" fill={danger?'#c44':C.teal} textAnchor="middle" fontWeight="700">π_θ</text>
+        {drift>.06&&<g>
+          <line x1={baseMu} y1={H/2} x2={driftedMu-3} y2={H/2} stroke={danger?'#c44':C.amber} strokeWidth="1.5" strokeDasharray="3,2"/>
+          <text x={(baseMu+driftedMu)/2} y={H/2-6} fontSize="8.5" fill={danger?'#c44':C.amber} textAnchor="middle" fontWeight="700">KL={kl}</text>
+        </g>}
+      </svg>
+      <div style={{display:'flex',alignItems:'center',gap:8,marginTop:10}}>
+        <span style={{fontSize:8,color:C.muted,whiteSpace:'nowrap'}}>policy drift</span>
+        <input type="range" min="0" max="1" step=".01" value={drift} onChange={e=>setDrift(parseFloat(e.target.value))} style={{flex:1,accentColor:danger?'#c44':C.teal}}/>
+        <span style={{fontSize:8,fontWeight:700,color:danger?'#c44':C.teal,whiteSpace:'nowrap'}}>{danger?'⚠ unsafe':'safe'}</span>
+      </div>
+      <div style={{fontSize:8.5,color:danger?'#c44':C.muted,textAlign:'center',marginTop:6,fontStyle:'italic',transition:'color .3s'}}>
+        {danger?'Reward hacking detected — policy too far from base model':'KL penalty keeps the policy grounded'}
+      </div>
+    </div>
+  );
+}
+
+const DIAGRAM_MAP={'attention-heatmap':DiagAttentionHeatmap,'multihead-viz':DiagMultiHead,'sine-waves':DiagSineWaves,'matrix-compare':DiagMatrixCompare,'matrix-factorization':DiagMatrixFactor,'rank-curve':DiagRankCurve,'reward-pairs':DiagRewardPairs,'rlhf-loop':DiagRLHFLoop,'kl-distributions':DiagKLDistrib};
+
+/* ═══════════════════════════════════════════════════════════════
+   SHARED UI
+═══════════════════════════════════════════════════════════════ */
+function Logo(){
+  return(
+    <div style={{display:'flex',alignItems:'baseline',gap:0}}>
+      <span style={{fontFamily:serif,fontSize:18,fontWeight:700,color:C.teal}}>aprecis</span>
+      <span style={{fontFamily:serif,fontSize:18,fontWeight:700,fontStyle:'italic',color:C.ink}}>.</span>
+    </div>
+  );
+}
+
+function Pill({children,color=C.teal,bg=C.tealLight,size=10}){
+  return <span style={{padding:'3px 8px',background:bg,borderRadius:99,fontSize:size,fontWeight:600,color,letterSpacing:.4}}>{children}</span>;
+}
+
+function SectionLabel({children}){
+  return <div style={{fontSize:10.5,fontWeight:600,letterSpacing:1.3,color:C.muted,textTransform:'uppercase',padding:'6px 20px 8px'}}>{children}</div>;
+}
+
+function BackBar({label,onBack}){
+  return(
+    <div style={{display:'flex',alignItems:'center',gap:8,padding:'10px 16px 6px'}}>
+      <button onClick={onBack} style={{background:'none',border:'none',cursor:'pointer',display:'flex',alignItems:'center',gap:4,color:C.teal,fontSize:14,padding:0}}>
+        <svg width="9" height="15" viewBox="0 0 9 15" fill="none"><path d="M7.5 1.5L1.5 7.5l6 6" stroke={C.teal} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        <span style={{fontSize:13,fontWeight:500}}>{label}</span>
+      </button>
+    </div>
+  );
+}
+
+function TabBar({active,onChange}){
+  const tabs=[
+    {id:'home',icon:'M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z',label:'Home'},
+    {id:'search',icon:'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0',label:'Search'},
+    {id:'bundles',icon:'M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10',label:'Bundles'},
+    {id:'profile',icon:'M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8',label:'Profile'},
+  ];
+  return(
+    <div style={{display:'flex',borderTop:`1px solid ${C.border}`,background:C.card,paddingBottom:20}}>
+      {tabs.map(t=>{const isA=active===t.id;return(
+        <button key={t.id} onClick={()=>onChange(t.id)} style={{flex:1,border:'none',background:'none',cursor:'pointer',padding:'10px 0 2px',display:'flex',flexDirection:'column',alignItems:'center',gap:3}}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill={isA&&t.id==='home'?C.teal:'none'} stroke={isA?C.teal:C.muted} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={t.icon}/></svg>
+          <span style={{fontSize:9.5,fontWeight:isA?600:400,color:isA?C.teal:C.muted}}>{t.label}</span>
+          {isA&&<div style={{width:4,height:4,borderRadius:2,background:C.teal,marginTop:1}}/>}
+        </button>
+      );})}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BUNDLE CARD
+═══════════════════════════════════════════════════════════════ */
+function BundleCard({bundle,onClick,style:bundleCardStyle={}}){
+  const pct=Math.round((bundle.done/bundle.count)*100);
+  const lvlColor={Beginner:'#2a8a4a',Intermediate:C.amber,Advanced:'#c44'}[bundle.level]||C.muted;
+  return(
+    <div onClick={onClick} style={{borderRadius:16,overflow:'hidden',boxShadow:`0 4px 18px rgba(0,0,0,0.14)`,cursor:'pointer',margin:'0 20px',marginBottom:12,...bundleCardStyle}}>
+      <div style={{background:bundle.bg,padding:'16px 18px 14px',position:'relative',overflow:'hidden'}}>
+        <svg style={{position:'absolute',inset:0,width:'100%',height:'100%',opacity:.06}} xmlns="http://www.w3.org/2000/svg">
+          <defs><pattern id={`g-${bundle.id}`} width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0L0 0 0 24" fill="none" stroke="white" strokeWidth=".5"/></pattern></defs>
+          <rect width="100%" height="100%" fill={`url(#g-${bundle.id})`}/>
+        </svg>
+        <div style={{position:'relative'}}>
+          <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',marginBottom:10}}>
+            <div style={{display:'flex',gap:6}}>
+              <span style={{padding:'3px 8px',background:`rgba(255,255,255,.12)`,borderRadius:99,fontSize:9,fontWeight:700,color:'rgba(255,255,255,.75)',letterSpacing:.5}}>{bundle.level}</span>
+              <span style={{padding:'3px 8px',background:`${bundle.accent}30`,borderRadius:99,fontSize:9,fontWeight:700,color:bundle.accent}}>{bundle.count} papers</span>
+            </div>
+            <span style={{fontSize:9,color:'rgba(255,255,255,.45)',fontFamily:'monospace'}}>{Math.round(bundle.mins/60)}h {bundle.mins%60}m</span>
+          </div>
+          <div style={{fontFamily:serif,fontSize:17,fontWeight:700,color:'white',lineHeight:1.3,marginBottom:4}}>{bundle.title}</div>
+          <div style={{fontSize:10.5,color:'rgba(255,255,255,.55)',lineHeight:1.4}}>{bundle.subtitle}</div>
+          <div style={{display:'flex',gap:4,marginTop:12}}>
+            {Array.from({length:bundle.count}).map((_,i)=>(
+              <div key={i} style={{width:i<bundle.done?18:12,height:4,borderRadius:2,background:i<bundle.done?bundle.accent:'rgba(255,255,255,.2)',transition:'all .2s'}}/>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div style={{background:C.card,padding:'10px 18px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+        <div style={{display:'flex',gap:6}}>
+          {bundle.tags.map(t=><Pill key={t} size={9}>{t}</Pill>)}
+        </div>
+        <div style={{fontSize:10,color:C.muted}}>{bundle.done}/{bundle.count} done</div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FEATURED PAPER CARD
+═══════════════════════════════════════════════════════════════ */
+const cardPalettes=[
+  {bg:'#e8f5f5',accent:C.teal,dot:'#1a8a8a'},
+  {bg:'#fef3e2',accent:'#c07014',dot:'#e8a020'},
+  {bg:'#f0e8f8',accent:'#7b4ba4',dot:'#9b72ef'},
+];
+function FeaturedCard({paper,idx,onClick}){
+  const pal=cardPalettes[idx%3];
+  return(
+    <div onClick={onClick} style={{width:230,flexShrink:0,background:C.card,borderRadius:18,padding:16,boxShadow:`0 4px 20px rgba(0,0,0,0.08)`,border:`1px solid ${C.border}`,cursor:'pointer',display:'flex',flexDirection:'column',gap:0}}>
+      <div style={{display:'flex',alignItems:'center',gap:5,marginBottom:10}}>
+        <div style={{width:6,height:6,borderRadius:3,background:pal.dot}}/>
+        <span style={{fontSize:9,fontWeight:700,color:pal.accent,letterSpacing:.6}}>{paper.tag.toUpperCase()}</span>
+      </div>
+      <div style={{fontFamily:serif,fontSize:14,fontWeight:700,color:C.ink,lineHeight:1.45,marginBottom:4,flexGrow:1}}>{paper.hook}</div>
+      <div style={{fontSize:9.5,color:C.muted,marginBottom:12,lineHeight:1.4}}>{paper.title}</div>
+      <div style={{height:72,borderRadius:10,background:pal.bg,display:'flex',alignItems:'center',justifyContent:'center',marginBottom:10,overflow:'hidden',position:'relative'}}>
+        <svg width="100%" height="100%" viewBox="0 0 200 72" preserveAspectRatio="xMidYMid meet">
+          {idx%3===0&&<>
+            {[0,1,2,3,4].map(i=><rect key={i} x={20+i*34} y={20+Math.sin(i)*12} width={24} height={30-i*2} rx="4" fill={pal.dot} opacity={.15+i*.12}/>)}
+            {[0,1,2,3].map(i=><line key={i} x1={44+i*34} y1={35+Math.sin(i)*12} x2={54+i*34} y2={35+Math.sin(i+1)*12} stroke={pal.dot} strokeWidth="1.5" opacity=".4"/>)}
+          </>}
+          {idx%3===1&&<>
+            <rect x={20} y={22} width={70} height={28} rx="6" fill={pal.dot} opacity=".12" stroke={pal.dot} strokeWidth="1.5" strokeOpacity=".3"/>
+            <text x={55} y={40} fontSize="9" fill={pal.dot} textAnchor="middle" opacity=".5">W₀</text>
+            <text x={120} y={36} fontSize="11" fill={pal.dot} opacity=".35">×</text>
+            <rect x={135} y={26} width={18} height={20} rx="4" fill={C.teal} opacity=".25" stroke={C.teal} strokeWidth="1.5" strokeOpacity=".5"/>
+            <rect x={157} y={30} width={30} height={12} rx="4" fill={C.amber} opacity=".25" stroke={C.amber} strokeWidth="1.5" strokeOpacity=".5"/>
+          </>}
+          {idx%3===2&&<>
+            {[0,1,2].map(i=>{const a=(i/3)*2*Math.PI-Math.PI/2,x=100+50*Math.cos(a),y=36+22*Math.sin(a);return(<g key={i}><line x1={100} y1={36} x2={x} y2={y} stroke={pal.dot} strokeWidth="1.5" strokeOpacity=".3"/><circle cx={x} cy={y} r="12" fill={pal.dot} opacity={.12+i*.08} stroke={pal.dot} strokeWidth="1.5" strokeOpacity=".4"/></g>);})}
+            <circle cx={100} cy={36} r="16" fill={pal.dot} opacity=".2" stroke={pal.dot} strokeWidth="1.5" strokeOpacity=".5"/>
+          </>}
+        </svg>
+      </div>
+      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+        <span style={{fontSize:9.5,color:C.muted,fontFamily:'monospace'}}>{paper.source} · {paper.date}</span>
+        <Pill size={9}>{paper.concepts.length} concepts</Pill>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HOME SCREEN
+═══════════════════════════════════════════════════════════════ */
+function ScrollProgressBar({prog}){
+  return(
+    <div style={{position:'absolute',top:0,left:0,right:0,height:3,zIndex:30,background:'rgba(26,138,138,0.12)'}}>
+      <div style={{height:3,width:`${prog*100}%`,background:C.teal,transition:'width .06s linear',borderRadius:'0 2px 2px 0'}}/>
+    </div>
+  );
+}
+
+function useScrollProgress(ref){
+  const [prog,setProg]=React.useState(0);
+  const onScroll=React.useCallback(()=>{
+    const el=ref.current;
+    if(!el)return;
+    const max=el.scrollHeight-el.clientHeight;
+    setProg(max>0?Math.min(el.scrollTop/max,1):0);
+  },[ref]);
+  return{prog,onScroll};
+}
+
+function HomeScreen({navigate}){
+  const scrollRef=React.useRef(null);
+  const {prog,onScroll}=useScrollProgress(scrollRef);
+  return(
+    <div style={{display:'flex',flexDirection:'column',height:'100%'}}>
+      <ScrollProgressBar prog={prog}/>
+      <div ref={scrollRef} onScroll={onScroll} style={{flex:1,overflowY:'auto',paddingTop:62}}>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'4px 20px 14px'}}>
+          <Logo/>
+          <div style={{width:34,height:34,borderRadius:17,background:C.teal,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer'}}>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="white" strokeWidth="2" strokeLinecap="round"/></svg>
+          </div>
+        </div>
+
+        <SectionLabel>Featured Papers</SectionLabel>
+        <div style={{overflowX:'auto',paddingLeft:20}}>
+          <div style={{display:'flex',gap:12,paddingRight:20,paddingBottom:4,paddingTop:2}}>
+            {PAPERS.map((p,i)=><FeaturedCard key={p.id} paper={p} idx={i} onClick={()=>navigate('paper',{paper:p})}/>)}
+          </div>
+        </div>
+
+        <SectionLabel>Bundle Learnings</SectionLabel>
+        {BUNDLES.map(b=><BundleCard key={b.id} bundle={b} onClick={()=>navigate('bundle',{bundle:b})}/>)}
+
+        <SectionLabel>Your Library</SectionLabel>
+        {PAPERS.map((p,i)=>(
+          <div key={p.id} onClick={()=>navigate('paper',{paper:p})} style={{display:'flex',gap:12,alignItems:'center',padding:'13px 20px',background:C.card,borderBottom:`1px solid ${C.border}`,cursor:'pointer'}}>
+            <div style={{width:44,height:44,borderRadius:10,background:cardPalettes[i%3].bg,flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center'}}>
+              <div style={{width:6,height:6,borderRadius:3,background:cardPalettes[i%3].dot}}/>
+            </div>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontSize:13,fontWeight:600,color:C.ink,marginBottom:2,lineHeight:1.35,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{p.hook}</div>
+              <div style={{fontSize:10,color:C.muted}}>{p.source} · {p.date} · {p.mins} min read</div>
+            </div>
+            <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke={C.muted} strokeWidth="1.5" strokeLinecap="round"/></svg>
+          </div>
+        ))}
+        <div style={{height:20}}/>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BUNDLE DETAIL SCREEN
+═══════════════════════════════════════════════════════════════ */
+function BundleDetailScreen({bundle,navigate,onBack}){
+  const scrollRef=React.useRef(null);
+  const {prog:bundleProg,onScroll:bundleScroll}=useScrollProgress(scrollRef);
+  const pct=Math.round((bundle.done/bundle.count)*100);
+  const paperData=bundle.papers.map(id=>PAPERS.find(p=>p.id===id)).filter(Boolean);
+  const otherPapers=Array.from({length:bundle.count-paperData.length},(_,i)=>({id:`stub-${i}`,title:['Adam Optimizer','Batch Normalization','ResNet (Deep Residual Learning)','Dropout: A Simple Regularization Technique','BERT: Pre-training Deep Bidirectional Transformers','GPT-2: Language Models are Unsupervised Multitask Learners','Word2Vec: Distributed Representations of Words'][i%7],stub:true,mins:5+i}));
+  const allPapers=[...paperData.map(p=>({...p,stub:false})),...otherPapers];
+  return(
+    <div style={{display:'flex',flexDirection:'column',height:'100%',position:'relative'}}>
+      <ScrollProgressBar prog={bundleProg}/>
+      <div ref={scrollRef} onScroll={bundleScroll} style={{overflowY:'auto',flex:1}}>
+        <div style={{background:bundle.bg,paddingTop:62,paddingBottom:0,position:'relative',overflow:'hidden'}}>
+          <svg style={{position:'absolute',inset:0,width:'100%',height:'100%',opacity:.05}} xmlns="http://www.w3.org/2000/svg">
+            <defs><pattern id={`hg-${bundle.id}`} width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0L0 0 0 32" fill="none" stroke="white" strokeWidth=".6"/></pattern></defs>
+            <rect width="100%" height="100%" fill={`url(#hg-${bundle.id})`}/>
+          </svg>
+          <div style={{position:'relative',padding:'0 20px 20px'}}>
+            <BackBar label="Home" onBack={onBack}/>
+            <div style={{display:'flex',gap:6,marginBottom:12,marginTop:4}}>
+              <span style={{padding:'3px 9px',background:`rgba(255,255,255,.12)`,borderRadius:99,fontSize:9,fontWeight:700,color:'rgba(255,255,255,.7)'}}>{bundle.level}</span>
+              <span style={{padding:'3px 9px',background:`${bundle.accent}28`,borderRadius:99,fontSize:9,fontWeight:700,color:bundle.accent}}>{bundle.count} papers</span>
+              <span style={{padding:'3px 9px',background:`rgba(255,255,255,.1)`,borderRadius:99,fontSize:9,color:'rgba(255,255,255,.5)',fontFamily:'monospace'}}>{Math.floor(bundle.mins/60)}h {bundle.mins%60}m</span>
+            </div>
+            <div style={{fontFamily:serif,fontSize:22,fontWeight:700,color:'white',lineHeight:1.3,marginBottom:6}}>{bundle.title}</div>
+            <div style={{fontSize:12,color:'rgba(255,255,255,.5)',marginBottom:18}}>{bundle.subtitle}</div>
+            <div style={{marginBottom:8}}>
+              <div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}>
+                <span style={{fontSize:10,color:'rgba(255,255,255,.5)'}}>Progress</span>
+                <span style={{fontSize:10,fontWeight:700,color:bundle.accent}}>{pct}% · {bundle.done}/{bundle.count} papers</span>
+              </div>
+              <div style={{height:4,background:'rgba(255,255,255,.12)',borderRadius:2}}>
+                <div style={{height:4,width:`${pct}%`,background:bundle.accent,borderRadius:2}}/>
+              </div>
+            </div>
+            <div style={{display:'flex',gap:6,marginTop:14}}>
+              {bundle.tags.map(t=><span key={t} style={{padding:'4px 9px',background:`rgba(255,255,255,.1)`,borderRadius:99,fontSize:9,color:'rgba(255,255,255,.6)'}}>{t}</span>)}
+            </div>
+          </div>
+          <svg viewBox="0 0 390 28" style={{display:'block',width:'100%',marginBottom:-1}}>
+            <path d="M0 28 Q195 0 390 28 L390 28 L0 28 Z" fill={C.paper}/>
+          </svg>
+        </div>
+
+        <div style={{padding:'14px 20px 6px',display:'flex',gap:10}}>
+          <button style={{flex:1,padding:'12px 0',background:bundle.accent,border:'none',borderRadius:12,fontSize:14,fontWeight:700,color:'white',cursor:'pointer'}}>
+            {bundle.done>0?'Continue Learning':'Start Bundle'}
+          </button>
+          <button style={{width:46,height:46,background:C.card,border:`1px solid ${C.border}`,borderRadius:12,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer'}}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={C.muted} strokeWidth="1.8" strokeLinecap="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z"/></svg>
+          </button>
+        </div>
+
+        <SectionLabel>Papers in this bundle</SectionLabel>
+        {allPapers.map((p,i)=>(
+          <div key={p.id} onClick={()=>!p.stub&&navigate('paper',{paper:p,fromBundle:bundle})} style={{display:'flex',gap:12,alignItems:'center',padding:'13px 20px',background:C.card,borderBottom:`1px solid ${C.border}`,cursor:p.stub?'default':'pointer',opacity:p.stub?.65:1}}>
+            <div style={{width:32,height:32,borderRadius:99,border:`2px solid ${i<bundle.done?bundle.accent:C.border}`,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,background:i<bundle.done?`${bundle.accent}15`:'transparent'}}>
+              {i<bundle.done?<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7l3 3 6-6" stroke={bundle.accent} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>:<span style={{fontSize:10,fontWeight:700,color:C.muted}}>{i+1}</span>}
+            </div>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontSize:12.5,fontWeight:600,color:C.ink,marginBottom:1,lineHeight:1.35,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{p.title}</div>
+              <div style={{fontSize:9.5,color:C.muted}}>{p.tag||'Research'} · {p.mins} min</div>
+            </div>
+            {!p.stub&&<svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke={C.muted} strokeWidth="1.5" strokeLinecap="round"/></svg>}
+          </div>
+        ))}
+        <div style={{height:20}}/>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PAPER DETAIL SCREEN
+═══════════════════════════════════════════════════════════════ */
+function PaperDetailScreen({paper,onBack,fromBundle}){
+  const [seen,setSeen]=React.useState(new Set());
+  const scrollRef=React.useRef(null);
+  const {prog:paperProg,onScroll:paperScroll}=useScrollProgress(scrollRef);
+  const progress=seen.size/paper.concepts.length;
+  const backLabel=fromBundle?fromBundle.title.split(' ').slice(0,3).join(' ')+'…':'Home';
+  return(
+    <div style={{display:'flex',flexDirection:'column',height:'100%',position:'relative'}}>
+      <ScrollProgressBar prog={paperProg}/>
+      <div ref={scrollRef} onScroll={paperScroll} style={{overflowY:'auto',flex:1}}>
+        <div style={{background:C.card,paddingTop:62,borderBottom:`1px solid ${C.border}`}}>
+          <div style={{padding:'0 20px'}}>
+            <BackBar label={backLabel} onBack={onBack}/>
+            <Pill size={9}>{paper.tag}</Pill>
+            <div style={{fontFamily:serif,fontSize:21,fontWeight:700,color:C.ink,lineHeight:1.35,margin:'10px 0 4px'}}>{paper.hook}</div>
+            <div style={{fontSize:11,color:C.muted,marginBottom:12,lineHeight:1.4}}>{paper.title}</div>
+            <div style={{fontSize:10,color:C.muted,fontFamily:'monospace',marginBottom:12}}>{paper.source} · {paper.date}</div>
+            <div style={{display:'flex',gap:22,marginBottom:14}}>
+              {[{v:paper.concepts.length,l:'Concepts'},{v:`${Math.round(progress*100)}%`,l:'Progress'},{v:`${paper.mins} min`,l:'Est. Read'}].map(s=>(
+                <div key={s.l}>
+                  <div style={{fontFamily:serif,fontSize:20,fontWeight:700,color:C.teal}}>{s.v}</div>
+                  <div style={{fontSize:9,fontWeight:600,letterSpacing:.8,color:C.muted,textTransform:'uppercase'}}>{s.l}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div style={{height:3,background:C.border}}>
+            <div style={{height:3,background:C.teal,width:`${progress*100}%`,transition:'width .4s'}}/>
+          </div>
+        </div>
+
+        <div style={{margin:'16px 20px 0',padding:15,background:C.card,borderRadius:14,border:`1px solid ${C.border}`}}>
+          <div style={{display:'flex',alignItems:'center',gap:5,marginBottom:8}}>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77 5.82 21.02 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <span style={{fontSize:11,fontWeight:600,fontStyle:'italic',color:C.teal,fontFamily:serif}}>Aprecis</span>
+          </div>
+          <p style={{fontSize:12.5,color:'#3a3d45',lineHeight:1.65}}>{paper.summary}</p>
+        </div>
+
+        <SectionLabel>Key Concepts</SectionLabel>
+
+        {paper.concepts.map((concept,i)=>{
+          const Diag=DIAGRAM_MAP[concept.diagram];
+          return(
+            <div key={concept.id}
+              onMouseEnter={()=>setSeen(s=>{const n=new Set(s);n.add(concept.id);return n;})}
+              style={{margin:'0 20px',marginBottom:16,background:C.card,borderRadius:16,overflow:'hidden',border:`1px solid ${C.border}`,boxShadow:'0 3px 14px rgba(0,0,0,.06)'}}
+            >
+              <div style={{height:3,background:`linear-gradient(to right, ${C.teal}, ${C.tealMid})`}}/>
+              <div style={{padding:16}}>
+                <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:10}}>
+                  <div style={{width:24,height:24,borderRadius:12,background:C.teal,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                    <span style={{fontSize:10,fontWeight:700,color:'white'}}>{concept.num}</span>
+                  </div>
+                  <span style={{fontFamily:serif,fontSize:16,fontWeight:700,color:C.ink}}>{concept.title}</span>
+                </div>
+                <p style={{fontSize:12.5,color:'#3a3d45',lineHeight:1.65,marginBottom:14}}>{concept.body}</p>
+                <div style={{borderTop:`1px solid ${C.border}`,paddingTop:14}}>
+                  <div style={{fontSize:8.5,fontWeight:600,letterSpacing:.8,color:C.muted,textTransform:'uppercase',marginBottom:10}}>{concept.diagramLabel}</div>
+                  {Diag?<Diag/>:<div style={{height:80,background:C.tealLight,borderRadius:10,display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,color:C.teal}}>Diagram loading…</div>}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+
+        <div style={{height:24}}/>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   APP
+═══════════════════════════════════════════════════════════════ */
+const TWEAK_DEFAULTS = {
+  "showBundleProgress": true,
+  "cardStyle": "dark",
+  "diagramTheme": "teal"
+};
+
+function App(){
+  const [tweaksOpen,setTweaksOpen]=React.useState(false);
+  const [tweaks,setTweaks]=React.useState(()=>{try{const s=localStorage.getItem('aprecis-tweaks');return s?{...TWEAK_DEFAULTS,...JSON.parse(s)}:TWEAK_DEFAULTS;}catch{return TWEAK_DEFAULTS;}});
+  const [screen,setScreen]=React.useState({type:'home'});
+  const [tab,setTab]=React.useState('home');
+
+  React.useEffect(()=>{
+    const h=(e)=>{
+      if(e.data?.type==='__activate_edit_mode')setTweaksOpen(true);
+      if(e.data?.type==='__deactivate_edit_mode')setTweaksOpen(false);
+    };
+    window.addEventListener('message',h);
+    window.parent.postMessage({type:'__edit_mode_available'},'*');
+    return()=>window.removeEventListener('message',h);
+  },[]);
+
+  const setTweak=(k,v)=>{
+    const next={...tweaks,[k]:v};
+    setTweaks(next);
+    localStorage.setItem('aprecis-tweaks',JSON.stringify(next));
+    window.parent.postMessage({type:'__edit_mode_set_keys',edits:{[k]:v}},'*');
+  };
+
+  const navigate=(type,data)=>setScreen({type,...data});
+  const goBack=()=>setScreen(screen.fromBundle?{type:'bundle',bundle:screen.fromBundle}:{type:'home'});
+
+  return(
+    <div style={{display:'flex',gap:40,alignItems:'flex-start',flexWrap:'wrap'}}>
+      <div>
+        <IOSDevice width={390} height={844}>
+          <div style={{display:'flex',flexDirection:'column',height:'100%',background:C.paper}}>
+            <div style={{flex:1,overflow:'hidden',position:'relative'}}>
+              {screen.type==='home'&&<HomeScreen navigate={navigate}/>}
+              {screen.type==='bundle'&&<BundleDetailScreen bundle={screen.bundle} navigate={navigate} onBack={()=>setScreen({type:'home'})}/>}
+              {screen.type==='paper'&&<PaperDetailScreen paper={screen.paper} onBack={goBack} fromBundle={screen.fromBundle}/>}
+            </div>
+            {screen.type==='home'&&<TabBar active={tab} onChange={setTab}/>}
+          </div>
+        </IOSDevice>
+        <div style={{marginTop:14,textAlign:'center',fontSize:11,color:'#555',fontFamily:'-apple-system,system-ui'}}>
+          {screen.type==='home'&&'Home · tap a bundle or paper to explore'}
+          {screen.type==='bundle'&&'Bundle Detail · tap a paper to read'}
+          {screen.type==='paper'&&'Paper Detail · scroll to explore diagrams'}
+        </div>
+      </div>
+
+      {tweaksOpen&&(
+        <div style={{position:'fixed',bottom:24,right:24,background:'white',borderRadius:14,padding:18,width:220,boxShadow:'0 8px 32px rgba(0,0,0,.18)',border:'1px solid rgba(0,0,0,.08)',zIndex:1000,fontFamily:'-apple-system,system-ui'}}>
+          <div style={{fontWeight:700,fontSize:13,marginBottom:14,color:'#0f1117'}}>Tweaks</div>
+          <label>Bundle card style</label>
+          <select value={tweaks.cardStyle} onChange={e=>setTweak('cardStyle',e.target.value)} style={{width:'100%',marginBottom:14,padding:'5px 8px',borderRadius:8,border:'1px solid #e0e0e0',fontSize:12}}>
+            <option value="dark">Dark header (current)</option>
+            <option value="light">Light card</option>
+          </select>
+          <label>Show bundle progress bar</label>
+          <div style={{display:'flex',gap:8,marginBottom:14}}>
+            {['true','false'].map(v=>(
+              <button key={v} onClick={()=>setTweak('showBundleProgress',v==='true')} style={{flex:1,padding:'5px 0',border:`1px solid ${String(tweaks.showBundleProgress)===v?C.teal:'#e0e0e0'}`,borderRadius:8,background:String(tweaks.showBundleProgress)===v?C.tealLight:'white',fontSize:11,cursor:'pointer',color:String(tweaks.showBundleProgress)===v?C.teal:'#666'}}>{v==='true'?'Show':'Hide'}</button>
+            ))}
+          </div>
+          <label>Diagram accent theme</label>
+          <div style={{display:'flex',gap:6}}>
+            {[{id:'teal',c:C.teal},{id:'amber',c:C.amber},{id:'purple',c:'#7b4ba4'}].map(t=>(
+              <div key={t.id} onClick={()=>setTweak('diagramTheme',t.id)} style={{width:28,height:28,borderRadius:14,background:t.c,cursor:'pointer',border:`3px solid ${tweaks.diagramTheme===t.id?'white':'transparent'}`,boxShadow:tweaks.diagramTheme===t.id?`0 0 0 2px ${t.c}`:'none'}}/>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

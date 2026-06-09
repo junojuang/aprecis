@@ -8,233 +8,308 @@ struct VisualRendererView: View {
     var body: some View {
         switch schema.type {
         case .flow:       FlowRenderer(schema: schema)
+        case .diagram:    BranchingRenderer(schema: schema)
         case .comparison: ComparisonRenderer(schema: schema)
-        case .diagram:    DiagramRenderer(schema: schema)
         }
     }
 }
 
 // MARK: - Shared constants
 
-private enum VisualStyle {
-    static let nodeWidth: CGFloat = 140
-    static let nodeHeight: CGFloat = 44
-    static let nodeCornerRadius: CGFloat = 10
-    static let nodeFill = Color.white.opacity(0.12)
-    static let nodeBorder = Color.white.opacity(0.35)
-    static let nodeTextColor = Color.white
-    static let edgeColor = Color.white.opacity(0.6)
-    static let arrowSize: CGFloat = 8
+private enum VS {
+    static let nodeH:   CGFloat = 42
+    static let nodeW:   CGFloat = 148
+    static let hGap:    CGFloat = 10
+    static let vGap:    CGFloat = 48   // vertical space between layers (includes arrow)
+    static let padV:    CGFloat = 12
+    static let arrow    = tealAccent.opacity(0.65)
+    static let arrowFill = tealAccent.opacity(0.75)
 }
 
-// MARK: - Flow Renderer (vertical chain)
+// ─────────────────────────────────────────────────────────────────────────────
+// MARK: - Flow Renderer (linear sequential chain, self-sizing VStack)
+// ─────────────────────────────────────────────────────────────────────────────
 
 private struct FlowRenderer: View {
     let schema: VisualSchema
 
-    var body: some View {
-        GeometryReader { geo in
-            let nodeCount = schema.nodes.count
-            guard nodeCount > 0 else { return AnyView(EmptyView()) }
+    /// Follow edges from root to produce an ordered node list
+    private var orderedNodes: [VisualNode] {
+        guard !schema.nodes.isEmpty else { return [] }
+        let targets = Set(schema.edges.map { $0.to })
+        let rootId = schema.nodes.first(where: { !targets.contains($0.id) })?.id
+            ?? schema.nodes[0].id
 
-            let spacing: CGFloat = 20
-            let totalNodeHeight = CGFloat(nodeCount) * VisualStyle.nodeHeight
-            let totalSpacing = CGFloat(nodeCount - 1) * spacing
-            let totalArrowSpace = CGFloat(max(nodeCount - 1, 0)) * 30
-            let contentHeight = totalNodeHeight + totalSpacing + totalArrowSpace
-            let startY = max((geo.size.height - contentHeight) / 2, 8)
-            let centerX = geo.size.width / 2
+        var result: [VisualNode] = []
+        var visited = Set<String>()
+        var current = rootId
 
-            // Build position map for edge drawing
-            var positions: [String: CGPoint] = [:]
-            let stride = VisualStyle.nodeHeight + spacing + 30
-            for (i, node) in schema.nodes.enumerated() {
-                positions[node.id] = CGPoint(
-                    x: centerX,
-                    y: startY + CGFloat(i) * stride + VisualStyle.nodeHeight / 2
-                )
-            }
-
-            return AnyView(
-                ZStack {
-                    // Draw edges
-                    Canvas { ctx, _ in
-                        for edge in schema.edges {
-                            guard let from = positions[edge.from],
-                                  let to = positions[edge.to] else { continue }
-                            drawArrow(ctx: &ctx, from: from, to: to)
-                        }
-                    }
-
-                    // Draw nodes
-                    ForEach(schema.nodes) { node in
-                        if let pos = positions[node.id] {
-                            NodeView(label: node.label)
-                                .position(pos)
-                        }
-                    }
-                }
-                .frame(width: geo.size.width, height: geo.size.height)
-            )
+        while true {
+            guard let node = schema.nodes.first(where: { $0.id == current }),
+                  !visited.contains(current) else { break }
+            result.append(node)
+            visited.insert(current)
+            guard let nextId = schema.edges
+                .first(where: { $0.from == current && !visited.contains($0.to) })?.to
+            else { break }
+            current = nextId
         }
+        for node in schema.nodes where !visited.contains(node.id) {
+            result.append(node)
+        }
+        return result
+    }
+
+    var body: some View {
+        VStack(alignment: .center, spacing: 0) {
+            ForEach(Array(orderedNodes.enumerated()), id: \.element.id) { i, node in
+                FlowNodeView(label: node.label)
+
+                if i < orderedNodes.count - 1 {
+                    let nextId = orderedNodes[i + 1].id
+                    let edgeLabel = schema.edges
+                        .first(where: { $0.from == node.id && $0.to == nextId })?.label
+                    FlowArrowView(label: edgeLabel)
+                }
+            }
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, VS.padV)
+        .frame(maxWidth: .infinity)
     }
 }
 
-// MARK: - Diagram Renderer (hub and spoke)
-
-private struct DiagramRenderer: View {
-    let schema: VisualSchema
-
-    var body: some View {
-        GeometryReader { geo in
-            let nodes = schema.nodes
-            guard !nodes.isEmpty else { return AnyView(EmptyView()) }
-
-            let center = CGPoint(x: geo.size.width / 2, y: geo.size.height / 2)
-            let radius = min(geo.size.width, geo.size.height) * 0.33
-            let hubNode = nodes[0]
-            let spokeNodes = nodes.dropFirst()
-            let spokeCount = spokeNodes.count
-
-            var positions: [String: CGPoint] = [hubNode.id: center]
-
-            for (i, node) in spokeNodes.enumerated() {
-                let angle = (2 * Double.pi / Double(max(spokeCount, 1))) * Double(i) - Double.pi / 2
-                positions[node.id] = CGPoint(
-                    x: center.x + CGFloat(cos(angle)) * radius,
-                    y: center.y + CGFloat(sin(angle)) * radius
-                )
-            }
-
-            return AnyView(
-                ZStack {
-                    Canvas { ctx, _ in
-                        for edge in schema.edges {
-                            guard let from = positions[edge.from],
-                                  let to = positions[edge.to] else { continue }
-                            drawArrow(ctx: &ctx, from: from, to: to)
-                        }
-                    }
-
-                    ForEach(nodes) { node in
-                        if let pos = positions[node.id] {
-                            NodeView(label: node.label, isHub: node.id == hubNode.id)
-                                .position(pos)
-                        }
-                    }
-                }
-                .frame(width: geo.size.width, height: geo.size.height)
-            )
-        }
-    }
-}
-
-// MARK: - Comparison Renderer (two columns)
-
-private struct ComparisonRenderer: View {
-    let schema: VisualSchema
-
-    var body: some View {
-        VStack(spacing: 12) {
-            let midpoint = (schema.nodes.count + 1) / 2
-            let leftNodes = Array(schema.nodes.prefix(midpoint))
-            let rightNodes = Array(schema.nodes.dropFirst(midpoint))
-
-            HStack(alignment: .top, spacing: 16) {
-                VStack(spacing: 10) {
-                    Text("A")
-                        .font(.system(size: 12, weight: .bold))
-                        .foregroundColor(.white.opacity(0.4))
-                    ForEach(leftNodes) { node in
-                        NodeView(label: node.label)
-                    }
-                }
-                .frame(maxWidth: .infinity)
-
-                Divider()
-                    .background(Color.white.opacity(0.2))
-
-                VStack(spacing: 10) {
-                    Text("B")
-                        .font(.system(size: 12, weight: .bold))
-                        .foregroundColor(.white.opacity(0.4))
-                    ForEach(rightNodes) { node in
-                        NodeView(label: node.label)
-                    }
-                }
-                .frame(maxWidth: .infinity)
-            }
-        }
-        .padding(.vertical, 8)
-    }
-}
-
-// MARK: - NodeView
-
-private struct NodeView: View {
+private struct FlowNodeView: View {
     let label: String
-    var isHub: Bool = false
-
     var body: some View {
         Text(label)
-            .font(.system(size: isHub ? 14 : 12, weight: isHub ? .bold : .medium))
-            .foregroundColor(VisualStyle.nodeTextColor)
+            .font(.system(size: 13, weight: .semibold))
+            .foregroundStyle(.white)
+            .multilineTextAlignment(.center)
+            .lineLimit(2)
+            .minimumScaleFactor(0.8)
+            .padding(.horizontal, 14)
+            .padding(.vertical, 10)
+            .frame(maxWidth: .infinity, minHeight: VS.nodeH)
+            .background(tealAccent)
+            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+    }
+}
+
+private struct FlowArrowView: View {
+    let label: String?
+    var body: some View {
+        VStack(spacing: 1) {
+            Rectangle()
+                .fill(VS.arrow)
+                .frame(width: 1.5, height: 12)
+            if let label, !label.isEmpty {
+                Text(label)
+                    .font(.system(size: 9, weight: .medium))
+                    .foregroundStyle(mutedText)
+                    .padding(.vertical, 1)
+            }
+            Image(systemName: "arrowtriangle.down.fill")
+                .font(.system(size: 7))
+                .foregroundStyle(VS.arrowFill)
+            Rectangle()
+                .fill(VS.arrow)
+                .frame(width: 1.5, height: 4)
+        }
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MARK: - Branching Renderer (DAG layout with layered positioning)
+// ─────────────────────────────────────────────────────────────────────────────
+
+private struct BranchingRenderer: View {
+    let schema: VisualSchema
+
+    // ── BFS layer assignment ───────────────────────────────────────────────
+
+    private var nodeDepth: [String: Int] {
+        let targets = Set(schema.edges.map { $0.to })
+        var visited: [String: Int] = [:]
+        // All nodes with no incoming edges are roots
+        var queue: [(String, Int)] = schema.nodes
+            .filter { !targets.contains($0.id) }
+            .map { ($0.id, 0) }
+        if queue.isEmpty, let first = schema.nodes.first {
+            queue = [(first.id, 0)]
+        }
+
+        var qi = 0
+        while qi < queue.count {
+            let (id, d) = queue[qi]; qi += 1
+            if visited[id] != nil { continue }
+            visited[id] = d
+            for edge in schema.edges where edge.from == id {
+                if visited[edge.to] == nil { queue.append((edge.to, d + 1)) }
+            }
+        }
+        // Orphaned nodes get the next available layer
+        for node in schema.nodes where visited[node.id] == nil {
+            visited[node.id] = (visited.values.max() ?? 0) + 1
+        }
+        return visited
+    }
+
+    private var layers: [[VisualNode]] {
+        let depth = nodeDepth
+        let maxD = depth.values.max() ?? 0
+        var result = Array(repeating: [VisualNode](), count: maxD + 1)
+        for node in schema.nodes { result[depth[node.id]!].append(node) }
+        return result.filter { !$0.isEmpty }
+    }
+
+    private func totalHeight() -> CGFloat {
+        let n = CGFloat(layers.count)
+        return VS.padV + n * VS.nodeH + max(0, n - 1) * VS.vGap + VS.padV
+    }
+
+    // ── Node position computation ──────────────────────────────────────────
+
+    private func positions(width: CGFloat) -> [String: CGPoint] {
+        var pos: [String: CGPoint] = [:]
+        let ls = layers
+        for (li, layer) in ls.enumerated() {
+            let y = VS.padV + CGFloat(li) * (VS.nodeH + VS.vGap) + VS.nodeH / 2
+            let count = CGFloat(layer.count)
+            let totalW = count * VS.nodeW + max(0, count - 1) * VS.hGap
+            let startX = (width - totalW) / 2 + VS.nodeW / 2
+            for (ni, node) in layer.enumerated() {
+                pos[node.id] = CGPoint(x: startX + CGFloat(ni) * (VS.nodeW + VS.hGap), y: y)
+            }
+        }
+        return pos
+    }
+
+    var body: some View {
+        GeometryReader { geo in
+            let pos = positions(width: geo.size.width)
+
+            ZStack {
+                // Draw edges first (behind nodes)
+                Canvas { ctx, _ in
+                    for edge in schema.edges {
+                        guard let from = pos[edge.from], let to = pos[edge.to] else { continue }
+                        drawEdge(ctx: &ctx, from: from, to: to)
+                    }
+                }
+
+                // Draw nodes
+                ForEach(schema.nodes) { node in
+                    if let p = pos[node.id] {
+                        BranchNodeView(label: node.label)
+                            .frame(width: VS.nodeW, height: VS.nodeH)
+                            .position(p)
+                    }
+                }
+            }
+        }
+        .frame(height: totalHeight())
+    }
+
+    private func drawEdge(ctx: inout GraphicsContext, from: CGPoint, to: CGPoint) {
+        let startY = from.y + VS.nodeH / 2
+        let endY   = to.y   - VS.nodeH / 2 - 8
+
+        var path = Path()
+        path.move(to: CGPoint(x: from.x, y: startY))
+
+        if abs(from.x - to.x) < 2 {
+            // Straight vertical
+            path.addLine(to: CGPoint(x: to.x, y: endY))
+        } else {
+            // Smooth bezier curve
+            let midY = (startY + endY) / 2
+            path.addCurve(
+                to:       CGPoint(x: to.x,   y: endY),
+                control1: CGPoint(x: from.x, y: midY),
+                control2: CGPoint(x: to.x,   y: midY)
+            )
+        }
+
+        ctx.stroke(path, with: .color(VS.arrow),
+                   style: StrokeStyle(lineWidth: 1.5, lineCap: .round))
+
+        // Arrowhead
+        let a: CGFloat = 6
+        var arrowHead = Path()
+        arrowHead.move(to: CGPoint(x: to.x,     y: endY))
+        arrowHead.addLine(to: CGPoint(x: to.x - a / 2, y: endY - a))
+        arrowHead.addLine(to: CGPoint(x: to.x + a / 2, y: endY - a))
+        arrowHead.closeSubpath()
+        ctx.fill(arrowHead, with: .color(VS.arrowFill))
+    }
+}
+
+private struct BranchNodeView: View {
+    let label: String
+    var body: some View {
+        Text(label)
+            .font(.system(size: 12, weight: .semibold))
+            .foregroundStyle(.white)
             .multilineTextAlignment(.center)
             .lineLimit(2)
             .minimumScaleFactor(0.8)
             .padding(.horizontal, 10)
             .padding(.vertical, 8)
-            .frame(width: isHub ? VisualStyle.nodeWidth + 20 : VisualStyle.nodeWidth,
-                   height: isHub ? VisualStyle.nodeHeight + 6 : VisualStyle.nodeHeight)
-            .background(isHub ? Color.white.opacity(0.2) : VisualStyle.nodeFill)
-            .clipShape(RoundedRectangle(cornerRadius: VisualStyle.nodeCornerRadius, style: .continuous))
-            .overlay(
-                RoundedRectangle(cornerRadius: VisualStyle.nodeCornerRadius, style: .continuous)
-                    .stroke(isHub ? Color.white.opacity(0.6) : VisualStyle.nodeBorder, lineWidth: 1)
-            )
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(tealAccent)
+            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
     }
 }
 
-// MARK: - Arrow drawing helper (free function)
+// ─────────────────────────────────────────────────────────────────────────────
+// MARK: - Comparison Renderer (two columns: old vs new)
+// ─────────────────────────────────────────────────────────────────────────────
 
-private func drawArrow(ctx: inout GraphicsContext, from: CGPoint, to: CGPoint) {
-    let dx = to.x - from.x
-    let dy = to.y - from.y
-    let length = sqrt(dx * dx + dy * dy)
-    guard length > 0 else { return }
+private struct ComparisonRenderer: View {
+    let schema: VisualSchema
 
-    let ux = dx / length
-    let uy = dy / length
+    var body: some View {
+        let mid = (schema.nodes.count + 1) / 2
+        let left  = Array(schema.nodes.prefix(mid))
+        let right = Array(schema.nodes.dropFirst(mid))
 
-    // Offset start/end so arrow touches node edges, not centers
-    let margin: CGFloat = VisualStyle.nodeHeight / 2 + 4
-    let startX = from.x + ux * margin
-    let startY = from.y + uy * margin
-    let endX = to.x - ux * margin
-    let endY = to.y - uy * margin
+        HStack(alignment: .top, spacing: 0) {
+            CompareColumn(nodes: left, title: "Before", accent: mutedText)
+            Rectangle().fill(borderColor).frame(width: 1)
+            CompareColumn(nodes: right, title: "This Paper", accent: tealAccent)
+        }
+        .padding(.vertical, VS.padV)
+    }
+}
 
-    var linePath = Path()
-    linePath.move(to: CGPoint(x: startX, y: startY))
-    linePath.addLine(to: CGPoint(x: endX, y: endY))
+private struct CompareColumn: View {
+    let nodes: [VisualNode]
+    let title: String
+    let accent: Color
 
-    ctx.stroke(
-        linePath,
-        with: .color(VisualStyle.edgeColor),
-        style: StrokeStyle(lineWidth: 1.5, lineCap: .round)
-    )
+    var body: some View {
+        VStack(spacing: 8) {
+            Text(title.uppercased())
+                .font(.system(size: 9, weight: .bold))
+                .tracking(0.8)
+                .foregroundStyle(accent)
+                .padding(.bottom, 2)
 
-    // Arrowhead triangle
-    let a = VisualStyle.arrowSize
-    let nx = -uy  // normal x
-    let ny = ux   // normal y
-
-    var arrow = Path()
-    arrow.move(to: CGPoint(x: endX, y: endY))
-    arrow.addLine(to: CGPoint(x: endX - ux * a + nx * (a / 2),
-                              y: endY - uy * a + ny * (a / 2)))
-    arrow.addLine(to: CGPoint(x: endX - ux * a - nx * (a / 2),
-                              y: endY - uy * a - ny * (a / 2)))
-    arrow.closeSubpath()
-
-    ctx.fill(arrow, with: .color(VisualStyle.edgeColor))
+            ForEach(nodes) { node in
+                Text(node.label)
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundStyle(accent == tealAccent ? tealAccent : inkColor)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(3)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 9)
+                    .frame(maxWidth: .infinity, minHeight: 40)
+                    .background(accent == tealAccent ? tealLight : Color(hex: "f2f2f2"))
+                    .clipShape(RoundedRectangle(cornerRadius: 9, style: .continuous))
+            }
+        }
+        .padding(.horizontal, 12)
+        .frame(maxWidth: .infinity)
+    }
 }

@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aprecis · Distill a paper</title>
+  <meta name="description" content="Paste an arXiv link. Aprecis distills the paper into a guided, visual narrative you can understand in minutes." />
+  <link rel="icon" href="./assets/aprecis_favicon.svg" type="image/svg+xml" />
+  <meta property="og:title" content="Aprecis · Distill a paper" />
+  <meta property="og:description" content="An AI-native way to read AI research." />
+
+  <!-- Google tag -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CEG84Y6QSP"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-CEG84Y6QSP');
+  </script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+    @font-face {
+      font-family: 'Satoshi';
+      src: url('./fonts/satoshi/Satoshi-Variable.woff2') format('woff2');
+      font-weight: 300 900; font-style: normal; font-display: swap;
+    }
+
+    :root {
+      --paper:#f7f4ef; --paper_2:#f1ece2; --paper_3:#ebe5d7;
+      --ink:#0f1117; --ink_2:#2a2d36; --ink_soft:#4a4e58; --muted:#8a8f9a;
+      --line:rgba(15,17,23,0.08); --line_2:rgba(15,17,23,0.05);
+      --teal:#1a8a8a; --teal_deep:#0e3434; --teal_ink:#0a2a2a;
+      --teal_mid:#2db8b8; --teal_bright:#5fd4d4; --teal_pale:#c8e8e8; --teal_wash:#e5f4f4;
+      --amber:#e8a020; --amber_soft:#fbf1dc; --card:#ffffff;
+    }
+    *,*::before,*::after { box-sizing:border-box; }
+    html,body { margin:0; padding:0; }
+    body {
+      background:var(--paper); color:var(--ink);
+      font-family:'Satoshi',BlinkMacSystemFont,'Helvetica Neue',sans-serif;
+      font-size:16px; line-height:1.5;
+      background-image:
+        radial-gradient(900px 600px at 8% 0%, rgba(26,138,138,0.07), transparent 60%),
+        radial-gradient(800px 600px at 96% 18%, rgba(232,160,32,0.05), transparent 65%),
+        radial-gradient(700px 500px at 50% 100%, rgba(26,138,138,0.05), transparent 60%);
+      background-attachment:fixed;
+    }
+    a { color:inherit; text-decoration:none; }
+    img,svg { display:block; max-width:100%; }
+    .wrap { width:100%; max-width:760px; margin:0 auto; padding:0 24px; }
+
+    /* ── reading-progress bar ── */
+    #progress {
+      position:fixed; top:0; left:0; height:3px; width:0%;
+      background:linear-gradient(90deg,var(--teal),var(--teal_mid));
+      z-index:50; transition:width .12s ease-out;
+    }
+
+    /* ── nav ── */
+    .nav {
+      position:sticky; top:0; z-index:30;
+      background:rgba(247,244,239,0.82);
+      -webkit-backdrop-filter:saturate(160%) blur(14px);
+      backdrop-filter:saturate(160%) blur(14px);
+      border-bottom:1px solid var(--line_2);
+    }
+    .nav_inner {
+      display:flex; align-items:center; justify-content:space-between;
+      height:64px; max-width:1140px; margin:0 auto; padding:0 24px;
+    }
+    .brand {
+      display:flex; align-items:center; gap:10px;
+      font-family:'EB Garamond',serif; font-weight:500; font-size:25px;
+    }
+    .brand_mark { width:36px; height:36px; border-radius:9px; object-fit:cover;
+      box-shadow:0 4px 14px rgba(15,17,23,0.14); }
+    .brand_word { color:var(--teal); }
+    .brand_dot { color:var(--ink); font-style:italic; }
+    .nav_cta {
+      display:inline-flex; align-items:center; gap:6px;
+      padding:9px 17px; background:var(--ink); color:var(--paper);
+      border-radius:999px; font-weight:600; font-size:13px; letter-spacing:.02em;
+      transition:transform .15s ease, background .15s ease;
+    }
+    .nav_cta:hover { transform:translateY(-1px); background:var(--teal_ink); }
+
+    main { padding:56px 0 120px; }
+    .hidden { display:none !important; }
+
+    /* ── INPUT STATE ── */
+    .input_eyebrow {
+      font-size:12px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+      color:var(--teal); margin-bottom:14px;
+    }
+    .input_h1 {
+      font-family:'EB Garamond',serif; font-weight:500;
+      font-size:clamp(34px,6vw,52px); line-height:1.08; letter-spacing:-0.01em;
+      margin:0 0 16px;
+    }
+    .input_h1 em { font-style:italic; color:var(--teal); }
+    .input_sub { font-size:17px; color:var(--ink_soft); max-width:540px; margin:0 0 32px; }
+    .paste_row { display:flex; gap:10px; flex-wrap:wrap; }
+    .paste_input {
+      flex:1; min-width:240px;
+      padding:15px 18px; font-size:15px; font-family:inherit;
+      background:var(--card); color:var(--ink);
+      border:1px solid var(--line); border-radius:12px;
+      box-shadow:0 2px 10px rgba(15,17,23,0.04);
+    }
+    .paste_input:focus { outline:none; border-color:var(--teal); }
+    .btn_primary {
+      padding:15px 26px; font-size:15px; font-weight:700; font-family:inherit;
+      background:var(--ink); color:var(--paper);
+      border:none; border-radius:12px; cursor:pointer;
+      transition:transform .15s ease, background .15s ease;
+    }
+    .btn_primary:hover { transform:translateY(-1px); background:var(--teal_ink); }
+    .btn_primary:disabled { opacity:.5; cursor:not-allowed; transform:none; }
+    .paste_hint { font-size:13px; color:var(--muted); margin-top:12px; }
+    .examples { margin-top:34px; }
+    .examples_label { font-size:12px; font-weight:700; letter-spacing:.1em;
+      text-transform:uppercase; color:var(--muted); margin-bottom:12px; }
+    .example_chip {
+      display:inline-block; margin:0 8px 8px 0; padding:8px 14px;
+      background:var(--card); border:1px solid var(--line); border-radius:999px;
+      font-size:13px; color:var(--ink_soft); cursor:pointer;
+      transition:border-color .15s ease, color .15s ease;
+    }
+    .example_chip:hover { border-color:var(--teal); color:var(--teal); }
+
+    /* ── LOADING STATE ── */
+    .load_card {
+      background:var(--card); border:1px solid var(--line); border-radius:18px;
+      padding:40px 34px; box-shadow:0 10px 40px rgba(15,17,23,0.07);
+    }
+    .load_spinner {
+      width:34px; height:34px; border-radius:50%;
+      border:3px solid var(--teal_pale); border-top-color:var(--teal);
+      animation:spin .8s linear infinite; margin-bottom:22px;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .load_title { font-family:'EB Garamond',serif; font-size:24px; margin:0 0 18px; }
+    .load_steps { list-style:none; padding:0; margin:0; }
+    .load_steps li {
+      display:flex; align-items:center; gap:11px;
+      padding:7px 0; font-size:15px; color:var(--muted);
+      transition:color .3s ease;
+    }
+    .load_steps li .dot {
+      width:18px; height:18px; border-radius:50%; flex:none;
+      border:2px solid var(--line); display:grid; place-items:center;
+      font-size:11px; color:var(--card);
+    }
+    .load_steps li.active { color:var(--ink); }
+    .load_steps li.active .dot { border-color:var(--teal); }
+    .load_steps li.done { color:var(--ink_soft); }
+    .load_steps li.done .dot { background:var(--teal); border-color:var(--teal); }
+    .load_note { font-size:13px; color:var(--muted); margin-top:20px; }
+
+    /* ── ERROR STATE ── */
+    .err_card {
+      background:var(--card); border:1px solid var(--line); border-radius:18px;
+      padding:36px 30px; text-align:center;
+    }
+    .err_card h2 { font-family:'EB Garamond',serif; font-size:24px; margin:0 0 8px; }
+    .err_card p { color:var(--ink_soft); margin:0 0 22px; }
+
+    /* ── PAPER: LAYER 0 — identity strip ── */
+    .layer { margin-bottom:8px; }
+    .l0 {
+      background:var(--teal_ink); color:var(--paper);
+      border-radius:18px; padding:26px 28px; margin-bottom:30px;
+      box-shadow:0 12px 40px rgba(10,42,42,0.22);
+    }
+    .l0_kicker {
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+      font-size:12px; letter-spacing:.06em; color:var(--teal_bright);
+      margin-bottom:12px;
+    }
+    .l0_kicker .pill {
+      background:rgba(255,255,255,0.10); padding:4px 10px; border-radius:999px;
+      color:var(--teal_pale);
+    }
+    .l0_title {
+      font-family:'EB Garamond',serif; font-weight:500;
+      font-size:clamp(23px,3.6vw,31px); line-height:1.22; margin:0 0 12px;
+    }
+    .l0_authors { font-size:14px; color:rgba(247,244,239,0.66); margin-bottom:18px; }
+    .l0_meta { display:flex; gap:18px; flex-wrap:wrap;
+      padding-top:16px; border-top:1px solid rgba(255,255,255,0.12); }
+    .l0_meta_item { font-size:13px; }
+    .l0_meta_item b { display:block; font-size:16px; font-weight:700;
+      color:var(--paper); font-family:'EB Garamond',serif; }
+    .l0_meta_item span { color:rgba(247,244,239,0.55); }
+    .l0_links { margin-left:auto; display:flex; gap:8px; align-items:center; }
+    .l0_link {
+      font-size:12px; padding:7px 13px; border-radius:999px;
+      border:1px solid rgba(255,255,255,0.22); color:var(--teal_pale);
+      transition:background .15s ease;
+    }
+    .l0_link:hover { background:rgba(255,255,255,0.10); }
+
+    /* ── section scaffolding ── */
+    .layer_tag {
+      font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+      color:var(--teal); margin-bottom:14px;
+      display:flex; align-items:center; gap:9px;
+    }
+    .layer_tag::before { content:""; width:18px; height:2px; background:var(--teal); }
+
+    /* ── LAYER 1 — hook + TL;DR ── */
+    .l1 { margin-bottom:46px; }
+    .l1_hook {
+      font-family:'EB Garamond',serif; font-weight:500;
+      font-size:clamp(26px,4.4vw,38px); line-height:1.2; letter-spacing:-0.01em;
+      margin:0 0 22px;
+    }
+    .l1_hook em { font-style:italic; color:var(--teal); }
+    .l1_tldr {
+      background:var(--card); border:1px solid var(--line);
+      border-left:3px solid var(--teal); border-radius:0 14px 14px 0;
+      padding:20px 24px; font-size:17px; line-height:1.6; color:var(--ink_2);
+    }
+    .l1_tldr .lbl {
+      display:block; font-size:11px; font-weight:700; letter-spacing:.12em;
+      text-transform:uppercase; color:var(--muted); margin-bottom:7px;
+    }
+    .tease {
+      display:flex; align-items:center; gap:8px; justify-content:center;
+      margin:34px 0 6px; font-size:14px; color:var(--ink_soft);
+    }
+    .tease b { color:var(--teal); font-weight:700; }
+
+    /* ── LAYER 2 — concept narrative ── */
+    .concept {
+      background:var(--card); border:1px solid var(--line); border-radius:18px;
+      padding:30px 30px 34px; margin-bottom:22px;
+      box-shadow:0 6px 24px rgba(15,17,23,0.05);
+      scroll-margin-top:90px;
+    }
+    .concept_num {
+      font-size:12px; font-weight:700; letter-spacing:.1em; color:var(--teal);
+      margin-bottom:9px;
+    }
+    .concept_title {
+      font-family:'EB Garamond',serif; font-weight:500;
+      font-size:25px; line-height:1.25; margin:0 0 14px;
+    }
+    .concept_body p { font-size:16.5px; line-height:1.62; color:var(--ink_2); margin:0 0 14px; }
+    .concept_body p:last-child { margin-bottom:0; }
+    .concept_next {
+      margin-top:22px; padding-top:16px; border-top:1px dashed var(--line);
+      font-size:13.5px; color:var(--muted);
+    }
+    .concept_next b { color:var(--ink_soft); font-weight:600; }
+
+    /* ── diagram ── */
+    .diagram {
+      margin-top:20px; background:var(--paper_2);
+      border:1px solid var(--line); border-radius:14px; padding:22px;
+    }
+    .diagram_cap {
+      font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+      color:var(--muted); margin-bottom:16px;
+    }
+    /* number_box */
+    .d_number { text-align:center; padding:8px 0; }
+    .d_number .val {
+      font-family:'EB Garamond',serif; font-weight:600;
+      font-size:clamp(46px,11vw,72px); line-height:1; color:var(--teal);
+    }
+    .d_number .vlabel { font-size:16px; font-weight:700; margin-top:8px; }
+    .d_number .vsub { font-size:13px; color:var(--muted); margin-top:4px; }
+    /* equation */
+    .d_eq_formula {
+      font-family:'EB Garamond',serif; font-size:22px; text-align:center;
+      background:var(--card); border:1px solid var(--line); border-radius:10px;
+      padding:16px; margin-bottom:14px; overflow-x:auto; white-space:nowrap;
+    }
+    .d_eq_term { display:flex; gap:10px; font-size:14px; padding:5px 0; }
+    .d_eq_term .sym {
+      font-family:'EB Garamond',serif; font-weight:600; color:var(--teal);
+      min-width:34px;
+    }
+    .d_eq_term .mean { color:var(--ink_2); }
+    /* comparison */
+    .d_cmp_head, .d_cmp_row { display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:8px; }
+    .d_cmp_head { margin-bottom:8px; }
+    .d_cmp_head div {
+      font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+      color:var(--muted); padding:0 4px;
+    }
+    .d_cmp_head .after_h { color:var(--teal); }
+    .d_cmp_row {
+      align-items:center; padding:10px 0; border-top:1px solid var(--line);
+      font-size:14px;
+    }
+    .d_cmp_row .aspect { color:var(--ink_soft); padding:0 4px; }
+    .d_cmp_row .before { padding:0 4px; color:var(--muted); }
+    .d_cmp_row .after {
+      padding:8px 10px; background:var(--teal_wash); border-radius:8px;
+      font-weight:700; color:var(--teal_deep);
+    }
+    /* cycle / steps / flow */
+    .d_chain { display:flex; flex-direction:column; gap:0; }
+    .d_step { display:flex; gap:14px; align-items:flex-start; }
+    .d_step_rail { display:flex; flex-direction:column; align-items:center; flex:none; }
+    .d_step_num {
+      width:30px; height:30px; border-radius:50%;
+      background:var(--teal); color:var(--card);
+      display:grid; place-items:center; font-size:13px; font-weight:700;
+    }
+    .d_step_line { width:2px; flex:1; min-height:20px; background:var(--teal_pale); }
+    .d_step_body { padding-bottom:18px; }
+    .d_step_label { font-size:15px; font-weight:700; }
+    .d_step_sub { font-size:13px; color:var(--muted); margin-top:2px; }
+    /* bar_chart */
+    .d_bar { margin-bottom:14px; }
+    .d_bar_top { display:flex; justify-content:space-between; font-size:13px; margin-bottom:5px; }
+    .d_bar_top .blabel { color:var(--ink_2); font-weight:600; }
+    .d_bar_top .bnote { color:var(--amber); font-size:12px; }
+    .d_bar_track { height:14px; background:var(--paper_3); border-radius:7px; overflow:hidden; }
+    .d_bar_fill { height:100%; background:linear-gradient(90deg,var(--teal),var(--teal_mid));
+      border-radius:7px; transition:width .6s ease; }
+    .d_ylabel { font-size:12px; color:var(--muted); margin-bottom:12px; }
+    /* heatmap */
+    .d_heat_grid { display:grid; gap:3px; }
+    .d_heat_cell {
+      aspect-ratio:1; border-radius:3px; display:grid; place-items:center;
+      font-size:10px;
+    }
+    .d_heat_tokens { display:flex; gap:3px; margin-top:5px; }
+    .d_heat_tokens span { flex:1; text-align:center; font-size:10px; color:var(--muted); }
+    /* head chips */
+    .d_head { padding:10px 0; border-top:1px solid var(--line); }
+    .d_head:first-child { border-top:none; }
+    .d_head_name { font-size:14px; font-weight:700; display:flex; align-items:center; gap:8px; }
+    .d_head_swatch { width:12px; height:12px; border-radius:3px; flex:none; }
+    .d_head_desc { font-size:13px; color:var(--muted); margin-top:3px; }
+    .d_fallback { font-size:13px; color:var(--muted); font-style:italic; }
+
+    /* ── LAYER 3 — verify ── */
+    .l3 {
+      background:var(--card); border:1px solid var(--line); border-radius:18px;
+      padding:26px 28px; margin:42px 0 0;
+    }
+    .l3_title { font-family:'EB Garamond',serif; font-size:21px; margin:0 0 6px; }
+    .l3_lede { font-size:14px; color:var(--ink_soft); margin:0 0 18px; }
+    .l3_row {
+      display:flex; align-items:center; gap:12px;
+      padding:13px 0; border-top:1px solid var(--line); font-size:14.5px;
+    }
+    .l3_row .ic { font-size:17px; flex:none; }
+    .l3_row a { color:var(--teal); font-weight:600; }
+    .l3_row .sub { color:var(--muted); font-size:13px; }
+
+    /* ── LAYER 4 — lock it in ── */
+    .l4 {
+      background:linear-gradient(160deg,var(--teal_ink),var(--teal_deep));
+      color:var(--paper); border-radius:20px; padding:34px 30px; margin-top:30px;
+    }
+    .l4_title { font-family:'EB Garamond',serif; font-size:25px; margin:0 0 6px; }
+    .l4_lede { font-size:15px; color:rgba(247,244,239,0.7); margin:0 0 22px; }
+    .quiz { margin-bottom:14px; }
+    .quiz_q {
+      background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);
+      border-radius:12px; padding:16px 18px;
+    }
+    .quiz_q .qtext { font-size:15px; font-weight:600; margin-bottom:12px; }
+    .quiz_reveal {
+      font-size:12px; font-weight:700; letter-spacing:.04em;
+      color:var(--teal_bright); cursor:pointer; user-select:none;
+    }
+    .quiz_a {
+      font-size:14px; color:rgba(247,244,239,0.82); line-height:1.55;
+      margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.12);
+    }
+    .l4_actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:24px; }
+    .btn_save, .btn_ghost {
+      padding:13px 22px; border-radius:999px; font-size:14px; font-weight:700;
+      font-family:inherit; cursor:pointer; transition:transform .15s ease;
+    }
+    .btn_save { background:var(--paper); color:var(--teal_ink); border:none; }
+    .btn_save.saved { background:var(--teal_mid); color:var(--teal_ink); }
+    .btn_ghost {
+      background:transparent; color:var(--paper);
+      border:1px solid rgba(255,255,255,0.28);
+    }
+    .btn_save:hover, .btn_ghost:hover { transform:translateY(-1px); }
+    .l4_again { margin-top:22px; }
+    .l4_again label { font-size:13px; color:rgba(247,244,239,0.6); display:block; margin-bottom:8px; }
+    .l4_again .row { display:flex; gap:8px; flex-wrap:wrap; }
+    .l4_again input {
+      flex:1; min-width:200px; padding:12px 15px; font-size:14px; font-family:inherit;
+      border-radius:10px; border:1px solid rgba(255,255,255,0.2);
+      background:rgba(255,255,255,0.07); color:var(--paper);
+    }
+    .l4_again input::placeholder { color:rgba(247,244,239,0.4); }
+    .l4_again button {
+      padding:12px 20px; border-radius:10px; border:none; cursor:pointer;
+      background:var(--paper); color:var(--teal_ink); font-weight:700; font-family:inherit;
+    }
+
+    footer {
+      border-top:1px solid var(--line); margin-top:60px;
+      padding:28px 0; text-align:center; font-size:13px; color:var(--muted);
+    }
+    @media (max-width:560px) {
+      main { padding:36px 0 80px; }
+      .l0, .concept, .l3, .l4 { padding-left:20px; padding-right:20px; }
+      .l0_links { margin-left:0; width:100%; }
+    }
+  </style>
+</head>
+<body>
+  <div id="progress"></div>
+
+  <nav class="nav">
+    <div class="nav_inner">
+      <a class="brand" href="/">
+        <img class="brand_mark" src="./assets/aprecis_app_icon.svg" alt="Aprecis" />
+        <span><span class="brand_word">aprecis</span><span class="brand_dot">.</span></span>
+      </a>
+      <a class="nav_cta" href="/#testflight">Get the app</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+
+      <!-- ─────────── STATE: INPUT ─────────── -->
+      <section id="state-input">
+        <div class="input_eyebrow">Distill a paper</div>
+        <h1 class="input_h1">Paste a paper.<br />Get it in <em>minutes</em>.</h1>
+        <p class="input_sub">
+          Drop an arXiv link. Aprecis reads the paper and rebuilds it as a guided,
+          visual narrative, so you understand it without wading through twelve pages.
+        </p>
+        <div class="paste_row">
+          <input id="urlInput" class="paste_input" type="text"
+                 placeholder="https://arxiv.org/abs/1706.03762" autocomplete="off" />
+          <button id="distillBtn" class="btn_primary">Distill it</button>
+        </div>
+        <div class="paste_hint">arXiv links only for now. Paste an abs or pdf URL, or just the ID.</div>
+
+        <div class="examples">
+          <div class="examples_label">Try one</div>
+          <span class="example_chip" data-id="1706.03762">Attention Is All You Need</span>
+          <span class="example_chip" data-id="2005.14165">GPT-3: Language Models are Few-Shot Learners</span>
+          <span class="example_chip" data-id="2010.11929">An Image is Worth 16x16 Words (ViT)</span>
+        </div>
+      </section>
+
+      <!-- ─────────── STATE: LOADING ─────────── -->
+      <section id="state-loading" class="hidden">
+        <div class="load_card">
+          <div class="load_spinner"></div>
+          <h2 class="load_title">Distilling the paper…</h2>
+          <ul class="load_steps" id="loadSteps">
+            <li data-step="0"><span class="dot">✓</span> Fetching the paper from arXiv</li>
+            <li data-step="1"><span class="dot">✓</span> Reading it end to end</li>
+            <li data-step="2"><span class="dot">✓</span> Extracting the core ideas</li>
+            <li data-step="3"><span class="dot">✓</span> Writing plain-language explanations</li>
+            <li data-step="4"><span class="dot">✓</span> Drawing the diagrams</li>
+          </ul>
+          <p class="load_note">First time for this paper takes ~20-40s. Cached papers load instantly.</p>
+        </div>
+      </section>
+
+      <!-- ─────────── STATE: ERROR ─────────── -->
+      <section id="state-error" class="hidden">
+        <div class="err_card">
+          <h2 id="errTitle">Something went wrong</h2>
+          <p id="errMsg">We couldn't distill that link.</p>
+          <button class="btn_primary" onclick="resetToInput()">Try another paper</button>
+        </div>
+      </section>
+
+      <!-- ─────────── STATE: PAPER ─────────── -->
+      <section id="state-paper" class="hidden"></section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">Aprecis · an AI-native way to read AI research</div>
+  </footer>
+
+  <script>
+  // ── config ──────────────────────────────────────────────────────────────
+  const SUPABASE_URL = 'https://kurqbmbayqecfbbcjojj.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1cnFibWJheXFlY2ZiYmNqb2pqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3OTQ5MDAsImV4cCI6MjA4OTM3MDkwMH0.gmwpVByjPKSe6vRCGKgWtVFUfgsfG6NR4bxQzW-V7b4';
+  const RECALL_KEY = 'aprecis.recall';
+
+  // ── helpers ─────────────────────────────────────────────────────────────
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) =>
+    ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+
+  function show(state) {
+    ['state-input','state-loading','state-error','state-paper']
+      .forEach((s) => $(s).classList.toggle('hidden', s !== 'state-' + state));
+    window.scrollTo(0, 0);
+  }
+  function resetToInput() {
+    history.replaceState({}, '', '/paper');
+    show('input');
+  }
+
+  // arXiv id from abs/pdf URL or bare id
+  function parseArxivId(input) {
+    if (!input) return null;
+    const m = String(input).match(/(\d{4}\.\d{4,5})(?:v\d+)?/);
+    return m ? m[1] : null;
+  }
+
+  // ── reading progress bar ────────────────────────────────────────────────
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    $('progress').style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+  }, { passive: true });
+
+  // ── loading step animation ──────────────────────────────────────────────
+  let loadTimer = null;
+  function runLoadingSteps() {
+    const steps = [...document.querySelectorAll('#loadSteps li')];
+    steps.forEach((li) => li.classList.remove('active', 'done'));
+    let i = 0;
+    steps[0].classList.add('active');
+    // pace: advance every ~6s, hold on the last step until the request returns
+    loadTimer = setInterval(() => {
+      if (i < steps.length - 1) {
+        steps[i].classList.remove('active');
+        steps[i].classList.add('done');
+        i++;
+        steps[i].classList.add('active');
+      }
+    }, 6000);
+  }
+  function stopLoadingSteps() {
+    if (loadTimer) clearInterval(loadTimer);
+    loadTimer = null;
+  }
+
+  // ── API call ────────────────────────────────────────────────────────────
+  async function distill(arxivId) {
+    show('loading');
+    runLoadingSteps();
+    try {
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/add-paper`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`,
+        },
+        body: JSON.stringify({ arxiv_id: arxivId }),
+      });
+      const data = await res.json().catch(() => ({}));
+      stopLoadingSteps();
+      if (!res.ok) {
+        return fail(
+          res.status === 404 ? 'Paper not found' : 'Distillation failed',
+          data.error || 'We could not process that paper. Check the link and try again.'
+        );
+      }
+      if (!data.concepts || !data.concepts.length) {
+        return fail('Nothing to show', 'The pipeline returned an empty result for this paper.');
+      }
+      gtag('event', 'paper_distilled', { paper_id: data.paper_id });
+      renderPaper(data);
+    } catch (e) {
+      stopLoadingSteps();
+      fail('Network error', 'Could not reach the Aprecis pipeline. Try again in a moment.');
+    }
+  }
+  function fail(title, msg) {
+    $('errTitle').textContent = title;
+    $('errMsg').textContent = msg;
+    show('error');
+  }
+
+  // ── diagram renderer ────────────────────────────────────────────────────
+  function renderDiagram(spec) {
+    if (!spec || !spec.type) return '';
+    let inner = '';
+    const t = spec.type;
+
+    if (t === 'number_box') {
+      inner = `<div class="d_number">
+        <div class="val">${esc(spec.value || '')}</div>
+        ${spec.valueLabel ? `<div class="vlabel">${esc(spec.valueLabel)}</div>` : ''}
+        ${spec.valueSublabel ? `<div class="vsub">${esc(spec.valueSublabel)}</div>` : ''}
+      </div>`;
+    }
+    else if (t === 'equation') {
+      const terms = (spec.terms || []).map((tm) =>
+        `<div class="d_eq_term"><span class="sym">${esc(tm.symbol)}</span>
+         <span class="mean">${esc(tm.meaning)}</span></div>`).join('');
+      inner = `<div class="d_eq_formula">${esc(spec.formula || '')}</div>${terms}`;
+    }
+    else if (t === 'comparison') {
+      const rows = (spec.items || []).map((it) =>
+        `<div class="d_cmp_row">
+          <div class="aspect">${esc(it.aspect)}</div>
+          <div class="before">${esc(it.before)}</div>
+          <div class="after">${esc(it.after)}</div>
+        </div>`).join('');
+      inner = `<div class="d_cmp_head">
+          <div>&nbsp;</div>
+          <div>${esc(spec.leftLabel || 'Before')}</div>
+          <div class="after_h">${esc(spec.rightLabel || 'After')}</div>
+        </div>${rows}`;
+    }
+    else if (t === 'cycle' || t === 'flow') {
+      // flow: chain the nodes in declared order; cycle: the numbered steps
+      let items = [];
+      if (t === 'cycle' && spec.steps) {
+        items = spec.steps.map((s) => ({ label: s.label, sub: s.sublabel }));
+      } else if (spec.nodes) {
+        items = spec.nodes.map((n) => ({ label: n.label, sub: n.sublabel }));
+      } else if (spec.steps) {
+        items = spec.steps.map((s) => ({ label: s.label, sub: s.sublabel }));
+      }
+      if (!items.length) return '';
+      const rows = items.map((it, i) => `
+        <div class="d_step">
+          <div class="d_step_rail">
+            <div class="d_step_num">${i + 1}</div>
+            ${i < items.length - 1 ? '<div class="d_step_line"></div>' : ''}
+          </div>
+          <div class="d_step_body">
+            <div class="d_step_label">${esc(it.label)}</div>
+            ${it.sub ? `<div class="d_step_sub">${esc(it.sub)}</div>` : ''}
+          </div>
+        </div>`).join('');
+      inner = `<div class="d_chain">${rows}</div>`;
+    }
+    else if (t === 'bar_chart') {
+      const vals = (spec.bars || []).map((b) => b.value || 0);
+      const max = Math.max(1, ...vals);
+      const bars = (spec.bars || []).map((b) => `
+        <div class="d_bar">
+          <div class="d_bar_top">
+            <span class="blabel">${esc(b.label)}</span>
+            ${b.note ? `<span class="bnote">${esc(b.note)}</span>` : ''}
+          </div>
+          <div class="d_bar_track">
+            <div class="d_bar_fill" style="width:${Math.round((b.value / max) * 100)}%;
+              ${b.color ? `background:${esc(b.color)};` : ''}"></div>
+          </div>
+        </div>`).join('');
+      inner = `${spec.yLabel ? `<div class="d_ylabel">${esc(spec.yLabel)}</div>` : ''}${bars}`;
+    }
+    else if (t === 'attention_heatmap' && spec.tokens && spec.weights) {
+      const n = spec.tokens.length;
+      const cells = spec.weights.flat().map((w) => {
+        const a = Math.max(0, Math.min(1, w));
+        return `<div class="d_heat_cell" style="background:rgba(26,138,138,${a.toFixed(2)})"></div>`;
+      }).join('');
+      inner = `<div class="d_heat_grid" style="grid-template-columns:repeat(${n},1fr)">${cells}</div>
+        <div class="d_heat_tokens">${spec.tokens.map((tk) => `<span>${esc(tk)}</span>`).join('')}</div>`;
+    }
+    else if (t === 'multi_head' && spec.heads) {
+      inner = spec.heads.map((hd) => `
+        <div class="d_head">
+          <div class="d_head_name">
+            <span class="d_head_swatch" style="background:${esc(hd.color || '#1a8a8a')}"></span>
+            ${esc(hd.name)}
+          </div>
+          <div class="d_head_desc">${esc(hd.desc || '')}</div>
+        </div>`).join('');
+    }
+    else if (t === 'sine_waves') {
+      inner = `<svg viewBox="0 0 320 90" style="width:100%">
+        ${[0, 1, 2].map((k) => {
+          const f = 1 + k * 1.6, op = 0.8 - k * 0.22;
+          let d = 'M0 45';
+          for (let x = 0; x <= 320; x += 4)
+            d += ` L${x} ${(45 - Math.sin((x / 320) * Math.PI * 2 * f) * 30).toFixed(1)}`;
+          return `<path d="${d}" fill="none" stroke="#1a8a8a" stroke-width="2" opacity="${op}"/>`;
+        }).join('')}
+      </svg>`;
+    }
+    else if (t === 'custom' && spec.vizHtml) {
+      inner = spec.vizHtml;
+    }
+    else {
+      return ''; // unknown / unrenderable: skip silently
+    }
+
+    return `<div class="diagram">
+      ${spec.caption ? `<div class="diagram_cap">${esc(spec.caption)}</div>` : ''}
+      ${inner}
+    </div>`;
+  }
+
+  // ── text → paragraphs ───────────────────────────────────────────────────
+  function paragraphs(text) {
+    return String(text || '')
+      .split(/\n{2,}|\n/)
+      .map((p) => p.trim())
+      .filter(Boolean)
+      .map((p) => `<p>${esc(p)}</p>`)
+      .join('');
+  }
+
+  // ── retrieval questions (built from concept titles) ─────────────────────
+  function buildQuiz(data) {
+    const qs = (data.concepts || []).slice(0, 3).map((c) => ({
+      q: `In your own words: what is "${c.title}", and why does it matter here?`,
+      a: c.title + ' — ' + (c.body || '').split(/(?<=[.!?])\s/)[0],
+    }));
+    return qs.map((item, i) => `
+      <div class="quiz">
+        <div class="quiz_q">
+          <div class="qtext">${esc(item.q)}</div>
+          <span class="quiz_reveal" data-q="${i}">Reveal the answer ↓</span>
+          <div class="quiz_a hidden" id="quizA${i}">${esc(item.a)}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  // ── render full paper ───────────────────────────────────────────────────
+  function renderPaper(data) {
+    const id = (data.paper_id || '').replace('arxiv:', '');
+    const absUrl = data.url || `https://arxiv.org/abs/${id}`;
+    const pdfUrl = data.pdf_url || `https://arxiv.org/pdf/${id}`;
+    const year = data.published_at ? new Date(data.published_at).getFullYear() : '';
+    const authors = (data.authors || []);
+    const authorLine = authors.length
+      ? authors.slice(0, 4).join(', ') + (authors.length > 4 ? ' et al.' : '')
+      : '';
+    const nConcepts = data.concepts.length;
+    const readMin = Math.max(2, Math.round(nConcepts * 0.8));
+
+    // LAYER 0 — identity strip
+    const l0 = `
+      <div class="l0 layer">
+        <div class="l0_kicker">
+          <span class="pill">arXiv</span>
+          ${data.published_at ? `<span>${esc(new Date(data.published_at)
+            .toLocaleDateString('en-US', { month: 'short', year: 'numeric' }))}</span>` : ''}
+          <span>${esc(id)}</span>
+        </div>
+        <h1 class="l0_title">${esc(data.title)}</h1>
+        ${authorLine ? `<div class="l0_authors">${esc(authorLine)}</div>` : ''}
+        <div class="l0_meta">
+          <div class="l0_meta_item"><b>${nConcepts}</b><span>concepts</span></div>
+          <div class="l0_meta_item"><b>~${readMin} min</b><span>distilled read</span></div>
+          <div class="l0_meta_item"><b>Aprecis</b><span>5-stage pipeline</span></div>
+          <div class="l0_links">
+            <a class="l0_link" href="${esc(absUrl)}" target="_blank" rel="noopener">arXiv ↗</a>
+            <a class="l0_link" href="${esc(pdfUrl)}" target="_blank" rel="noopener">PDF ↗</a>
+          </div>
+        </div>
+      </div>`;
+
+    // LAYER 1 — hook + TL;DR
+    const l1 = `
+      <div class="l1 layer">
+        <div class="layer_tag">The gist</div>
+        ${data.hook ? `<div class="l1_hook">${esc(data.hook)}</div>` : ''}
+        <div class="l1_tldr">
+          <span class="lbl">In plain terms</span>
+          ${esc(data.summary || '')}
+        </div>
+      </div>
+      <div class="tease">The idea, rebuilt in <b>${nConcepts} concepts</b> ↓</div>`;
+
+    // LAYER 2 — concept narrative
+    const l2 = `<div class="layer"><div class="layer_tag">The walkthrough</div>` +
+      data.concepts.map((c, i) => {
+        const diagram = renderDiagram(c.diagramSpec) ||
+          (c.vizHtml ? `<div class="diagram">${c.vizHtml}</div>` : '');
+        const next = i < nConcepts - 1
+          ? `<div class="concept_next">Next: <b>${esc(data.concepts[i + 1].title)}</b></div>`
+          : '';
+        return `
+          <div class="concept" id="concept-${i}">
+            <div class="concept_num">CONCEPT ${i + 1} / ${nConcepts}</div>
+            <h2 class="concept_title">${esc(c.title)}</h2>
+            <div class="concept_body">${paragraphs(c.body)}</div>
+            ${diagram}
+            ${next}
+          </div>`;
+      }).join('') + `</div>`;
+
+    // LAYER 3 — verify
+    const l3 = `
+      <div class="l3 layer">
+        <div class="layer_tag">Check the source</div>
+        <div class="l3_title">Distilled, not invented</div>
+        <p class="l3_lede">Aprecis rebuilt this from the original paper. Go straight to the source whenever you want to verify a claim.</p>
+        <div class="l3_row">
+          <span class="ic">📄</span>
+          <div><a href="${esc(pdfUrl)}" target="_blank" rel="noopener">Read the original PDF</a>
+          <div class="sub">The full paper, figures and proofs included</div></div>
+        </div>
+        <div class="l3_row">
+          <span class="ic">🔗</span>
+          <div><a href="${esc(absUrl)}" target="_blank" rel="noopener">arXiv abstract page</a>
+          <div class="sub">Authors, citations, versions and related work</div></div>
+        </div>
+        <div class="l3_row">
+          <span class="ic">⚙️</span>
+          <div>Generated by the Aprecis pipeline
+          <div class="sub">Headline + core ideas, plain-language explanations, then native diagrams. Treat as a faithful summary, not a substitute for the source.</div></div>
+        </div>
+      </div>`;
+
+    // LAYER 4 — lock it in
+    const l4 = `
+      <div class="l4 layer">
+        <div class="layer_tag" style="color:var(--teal_bright)">Lock it in</div>
+        <div class="l4_title">Make it stick</div>
+        <p class="l4_lede">You remember what you reconstruct. Answer these before you move on.</p>
+        ${buildQuiz(data)}
+        <div class="l4_actions">
+          <button class="btn_save" id="saveBtn">＋ Save to recall queue</button>
+          <a class="btn_ghost" href="/#testflight">Get spaced review in the app →</a>
+        </div>
+        <div class="l4_again">
+          <label>Distill another paper</label>
+          <div class="row">
+            <input id="againInput" type="text" placeholder="arxiv.org/abs/..." />
+            <button id="againBtn">Go</button>
+          </div>
+        </div>
+      </div>`;
+
+    $('state-paper').innerHTML = l0 + l1 + l2 + l3 + l4;
+    show('paper');
+    document.title = `${data.title} · Aprecis`;
+    wirePaper(data);
+  }
+
+  // ── post-render wiring ──────────────────────────────────────────────────
+  function wirePaper(data) {
+    // quiz reveal
+    document.querySelectorAll('.quiz_reveal').forEach((el) => {
+      el.addEventListener('click', () => {
+        const a = $('quizA' + el.dataset.q);
+        a.classList.toggle('hidden');
+        el.textContent = a.classList.contains('hidden')
+          ? 'Reveal the answer ↓' : 'Hide the answer ↑';
+      });
+    });
+    // save to recall queue (localStorage)
+    const saveBtn = $('saveBtn');
+    const recall = loadRecall();
+    const already = recall.some((r) => r.paper_id === data.paper_id);
+    if (already) markSaved(saveBtn);
+    saveBtn.addEventListener('click', () => {
+      const list = loadRecall();
+      if (list.some((r) => r.paper_id === data.paper_id)) return;
+      list.push({
+        paper_id: data.paper_id, title: data.title,
+        url: location.pathname + location.search, savedAt: Date.now(),
+      });
+      localStorage.setItem(RECALL_KEY, JSON.stringify(list));
+      markSaved(saveBtn);
+      gtag('event', 'paper_saved', { paper_id: data.paper_id });
+    });
+    // distill another
+    const go = () => {
+      const aid = parseArxivId($('againInput').value);
+      if (aid) { history.pushState({}, '', '/paper?id=' + aid); distill(aid); }
+    };
+    $('againBtn').addEventListener('click', go);
+    $('againInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') go(); });
+  }
+  function markSaved(btn) { btn.classList.add('saved'); btn.textContent = '✓ Saved for review'; }
+  function loadRecall() {
+    try { return JSON.parse(localStorage.getItem(RECALL_KEY)) || []; }
+    catch { return []; }
+  }
+
+  // ── input-state wiring ──────────────────────────────────────────────────
+  function submitInput() {
+    const aid = parseArxivId($('urlInput').value);
+    if (!aid) {
+      $('urlInput').focus();
+      $('urlInput').style.borderColor = '#c0392b';
+      return;
+    }
+    history.pushState({}, '', '/paper?id=' + aid);
+    distill(aid);
+  }
+  $('distillBtn').addEventListener('click', submitInput);
+  $('urlInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') submitInput(); });
+  $('urlInput').addEventListener('input', () => { $('urlInput').style.borderColor = ''; });
+  document.querySelectorAll('.example_chip').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const aid = chip.dataset.id;
+      history.pushState({}, '', '/paper?id=' + aid);
+      distill(aid);
+    });
+  });
+
+  // ── boot: deep-link support (?id= or ?url=) ─────────────────────────────
+  (function boot() {
+    const params = new URLSearchParams(location.search);
+    const aid = parseArxivId(params.get('id') || params.get('url') || '');
+    if (aid) distill(aid);
+    else show('input');
+  })();
+  window.addEventListener('popstate', () => {
+    const params = new URLSearchParams(location.search);
+    const aid = parseArxivId(params.get('id') || params.get('url') || '');
+    if (aid) distill(aid); else resetToInput();
+  });
+  </script>
+</body>
+</html>

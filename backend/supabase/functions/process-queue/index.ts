@@ -7,17 +7,19 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-import { createOpenAIClient, processPaper } from "../../../src/pipeline.ts";
+import { createAnthropicClient, processPaper } from "../../../src/pipeline.ts";
+import { runGraphStage } from "../../../src/graph.ts";
 import type { QueueMessage } from "../../../src/types.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY")!;
+const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY")!;
+const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY"); // embeddings; optional
 const BATCH_SIZE = 5; // Papers processed per invocation
 
 serve(async (_req) => {
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
-  const ai = createOpenAIClient(OPENAI_API_KEY);
+  const ai = createAnthropicClient(ANTHROPIC_API_KEY);
 
   try {
     // 1. Dequeue batch from pgmq
@@ -39,14 +41,14 @@ serve(async (_req) => {
       messages.map(async (msg: { msg_id: string; message: QueueMessage }) => {
         const paper = msg.message;
 
-        // Fetch full paper record for URL/source
+        // Fetch full paper record for URL/source/category
         const { data: paperRecord } = await supabase
           .from("papers")
-          .select("source, url")
+          .select("source, url, abstract, arxiv_category")
           .eq("paper_id", paper.paper_id)
           .single();
 
-        const { insight, deck } = await processPaper(ai, {
+        const deck = await processPaper(ai, {
           paper_id: paper.paper_id,
           title: paper.title,
           abstract: paper.abstract,
@@ -54,32 +56,48 @@ serve(async (_req) => {
           url: paperRecord?.url ?? "",
         });
 
-        // 3. Store insight
-        await supabase.from("processed_content").upsert({
-          paper_id: insight.paper_id,
-          headline: insight.headline,
-          why_it_matters: insight.why_it_matters,
-          core_ideas: insight.core_ideas,
-          eli5: insight.eli5,
-          analogy: insight.analogy,
-          visual: insight.visual,
-        }, { onConflict: "paper_id" });
-
-        // 4. Store cards
-        await supabase.from("cards").upsert({
+        // 3. Store deck (new concept-based format)
+        const { error: cardsError } = await supabase.from("cards").upsert({
           paper_id: deck.paper_id,
           title: deck.title,
           source: deck.source,
           url: deck.url,
-          cards: deck.cards,
-          created_at: deck.created_at,
+          cards: {
+            hook: deck.hook,
+            summary: deck.summary,
+            concepts: deck.concepts,
+          },
+          blueprint: deck.blueprint ?? null,
         }, { onConflict: "paper_id" });
+        if (cardsError) throw new Error(`cards upsert: ${cardsError.message}`);
+
+        // 4. Graph stage: embedding + citation edges + category.
+        // Failure-isolated inside runGraphStage; logged but never throws,
+        // so a paper still completes even if OpenAI or Semantic Scholar fail.
+        if (OPENAI_API_KEY) {
+          try {
+            const graph = await runGraphStage(supabase, OPENAI_API_KEY, {
+              paper_id: deck.paper_id,
+              title: deck.title,
+              abstract: paper.abstract ?? paperRecord?.abstract ?? "",
+              source: paperRecord?.source ?? "unknown",
+              arxiv_category: paperRecord?.arxiv_category ?? undefined,
+              coreIdeas: deck.concepts.map((c) => c.title),
+            });
+            if (graph.errors.length) {
+              console.warn(`[process-queue] graph ${paper.paper_id}:`, graph.errors);
+            }
+          } catch (graphErr) {
+            console.warn(`[process-queue] graph stage threw for ${paper.paper_id}:`, graphErr);
+          }
+        }
 
         // 5. Update paper status
-        await supabase
+        const { error: statusError } = await supabase
           .from("papers")
           .update({ status: "processed" })
           .eq("paper_id", paper.paper_id);
+        if (statusError) throw new Error(`status update: ${statusError.message}`);
 
         // 6. Acknowledge message from queue
         await supabase.rpc("pgmq_delete", {
@@ -95,7 +113,9 @@ serve(async (_req) => {
     const failed = results.filter((r) => r.status === "rejected");
 
     if (failed.length > 0) {
-      console.error("[process-queue] Failed papers:", failed.map((f: any) => f.reason));
+      const reasons = failed.map((f: any) => f.reason?.message ?? String(f.reason));
+      console.error("[process-queue] Failed papers:", reasons);
+      return json({ processed: succeeded, failed: failed.length, errors: reasons });
     }
 
     return json({ processed: succeeded, failed: failed.length });

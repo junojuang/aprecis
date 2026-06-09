@@ -5,110 +5,26 @@ final class FeedViewModel: ObservableObject {
     @Published var decks: [CardDeck] = []
     @Published var isLoading: Bool = false
     @Published var error: String? = nil
-    @Published var currentPaperIndex: Int = 0
-    @Published var currentCardIndex: Int = 0
 
     private var currentPage: Int = 0
     private var hasMore: Bool = true
-    private var pendingAdvance: Bool = false
     private let api: APIService
 
     init(api: APIService = .shared) {
         self.api = api
     }
 
-    // MARK: - Computed
-
-    var currentDeck: CardDeck? {
-        guard currentPaperIndex < decks.count else { return nil }
-        return decks[currentPaperIndex]
-    }
-
-    var currentCard: Card? {
-        guard let deck = currentDeck, currentCardIndex < deck.cards.count else { return nil }
-        return deck.cards[currentCardIndex]
-    }
-
-    var previousCard: Card? {
-        guard let deck = currentDeck, currentCardIndex > 0 else { return nil }
-        return deck.cards[currentCardIndex - 1]
-    }
-
-    var nextCard: Card? {
-        guard let deck = currentDeck, currentCardIndex < deck.cards.count - 1 else { return nil }
-        return deck.cards[currentCardIndex + 1]
-    }
-
-    struct PaperCard { let card: Card; let deck: CardDeck }
-
-    var nextPaperFirstCard: PaperCard? {
-        guard currentPaperIndex + 1 < decks.count,
-              let card = decks[currentPaperIndex + 1].cards.first else { return nil }
-        return PaperCard(card: card, deck: decks[currentPaperIndex + 1])
-    }
-
-    var prevPaperFirstCard: PaperCard? {
-        guard currentPaperIndex > 0,
-              let card = decks[currentPaperIndex - 1].cards.first else { return nil }
-        return PaperCard(card: card, deck: decks[currentPaperIndex - 1])
-    }
-
-    // MARK: - Navigation
-
-    func advanceCard() {
-        guard let deck = currentDeck else { return }
-        if currentCardIndex < deck.cards.count - 1 {
-            currentCardIndex += 1
-        } else {
-            advancePaper()
-        }
-    }
-
-    func retreatCard() {
-        if currentCardIndex > 0 {
-            currentCardIndex -= 1
-        }
-    }
-
-    func advancePaper() {
-        guard currentPaperIndex < decks.count - 1 else {
-            if hasMore {
-                pendingAdvance = true
-                Task { await loadMore() }
-            }
-            return
-        }
-        currentPaperIndex += 1
-        currentCardIndex = 0
-        if decks.count - currentPaperIndex <= 3 {
-            Task { await loadMore() }
-        }
-    }
-
-    func retreatPaper() {
-        guard currentPaperIndex > 0 else { return }
-        currentPaperIndex -= 1
-        currentCardIndex = 0
-    }
-
     // MARK: - Loading
 
     func loadFeed() async {
-        #if DEBUG
-        if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
-            decks = [.preview]
-            return
-        }
-        #endif
         guard !isLoading else { return }
         isLoading = true
         error = nil
         currentPage = 0
-        currentPaperIndex = 0
-        currentCardIndex = 0
         do {
             let page = try await api.fetchFeed(page: 0)
-            decks = page.decks
+            decks = page.decks.mergingCanonicalBraceDuplicates()
+                .filter { !HiddenPapers.isHidden($0) }
             hasMore = page.has_more
         } catch {
             self.error = error.localizedDescription
@@ -122,20 +38,35 @@ final class FeedViewModel: ObservableObject {
         let next = currentPage + 1
         do {
             let page = try await api.fetchFeed(page: next)
-            hasMore = page.has_more
-            if !page.decks.isEmpty {
+            if page.decks.isEmpty {
+                hasMore = false
+            } else {
                 decks.append(contentsOf: page.decks)
+                decks = decks.mergingCanonicalBraceDuplicates()
+                    .filter { !HiddenPapers.isHidden($0) }
                 currentPage = next
-                if pendingAdvance {
-                    pendingAdvance = false
-                    currentPaperIndex += 1
-                    currentCardIndex = 0
-                }
+                hasMore = page.has_more
             }
         } catch {
-            pendingAdvance = false
             self.error = error.localizedDescription
+            hasMore = false
         }
         isLoading = false
+    }
+
+    private var didLoadAll = false
+    private static let maxPagesForLoadAll = 20
+
+    func loadAll() async {
+        guard !didLoadAll else { return }
+        if decks.isEmpty { await loadFeed() }
+        var pages = 0
+        while hasMore && pages < Self.maxPagesForLoadAll {
+            let before = decks.count
+            await loadMore()
+            if decks.count == before { break }
+            pages += 1
+        }
+        didLoadAll = true
     }
 }

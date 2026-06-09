@@ -1,4 +1,6 @@
 import SwiftUI
+import UIKit
+import StoreKit
 import AuthenticationServices
 
 // MARK: - ProfileView
@@ -170,6 +172,7 @@ private struct SignedOutView: View {
 
 private struct SignedInView: View {
     @EnvironmentObject var auth: AuthViewModel
+    @EnvironmentObject var store: StoreService
     let session: AuthSession
     @ObservedObject var viewModel: FeedViewModel
 
@@ -182,12 +185,16 @@ private struct SignedInView: View {
     @AppStorage("profile.subscriptionTier")      private var subscriptionTier: String = "early_access"
     @AppStorage("profile.notificationsEnabled") private var notificationsEnabled: Bool = true
 
-    @State private var showEditName        = false
-    @State private var showGoalSheet       = false
-    @State private var showSettings        = false
-    @State private var showSignOutConfirm  = false
-    @State private var showClearDataConfirm = false
-    @State private var showDeleteConfirm    = false
+    @State private var showEditName            = false
+    @State private var showGoalSheet           = false
+    @State private var showSettings            = false
+    @State private var showPaywall             = false
+    @State private var showManageSubscriptions = false
+    @State private var showPlusMemberSheet    = false
+    @State private var badgePressed           = false
+    @State private var showSignOutConfirm      = false
+    @State private var showClearDataConfirm    = false
+    @State private var showDeleteConfirm        = false
 
     @State private var shelfTrashTrayArmedForDismiss = false
     @State private var shelfTrashTrayDismissNonce = 0
@@ -235,6 +242,24 @@ private struct SignedInView: View {
         .sheet(isPresented: $showGoalSheet) {
             DailyGoalSheet(goal: $dailyGoal)
         }
+        .sheet(isPresented: $showPaywall) {
+            PaywallView().environmentObject(store)
+        }
+        .sheet(isPresented: $showPlusMemberSheet) {
+            PlusMemberSheet(
+                store: store,
+                onManage: {
+                    showPlusMemberSheet = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                        showManageSubscriptions = true
+                    }
+                }
+            )
+        }
+        .manageSubscriptionsSheet(
+            isPresented: $showManageSubscriptions,
+            subscriptionGroupID: AprecisProduct.subscriptionGroupID
+        )
     }
 
     private func dismissShelfTrashIfAwayArmed() {
@@ -543,24 +568,94 @@ private struct SignedInView: View {
     }
 
     private var tierBadge: some View {
-        let info = tierInfo
-        return HStack(spacing: 5) {
-            if let icon = info.icon {
-                Image(systemName: icon)
-                    .font(.system(size: 9, weight: .bold))
-            }
-            Text(info.label.uppercased())
-                .font(.system(size: 10, weight: .bold))
-                .tracking(1.2)
+        Button(action: handleBadgeTap) {
+            badgeContent
+                .scaleEffect(badgePressed ? 0.94 : 1.0)
+                .animation(.spring(response: 0.28, dampingFraction: 0.7), value: badgePressed)
         }
-        .foregroundStyle(info.fg)
-        .padding(.horizontal, 8)
-        .padding(.vertical, 3)
-        .background(Capsule().fill(info.bg))
-        .overlay(Capsule().stroke(info.fg.opacity(0.18), lineWidth: 1))
+        .buttonStyle(.plain)
+        .simultaneousGesture(
+            DragGesture(minimumDistance: 0)
+                .onChanged { _ in
+                    if !badgePressed {
+                        badgePressed = true
+                        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                    }
+                }
+                .onEnded { _ in badgePressed = false }
+        )
+        .accessibilityLabel(store.isPlus ? "Aprecis Plus member. Tap to manage." : "Upgrade to Aprecis Plus.")
+    }
+
+    @ViewBuilder
+    private var badgeContent: some View {
+        if store.isPlus {
+            // Plus state: a small editorial pill, italic-A glyph on the
+            // left, serif "Plus" wordmark. Brand mark instead of a stock
+            // SF sparkles. Subtle gradient hint of premiumness.
+            HStack(spacing: 6) {
+                ZStack {
+                    Circle()
+                        .fill(tealAccent)
+                    Text("A")
+                        .font(.system(size: 8, weight: .regular, design: .serif))
+                        .italic()
+                        .foregroundStyle(paperBg)
+                        .offset(y: 0.5)
+                }
+                .frame(width: 14, height: 14)
+
+                Text("Plus")
+                    .font(.system(size: 12, weight: .semibold, design: .serif))
+                    .italic()
+                    .foregroundStyle(tealAccent)
+            }
+            .padding(.leading, 4)
+            .padding(.trailing, 9)
+            .padding(.vertical, 3)
+            .background(
+                Capsule().fill(
+                    LinearGradient(
+                        colors: [tealLight, tealLight.opacity(0.55)],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+            )
+            .overlay(Capsule().stroke(tealAccent.opacity(0.35), lineWidth: 1))
+        } else {
+            let info = tierInfo
+            HStack(spacing: 5) {
+                if let icon = info.icon {
+                    Image(systemName: icon)
+                        .font(.system(size: 9, weight: .bold))
+                }
+                Text(info.label.uppercased())
+                    .font(.system(size: 10, weight: .bold))
+                    .tracking(1.2)
+            }
+            .foregroundStyle(info.fg)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 3)
+            .background(Capsule().fill(info.bg))
+            .overlay(Capsule().stroke(info.fg.opacity(0.18), lineWidth: 1))
+        }
+    }
+
+    private func handleBadgeTap() {
+        if store.isPlus {
+            showPlusMemberSheet = true
+        } else {
+            showPaywall = true
+        }
     }
 
     private var tierInfo: (label: String, icon: String?, fg: Color, bg: Color) {
+        // Live entitlement wins over the manual `subscriptionTier` AppStorage
+        // string, so the badge flips the moment a purchase clears.
+        if store.isPlus {
+            return ("Plus", "sparkles", tealAccent, tealLight)
+        }
         switch subscriptionTier.lowercased() {
         case "pro":
             return ("Pro", "crown.fill", Color(hex: "8a5a18"), Color(hex: "fdf0d6"))
@@ -569,6 +664,154 @@ private struct SignedInView: View {
         default:
             return ("Early Access", nil, Color(hex: "8a5a18"), Color(hex: "fdf0d6"))
         }
+    }
+
+    // MARK: 7. Aprecis Plus banner
+    //
+    // Hero card at the top of Settings. Two states: an editorial upgrade
+    // pitch when the reader is on Free, and a calm "member" confirmation
+    // when Plus is active. Both link out to the natural next action
+    // (paywall, or Apple's subscription manager).
+
+    @ViewBuilder
+    private var plusBanner: some View {
+        if store.isPlus {
+            plusBannerActive
+        } else {
+            plusBannerUpgrade
+        }
+    }
+
+    private var plusBannerUpgrade: some View {
+        Button {
+            showSettings = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.18) {
+                showPaywall = true
+            }
+        } label: {
+            HStack(alignment: .top, spacing: 16) {
+                plusSeal
+
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("APRECIS PLUS")
+                        .font(.system(size: 10, weight: .bold))
+                        .tracking(2.0)
+                        .foregroundStyle(tealAccent)
+
+                    Text("Every paper, every day.")
+                        .font(.system(size: 22, weight: .regular, design: .serif))
+                        .foregroundStyle(inkColor)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .multilineTextAlignment(.leading)
+
+                    Text("7-day free trial · From $4.99 / month")
+                        .font(.system(size: 12, design: .serif))
+                        .italic()
+                        .foregroundStyle(mutedText)
+                        .padding(.top, 1)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+                Image(systemName: "arrow.right")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(tealAccent)
+                    .padding(.top, 4)
+            }
+            .padding(20)
+            .background(
+                ZStack {
+                    RoundedRectangle(cornerRadius: 18, style: .continuous)
+                        .fill(cardBg)
+                    RoundedRectangle(cornerRadius: 18, style: .continuous)
+                        .fill(
+                            LinearGradient(
+                                colors: [tealLight.opacity(0.55), .clear],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                }
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                    .stroke(tealAccent.opacity(0.22), lineWidth: 1)
+            )
+            .shadow(color: inkColor.opacity(0.04), radius: 8, x: 0, y: 4)
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var plusBannerActive: some View {
+        Button {
+            openManageSubscriptions()
+        } label: {
+            HStack(alignment: .top, spacing: 16) {
+                plusSeal
+
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack(spacing: 6) {
+                        Image(systemName: "checkmark.seal.fill")
+                            .font(.system(size: 9, weight: .bold))
+                            .foregroundStyle(tealAccent)
+                        Text("PLUS · ACTIVE")
+                            .font(.system(size: 10, weight: .bold))
+                            .tracking(2.0)
+                            .foregroundStyle(tealAccent)
+                    }
+
+                    Text("You're a member.")
+                        .font(.system(size: 22, weight: .regular, design: .serif))
+                        .foregroundStyle(inkColor)
+
+                    Text("Thank you. Manage in the App Store.")
+                        .font(.system(size: 12, design: .serif))
+                        .italic()
+                        .foregroundStyle(mutedText)
+                        .padding(.top, 1)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(mutedText.opacity(0.7))
+                    .padding(.top, 4)
+            }
+            .padding(20)
+            .background(
+                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                    .fill(cardBg)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                    .stroke(borderColor, lineWidth: 1)
+            )
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var plusSeal: some View {
+        ZStack {
+            Circle()
+                .fill(tealLight)
+                .overlay(Circle().stroke(tealAccent.opacity(0.35), lineWidth: 1))
+            Circle()
+                .stroke(tealAccent.opacity(0.18), lineWidth: 1)
+                .padding(4)
+            Text("A")
+                .font(.system(size: 22, weight: .regular, design: .serif))
+                .italic()
+                .foregroundStyle(tealAccent)
+                .offset(y: 1)
+        }
+        .frame(width: 46, height: 46)
+    }
+
+    private func openManageSubscriptions() {
+        // Native in-app subscription manager sheet. Lets the reader
+        // upgrade, downgrade, or cancel without ever leaving Aprecis.
+        // Backed by StoreKit's `.manageSubscriptionsSheet(...)` modifier
+        // on the settings sheet root.
+        showManageSubscriptions = true
     }
 
     // MARK: 8. Preferences
@@ -692,58 +935,71 @@ private struct SignedInView: View {
         return "\(v) (\(b))"
     }
 
-    // MARK: 10. Danger zone
+    // MARK: 10. Account actions
+    //
+    // Three actions, ranked by friendliness (visual weight matches risk):
+    //   1. Sign out: the everyday action. Primary cream pill, ink text.
+    //      Calm and inviting.
+    //   2. Clear local data: rare, recoverable on re-sign-in. Quiet text
+    //      link in muted ink.
+    //   3. Delete account: rare, irreversible. Quiet red text link. Still
+    //      discoverable (App Store guideline 5.1.1(v)) but not a blaring
+    //      filled red rectangle.
 
     private var dangerZone: some View {
-        VStack(spacing: 10) {
-            Button { showClearDataConfirm = true } label: {
-                Text("Clear local data")
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundStyle(mutedText)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .fill(cardBg)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                    .stroke(borderColor, lineWidth: 1)
-                            )
-                    )
-            }
-            .buttonStyle(.plain)
-
+        VStack(spacing: 14) {
             Button { showSignOutConfirm = true } label: {
-                Text("Sign out")
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundStyle(.red.opacity(0.85))
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
+                HStack {
+                    Spacer()
+                    Text("Sign out")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(inkColor)
+                    Spacer()
+                }
+                .padding(.vertical, 15)
+                .background(
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .fill(cardBg)
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .stroke(borderColor, lineWidth: 1)
+                )
             }
             .buttonStyle(.plain)
 
-            Button { showDeleteConfirm = true } label: {
-                Text("Delete account")
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .fill(Color.red.opacity(0.9))
-                    )
-            }
-            .buttonStyle(.plain)
+            Rectangle()
+                .fill(borderColor)
+                .frame(height: 1)
+                .padding(.vertical, 4)
 
-            Text("Deleting your account permanently removes your profile and reading history. This cannot be undone.")
-                .font(.system(size: 11))
-                .foregroundStyle(mutedText)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 8)
-                .padding(.top, 2)
+            VStack(spacing: 14) {
+                Button { showClearDataConfirm = true } label: {
+                    Text("Clear local data")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundStyle(mutedText)
+                }
+                .buttonStyle(.plain)
+
+                Button { showDeleteConfirm = true } label: {
+                    Text("Delete account")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundStyle(Color(hex: "b04545"))
+                        .underline(true, pattern: .solid)
+                }
+                .buttonStyle(.plain)
+
+                Text("Deleting permanently removes your profile and reading history. This cannot be undone.")
+                    .font(.system(size: 10, design: .serif))
+                    .italic()
+                    .foregroundStyle(mutedText.opacity(0.85))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 18)
+                    .padding(.top, 2)
+            }
         }
         .padding(.horizontal, 20)
-        .padding(.top, 4)
+        .padding(.top, 6)
     }
 
     private func clearLocalData() {
@@ -758,6 +1014,8 @@ private struct SignedInView: View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 24) {
+                    plusBanner
+                        .padding(.horizontal, 20)
                     preferencesSection
                     accountSection
                     dangerZone
@@ -1091,5 +1349,180 @@ private struct ConfirmationView: View {
             .padding(.top, 8)
         }
         .padding(40)
+    }
+}
+
+// MARK: - PlusMemberSheet
+//
+// What a Plus member sees when they tap their badge. Calm, editorial,
+// thank-you-first. Reads as an acknowledgement rather than an upsell.
+// Shows plan, renewal date, what's unlocked, and a single way out to
+// Apple's in-app subscription manager.
+
+private struct PlusMemberSheet: View {
+    @ObservedObject var store: StoreService
+    var onManage: () -> Void
+    @Environment(\.dismiss) private var dismiss
+
+    private static let renewalFormatter: DateFormatter = {
+        let f = DateFormatter()
+        f.dateStyle = .long
+        f.timeStyle = .none
+        return f
+    }()
+
+    var body: some View {
+        NavigationStack {
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 28) {
+
+                    // Hero seal
+                    PlusMemberSeal()
+                        .frame(width: 92, height: 92)
+                        .padding(.top, 24)
+
+                    VStack(spacing: 10) {
+                        Text("APRECIS PLUS · MEMBER")
+                            .font(.system(size: 10, weight: .bold))
+                            .tracking(2.2)
+                            .foregroundStyle(tealAccent)
+
+                        Text("Thank you.")
+                            .font(.system(size: 34, weight: .regular, design: .serif))
+                            .foregroundStyle(inkColor)
+
+                        Text("You're keeping the lights on. Read everything, walk the graph, carry the library.")
+                            .font(.system(size: 14, design: .serif))
+                            .italic()
+                            .foregroundStyle(mutedText)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 36)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+
+                    // Plan + renewal card
+                    VStack(spacing: 0) {
+                        planRow(label: "PLAN",
+                                value: store.activePlanLabel ?? "Active")
+                        Rectangle().fill(borderColor).frame(height: 1).padding(.leading, 16)
+                        planRow(label: "RENEWS",
+                                value: renewalString)
+                    }
+                    .background(cardBg)
+                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 14, style: .continuous)
+                            .stroke(borderColor, lineWidth: 1)
+                    )
+                    .padding(.horizontal, 24)
+
+                    // Unlocked list, lightweight
+                    VStack(spacing: 14) {
+                        memberBenefit("Every paper, every day. No cap.")
+                        memberBenefit("Builds-on, Led-to, Adjacent. No hops capped.")
+                        memberBenefit("Library across all your devices.")
+                        memberBenefit("Family Sharing included.")
+                    }
+                    .padding(.horizontal, 28)
+
+                    // Manage CTA
+                    Button(action: onManage) {
+                        HStack(spacing: 8) {
+                            Text("Manage subscription")
+                            Image(systemName: "arrow.up.right")
+                                .font(.system(size: 11, weight: .bold))
+                        }
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(inkColor)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 15)
+                        .background(
+                            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                .fill(cardBg)
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                .stroke(borderColor, lineWidth: 1)
+                        )
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.horizontal, 24)
+                    .padding(.top, 4)
+
+                    Spacer(minLength: 32)
+                }
+            }
+            .background(paperBg.ignoresSafeArea())
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") { dismiss() }
+                        .foregroundStyle(tealAccent)
+                }
+            }
+        }
+        .presentationDetents([.large])
+    }
+
+    private var renewalString: String {
+        if let date = store.plusRenewalDate {
+            return Self.renewalFormatter.string(from: date)
+        }
+        return "—"
+    }
+
+    private func planRow(label: String, value: String) -> some View {
+        HStack {
+            Text(label)
+                .font(.system(size: 9, weight: .bold))
+                .tracking(1.6)
+                .foregroundStyle(mutedText)
+            Spacer()
+            Text(value)
+                .font(.system(size: 13, weight: .medium, design: .serif))
+                .foregroundStyle(inkColor)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 14)
+    }
+
+    private func memberBenefit(_ text: String) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: 12) {
+            Circle()
+                .fill(tealAccent)
+                .frame(width: 5, height: 5)
+                .offset(y: -2)
+            Text(text)
+                .font(.system(size: 13, design: .serif))
+                .foregroundStyle(inkColor)
+                .fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: 0)
+        }
+    }
+}
+
+/// Larger version of the editorial brand mark used at the top of the
+/// member sheet. Concentric teal rings around an italic serif "A".
+private struct PlusMemberSeal: View {
+    var body: some View {
+        ZStack {
+            Circle()
+                .fill(tealLight)
+                .overlay(Circle().stroke(tealAccent.opacity(0.4), lineWidth: 1))
+
+            Circle()
+                .stroke(tealAccent.opacity(0.22), lineWidth: 1)
+                .padding(10)
+
+            Circle()
+                .stroke(tealAccent.opacity(0.12), lineWidth: 1)
+                .padding(18)
+
+            Text("A")
+                .font(.system(size: 44, weight: .regular, design: .serif))
+                .italic()
+                .foregroundStyle(tealAccent)
+                .offset(y: 2)
+        }
     }
 }

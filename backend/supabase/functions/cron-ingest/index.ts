@@ -1,13 +1,13 @@
 /**
  * Supabase Edge Function: cron-ingest
- * Triggered every 1–2 hours via pg_cron.
+ * Triggered every 1 to 2 hours via pg_cron.
  * Fetches papers, scores them, deduplicates, and enqueues for processing.
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-// Import from shared src — Supabase bundles these at deploy time
+// Import from shared src, Supabase bundles these at deploy time
 import { fetchArxiv, fetchGitHubTrending, fetchHackerNews, fetchRSSFeeds } from "../../../src/ingestion.ts";
 import { filterPapers } from "../../../src/scoring.ts";
 import type { ScoredPaper } from "../../../src/types.ts";
@@ -82,6 +82,7 @@ serve(async (req) => {
         source: p.source,
         url: p.url,
         pdf_url: p.pdf_url,
+        arxiv_category: p.arxiv_category ?? null,
         published_at: p.published_at,
         score: p.score,
         score_breakdown: p.score_breakdown,
@@ -111,9 +112,10 @@ serve(async (req) => {
     }
 
     return json({ message: "Ingestion complete", ingested: newPapers.length });
-  } catch (err) {
-    console.error("[cron-ingest] Error:", err);
-    return json({ error: String(err) }, 500);
+  } catch (err: any) {
+    const msg = err?.message ?? err?.error_description ?? JSON.stringify(err);
+    console.error("[cron-ingest] Error:", msg);
+    return json({ error: msg }, 500);
   }
 });
 

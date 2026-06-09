@@ -99,6 +99,96 @@ final class APIService {
         return try await perform(request)
     }
 
+    /// Fetches one deck by stable paper_id from GET /serve-cards?paper_id=<id>
+    func fetchDeck(paperId: String) async throws -> CardDeck {
+        let encoded = paperId.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? paperId
+        let request = try makeRequest(path: "/serve-cards?paper_id=\(encoded)")
+        return try await perform(request)
+    }
+
+    // MARK: - Related graph
+
+    /// Backend Explore rails for one paper. Keys match the JSON exactly, so no
+    /// CodingKeys mapping is needed. Every value is a paper_id in the corpus.
+    struct RelatedResponse: Decodable {
+        let buildsOn: [String]
+        let ledTo: [String]
+        let adjacent: [String]
+        let surprise: String?
+    }
+
+    /// GET /serve-cards/related?paperId=<id> — citation lineage + embedding
+    /// neighbors for the Explore hub rails.
+    func fetchRelated(paperId: String) async throws -> RelatedResponse {
+        let encoded = paperId.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? paperId
+        let request = try makeRequest(path: "/serve-cards/related?paperId=\(encoded)")
+        return try await perform(request)
+    }
+
+    // MARK: - Add Paper
+
+    /// POST /add-paper with an arXiv ID, runs the full pipeline, returns the CardDeck.
+    func addPaper(arxivId: String) async throws -> CardDeck {
+        struct Body: Encodable { let arxiv_id: String }
+        let bodyData = try JSONEncoder().encode(Body(arxiv_id: arxivId))
+        let request = try makeRequest(path: "/add-paper", method: "POST", body: bodyData)
+        return try await perform(request)
+    }
+
+    // MARK: - arXiv Search (direct public API, no auth needed)
+
+    struct ArxivPaper: Identifiable {
+        let id: String          // e.g. "2301.07041"
+        let title: String
+        let authors: [String]
+        let abstract: String
+        let published: Date
+    }
+
+    func searchArxiv(query: String) async throws -> [ArxivPaper] {
+        let encoded = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        let urlStr = "https://export.arxiv.org/api/query?search_query=ti:\(encoded)+OR+abs:\(encoded)&max_results=15&sortBy=relevance&sortOrder=descending"
+        guard let url = URL(string: urlStr) else { throw APIError.invalidURL }
+        let (data, _) = try await URLSession.shared.data(from: url)
+        let xml = String(data: data, encoding: .utf8) ?? ""
+        return parseArxivXML(xml)
+    }
+
+    private func parseArxivXML(_ xml: String) -> [ArxivPaper] {
+        // Split by <entry>, first chunk is the feed header, skip it
+        let entries = xml.components(separatedBy: "<entry>").dropFirst()
+        let isoParser = ISO8601DateFormatter()
+        return entries.compactMap { entry in
+            guard
+                let rawId    = entry.xmlText("id"),
+                let title    = entry.xmlText("title"),
+                let summary  = entry.xmlText("summary")
+            else { return nil }
+
+            // arXiv IDs look like: http://arxiv.org/abs/2301.07041v2
+            let arxivId = rawId
+                .components(separatedBy: "/abs/").last?
+                .replacingOccurrences(of: #"v\d+$"#, with: "", options: .regularExpression)
+                ?? rawId
+
+            let authorBlocks = entry.components(separatedBy: "<author>").dropFirst()
+            let authors = authorBlocks.compactMap { $0.xmlText("name") }
+
+            let published = entry.xmlText("published")
+                .flatMap { isoParser.date(from: $0) } ?? Date()
+
+            return ArxivPaper(
+                id: arxivId,
+                title: title.trimmingCharacters(in: .whitespacesAndNewlines)
+                            .replacingOccurrences(of: "\n", with: " "),
+                authors: Array(authors.prefix(4)),
+                abstract: summary.trimmingCharacters(in: .whitespacesAndNewlines)
+                                 .replacingOccurrences(of: "\n", with: " "),
+                published: published
+            )
+        }
+    }
+
     /// Records a user interaction via POST /serve-cards/interaction
     func markInteraction(paperId: String, action: InteractionType) async throws {
         struct Body: Encodable {
@@ -120,5 +210,25 @@ final class APIService {
             throw APIError.invalidResponse(statusCode: http.statusCode)
         }
         _ = data
+    }
+}
+
+// MARK: - XML helpers
+
+private extension String {
+    /// Extract the text content of the first occurrence of `<tag>...</tag>`.
+    func xmlText(_ tag: String) -> String? {
+        guard
+            let start = range(of: "<\(tag)>") ?? range(of: "<\(tag) "),
+            let closeTag = range(of: "</\(tag)>")
+        else { return nil }
+        // If the opening tag has attributes, advance past the ">"
+        var contentStart = start.upperBound
+        if self[start].last != ">" {
+            guard let gt = range(of: ">", range: contentStart..<endIndex) else { return nil }
+            contentStart = gt.upperBound
+        }
+        guard contentStart <= closeTag.lowerBound else { return nil }
+        return String(self[contentStart..<closeTag.lowerBound])
     }
 }

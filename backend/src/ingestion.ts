@@ -25,6 +25,11 @@ function parseArxivXML(xml: string): RawPaper[] {
     const published = extract(entry, "published") ?? new Date().toISOString();
     const authors = [...entry.matchAll(/<name>(.*?)<\/name>/g)].map((m) => m[1]);
     const pdfUrl = entry.match(/href="(https:\/\/arxiv\.org\/pdf\/[^"]+)"/)?.[1];
+    // Primary category drives the display cluster. Prefer arxiv:primary_category;
+    // fall back to the first plain <category term="...">.
+    const category =
+      entry.match(/<arxiv:primary_category[^>]*\bterm="([^"]+)"/)?.[1] ??
+      entry.match(/<category[^>]*\bterm="([^"]+)"/)?.[1];
 
     if (!id || !title) continue;
 
@@ -36,6 +41,7 @@ function parseArxivXML(xml: string): RawPaper[] {
       source: "arxiv",
       url: `https://arxiv.org/abs/${id}`,
       pdf_url: pdfUrl ?? `https://arxiv.org/pdf/${id}`,
+      arxiv_category: category,
       published_at: published,
     });
   }
