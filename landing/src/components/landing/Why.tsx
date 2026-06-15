@@ -4,29 +4,29 @@ export default function Why() {
       <div className="wrap">
         <div className="why_grid">
           <div>
-            <div className="section_label">Built for the overwhelmed</div>
+            <div className="section_label">Why a club</div>
             <h2 className="section_title">
-              Research shouldn&apos;t feel like <em>homework</em>.
+              A paper club, without the <em>velvet rope</em>.
             </h2>
           </div>
 
           <div className="why_lines">
             <div className="why_line">
-              <div className="why_strike">Too technical</div>
+              <div className="why_strike">Invite only</div>
+              <p className="why_after">
+                Anyone can <em>attend</em>.
+              </p>
+            </div>
+            <div className="why_line">
+              <div className="why_strike">PhD required</div>
               <p className="why_after">
                 Plain <em>English</em>. Math on the side.
               </p>
             </div>
             <div className="why_line">
-              <div className="why_strike">40 page PDF</div>
+              <div className="why_strike">Keeping up alone</div>
               <p className="why_after">
-                A guided deck. <em>One idea</em> at a time.
-              </p>
-            </div>
-            <div className="why_line">
-              <div className="why_strike">Doomscrolling</div>
-              <p className="why_after">
-                Same swipe. <em>Better</em> reward.
+                The frontier, <em>curated</em> every week.
               </p>
             </div>
           </div>

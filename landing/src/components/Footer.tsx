@@ -6,18 +6,18 @@ export default function Footer() {
           <img src="/assets/aprecis_app_icon.svg" alt="Aprecis" />
           <span>
             <span className="brand_word">aprecis</span>
-            <span className="brand_dot" style={{ fontStyle: 'italic', color: 'var(--ink)' }}>
+            <span className="brand_dot" style={{ color: 'var(--ink)' }}>
               .
             </span>
           </span>
           <span
             style={{
               color: 'var(--muted)',
-              fontFamily: "'Satoshi', sans-serif",
+              fontFamily: 'inherit',
               fontSize: 13,
             }}
           >
-            &nbsp;© 2026 · an AI-native learning system for AI research
+            &nbsp;© 2026 · the paper club anyone can attend
           </span>
         </div>
         <div className="socials">

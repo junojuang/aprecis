@@ -12,22 +12,13 @@ export default function Nav() {
           </span>
         </a>
         <nav className="nav_links">
-          <a href="#/convert" className="link_hide">
-            Converter
-          </a>
-          <a href="#how" className="link_hide">
-            How it works
-          </a>
-          <a href="#why" className="link_hide">
-            Why
-          </a>
           <a
             href={TESTFLIGHT}
             target="_blank"
             rel="noopener noreferrer"
             className="nav_cta"
           >
-            Get early access <span aria-hidden="true">→</span>
+            Get the mobile app <span aria-hidden="true">→</span>
           </a>
         </nav>
       </div>
