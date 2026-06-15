@@ -36,11 +36,11 @@ struct AddPaperView: View {
     var body: some View {
         ZStack {
             paperBg.ignoresSafeArea()
-
-            NavigationLink(
-                destination: addedDeck.map { DeckDestination(deck: $0) },
-                isActive: $navigateToDeck
-            ) { EmptyView() }
+                .navigationDestination(isPresented: $navigateToDeck) {
+                    if let deck = addedDeck {
+                        DeckDestination(deck: deck)
+                    }
+                }
 
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 0) {

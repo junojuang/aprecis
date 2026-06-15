@@ -169,7 +169,7 @@ struct GPT3PromptShotsView: View {
             visitedShots.insert(shot.rawValue)
             updateGate()
         }
-        .onChange(of: shot) { newShot in
+        .onChange(of: shot) { _, newShot in
             animateAnswer(scene(newShot))
             visitedShots.insert(newShot.rawValue)
             updateGate()
@@ -283,7 +283,7 @@ struct GPT3PromptShotsView: View {
             }
             .frame(height: 6)
         }
-        .onChange(of: target) { newTarget in
+        .onChange(of: target) { _, newTarget in
             withAnimation(.spring(response: 0.55, dampingFraction: 0.85)) {
                 accuracyAnim = newTarget
             }
@@ -411,7 +411,7 @@ struct GPT3ScaleEmergenceView: View {
             visitedScales.insert(scale.rawValue)
             updateGate()
         }
-        .onChange(of: scale) { newScale in
+        .onChange(of: scale) { _, newScale in
             withAnimation(.spring(response: 0.45, dampingFraction: 0.85)) {
                 capabilityAnim = newScale.capability
             }

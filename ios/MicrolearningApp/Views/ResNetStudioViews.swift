@@ -173,7 +173,7 @@ struct ResNetBlockView: View {
             .padding(.top, 4)
         }
         .onAppear { updateGate() }
-        .onChange(of: target) { _ in
+        .onChange(of: target) { _, _ in
             visited.insert(target.rawValue)
             updateGate()
         }
@@ -474,7 +474,7 @@ struct ResNetDepthView: View {
             .padding(.top, 4)
         }
         .onAppear { updateGate() }
-        .onChange(of: depth) { _ in
+        .onChange(of: depth) { _, _ in
             recordMilestones()
             updateGate()
         }
@@ -762,7 +762,7 @@ struct ResNetGradientView: View {
             .padding(.top, 4)
         }
         .onAppear { updateGate() }
-        .onChange(of: probeFraction) { _ in
+        .onChange(of: probeFraction) { _, _ in
             visitedRegions.insert(quartile(probeFraction))
             updateGate()
         }

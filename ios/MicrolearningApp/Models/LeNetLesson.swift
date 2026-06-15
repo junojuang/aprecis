@@ -173,7 +173,7 @@ extension LearningLesson {
                 quote: "Better pattern recognition systems can be built by relying more on automatic learning and less on hand-designed rules.",
                 attribution: "LeCun, Bottou, Bengio, Haffner \u{00B7} 1998",
                 linkTitle: "Gradient-Based Learning Applied to Document Recognition",
-                url: URL(string: "http://yann.lecun.com/exdb/publis/pdf/lecun-98.pdf")
+                url: URL(string: "https://yann.lecun.com/exdb/publis/pdf/lecun-98.pdf")
             ),
         ]
     )

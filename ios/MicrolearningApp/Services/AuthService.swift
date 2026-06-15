@@ -73,17 +73,17 @@ final class AuthService {
     // MARK: Sign In (email + password)
 
     func signIn(email: String, password: String) async throws -> AuthSession {
-        try await decode(try await post(path: "/token?grant_type=password",
-                                        body: ["email": email, "password": password]))
+        try decode(try await post(path: "/token?grant_type=password",
+                                  body: ["email": email, "password": password]))
     }
 
     // MARK: Sign In with Apple
 
     func signInWithApple(idToken: String, nonce: String) async throws -> AuthSession {
-        try await decode(try await post(path: "/token?grant_type=id_token",
-                                        body: ["provider": "apple",
-                                               "id_token": idToken,
-                                               "nonce": nonce]))
+        try decode(try await post(path: "/token?grant_type=id_token",
+                                  body: ["provider": "apple",
+                                         "id_token": idToken,
+                                         "nonce": nonce]))
     }
 
     // MARK: Sign Out
@@ -124,8 +124,8 @@ final class AuthService {
     // MARK: Refresh
 
     func refresh(token: String) async throws -> AuthSession {
-        try await decode(try await post(path: "/token?grant_type=refresh_token",
-                                        body: ["refresh_token": token]))
+        try decode(try await post(path: "/token?grant_type=refresh_token",
+                                  body: ["refresh_token": token]))
     }
 
     // MARK: - Helpers

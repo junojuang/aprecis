@@ -78,7 +78,7 @@ struct BundleDetailView: View {
                     GeometryReader { geo in
                         Color.clear
                             .onAppear { contentHeight = geo.size.height }
-                            .onChange(of: geo.size.height) { contentHeight = $0 }
+                            .onChange(of: geo.size.height) { _, h in contentHeight = h }
                             .preference(key: BundleScrollOffsetKey.self,
                                         value: -geo.frame(in: .named("bundleScroll")).minY)
                     }
@@ -93,7 +93,7 @@ struct BundleDetailView: View {
             .background(GeometryReader { geo in
                 Color.clear
                     .onAppear { viewportHeight = geo.size.height }
-                    .onChange(of: geo.size.height) { viewportHeight = $0 }
+                    .onChange(of: geo.size.height) { _, h in viewportHeight = h }
             })
         }
         .overlay(alignment: .top) {

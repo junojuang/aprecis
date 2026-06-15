@@ -2506,7 +2506,7 @@ private struct LegendStroke: View {
 // Tiny helper so we can build a Path imperatively inside a View body without
 // fighting Swift's `Path { }` overload resolution against ViewBuilder.
 private struct ShapePath: Shape {
-    let build: (inout Path) -> Void
+    let build: @Sendable (inout Path) -> Void
     func path(in rect: CGRect) -> Path {
         var p = Path()
         build(&p)

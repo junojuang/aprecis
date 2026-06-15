@@ -490,7 +490,7 @@ struct GraphCanvas: View {
     private func nodeTitle(for id: String) -> String {
         if let deck = deckById[id], let t = deck.title, !t.isEmpty { return t }
         if let loop = DailyLoopContent.byPaperId(id) {
-            return loop.sourceLine ?? loopFallbackTitle(id: id)
+            return loop.sourceLine.isEmpty ? loopFallbackTitle(id: id) : loop.sourceLine
         }
         return loopFallbackTitle(id: id)
     }

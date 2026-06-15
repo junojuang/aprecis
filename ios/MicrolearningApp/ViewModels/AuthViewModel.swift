@@ -211,7 +211,6 @@ extension AuthViewModel: ASAuthorizationControllerDelegate {
         // the first authorization. Capture both now — after this they are gone.
         let appleUserId = credential.user
         let appleName = appleDisplayName(from: credential.fullName)
-        print("[Apple] fullName=\(String(describing: credential.fullName)) -> appleName=\(String(describing: appleName))")
         Task {
             isLoading = true; error = nil
             do {
@@ -294,7 +293,7 @@ extension AuthViewModel {
                 return "We need you to tap through the Apple prompt. Try again."
             case .unknown:
                 return "Sign in didn't complete. Make sure you're signed into iCloud on this device, then try again."
-            @unknown default:
+            default:
                 return "Something went sideways. Try again."
             }
         }

@@ -1244,7 +1244,7 @@ struct TodaysPaperDeck: View {
         }
         .accessibilityElement(children: .contain)
         .accessibilityLabel(Text(accessibilityLabel))
-        .onChange(of: currentIndex) { _ in requestMoreIfNeeded() }
+        .onChange(of: currentIndex) { _, _ in requestMoreIfNeeded() }
     }
 
     private var visibleIndices: [Int] {

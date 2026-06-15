@@ -1,0 +1,16 @@
+# Non-web folders — not part of the static site served at aprecis.app
+ios/
+backend/
+supabase/
+prisma/
+src/
+scripts/
+data/
+intern/
+marketing/
+microlearning-app/
+demoFlowForAllPapers/
+roadmaps/
+prototype screens/
+video assets/
+node_modules/

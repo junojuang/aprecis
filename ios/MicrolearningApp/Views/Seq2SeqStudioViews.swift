@@ -116,7 +116,7 @@ struct Seq2SeqPipelineView: View {
                 pulse = 1
             }
         }
-        .onChange(of: stage) { _ in updateGate() }
+        .onChange(of: stage) { _, _ in updateGate() }
     }
 
     private func updateGate() {
@@ -437,7 +437,7 @@ struct Seq2SeqLengthView: View {
             capAnim = stop.capacity
             updateGate()
         }
-        .onChange(of: stop) { newStop in
+        .onChange(of: stop) { _, newStop in
             visited.insert(newStop.rawValue)
             withAnimation(.spring(response: 0.55, dampingFraction: 0.85)) {
                 s2sAnim = newStop.s2sBLEU
@@ -675,7 +675,7 @@ struct Seq2SeqReverseView: View {
             .padding(.top, 4)
         }
         .onAppear { updateGate() }
-        .onChange(of: reversed) { newVal in
+        .onChange(of: reversed) { _, newVal in
             visited.insert(newVal)
             withAnimation(.easeInOut(duration: 0.5)) { pathAnim = 0 }
             withAnimation(.easeInOut(duration: 0.7).delay(0.1)) { pathAnim = 1 }

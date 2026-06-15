@@ -119,7 +119,7 @@ struct AttentionFlowView: View {
             animateTo(query)
             updateGate()
         }
-        .onChange(of: query) { newQ in
+        .onChange(of: query) { _, newQ in
             visited.insert(newQ)
             animateTo(newQ)
             updateGate()
@@ -357,7 +357,7 @@ struct AttentionCorefView: View {
             updateGate()
             pulseHeadline()
         }
-        .onChange(of: query) { newQ in
+        .onChange(of: query) { _, newQ in
             visited.insert(newQ)
             animateTo(newQ)
             updateGate()
@@ -611,7 +611,7 @@ struct AttentionPathLengthView: View {
             visited.insert(stop.rawValue)
             updateGate()
         }
-        .onChange(of: stop) { newStop in
+        .onChange(of: stop) { _, newStop in
             visited.insert(newStop.rawValue)
             withAnimation(.spring(response: 0.5, dampingFraction: 0.85)) {
                 rnnAnim = newStop.rnnFraction
@@ -790,7 +790,6 @@ struct FlowLayout: Layout {
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
         let maxWidth = proposal.width ?? .infinity
         var x: CGFloat = 0
-        var y: CGFloat = 0
         var rowHeight: CGFloat = 0
         var totalHeight: CGFloat = 0
         var widest: CGFloat = 0
