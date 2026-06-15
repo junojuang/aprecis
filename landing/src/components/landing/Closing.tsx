@@ -6,24 +6,20 @@ export default function Closing() {
       <div className="wrap">
         <div className="closing_card">
           <h2>
-            Tomorrow&apos;s paper, <em>already</em> a lesson.
+            Pull up a <em>chair</em>.
           </h2>
-          <p>
-            Paste any arXiv link and watch it become an Aprecis deck, or take the
-            whole feed with you on iOS.
-          </p>
-          <div className="btn_row" style={{ justifyContent: 'center', marginBottom: 0 }}>
-            <a href="#/convert" className="btn btn_primary">
-              Convert a paper <span className="arrow">→</span>
-            </a>
+          <p>Stay close to the frontier, one edition at a time.</p>
+          <div
+            className="btn_row"
+            style={{ justifyContent: 'center', marginBottom: 0 }}
+          >
             <a
               href={TESTFLIGHT}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn_ghost"
-              style={{ background: 'rgba(255,255,255,0.12)', color: 'white', borderColor: 'rgba(255,255,255,0.25)' }}
+              className="btn btn_primary"
             >
-              Get early access
+              Get the mobile app <span className="arrow">→</span>
             </a>
           </div>
         </div>
