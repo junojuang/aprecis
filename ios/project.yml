@@ -56,6 +56,7 @@ targets:
         DEVELOPMENT_TEAM: "Y4648M7S2X"
         CODE_SIGN_STYLE: Automatic
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        TARGETED_DEVICE_FAMILY: "1"
     info:
       path: MicrolearningApp/Info.plist
       properties:
@@ -71,6 +72,7 @@ targets:
         SUPABASE_ANON_KEY: $(SUPABASE_ANON_KEY)
         NSAppTransportSecurity:
           NSAllowsArbitraryLoads: false
+        ITSAppUsesNonExemptEncryption: false
         UIRequiredDeviceCapabilities:
           - arm64
         UISupportedInterfaceOrientations:

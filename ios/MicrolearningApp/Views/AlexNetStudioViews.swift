@@ -126,7 +126,7 @@ struct AlexNetAblationView: View {
             animatedError = currentError
             updateGate()
         }
-        .onChange(of: on) { _ in
+        .onChange(of: on) { _, _ in
             withAnimation(.spring(response: 0.55, dampingFraction: 0.85)) {
                 animatedError = currentError
             }

@@ -112,7 +112,7 @@ struct GANRoundView: View {
             .padding(.top, 4)
         }
         .onAppear { updateGate() }
-        .onChange(of: round) { _ in
+        .onChange(of: round) { _, _ in
             visited.insert(round)
             updateGate()
         }
@@ -446,7 +446,7 @@ struct GANConvergenceView: View {
             .padding(.top, 4)
         }
         .onAppear { updateGate() }
-        .onChange(of: step) { _ in
+        .onChange(of: step) { _, _ in
             visited.insert(quartile(step))
             updateGate()
         }
@@ -802,7 +802,7 @@ struct GANModeCollapseView: View {
             .padding(.top, 4)
         }
         .onAppear { updateGate() }
-        .onChange(of: collapsed) { _ in
+        .onChange(of: collapsed) { _, _ in
             visited.insert(collapsed)
             updateGate()
         }
@@ -918,7 +918,7 @@ struct GANModeCollapseView: View {
                             .position(x: m.center.x * W, y: m.center.y * H + 28)
                     }
                     // G samples
-                    ForEach(samplePoints, id: \.self) { pt in
+                    ForEach(Array(samplePoints.enumerated()), id: \.offset) { _, pt in
                         Circle()
                             .fill(collapsed ? ganWarn.opacity(0.85) : tealAccent.opacity(0.85))
                             .frame(width: 5, height: 5)

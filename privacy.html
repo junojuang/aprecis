@@ -23,56 +23,131 @@
   p, li { font-size:1.05rem; }
   ul { padding-left:1.2em; }
   a { color:var(--teal); }
+  .lead { font-size:1.12rem; }
   .foot { margin-top:48px; color:var(--muted); font-size:0.95rem; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>Privacy Policy</h1>
-  <p class="eff">Aprecis &middot; Effective 22 May 2026</p>
+  <p class="eff">Aprecis &middot; Effective 15 June 2026</p>
 
-  <p>Aprecis is a microlearning app that turns AI research papers into short,
-  swipeable lessons. This policy explains what we collect, why, and the choices
-  you have. We keep data collection to the minimum the app needs to work.</p>
+  <p class="lead">Aprecis is a microlearning app that turns AI research papers into
+  short, swipeable lessons. We built it to collect as little about you as
+  possible. There is no account, no sign-up, and no login. This policy explains
+  what that means in practice.</p>
 
-  <h2>What we collect</h2>
-  <p>When you sign in with Sign in with Apple, we receive your name and an email
-  address from Apple. If you choose Apple's private email relay, we only ever see
-  the relay address, not your real email. We use this to create and maintain your
-  account and to sync your reading progress and saved papers across your devices.</p>
-  <p>We do not collect your contacts, location, photos, browsing history, or
-  advertising identifiers. We do not use third-party analytics or advertising SDKs.</p>
-
-  <h2>How we use it</h2>
+  <h2>The short version</h2>
   <ul>
-    <li>To create and secure your account.</li>
-    <li>To save your shelf, reading goal, and progress so they follow you across devices.</li>
-    <li>To respond to support requests you send us.</li>
+    <li>We do <strong>not</strong> ask you to create an account or sign in.</li>
+    <li>We do <strong>not</strong> collect your name, email, phone number, contacts,
+        location, photos, or browsing history.</li>
+    <li>Your library, reading progress, streaks, daily goal, and chosen display
+        name are stored <strong>only on your device</strong>.</li>
+    <li>We do <strong>not</strong> use third-party analytics or advertising SDKs,
+        and we do <strong>not</strong> track you across other apps or websites.</li>
   </ul>
-  <p>We do not use your data for advertising, and we do not track you across
-  other apps or websites.</p>
 
-  <h2>Where it is stored</h2>
-  <p>Account data is stored on our backend infrastructure (Supabase), protected
-  in transit and at rest. We retain it for as long as your account is active.</p>
+  <h2>Information stored on your device</h2>
+  <p>Everything personal to you stays on your device, in the app's local storage:
+  your saved papers ("shelf"), reading progress and resume position, daily streak,
+  daily goal, recently opened papers, and any display name you type in. This
+  information never leaves your device and is not transmitted to us. You can erase
+  all of it at any time using <em>Settings &rarr; Clear local data</em> inside the
+  app, or by deleting the app.</p>
 
-  <h2>Sharing</h2>
-  <p>We do not sell your personal data. We share it only with the service
-  providers that host our infrastructure, and only so they can run the service on
-  our behalf. We may disclose data if required by law.</p>
+  <h2>Information processed when you use the app</h2>
+  <p>To deliver lessons, the app communicates with our backend and a few public
+  services. These requests are made anonymously &mdash; they do not include your
+  name, an account, or a personal profile.</p>
+  <ul>
+    <li><strong>Lesson content.</strong> The app downloads paper lessons from our
+        backend using a shared, app-level key. No personal identifier is sent.</li>
+    <li><strong>Anonymous usage signals.</strong> When you swipe, save, or share a
+        lesson, the app may send the paper's ID and the action (for example,
+        "saved") so we can understand which papers resonate. These signals are not
+        linked to your identity or device and cannot be traced back to you.</li>
+    <li><strong>Search.</strong> If you search for or add a paper, your query or the
+        arXiv ID is sent to arXiv's public API (arxiv.org) and/or our backend to
+        return results. We do not store your searches against any profile.</li>
+    <li><strong>Technical request data.</strong> Like any internet service, our
+        hosting and edge infrastructure may briefly process standard request
+        metadata (such as IP address) in transit to deliver responses and protect
+        against abuse. We do not use this to build a profile of you.</li>
+  </ul>
+
+  <h2>Subscriptions and payments</h2>
+  <p>Aprecis offers an optional auto-renewable subscription, Aprecis Plus. All
+  purchases are handled by Apple through the App Store. Apple processes your
+  payment and manages billing; <strong>we never receive or store your payment card
+  details</strong>. The app only reads your subscription status from the device to
+  unlock paid features. Apple's handling of purchases is governed by
+  <a href="https://www.apple.com/legal/privacy/">Apple's Privacy Policy</a>. You can
+  manage or cancel a subscription anytime in your device's
+  Settings &rarr; Apple Account &rarr; Subscriptions.</p>
+
+  <h2>How we use information</h2>
+  <ul>
+    <li>To serve and display research lessons and related papers.</li>
+    <li>To understand, in aggregate and anonymously, which lessons are useful so we
+        can improve the content.</li>
+    <li>To operate, secure, and maintain the service.</li>
+    <li>To respond to support requests you choose to email us.</li>
+  </ul>
+  <p>We do not use your data for advertising, profiling, or cross-app tracking, and
+  we do not sell or rent personal data to anyone.</p>
+
+  <h2>Service providers</h2>
+  <p>We rely on a small number of providers strictly to run the app, and only so
+  they can perform services on our behalf:</p>
+  <ul>
+    <li><strong>Supabase</strong> &mdash; backend hosting, database, and edge functions
+        that store and serve lesson content.</li>
+    <li><strong>Apple</strong> &mdash; App Store distribution and in-app subscription
+        processing.</li>
+    <li><strong>arXiv</strong> &mdash; the public research repository queried when you
+        search for or add a paper.</li>
+  </ul>
+
+  <h2>Data retention</h2>
+  <p>On-device data persists until you clear it in the app or delete the app.
+  Anonymous usage signals are retained only in aggregate form and are not
+  associated with you. Lesson content in our backend is operational data about
+  papers, not about people.</p>
+
+  <h2>Your choices and rights</h2>
+  <p>Because we do not maintain an account or personal profile, there is no personal
+  profile for us to look up, export, or delete. You remain in full control of the
+  data on your device and can remove it at any time via <em>Clear local data</em> or
+  by uninstalling. Depending on where you live (for example, the EEA, UK, or
+  California), you may have rights to access, correct, or delete personal data and
+  to not be discriminated against for exercising them. If you believe we hold any
+  personal data about you, contact us at the address below and we will help.</p>
+
+  <h2>International users</h2>
+  <p>Our infrastructure may process and store data in countries other than your own.
+  Where required, we rely on appropriate safeguards for any such transfers.</p>
+
+  <h2>Security</h2>
+  <p>Data exchanged with our backend is protected in transit (HTTPS/TLS) and at
+  rest by our hosting provider. No method of transmission or storage is perfectly
+  secure, but we work to protect the limited data the app handles.</p>
 
   <h2>Children</h2>
-  <p>Aprecis is not directed at children under 13, and we do not knowingly
-  collect data from them.</p>
+  <p>Aprecis is not directed to children under 13, and we do not knowingly collect
+  personal information from them. If you believe a child has provided us personal
+  information, contact us and we will delete it.</p>
 
   <h2>Changes</h2>
   <p>If this policy changes, we will update the effective date above and, for
   material changes, notify you in the app.</p>
 
   <h2>Contact</h2>
-  <p>Questions or data requests: <a href="mailto:aprecisapp@gmail.com">aprecisapp@gmail.com</a></p>
+  <p>Questions or data requests:
+  <a href="mailto:aprecisapp@gmail.com">aprecisapp@gmail.com</a></p>
 
-  <p class="foot">&copy; 2026 Aprecis</p>
+  <p class="foot">&copy; 2026 Aprecis. See also our
+  <a href="/terms">Terms of Use</a>.</p>
 </div>
 </body>
 </html>

@@ -1,5 +1,6 @@
 {
-  "buildCommand": null,
+  "buildCommand": "echo 'Static site — no build step.'",
+  "installCommand": "echo 'Static site — no install step.'",
   "outputDirectory": ".",
   "cleanUrls": true,
   "trailingSlash": false,

@@ -65,7 +65,6 @@ extension View {
 struct MicrolearningApp: App {
     @StateObject private var viewModel  = FeedViewModel()
     @StateObject private var auth       = AuthViewModel()
-    @StateObject private var store      = StoreService()
     @State private var showLaunch       = true
     @AppStorage("onboarding.completed") private var onboardingCompleted: Bool = false
 
@@ -96,12 +95,10 @@ struct MicrolearningApp: App {
                 if onboardingCompleted {
                     MainTabView(viewModel: viewModel)
                         .environmentObject(auth)
-                        .environmentObject(store)
                         .preferredColorScheme(.light)
                         .transition(.opacity)
                 } else {
                     OnboardingView()
-                        .environmentObject(store)
                         .preferredColorScheme(.light)
                         .transition(.opacity)
                 }
@@ -114,7 +111,6 @@ struct MicrolearningApp: App {
             }
             .animation(.easeInOut(duration: 0.35), value: onboardingCompleted)
             .onAppear { scheduleLaunchDismiss() }
-            .task { await store.bootstrap() }
         }
     }
 
@@ -131,20 +127,14 @@ struct MicrolearningApp: App {
 /// NavigationStack can route to a tab without a binding threaded through the
 /// hierarchy (e.g. a signed-out save attempt sending the reader to Profile).
 enum AppTab {
-    // v3: Discover (0) · Learn (1) · Profile (2). v2 keys (Discover/Profile
-    // only) get migrated on first read so existing users don't land on a
-    // wrong tab after upgrade.
-    static let storageKey = "selectedTab.v3"
+    // v4: Discover (0) · Profile (1). Bumped from v3 (which had a Learn tab at
+    // index 1) so existing users don't land on the removed tab after upgrade.
+    static let storageKey = "selectedTab.v4"
     static let discover = 0
-    static let learn    = 1
-    static let profile  = 2
+    static let profile  = 1
 
     @MainActor static func routeToProfile() {
         UserDefaults.standard.set(profile, forKey: storageKey)
-    }
-
-    @MainActor static func routeToLearn() {
-        UserDefaults.standard.set(learn, forKey: storageKey)
     }
 }
 
@@ -166,12 +156,6 @@ struct MainTabView: View {
             }
             .tabItem { Label("Discover", systemImage: "safari") }
             .tag(AppTab.discover)
-
-            NavigationStack {
-                LearnView()
-            }
-            .tabItem { Label("Learn", systemImage: "books.vertical") }
-            .tag(AppTab.learn)
 
             NavigationStack {
                 ProfileView(viewModel: viewModel, mainTabSelection: $selectedTab)

@@ -150,7 +150,7 @@ struct Word2VecVectorView: View {
             .padding(.top, 4)
         }
         .onAppear { updateGate() }
-        .onChange(of: selected) { _ in updateGate() }
+        .onChange(of: selected) { _, _ in updateGate() }
     }
 
     private func updateGate() {
@@ -558,7 +558,7 @@ struct Word2VecNegSamplingView: View {
             animCost = stop.costFraction
             updateGate()
         }
-        .onChange(of: stop) { newStop in
+        .onChange(of: stop) { _, newStop in
             visited.insert(newStop.rawValue)
             withAnimation(.spring(response: 0.55, dampingFraction: 0.85)) {
                 animCost = newStop.costFraction
@@ -846,7 +846,7 @@ struct Word2VecArchView: View {
             .padding(.top, 4)
         }
         .onAppear { updateGate() }
-        .onChange(of: skipGram) { newVal in
+        .onChange(of: skipGram) { _, newVal in
             visitedBoth.insert(newVal)
             withAnimation(.easeInOut(duration: 0.5)) {
                 arrowAnim = 0

@@ -14,43 +14,22 @@ import SwiftUI
 struct PaperDetailView: View {
     let deck: CardDeck
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject var auth: AuthViewModel
-    @EnvironmentObject var store: StoreService
     @ObservedObject private var progressStore = ReadingProgressStore.shared
     @ObservedObject private var savedStore = SavedPapersStore.shared
     @State private var cardIndex: Int = 0
     @State private var revealedConcepts: Set<Int> = [0]  // first concept auto-revealed
-    @State private var showPaywall: Bool = false
-    @State private var paywallContext: String = "You've reached the free preview"
 
     // MARK: Card model
 
     private enum DeckCard: Equatable {
         case hook
         case concept(Int)
-        case locked
         case takeaway
-    }
-
-    /// True if the reader is on a non-canon paper and not subscribed.
-    /// Cards 1–3 (hook + first two concepts) stay free; the rest get
-    /// replaced by one editorial lock card that opens the paywall.
-    private var isPaywalled: Bool {
-        guard !store.isPlus else { return false }
-        if deck.paperId.hasPrefix("loop:foundational:") { return false }
-        return deck.concepts.count > 2
     }
 
     private var cards: [DeckCard] {
         var out: [DeckCard] = []
         if deck.hook != nil || deck.title != nil { out.append(.hook) }
-
-        if isPaywalled {
-            for i in 0..<min(2, deck.concepts.count) { out.append(.concept(i)) }
-            out.append(.locked)
-            return out
-        }
-
         for i in deck.concepts.indices { out.append(.concept(i)) }
         out.append(.takeaway)
         return out
@@ -96,16 +75,8 @@ struct PaperDetailView: View {
         )
         .toolbar(.hidden, for: .navigationBar)
         .onAppear { restoreProgress() }
-        .onChange(of: cardIndex) { _ in saveProgress() }
+        .onChange(of: cardIndex) { _, _ in saveProgress() }
         .onDisappear { saveProgress() }
-        .sheet(isPresented: $showPaywall) {
-            PaywallView(contextLine: paywallContext)
-                .environmentObject(store)
-        }
-        .onReceive(NotificationCenter.default.publisher(for: SavedPapersStore.saveCapHitNotification)) { _ in
-            paywallContext = "Your free library is full"
-            showPaywall = true
-        }
     }
 
     // MARK: Backgrounds
@@ -125,12 +96,6 @@ struct PaperDetailView: View {
             }
         case .concept:
             paperBg
-        case .locked:
-            ZStack {
-                paperBg
-                RadialGradient(colors: [tealAccent.opacity(0.10), .clear],
-                               center: .top, startRadius: 0, endRadius: 360)
-            }
         }
     }
 
@@ -186,7 +151,7 @@ struct PaperDetailView: View {
                     isRevealed: revealedConcepts.contains(i),
                     onReveal: {
                         withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
-                            revealedConcepts.insert(i)
+                            _ = revealedConcepts.insert(i)
                         }
                         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
                     }
@@ -194,15 +159,6 @@ struct PaperDetailView: View {
             }
         case .takeaway:
             DeckTakeawayCard(deck: deck, cardIndex: cardIndex, total: cards.count, onRestart: restart, onDone: { dismiss() })
-        case .locked:
-            LockedDeckCard(
-                totalConcepts: deck.concepts.count,
-                onUpgrade: {
-                    paywallContext = "You've reached the free preview"
-                    showPaywall = true
-                },
-                onClose:   { dismiss() }
-            )
         }
     }
 
@@ -210,7 +166,7 @@ struct PaperDetailView: View {
 
     @ViewBuilder
     private var bottomBar: some View {
-        if currentCard == .takeaway || currentCard == .locked {
+        if currentCard == .takeaway {
             Color.clear.frame(height: 8)
         } else {
             HStack(spacing: 10) {
@@ -264,7 +220,7 @@ struct PaperDetailView: View {
         case .concept(let i):
             if i + 1 < deck.concepts.count { return "Next concept" }
             return "Wrap up"
-        case .takeaway, .locked: return ""
+        case .takeaway: return ""
         }
     }
 
@@ -392,7 +348,6 @@ private struct HookCoverBackground: View {
     }
 
     private func drawGhostA(_ ctx: GraphicsContext) {
-        var ctx = ctx
         let stroke = GraphicsContext.Shading.color(glow.opacity(0.08))
         let style  = StrokeStyle(lineWidth: 1.4, lineCap: .round)
 
@@ -845,119 +800,6 @@ struct EndingSeal: View {
                     .foregroundStyle(tealAccent)
                     .padding(.top, 22)
                 Spacer()
-            }
-        }
-    }
-}
-
-// MARK: - LockedDeckCard
-//
-// Editorial lock card. Replaces concepts 4+ on non-canon papers for free
-// readers. Styled to match the rest of the deck (cream background, serif
-// title, hairline rules) so the upsell reads as part of the reading
-// experience rather than a hard paywall slammed into the flow.
-
-private struct LockedDeckCard: View {
-    let totalConcepts: Int
-    var onUpgrade: () -> Void
-    var onClose:   () -> Void
-
-    private var remaining: Int { max(0, totalConcepts - 2) }
-
-    var body: some View {
-        ScrollView(showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 22) {
-
-                Text("APRECIS PLUS")
-                    .font(.system(size: 10, weight: .bold))
-                    .tracking(2.4)
-                    .foregroundStyle(tealAccent)
-
-                Text("Keep reading the rest of this deck.")
-                    .font(.system(size: 30, weight: .regular, design: .serif))
-                    .foregroundStyle(inkColor)
-                    .fixedSize(horizontal: false, vertical: true)
-
-                if remaining > 0 {
-                    Text("\(remaining) more concept\(remaining == 1 ? "" : "s"), the visual, and the takeaway are part of Aprecis Plus. Every other paper in the feed unlocks too.")
-                        .font(.system(size: 15, design: .serif))
-                        .foregroundStyle(mutedText)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-
-                editorialRule
-
-                VStack(alignment: .leading, spacing: 14) {
-                    benefitLine(numeral: "01",
-                                title: "Every paper, every day",
-                                detail: "Unlimited feed across the corpus.")
-                    benefitLine(numeral: "02",
-                                title: "Walk the graph",
-                                detail: "Builds-on and Led-to, no caps.")
-                    benefitLine(numeral: "03",
-                                title: "Carry your library",
-                                detail: "Save anything, sync everywhere.")
-                }
-
-                editorialRule
-
-                Button(action: onUpgrade) {
-                    HStack(spacing: 8) {
-                        Text("See Aprecis Plus")
-                        Image(systemName: "arrow.right")
-                    }
-                    .font(.system(size: 14, weight: .bold))
-                    .foregroundStyle(paperBg)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 16)
-                    .background(
-                        RoundedRectangle(cornerRadius: 14)
-                            .fill(inkColor)
-                    )
-                }
-                .buttonStyle(.plain)
-
-                Button(action: onClose) {
-                    Text("Maybe later")
-                        .font(.system(size: 13, design: .serif))
-                        .italic()
-                        .foregroundStyle(mutedText)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 8)
-                }
-                .buttonStyle(.plain)
-
-                Text("7-day free trial · Cancel anytime · Family Sharing included")
-                    .font(.system(size: 11, design: .serif))
-                    .italic()
-                    .foregroundStyle(mutedText)
-                    .frame(maxWidth: .infinity)
-                    .multilineTextAlignment(.center)
-                    .padding(.top, 4)
-            }
-            .padding(.horizontal, 28)
-            .padding(.vertical, 24)
-        }
-    }
-
-    private var editorialRule: some View {
-        Rectangle().fill(borderColor).frame(height: 1)
-    }
-
-    private func benefitLine(numeral: String, title: String, detail: String) -> some View {
-        HStack(alignment: .firstTextBaseline, spacing: 14) {
-            Text(numeral)
-                .font(.system(size: 10, weight: .bold, design: .monospaced))
-                .tracking(1.2)
-                .foregroundStyle(tealAccent)
-                .frame(width: 22, alignment: .leading)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title)
-                    .font(.system(size: 15, weight: .semibold, design: .serif))
-                    .foregroundStyle(inkColor)
-                Text(detail)
-                    .font(.system(size: 13, design: .serif))
-                    .foregroundStyle(mutedText)
             }
         }
     }

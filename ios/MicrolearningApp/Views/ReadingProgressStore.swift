@@ -214,13 +214,29 @@ final class ReadingProgressStore: ObservableObject {
         return f.string(from: Date())
     }
 
-    /// Wipes all local reading progress and daily completions. Used by
-    /// the profile "Clear local data" action.
+    /// Wipes all local reading progress, daily completions, resume positions
+    /// and the lifetime-read report cache. Used by the profile "Clear local
+    /// data" action. Must clear every backing key, otherwise per-paper resume
+    /// positions survive and reading appears to come back.
     func reset() {
+        // Per-paper resume keys are written individually, so remove each one.
+        let perPaperPrefix = "readingProgress.lastCard.v1."
+        for key in UserDefaults.standard.dictionaryRepresentation().keys
+        where key.hasPrefix(perPaperPrefix) {
+            UserDefaults.standard.removeObject(forKey: key)
+        }
+        if let userId = syncUserId {
+            UserDefaults.standard.removeObject(forKey: reportedKey(userId))
+        }
+
         progressByPaperId = [:]
         dailyCompletions = [:]
+        lastCardIndexByPaperId = [:]
+        reportedReads = []
+
         UserDefaults.standard.removeObject(forKey: userDefaultsKey)
         UserDefaults.standard.removeObject(forKey: dailyCompletionsKey)
+        UserDefaults.standard.removeObject(forKey: lastCardIndexKey)
     }
 
     /// Persists the current progress dictionary to UserDefaults.
@@ -267,19 +283,6 @@ final class SavedPapersStore: ObservableObject {
         savedIds.contains(paperId)
     }
 
-    /// Free tier may save up to this many papers. Plus removes the cap.
-    /// Mirrored from `StoreService.isPlusDefaultsKey` via UserDefaults so
-    /// this store stays free of a StoreKit dependency.
-    static let freeSaveCap = 10
-
-    /// Posted when a save attempt is blocked because the free cap has been
-    /// reached. Observers should present the paywall.
-    static let saveCapHitNotification = Notification.Name("aprecis.save.capHit")
-
-    private var isPlusEntitled: Bool {
-        UserDefaults.standard.bool(forKey: "aprecis.plus.active")
-    }
-
     func toggle(_ paperId: String) {
         if savedIds.contains(paperId) {
             savedIds.remove(paperId)
@@ -289,27 +292,11 @@ final class SavedPapersStore: ObservableObject {
         persist()
     }
 
-    /// Saving to the library requires an account. When signed out (`userId`
-    /// is nil), this skips the toggle and routes the reader to the Profile
-    /// tab to sign in.
-    ///
-    /// Also enforces the free-tier save cap. Adding a paper that would
-    /// push the library past `freeSaveCap` posts `saveCapHitNotification`
-    /// instead of saving, so observers can present the paywall. Removing
-    /// (unsaving) always works and never trips the cap.
-    ///
-    /// Returns true only if the save actually toggled.
+    /// Toggles the bookmark. Saves persist locally under the guest scope;
+    /// there is no account or save cap. Returns true once the set changed
+    /// (always true here, kept for call-site compatibility).
     @discardableResult
     func toggleOrPromptSignIn(_ paperId: String) -> Bool {
-        guard userId != nil else {
-            AppTab.routeToProfile()
-            return false
-        }
-        let willAdd = !savedIds.contains(paperId)
-        if willAdd, !isPlusEntitled, savedIds.count >= Self.freeSaveCap {
-            NotificationCenter.default.post(name: Self.saveCapHitNotification, object: nil)
-            return false
-        }
         toggle(paperId)
         return true
     }
