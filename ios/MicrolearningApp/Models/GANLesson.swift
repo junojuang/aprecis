@@ -91,26 +91,6 @@ extension LearningLesson {
                 SpotFakeStudio(cardId: "gans-spot", progress: progress)
             },
 
-            // Trimmed glossary.
-            .glossary(
-                id: "gans-glossary",
-                intro: "Four words researchers use a lot. The first two are the players.",
-                terms: [
-                    LessonGlossaryTerm(
-                        term: "Generator",
-                        definition: "The forger. Takes random noise and turns it into a fake image."),
-                    LessonGlossaryTerm(
-                        term: "Discriminator",
-                        definition: "The detective. Looks at an image and decides whether it\u{2019}s real or fake."),
-                    LessonGlossaryTerm(
-                        term: "Latent noise",
-                        definition: "The random numbers fed into the forger. Different noise in, different fake out."),
-                    LessonGlossaryTerm(
-                        term: "Equilibrium",
-                        definition: "The end of the game. The fakes are so good the detective can only flip a coin."),
-                ]
-            ),
-
             // How the game moves.
             .prose(
                 id: "gans-game",
@@ -121,7 +101,9 @@ extension LearningLesson {
                     [.plain("But every caught fake tells the forger exactly what gave it away, so the next batch is "),
                      .highlight("just a tiny bit better"),
                      .plain(". A sharper forger forces the detective to look harder.")],
-                    [.plain("Round after round the bar rises, until the fakes are good enough that the detective is just guessing.")],
+                    [.plain("Round after round the bar rises, until the fakes are good enough that the detective is just guessing. Researchers call that balance point "),
+                     .term("equilibrium"),
+                     .plain(", and it is where the game ends.")],
                 ]
             ),
 
@@ -129,6 +111,25 @@ extension LearningLesson {
             .interactive(id: "gans-converge") { progress in
                 ConvergeStudio(cardId: "gans-converge", progress: progress)
             },
+
+            // Where the fakes start: introduce latent noise before its studio.
+            .illustrated(
+                id: "gans-latent-why",
+                kicker: "Where a fake begins",
+                title: "Pure noise, sculpted into a face",
+                paragraphs: [
+                    [.plain("The forger doesn\u{2019}t copy a real photo. It begins with a handful of "),
+                     .highlight("random numbers"),
+                     .plain(", called "),
+                     .term("latent noise"),
+                     .plain(", and sculpts them into a face.")],
+                    [.plain("Change the numbers and you get a different face. That is the whole reason a trained forger can make endless new people: "),
+                     .bold("different noise in, different face out"),
+                     .plain(".")],
+                ],
+                caption: "A few random numbers in, a brand new face out.",
+                illustration: GANGlyph()
+            ),
 
             // Drive the forger.
             .interactive(id: "gans-latent") { progress in
@@ -152,6 +153,26 @@ extension LearningLesson {
                      .plain(" on social apps, in "),
                      .bold("AI portraits"),
                      .plain(". And the trick of \u{201C}train against a critic\u{201D} still shapes how today\u{2019}s biggest models are tuned.")],
+                ]
+            ),
+
+            // Consolidating glossary: every term has now appeared in the flow.
+            .glossary(
+                id: "gans-glossary",
+                intro: "The four words researchers use, all in one place.",
+                terms: [
+                    LessonGlossaryTerm(
+                        term: "Generator",
+                        definition: "The forger. Takes random noise and turns it into a fake image."),
+                    LessonGlossaryTerm(
+                        term: "Discriminator",
+                        definition: "The detective. Looks at an image and decides whether it\u{2019}s real or fake."),
+                    LessonGlossaryTerm(
+                        term: "Latent noise",
+                        definition: "The random numbers fed into the forger. Different noise in, different fake out."),
+                    LessonGlossaryTerm(
+                        term: "Equilibrium",
+                        definition: "The end of the game. The fakes are so good the detective can only flip a coin."),
                 ]
             ),
 

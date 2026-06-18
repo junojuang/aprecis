@@ -97,7 +97,7 @@ extension LearningLesson {
             // Trimmed glossary.
             .glossary(
                 id: "seq2seq-glossary",
-                intro: "Four words to know.",
+                intro: "Three words for the split you just saw. Worth knowing, easy to remember.",
                 terms: [
                     LessonGlossaryTerm(
                         term: "Encoder",
@@ -108,9 +108,6 @@ extension LearningLesson {
                     LessonGlossaryTerm(
                         term: "Context vector",
                         definition: "The summary itself. The list of numbers that holds everything the reader took in. Also called the \u{201C}thought vector.\u{201D}"),
-                    LessonGlossaryTerm(
-                        term: "Stop token",
-                        definition: "A special end-of-sentence signal the writer emits to say \u{201C}I\u{2019}m done.\u{201D}"),
                 ]
             ),
 
@@ -123,7 +120,9 @@ extension LearningLesson {
                     [.plain("The writer doesn\u{2019}t produce the whole sentence at once. It writes "),
                      .term("one word"),
                      .plain(", then reads its own word back to help pick the next.")],
-                    [.plain("That\u{2019}s what makes the output length free. The writer keeps going as long as the sentence needs, then stops itself.")],
+                    [.plain("That\u{2019}s what makes the output length free. The writer keeps going as long as the sentence needs, then emits a special end-of-sentence signal, a "),
+                     .term("stop token"),
+                     .plain(", to say it\u{2019}s done.")],
                 ]
             ),
 

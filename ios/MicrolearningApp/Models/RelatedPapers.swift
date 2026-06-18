@@ -49,6 +49,14 @@ enum RelatedPapers {
         curatedLoopToBackend[id] ?? id
     }
 
+    /// Canonical backend `paper_id` for a curated `loop:` id, or `nil` if `id`
+    /// is not one of the 11 canon papers. `BraceIdentity` uses this so a loop
+    /// deck and its backend deck (e.g. `loop:foundational:attention` and
+    /// `arxiv:1706.03762`) collapse to a single brace instead of showing twice.
+    static func canonicalBackendId(forLoopId id: String) -> String? {
+        curatedLoopToBackend[id]
+    }
+
     // MARK: - Canonical identity (one source of truth)
     //
     // A paper can arrive under several ids: a backend `paper_id` or a curated

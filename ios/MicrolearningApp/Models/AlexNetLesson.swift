@@ -92,7 +92,9 @@ extension LearningLesson {
                 title: "Why deep networks kept stalling",
                 paragraphs: [
                     [.plain("Two things were blocking deep networks.")],
-                    [.plain("First, the old way of \u{201C}firing\u{201D} neurons used a slow, S-shaped curve. When the curve flattens out, "),
+                    [.plain("First, the old way of \u{201C}firing\u{201D} neurons used a slow, S-shaped curve called the "),
+                     .term("sigmoid"),
+                     .plain(". When the curve flattens out, "),
                      .highlight("learning grinds to a halt"),
                      .plain(" in the lower layers.")],
                     [.plain("Second, a huge network with millions of knobs will just "),
@@ -101,30 +103,26 @@ extension LearningLesson {
                 ]
             ),
 
+            // The fix for the slow firing curve, before its interactive.
+            .prose(
+                id: "alexnet-relu-fix",
+                kicker: "The fix for slow firing",
+                title: "Fire the simplest way possible",
+                paragraphs: [
+                    [.plain("AlexNet threw out the slow S-shaped curve and fired neurons the bluntest way imaginable, a rule called "),
+                     .term("ReLU"),
+                     .plain(".")],
+                    [.plain("The rule is one line: if the signal is positive, "),
+                     .highlight("pass it straight through"),
+                     .plain("; if it\u{2019}s negative, output zero. No flattening, no slowdown.")],
+                    [.plain("That tiny change let learning flow all the way down to the bottom layers, and a deep network finally trained fast. See it next to the old curve.")],
+                ]
+            ),
+
             // Interactive 1: ReLU.
             .interactive(id: "alexnet-relu") { progress in
                 ReLUStudio(cardId: "alexnet-relu", progress: progress)
             },
-
-            // Trimmed glossary.
-            .glossary(
-                id: "alexnet-glossary",
-                intro: "Four words AlexNet made famous.",
-                terms: [
-                    LessonGlossaryTerm(
-                        term: "ReLU",
-                        definition: "A super-simple way to fire a neuron: if the signal is positive, pass it on; if negative, output zero. Replaced the old slow curve and made deep learning fast."),
-                    LessonGlossaryTerm(
-                        term: "Overfitting",
-                        definition: "What a network does when it memorises the training photos instead of learning the real pattern. Aces practice, fails real exams."),
-                    LessonGlossaryTerm(
-                        term: "Dropout",
-                        definition: "A funny trick: randomly switch off half the neurons during each training step. Forces the network to build a sturdier answer."),
-                    LessonGlossaryTerm(
-                        term: "GPU",
-                        definition: "The graphics chip in a gaming computer. AlexNet used two of them to train the network in a week, when CPUs would have taken months."),
-                ]
-            ),
 
             // The memorising problem, fix.
             .prose(
@@ -189,6 +187,26 @@ extension LearningLesson {
                     [.plain("The habit it taught the field, "),
                      .highlight("more data, bigger model, more compute"),
                      .plain(", still drives every AI breakthrough today.")],
+                ]
+            ),
+
+            // Consolidating glossary: every term has now appeared in the flow.
+            .glossary(
+                id: "alexnet-glossary",
+                intro: "The four words AlexNet made famous, all in one place.",
+                terms: [
+                    LessonGlossaryTerm(
+                        term: "ReLU",
+                        definition: "A super-simple way to fire a neuron: if the signal is positive, pass it on; if negative, output zero. Replaced the old slow curve and made deep learning fast."),
+                    LessonGlossaryTerm(
+                        term: "Overfitting",
+                        definition: "What a network does when it memorises the training photos instead of learning the real pattern. Aces practice, fails real exams."),
+                    LessonGlossaryTerm(
+                        term: "Dropout",
+                        definition: "A funny trick: randomly switch off half the neurons during each training step. Forces the network to build a sturdier answer."),
+                    LessonGlossaryTerm(
+                        term: "GPU",
+                        definition: "The graphics chip in a gaming computer. AlexNet used two of them to train the network in a week, when CPUs would have taken months."),
                 ]
             ),
 

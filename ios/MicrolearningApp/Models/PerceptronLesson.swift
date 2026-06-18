@@ -46,17 +46,17 @@ extension LearningLesson {
                 title: "One tiny decision maker",
                 paragraphs: [
                     [.plain("A perceptron is a maths gadget with three jobs:")],
-                    [.plain("It takes in a "),
-                     .term("few clues"),
-                     .plain(" (numbers). It decides "),
-                     .term("how much each clue counts"),
-                     .plain(". It adds them up. If the total is high enough, it says "),
+                    [.plain("It takes in a few clues, numbers. It decides how much each clue counts, and that amount is the clue\u{2019}s "),
+                     .term("weight"),
+                     .plain(". It adds the weighted clues up. If the total clears a line, called the "),
+                     .term("threshold"),
+                     .plain(", it says "),
                      .bold("yes"),
-                     .plain(". Otherwise it says "),
-                     .bold("no"),
-                     .plain(".")],
+                     .plain(" (neurons call that "),
+                     .term("firing"),
+                     .plain("). Otherwise it stays quiet.")],
                     [.plain("That\u{2019}s it. "),
-                     .highlight("Three clues in, one yes-or-no out."),
+                     .highlight("A few clues in, one yes-or-no out."),
                      .plain(" The whole machine.")],
                 ],
                 caption: "A few signals in, one decision out.",
@@ -71,7 +71,7 @@ extension LearningLesson {
             // 5 — Trimmed glossary.
             .glossary(
                 id: "perceptron-glossary",
-                intro: "Four words you just used. Worth knowing, easy to remember.",
+                intro: "The four words researchers use for the parts you just met. Worth knowing, easy to remember.",
                 terms: [
                     LessonGlossaryTerm(
                         term: "Input",

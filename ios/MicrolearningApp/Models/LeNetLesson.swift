@@ -76,7 +76,7 @@ extension LearningLesson {
             // 6 — Trimmed glossary.
             .glossary(
                 id: "lenet-glossary",
-                intro: "Four words researchers use a lot. The first three are what you just did.",
+                intro: "Three words for the parts you just used. Worth knowing, easy to remember.",
                 terms: [
                     LessonGlossaryTerm(
                         term: "Filter",
@@ -87,9 +87,6 @@ extension LearningLesson {
                     LessonGlossaryTerm(
                         term: "Feature map",
                         definition: "The map of where the filter lit up. One per filter. Tells you where in the image that shape lives."),
-                    LessonGlossaryTerm(
-                        term: "Pooling",
-                        definition: "Shrinking the feature map by keeping only the brightest values in each little block. Makes the network less picky about exact positions."),
                 ]
             ),
 
@@ -108,6 +105,22 @@ extension LearningLesson {
                 ],
                 caption: "One learned filter, fanned out everywhere.",
                 illustration: WeightShareArt()
+            ),
+
+            // 7b — Introduce pooling before its interactive, at point of need.
+            .prose(
+                id: "lenet-pool-why",
+                kicker: "One more trick",
+                title: "Stop sweating the exact spot",
+                paragraphs: [
+                    [.plain("Your detector might report a vertical edge at pixel 14. But you don\u{2019}t really care if it\u{2019}s at 14 or 15. A hair left or right, it\u{2019}s the "),
+                     .highlight("same stroke"),
+                     .plain(".")],
+                    [.plain("So after each slide, the network does a quick shrink called "),
+                     .term("pooling"),
+                     .plain(": it sweeps the feature map in little blocks and keeps only the strongest hit in each. The map gets smaller, and the network stops fussing over the exact pixel.")],
+                    [.plain("That tolerance is what finally makes a seven a seven, wherever on the page you wrote it.")],
+                ]
             ),
 
             // 8 — Pooling demo.

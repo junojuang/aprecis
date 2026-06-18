@@ -1007,6 +1007,14 @@ enum BraceIdentity {
     /// Nature `/articles/{id}` URLs, DOI links, known seed/loop/bundle `paper_id`
     /// aliases, and a small set of normalized landmark titles merge overlapping rows.
     static func canonicalKey(paperId: String, url: String?, title: String?) -> String {
+        // A curated loop deck (`loop:foundational:*`) distills the same work as
+        // its backend `paper_id` (arXiv/DOI/etc.). The loop deck carries no
+        // canonical URL, so without this it keyed on `id:loop:…` and never
+        // merged with the API deck — searching a canon paper showed it twice.
+        // Resolve to the backend id first so both collapse to one brace.
+        if let backendId = RelatedPapers.canonicalBackendId(forLoopId: paperId) {
+            return canonicalKey(paperId: backendId, url: url, title: title)
+        }
         if let id = normalizedArxivId(inPaperId: paperId) {
             return "arxiv:\(id)"
         }

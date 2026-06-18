@@ -79,26 +79,6 @@ extension LearningLesson {
                 FewShotPromptPlayground(cardId: "gpt3-fewshot", progress: progress)
             },
 
-            // Trimmed glossary.
-            .glossary(
-                id: "gpt3-glossary",
-                intro: "Four words GPT-3 brought into everyday use.",
-                terms: [
-                    LessonGlossaryTerm(
-                        term: "Prompt",
-                        definition: "Everything you type at the model: instructions, examples, your question. All as plain text."),
-                    LessonGlossaryTerm(
-                        term: "Token",
-                        definition: "One chunk of text the model reads or writes. Usually a word or part of a word."),
-                    LessonGlossaryTerm(
-                        term: "Few-shot",
-                        definition: "Showing the model two or three worked examples in the prompt so it picks up the task. No training needed."),
-                    LessonGlossaryTerm(
-                        term: "Parameter",
-                        definition: "One of the model\u{2019}s tunable knobs, set during training. GPT-3 has 175 billion of them."),
-                ]
-            ),
-
             // How it trains, plain.
             .illustrated(
                 id: "gpt3-nexttoken",
@@ -107,7 +87,9 @@ extension LearningLesson {
                 paragraphs: [
                     [.plain("GPT-3 was trained on one boring game, played billions of times: "),
                      .term("guess the next word"),
-                     .plain(". Cover the end of a sentence. Predict what comes next. Check. Adjust.")],
+                     .plain(". Cover the end of a sentence, predict what comes next, check, adjust. (Strictly the model works in "),
+                     .term("tokens"),
+                     .plain(", chunks that are usually a word or a piece of one.)")],
                     [.plain("Do that across most of the public internet and something wild happens. To guess the next word well, the model has to "),
                      .highlight("pick up grammar, facts, styles, even reasoning"),
                      .plain(". Prediction forces understanding.")],
@@ -195,6 +177,26 @@ extension LearningLesson {
                     [.plain("And the habit it taught the field, "),
                      .highlight("just make the model bigger"),
                      .plain(", still drives every breakthrough today.")],
+                ]
+            ),
+
+            // Consolidating glossary: every term has now appeared in the flow.
+            .glossary(
+                id: "gpt3-glossary",
+                intro: "The four words GPT-3 brought into everyday use, all in one place.",
+                terms: [
+                    LessonGlossaryTerm(
+                        term: "Prompt",
+                        definition: "Everything you type at the model: instructions, examples, your question. All as plain text."),
+                    LessonGlossaryTerm(
+                        term: "Token",
+                        definition: "One chunk of text the model reads or writes. Usually a word or part of a word."),
+                    LessonGlossaryTerm(
+                        term: "Few-shot",
+                        definition: "Showing the model two or three worked examples in the prompt so it picks up the task. No training needed."),
+                    LessonGlossaryTerm(
+                        term: "Parameter",
+                        definition: "One of the model\u{2019}s tunable knobs, set during training. GPT-3 has 175 billion of them."),
                 ]
             ),
 

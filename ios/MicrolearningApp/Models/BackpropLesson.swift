@@ -79,7 +79,7 @@ extension LearningLesson {
             // 6 — Trimmed glossary.
             .glossary(
                 id: "backprop-glossary",
-                intro: "Four words. The first three describe what you just saw.",
+                intro: "Three words for what you just saw. Worth knowing, easy to remember.",
                 terms: [
                     LessonGlossaryTerm(
                         term: "Forward pass",
@@ -90,9 +90,6 @@ extension LearningLesson {
                     LessonGlossaryTerm(
                         term: "Backpropagation",
                         definition: "The blame trace. Carrying the mistake backward through the network so every neuron, even the middle ones, gets told what to fix."),
-                    LessonGlossaryTerm(
-                        term: "Learning rate",
-                        definition: "How big a fix each neuron makes after being blamed. Too small and it crawls. Too big and it overshoots."),
                 ]
             ),
 
@@ -107,7 +104,9 @@ extension LearningLesson {
                      .plain(" of the mistake.")],
                     [.plain("Researchers picture this as a ball rolling downhill. The mistake is a valley. Each cook puts a foot down on its side and "),
                      .term("rolls a tiny step downhill"),
-                     .plain(".")],
+                     .plain(". How big that step is, is called the "),
+                     .term("learning rate"),
+                     .plain(": too small and it crawls, too big and it overshoots the bottom.")],
                     [.plain("They can\u{2019}t see the whole landscape. They just feel the slope under them and step. Do this enough times and everyone settles at the bottom of the valley together.")],
                 ]
             ),

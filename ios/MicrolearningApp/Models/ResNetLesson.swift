@@ -70,26 +70,6 @@ extension LearningLesson {
                 illustration: DegradationPlotArt()
             ),
 
-            // Trimmed glossary.
-            .glossary(
-                id: "resnet-glossary",
-                intro: "Four words to know before the diagrams.",
-                terms: [
-                    LessonGlossaryTerm(
-                        term: "Depth",
-                        definition: "How many layers a network has. More layers = more stages of understanding."),
-                    LessonGlossaryTerm(
-                        term: "Skip connection",
-                        definition: "A little wire that lets the input jump straight across a layer instead of going through it. The whole trick of this paper."),
-                    LessonGlossaryTerm(
-                        term: "Identity",
-                        definition: "Doing nothing. The skip wire just hands the input through, unchanged. Sounds boring, turns out to be magic."),
-                    LessonGlossaryTerm(
-                        term: "Residual",
-                        definition: "The leftover. Instead of redoing everything from scratch, each layer only learns the small change to add."),
-                ]
-            ),
-
             // Turn the depth dial yourself.
             .prose(
                 id: "resnet-degrade-intro",
@@ -137,11 +117,15 @@ extension LearningLesson {
                 paragraphs: [
                     [.plain("ResNet\u{2019}s move: around every small group of layers, add a "),
                      .term("shortcut wire"),
-                     .plain(" that carries the input straight across.")],
+                     .plain(", a "),
+                     .term("skip connection"),
+                     .plain(", that carries the input straight across, unchanged.")],
                     [.plain("Now the fix-it message has a "),
                      .highlight("clear road"),
-                     .plain(" all the way down. It runs the shortcut wires without fading.")],
-                    [.plain("And there\u{2019}s a bonus. The layers don\u{2019}t have to redo their input from scratch. They only have to learn a tiny correction to add on top. Way easier.")],
+                     .plain(" all the way down. It runs the skip connections without fading.")],
+                    [.plain("And there\u{2019}s a bonus. The layers don\u{2019}t have to redo their input from scratch. They only learn the small leftover change to add on top, called the "),
+                     .term("residual"),
+                     .plain(". That is where the name ResNet comes from, and it is far easier to learn.")],
                 ],
                 caption: "Input takes the shortcut. The layers add only a small correction.",
                 illustration: ResidualBlockArt()
@@ -187,6 +171,26 @@ extension LearningLesson {
                      .plain(", in "),
                      .bold("medical scanners"),
                      .plain(". After this paper, depth was just a dial you turned up.")],
+                ]
+            ),
+
+            // Consolidating glossary: every term has now appeared in the flow.
+            .glossary(
+                id: "resnet-glossary",
+                intro: "The four words, all in one place.",
+                terms: [
+                    LessonGlossaryTerm(
+                        term: "Depth",
+                        definition: "How many layers a network has. More layers = more stages of understanding."),
+                    LessonGlossaryTerm(
+                        term: "Skip connection",
+                        definition: "A little wire that lets the input jump straight across a layer instead of going through it. The whole trick of this paper."),
+                    LessonGlossaryTerm(
+                        term: "Identity",
+                        definition: "Doing nothing. The skip wire just hands the input through, unchanged. Sounds boring, turns out to be magic."),
+                    LessonGlossaryTerm(
+                        term: "Residual",
+                        definition: "The leftover. Instead of redoing everything from scratch, each layer only learns the small change to add."),
                 ]
             ),
 

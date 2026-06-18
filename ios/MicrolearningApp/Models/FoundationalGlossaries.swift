@@ -27,6 +27,7 @@ enum FoundationalGlossaries {
         case "resnet":     return resnet
         case "attention":  return transformer
         case "gpt3":       return gpt3
+        case "bert":       return bert
         default:           return []
         }
     }
@@ -246,6 +247,8 @@ enum FoundationalGlossaries {
               definition: "The running memory a recurrent network carries from one step to the next."),
         .init(term: "Context vector",
               definition: "The single fixed length vector the encoder packs the whole input into and hands to the decoder."),
+        .init(term: "Stop token",
+              definition: "A special end of sentence signal the decoder emits to say it is done, which is what lets the output be any length."),
         .init(term: "Vanishing gradient",
               definition: "When the learning signal shrinks toward zero as it travels back across many steps, so early steps barely learn."),
         .init(term: "Gating",
@@ -323,6 +326,14 @@ enum FoundationalGlossaries {
               definition: "Mechanism where every token in a sequence attends to every other token, weighted by learned compatibility."),
         .init(term: "Query, key, value",
               definition: "Three learned projections of each token. Attention weights come from query and key. The output is a weighted sum of values."),
+        .init(term: "Query",
+              definition: "What a word is looking for. The question it asks the rest of the sentence."),
+        .init(term: "Key",
+              definition: "What a word advertises about itself. The label other words match their questions against."),
+        .init(term: "Value",
+              definition: "What a word actually shares when another word reaches out to it. Its real contribution."),
+        .init(term: "Attention weight",
+              definition: "How much one word listens to another. A set of numbers for each word that always adds up to one."),
         .init(term: "Multi head attention",
               definition: "Several attention computations run in parallel with different projections, then concatenated."),
         .init(term: "Positional encoding",
@@ -380,5 +391,22 @@ enum FoundationalGlossaries {
               definition: "The text fed into the model. With GPT 3, the prompt alone can specify an entire task."),
         .init(term: "Self supervised learning",
               definition: "Learning from raw data with no human labels by predicting hidden parts of it, such as the next word."),
+    ]
+
+    static let bert: [GlossaryTerm] = [
+        .init(term: "Token",
+              definition: "One little piece of a sentence. Usually a whole word, sometimes half of a long word. BERT reads a sentence one token at a time."),
+        .init(term: "Mask",
+              definition: "A blank where a word used to be. During training BERT covers up some tokens and has to guess them back."),
+        .init(term: "Pretraining",
+              definition: "The long, slow part: BERT plays fill in the blank billions of times until it understands language in general, before it is given any specific job."),
+        .init(term: "Fine-tuning",
+              definition: "The short, easy part: once BERT understands language, you keep that brain and teach it one specific job in a few hours."),
+        .init(term: "Bidirectional",
+              definition: "Reading both sides at once. BERT uses the words before and after a blank together, instead of only what came before."),
+        .init(term: "Attention",
+              definition: "How one word reads the others. Each word looks at every other word in the sentence and pulls in whatever helps pin down its meaning here."),
+        .init(term: "Encoder",
+              definition: "The part of the model that reads a whole sentence and turns it into a rich, context aware understanding of each word. BERT is all encoder."),
     ]
 }

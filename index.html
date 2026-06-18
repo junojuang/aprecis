@@ -285,7 +285,7 @@
     }
     .lede em { color: var(--teal); font-style: italic; }
 
-    .btn_row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
+    .btn_row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
     .btn {
       display: inline-flex; align-items: center; gap: 8px;
       padding: 14px 22px;
@@ -313,6 +313,16 @@
     .btn_ghost:hover { background: white; }
     .btn .arrow { transition: transform .15s ease; }
     .btn:hover .arrow { transform: translateX(3px); }
+
+    /* App Store download badge */
+    .store_badge {
+      display: inline-flex;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .store_badge img { height: 54px; width: auto; display: block; border-radius: 9px; }
+    .store_badge:hover { transform: translateY(-1px); }
+    .store_badge:hover img { box-shadow: 0 10px 26px rgba(15,17,23,0.22); }
+    @media (max-width: 480px) { .store_badge img { height: 48px; } }
 
     .sub_stats {
       display: flex; gap: 22px;
@@ -987,7 +997,7 @@
     <nav class="nav_links">
       <a href="#how" class="link_hide">How it works</a>
       <a href="#why" class="link_hide">Why</a>
-      <a href="https://testflight.apple.com/join/a5BUTYft" target="_blank" rel="noopener noreferrer" class="nav_cta">Get early access <span aria-hidden="true">→</span></a>
+      <a href="https://apps.apple.com/us/app/aprecis/id6766909567" target="_blank" rel="noopener noreferrer" class="nav_cta">Download free <span aria-hidden="true">→</span></a>
     </nav>
   </div>
 </header>
@@ -1004,7 +1014,9 @@
         Aprecis turns every AI paper into <em>interactive</em> lessons a curious beginner can understand, then shows how each idea <em>connects</em> to the next.
       </p>
       <div class="btn_row">
-        <a href="https://testflight.apple.com/join/a5BUTYft" target="_blank" rel="noopener noreferrer" class="btn btn_primary">Get early access <span class="arrow">→</span></a>
+        <a href="https://apps.apple.com/us/app/aprecis/id6766909567" target="_blank" rel="noopener noreferrer" class="store_badge" aria-label="Download Aprecis on the App Store">
+          <img src="./assets/app_store_badge.svg" alt="Download on the App Store" />
+        </a>
         <a href="#how" class="btn btn_ghost">See how it works</a>
       </div>
     </div>
@@ -1466,7 +1478,9 @@
   <div class="wrap">
     <div class="closing_card">
       <h2>Join the people learning from the <em>frontier</em></h2>
-      <a href="https://testflight.apple.com/join/a5BUTYft" target="_blank" rel="noopener noreferrer" class="btn btn_primary">Get early access <span class="arrow">→</span></a>
+      <a href="https://apps.apple.com/us/app/aprecis/id6766909567" target="_blank" rel="noopener noreferrer" class="store_badge" style="margin: 0 auto;" aria-label="Download Aprecis on the App Store">
+        <img src="./assets/app_store_badge.svg" alt="Download on the App Store" />
+      </a>
     </div>
   </div>
 </section>
