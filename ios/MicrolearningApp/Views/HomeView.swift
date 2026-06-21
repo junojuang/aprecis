@@ -1,4 +1,5 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 // MARK: - HomeView
 
@@ -117,23 +118,6 @@ private struct SpineCentersKey: PreferenceKey {
     }
 }
 
-private struct ShelfSpineFramesKey: PreferenceKey {
-    static var defaultValue: [String: CGRect] = [:]
-    static func reduce(value: inout [String: CGRect], nextValue: () -> [String: CGRect]) {
-        value.merge(nextValue(), uniquingKeysWith: { $1 })
-    }
-}
-
-private struct ShelfTrashFrameKey: PreferenceKey {
-    static var defaultValue: CGRect = .zero
-    static func reduce(value: inout CGRect, nextValue: () -> CGRect) {
-        let n = nextValue()
-        if n.width > 0.5 && n.height > 0.5 {
-            value = n
-        }
-    }
-}
-
 /// Bubbles up when the pinned unsave strip is idle (no spine being dragged) so Profile can treat
 /// taps in surrounding editorial chrome as dismiss targets.
 struct ShelfTrashTapAwayArmedKey: PreferenceKey {
@@ -157,14 +141,10 @@ struct BookshelfView: View {
 
     @State private var pendingNavId: String?
     @State private var focusedId: String?
-    @State private var spineFramesInShelfRoot: [String: CGRect] = [:]
-    @State private var trashFrameInShelfRoot: CGRect = .zero
-    @State private var liftedPaperId: String?
-    @State private var liftDragTranslation: CGSize = .zero
-    @State private var liftStartRect: CGRect = .zero
+    /// Highlights the trash can while a dragged book hovers over it (bound to `.onDrop(isTargeted:)`).
     @State private var pointerOverTrash: Bool = false
-    /// Trash strip pinned after completing a spine drag — stays up for multi-unsaves until dismissed.
-    /// Also set by long‑press gutter/title to reveal without lifting.
+    /// Trash dock pinned while a book is being dragged and after a drag — it stays up for
+    /// multi-unsaves until dismissed. Also set by long‑press on the gutter/title to reveal it.
     @State private var removeDockRevealed: Bool = false
     /// Last `trayDismissNonce` applied from the parent (Profile tap-away).
     @State private var lastConsumedTrayDismissNonce: Int = 0
@@ -173,8 +153,7 @@ struct BookshelfView: View {
     private let trashDockHeight: CGFloat = 86
     private let shelfRevealGutterWidth: CGFloat = 22
 
-    private var liftActive: Bool { liftedPaperId != nil }
-    private var showTrashDock: Bool { liftActive || removeDockRevealed }
+    private var showTrashDock: Bool { removeDockRevealed }
 
     var body: some View {
         VStack(spacing: 10) {
@@ -184,30 +163,19 @@ struct BookshelfView: View {
         .padding(.bottom, 4)
         .onAppear {
             if focusedId == nil { focusedId = decks.first?.id }
-            // Self-heal: a lift gesture interrupted by navigation can leave
-            // `liftedPaperId` set, which keeps the shelf `scrollDisabled` and
-            // the full-frame lift catcher live. Clear any stale lift whenever
-            // the shelf re-appears so horizontal scroll always recovers.
-            if liftedPaperId != nil { resetLiftState() }
         }
         .onChange(of: decks.map(\.paperId).sorted()) { _, _ in
-            if let lid = liftedPaperId,
-               decks.first(where: { $0.paperId == lid }) == nil {
-                resetLiftState()
-            }
             if let fid = focusedId, decks.first(where: { $0.id == fid }) == nil {
                 focusedId = decks.first?.id
             }
         }
-        .onPreferenceChange(ShelfSpineFramesKey.self) { spineFramesInShelfRoot = $0 }
-        .onPreferenceChange(ShelfTrashFrameKey.self) { trashFrameInShelfRoot = $0 }
         .onAppear { lastConsumedTrayDismissNonce = trayDismissNonce }
         .onChange(of: trayDismissNonce) { _, new in
             guard new != lastConsumedTrayDismissNonce else { return }
             lastConsumedTrayDismissNonce = new
             removeDockRevealed = false
         }
-        .preference(key: ShelfTrashTapAwayArmedKey.self, value: showTrashDock && !liftActive)
+        .preference(key: ShelfTrashTapAwayArmedKey.self, value: showTrashDock)
         .navigationDestination(item: $pendingNavId) { id in
             if let deck = decks.first(where: { $0.id == id }) {
                 DeckDestination(deck: deck)
@@ -215,16 +183,8 @@ struct BookshelfView: View {
         }
     }
 
-    private func resetLiftState() {
-        liftedPaperId = nil
-        liftDragTranslation = .zero
-        liftStartRect = .zero
-        pointerOverTrash = false
-        // Leave `removeDockRevealed` — trash strip stays for multiple unsaves until tap-away clears it.
-    }
-
     private func revealTrashDockOutsideBooks() {
-        guard !liftActive else { return }
+        guard !removeDockRevealed else { return }
         removeDockRevealed = true
         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
     }
@@ -238,7 +198,45 @@ struct BookshelfView: View {
             .onLongPressGesture(minimumDuration: 0.48) {
                 revealTrashDockOutsideBooks()
             }
-            .allowsHitTesting(!liftActive)
+    }
+
+    /// Begins a system drag for a book. Returns the item provider that carries the
+    /// paper id so the trash `.onDrop` can identify which paper to unsave. The drag
+    /// itself is driven by UIKit's drag interaction, which lifts the spine out of the
+    /// scroll view without ever blocking a horizontal scroll swipe.
+    private func beginBookDrag(_ deck: CardDeck) -> NSItemProvider {
+        // Reveal the trash dock the moment a book is lifted, mirroring the
+        // "grab a book, the bin slides up" intent. Deferred to the next runloop
+        // tick so we never mutate state during a view update.
+        DispatchQueue.main.async {
+            if !removeDockRevealed {
+                removeDockRevealed = true
+                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+            }
+        }
+        return NSItemProvider(object: deck.paperId as NSString)
+    }
+
+    private func handleTrashDrop(_ providers: [NSItemProvider]) -> Bool {
+        guard let provider = providers.first(where: { $0.canLoadObject(ofClass: NSString.self) }) else {
+            return false
+        }
+        provider.loadObject(ofClass: NSString.self) { object, _ in
+            guard let paperId = object as? String else { return }
+            DispatchQueue.main.async { unsaveDroppedPaper(paperId) }
+        }
+        return true
+    }
+
+    private func unsaveDroppedPaper(_ paperId: String) {
+        guard let deck = decks.first(where: { $0.paperId == paperId }) else { return }
+        if focusedId == deck.id {
+            focusedId = decks.first(where: { $0.paperId != paperId })?.id
+        }
+        savedStore.remove(paperId)
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+        // Keep `removeDockRevealed` so multiple books can be dragged out in a row;
+        // a tap-away on surrounding chrome collapses it.
     }
 
     private var shelfStack: some View {
@@ -258,10 +256,7 @@ struct BookshelfView: View {
                                 ForEach(decks) { deck in
                                     BookSpine(deck: deck)
                                         .scaleEffect(deck.id == focusedId ? 1.06 : 0.94, anchor: .bottom)
-                                        .opacity(deck.id == liftedPaperId ? 0.08 : (deck.id == focusedId ? 1.0 : 0.78))
-                                        // The lifted spine stays hit-testable so its own
-                                        // long-press-then-drag sequence keeps tracking the finger.
-                                        .allowsHitTesting(!liftActive || deck.id == liftedPaperId)
+                                        .opacity(deck.id == focusedId ? 1.0 : 0.78)
                                         .animation(.snappy(duration: 0.18, extraBounce: 0.18), value: focusedId)
                                         .background(
                                             GeometryReader { proxy in
@@ -269,37 +264,19 @@ struct BookshelfView: View {
                                                     key: SpineCentersKey.self,
                                                     value: [deck.id: proxy.frame(in: .named("shelfScroll")).midX]
                                                 )
-                                                .preference(
-                                                    key: ShelfSpineFramesKey.self,
-                                                    value: [deck.id: proxy.frame(in: .named("shelfRoot"))]
-                                                )
                                             }
                                         )
                                         .contentShape(Rectangle())
-                                        .onTapGesture {
-                                            guard liftedPaperId == nil else { return }
-                                            pendingNavId = deck.id
+                                        // Hold-to-lift + drag-to-trash is delegated to the system
+                                        // drag interaction. Unlike a SwiftUI `DragGesture`, it lifts
+                                        // the spine out of the scroll view without starving the
+                                        // horizontal pan, so a quick swipe still scrolls and a press
+                                        // still lifts a book — one finger, one continuous motion.
+                                        .onDrag { beginBookDrag(deck) } preview: {
+                                            BookSpine(deck: deck)
+                                                .shadow(color: inkColor.opacity(0.3), radius: 12, x: 0, y: 8)
                                         }
-                                        // Lift-to-remove is a plain `.onLongPressGesture`,
-                                        // nothing more. A long-press recognizer never
-                                        // competes with a pan, so the shelf's horizontal
-                                        // ScrollView stays fully scrollable. Earlier this
-                                        // was a `LongPress.sequenced(before: Drag)` so the
-                                        // hold and the drag-to-trash were one continuous
-                                        // gesture, but any drag recognizer on a spine,
-                                        // simultaneous or not, starves the ScrollView pan.
-                                        //
-                                        // Now: hold ~0.4s lifts the book (a floating ghost
-                                        // plus the trash dock). The drag to the trash is
-                                        // then owned entirely by `shelfLiftDragCatcher`,
-                                        // the full-frame overlay that appears only while a
-                                        // book is lifted. So scroll and lift never share a
-                                        // recognizer.
-                                        .onLongPressGesture(minimumDuration: 0.4) {
-                                            guard liftedPaperId == nil else { return }
-                                            startLiftRemoving(deck: deck)
-                                            removeDockRevealed = true
-                                        }
+                                        .onTapGesture { pendingNavId = deck.id }
                                 }
                             }
                             .padding(.horizontal, sidePad)
@@ -308,7 +285,6 @@ struct BookshelfView: View {
                         .coordinateSpace(name: "shelfScroll")
                         .scrollIndicators(.hidden)
                         .scrollBounceBehavior(.basedOnSize)
-                        .scrollDisabled(liftActive)
                         .sensoryFeedback(.selection, trigger: focusedId)
 
                         shelfOutsideBooksLongPressGutter()
@@ -322,11 +298,10 @@ struct BookshelfView: View {
                             .onLongPressGesture(minimumDuration: 0.48) {
                                 revealTrashDockOutsideBooks()
                             }
-                            .allowsHitTesting(!liftActive)
                     }
                     .mask(edgeFadeMask)
                     .onPreferenceChange(SpineCentersKey.self) { centers in
-                        guard !centers.isEmpty, !liftActive else { return }
+                        guard !centers.isEmpty else { return }
                         if let closest = centers.min(by: { abs($0.value - midX) < abs($1.value - midX) })?.key,
                            closest != focusedId {
                             focusedId = closest
@@ -342,70 +317,9 @@ struct BookshelfView: View {
                 }
             }
             .coordinateSpace(name: "shelfRoot")
-            .overlay {
-                liftedSpineGhost
-            }
-            .overlay {
-                shelfLiftDragCatcher(in: geo)
-            }
         }
         .frame(height: shelfHeight + 14 + (showTrashDock ? trashDockHeight : 0))
         .animation(.spring(response: 0.36, dampingFraction: 0.86), value: showTrashDock)
-    }
-
-    @ViewBuilder
-    private var liftedSpineGhost: some View {
-        if let lid = liftedPaperId,
-           let deck = decks.first(where: { $0.id == lid }),
-           liftStartRect != .zero {
-            BookSpine(deck: deck)
-                .scaleEffect(lid == focusedId ? 1.06 : 0.94, anchor: .bottom)
-                .position(
-                    x: liftStartRect.midX + liftDragTranslation.width,
-                    y: liftStartRect.midY + liftDragTranslation.height
-                )
-                .shadow(color: inkColor.opacity(0.28), radius: 14, x: 0, y: 8)
-                .allowsHitTesting(false)
-        }
-    }
-
-    @ViewBuilder
-    private func shelfLiftDragCatcher(in geo: GeometryProxy) -> some View {
-        if liftActive {
-            Color.black.opacity(0.001)
-                .frame(width: geo.size.width, height: geo.size.height)
-                .contentShape(Rectangle())
-                // Tap anywhere with a book lifted cancels the lift, so a
-                // lift that is never dragged can't leave the shelf stuck
-                // `scrollDisabled`.
-                .onTapGesture { resetLiftState() }
-                .gesture(
-                    DragGesture(minimumDistance: 1)
-                        .onChanged { v in
-                            if let lid = liftedPaperId,
-                               liftStartRect.height < 1,
-                               let r = spineFramesInShelfRoot[lid], r.width > 0.5, r.height > 0.5 {
-                                liftStartRect = r
-                            }
-                            liftDragTranslation = v.translation
-                            updateTrashHover()
-                        }
-                        .onEnded { v in
-                            finalizeLiftRemoving(finalTranslation: v.translation)
-                            resetLiftState()
-                            removeDockRevealed = true
-                        }
-                )
-        }
-    }
-
-    private func startLiftRemoving(deck: CardDeck) {
-        guard liftedPaperId == nil else { return }
-        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-        liftedPaperId = deck.id
-        liftDragTranslation = .zero
-        liftStartRect = spineFramesInShelfRoot[deck.id] ?? .zero
-        pointerOverTrash = false
     }
 
     private var shelfTrashDock: some View {
@@ -444,66 +358,12 @@ struct BookshelfView: View {
                 )
                 .padding(.horizontal, 8)
         )
-        .background(
-            GeometryReader { g in
-                Color.clear.preference(
-                    key: ShelfTrashFrameKey.self,
-                    value: g.frame(in: .named("shelfRoot"))
-                )
-            }
-        )
-    }
-
-    private func updateTrashHover() {
-        guard liftStartRect != .zero else {
-            pointerOverTrash = false
-            return
+        .contentShape(Rectangle())
+        .onDrop(of: [.text], isTargeted: $pointerOverTrash) { providers in
+            handleTrashDrop(providers)
         }
-        let t = liftDragTranslation
-        let cx = liftStartRect.midX + t.width
-        let cy = liftStartRect.midY + t.height
-        let pt = CGPoint(x: cx, y: cy)
-
-        let inflated: CGRect
-        if trashFrameInShelfRoot.width > 1 {
-            inflated = trashFrameInShelfRoot.insetBy(dx: -32, dy: -40)
-        } else {
-            // Trash frame not measured yet — treat lower band as tentative target.
-            inflated = CGRect(x: -200, y: CGFloat(shelfHeight) + 8, width: 4_000, height: CGFloat(trashDockHeight + 24))
-        }
-        let next = inflated.contains(pt)
-        if next != pointerOverTrash {
-            pointerOverTrash = next
-            if next {
-                UISelectionFeedbackGenerator().selectionChanged()
-            }
-        }
-    }
-
-    private func finalizeLiftRemoving(finalTranslation: CGSize) {
-        guard let lid = liftedPaperId,
-              let deck = decks.first(where: { $0.id == lid }),
-              liftStartRect != .zero else { return }
-
-        let cx = liftStartRect.midX + finalTranslation.width
-        let cy = liftStartRect.midY + finalTranslation.height
-        let pt = CGPoint(x: cx, y: cy)
-
-        let hit: Bool
-        if trashFrameInShelfRoot.width > 1 {
-            hit = trashFrameInShelfRoot.insetBy(dx: -36, dy: -44).contains(pt)
-        } else {
-            hit = cy > CGFloat(shelfHeight) + 28
-        }
-
-        if hit {
-            savedStore.remove(deck.paperId)
-            UINotificationFeedbackGenerator().notificationOccurred(.success)
-            if focusedId == deck.id {
-                focusedId = decks.first(where: { $0.paperId != deck.paperId })?.id
-            }
-        } else {
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        .onChange(of: pointerOverTrash) { _, isOver in
+            if isOver { UISelectionFeedbackGenerator().selectionChanged() }
         }
     }
 
@@ -540,7 +400,7 @@ struct BookshelfView: View {
         }
         .simultaneousGesture(
             TapGesture().onEnded {
-                guard removeDockRevealed, !liftActive else { return }
+                guard removeDockRevealed else { return }
                 removeDockRevealed = false
             }
         )

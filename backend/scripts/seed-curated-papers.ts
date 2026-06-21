@@ -1,16 +1,18 @@
 /**
  * Seed all curated papers into the backend graph corpus.
  *
- * The curated canon (perceptron … gpt3) used to get its Explore rails from
- * hand-written maps on the iOS client. This script puts every curated paper
- * into `papers` so the rails come from the SAME scoring system as every other
- * paper: embeddings (Adjacent) + Semantic Scholar citations (Builds on / Led to).
+ * The curated canon used to get its Explore rails from hand-written maps on
+ * the iOS client. This script puts every curated paper into `papers` so the
+ * rails come from the SAME scoring system as every other paper: embeddings
+ * (Adjacent) + Semantic Scholar citations (Builds on / Led to).
  *
  * It seeds lightweight `papers` rows only — no `cards`, no LLM pipeline. The
  * curated hub CONTENT still ships client-side; these rows exist purely to drive
- * the graph. The 6 arXiv-era papers use real arXiv ids so citation lookup
- * works and they cite each other; the 5 pre-arXiv papers get a stable id and
- * an embedding-only presence (no citation edges).
+ * the graph. The arXiv-era papers use real arXiv ids so citation lookup works
+ * and they cite each other; the 4 pre-arXiv papers get a stable id and an
+ * embedding-only presence (no citation edges).
+ *
+ * Keep the CURATED manifest below in sync with data/curated-paper-catalog.json.
  *
  * Also fills `curated_papers.served_paper_id` so the audit registry maps each
  * loop id to its backend id.
@@ -97,6 +99,18 @@ const CURATED: CuratedSeed[] = [
   { loopId: "loop:foundational:attention", backendId: "arxiv:1706.03762", arxivId: "1706.03762" },
   { loopId: "loop:foundational:gpt3",     backendId: "arxiv:2005.14165", arxivId: "2005.14165" },
   { loopId: "loop:foundational:bert",     backendId: "arxiv:1810.04805", arxivId: "1810.04805" },
+  // Reasoning trunk (all on arXiv). These cite each other, so seeding them
+  // together lets Builds-on / Led-to edges resolve within the curated set.
+  { loopId: "loop:foundational:instructgpt",       backendId: "arxiv:2203.02155", arxivId: "2203.02155" },
+  { loopId: "loop:foundational:chain-of-thought",  backendId: "arxiv:2201.11903", arxivId: "2201.11903" },
+  { loopId: "loop:foundational:scratchpad",        backendId: "arxiv:2112.00114", arxivId: "2112.00114" },
+  { loopId: "loop:foundational:self-consistency",  backendId: "arxiv:2203.11171", arxivId: "2203.11171" },
+  { loopId: "loop:foundational:tot",               backendId: "arxiv:2305.10601", arxivId: "2305.10601" },
+  { loopId: "loop:foundational:least-to-most",     backendId: "arxiv:2205.10625", arxivId: "2205.10625" },
+  { loopId: "loop:foundational:react",             backendId: "arxiv:2210.03629", arxivId: "2210.03629" },
+  { loopId: "loop:foundational:toolformer",        backendId: "arxiv:2302.04761", arxivId: "2302.04761" },
+  { loopId: "loop:foundational:grokking",          backendId: "arxiv:2201.02177", arxivId: "2201.02177" },
+  { loopId: "loop:foundational:deepseek-r1",       backendId: "arxiv:2501.12948", arxivId: "2501.12948" },
 ];
 
 // ─── Fetch arXiv metadata (no LLM) ───────────────────────────────────────────
@@ -138,7 +152,7 @@ interface ResolvedPaper {
   published_at: string;
 }
 
-// 1. Resolve metadata for all 11 (fetch arXiv ones, pace for rate limits).
+// 1. Resolve metadata for the full manifest (fetch arXiv ones, pace for rate limits).
 const resolved: ResolvedPaper[] = [];
 for (const c of CURATED) {
   if (c.arxivId) {

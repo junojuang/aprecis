@@ -26,6 +26,16 @@ enum CuratedPaperCatalog {
         "loop:foundational:attention",
         "loop:foundational:gpt3",
         "loop:foundational:bert",
+        "loop:foundational:instructgpt",
+        "loop:foundational:chain-of-thought",
+        "loop:foundational:scratchpad",
+        "loop:foundational:self-consistency",
+        "loop:foundational:tot",
+        "loop:foundational:least-to-most",
+        "loop:foundational:react",
+        "loop:foundational:toolformer",
+        "loop:foundational:grokking",
+        "loop:foundational:deepseek-r1",
     ]
 
     private static let bundledInteractiveLoopPaperIds: [String] = {

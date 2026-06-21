@@ -36,6 +36,16 @@ extension DailyLoopContent {
         case "attention":  content = .transformer
         case "gpt3":       content = .gpt3
         case "bert":       content = .bert
+        case "instructgpt": content = .instructGPT
+        case "chain-of-thought": content = .chainOfThought
+        case "scratchpad": content = .scratchpad
+        case "self-consistency": content = .selfConsistency
+        case "tot": content = .treeOfThoughts
+        case "least-to-most": content = .leastToMost
+        case "react": content = .reAct
+        case "toolformer": content = .toolformer
+        case "grokking": content = .grokking
+        case "deepseek-r1": content = .deepseekR1
         default:           return nil
         }
         // Merge FoundationalGlossaries into the loop's inline glossary.
@@ -2085,5 +2095,1771 @@ extension DailyLoopContent {
             takeaway: "BERT did not write. It read everything, both ways, and made every reader smarter."
         ),
         paperURL: "https://arxiv.org/abs/1810.04805"
+    )
+
+    // MARK: DeepSeek-R1 (DeepSeek-AI 2025)
+
+    static let deepseekR1 = DailyLoopContent(
+        heroEyebrow: "FOUNDATIONS · REASONING",
+        heroTitleSegments: [
+            .plain("Learn to think from "),
+            .highlight("a reward")
+        ],
+        heroBody: "The reasoning model that skipped worked examples entirely: reward right answers, and step-by-step thinking, self-checking, and longer deliberation grow on their own.",
+        sourceLine: "arXiv:2501.12948 · DeepSeek-AI",
+
+        hookSegments: [
+            .plain("What if a model learned to reason with "),
+            .highlight("no worked examples"),
+            .plain("?")
+        ],
+        hookBody: "Before R1, you taught reasoning by showing a model thousands of human-written solutions to copy. R1 asked a bolder question: skip the examples, just reward the right final answer. The first version, R1-Zero, trained on pure reinforcement learning and spontaneously taught itself to write long chains of thought, backtrack, and verify its own work. The full R1 then cleaned that up with a small readable warm-up and distilled the skill into small, cheap models.",
+
+        coreIdeaSegments: [
+            .plain("Three moves that "),
+            .highlight("grew reasoning")
+        ],
+        coreIdeaItems: [
+            DLCoreIdeaItem(
+                roman: "i",
+                title: "Reward the answer, not the method",
+                detail: "Pure reinforcement learning on a base model. The only signal is whether the final answer is correct and well-formatted. No worked solutions, no human reasoning to imitate. Good thinking habits emerge because they earn the reward."),
+            DLCoreIdeaItem(
+                roman: "ii",
+                title: "Judge against the group (GRPO)",
+                detail: "Group Relative Policy Optimization samples a group of answers per question and scores each against the group's own average. That free baseline replaces the heavy critic network PPO needs, making RL on a giant model affordable."),
+            DLCoreIdeaItem(
+                roman: "iii",
+                title: "Then distill it down",
+                detail: "R1's reasoning is distilled into small dense models (1.5B to 70B). The distilled models out-reason far larger ones, showing reasoning can be transferred cheaply, not just bought with scale."),
+        ],
+
+        eliAnalogyLabel: "ANALOGY · LEARNING MATHS",
+        eliHeadlineSegments: [
+            .plain("Like getting good at maths from "),
+            .highlight("right or wrong"),
+            .plain(" alone.")
+        ],
+        eliBodyParts: [
+            .plain("Nobody handed you the one perfect method for times tables. A teacher just said "),
+            .bold("right or wrong"),
+            .plain(", and chasing that, you invented your own tricks: round up then subtract, double and check the answer back. R1 learned to reason the same way, "),
+            .bold("millions of times over"),
+            .plain(", with only a score on the final answer to guide it."),
+        ],
+        eliArt: .scratchPaper,
+
+        diagramSegments: [
+            .plain("How a reward "),
+            .highlight("becomes reasoning")
+        ],
+        diagramLayout: .flow,
+        diagramNodes: [
+            DLDiagramNode(
+                id: "rl",
+                label: "RL",
+                sublabel: "reward only",
+                panelTitle: "Reinforcement learning",
+                panelBody: "Start from a base language model. Give it problems with checkable answers (maths, code). Reward = did it get the right answer in the right format? No worked solutions are ever shown. The model just tries, scores, and shifts toward what worked."),
+            DLDiagramNode(
+                id: "grpo",
+                label: "GRPO",
+                sublabel: "group baseline",
+                panelTitle: "Group Relative Policy Optimization",
+                panelBody: "For each question the model writes a group of answers. Each answer's reward is compared to the group's average, so above-average answers are reinforced and below-average ones discouraged. The group is its own yardstick, so there is no separate value or critic network to train."),
+            DLDiagramNode(
+                id: "aha",
+                label: "Aha",
+                sublabel: "self-check",
+                panelTitle: "Emergent reasoning",
+                panelBody: "Nobody programmed it to think longer. Chasing the reward, R1-Zero began allocating more thinking to harder problems and spontaneously wrote self-checks like 'wait, let me re-verify'. The paper calls this the aha moment: reasoning behaviour that emerged on its own."),
+            DLDiagramNode(
+                id: "distill",
+                label: "Distill",
+                sublabel: "to small models",
+                panelTitle: "Distillation",
+                panelBody: "The big R1's reasoning traces are used to fine-tune small dense models (Qwen and Llama, 1.5B to 70B). These distilled students inherit the reasoning and beat much larger non-reasoning models, so the capability spreads cheaply."),
+        ],
+        diagramCollapseText: nil,
+        diagramDefaultPanelBody: "Four stages of the R1 recipe. Tap each to see what it does.",
+
+        vizCards: [
+            DLVizCard(
+                kicker: "CARD 05 · IT ACTUALLY WORKED",
+                titleSegments: [
+                    .plain("Reward alone "),
+                    .highlight("closed the gap")
+                ],
+                visualization: .barChart(DLBarChartSpec(
+                    yAxisLabel: "AIME 2024 (pass@1)",
+                    primaryLabel: "Accuracy",
+                    secondaryLabel: nil,
+                    yMax: 100,
+                    yTickLabels: ["0", "50", "100"],
+                    points: [
+                        DLBarPoint(label: "Base", sublabel: "DeepSeek-V3", primary: 39.2, secondary: nil,
+                                   annotation: "The base model before any reasoning RL. Competent, but it stumbles on hard competition maths."),
+                        DLBarPoint(label: "R1-Zero", sublabel: "pure RL", primary: 71.0, secondary: nil,
+                                   annotation: "Pure reinforcement learning, no worked examples. Accuracy nearly doubled just from rewarding correct answers."),
+                        DLBarPoint(label: "R1", sublabel: "full recipe", primary: 79.8, secondary: nil,
+                                   annotation: "Adds a small readable warm-up then more RL. Matches the strongest closed reasoning models of its day."),
+                        DLBarPoint(label: "o1", sublabel: "OpenAI", primary: 79.2, secondary: nil,
+                                   annotation: "OpenAI's o1, the leading closed reasoning model at release. R1 reached it with open weights."),
+                    ],
+                    cliffIndex: 1,
+                    cliffLabel: "pure RL",
+                    defaultInsight: "Tap any bar. The jump from Base to R1-Zero came from reward alone, with no human reasoning to copy."
+                )),
+                caption: "Pass@1 on AIME 2024, a hard competition-maths benchmark. Numbers are representative of the paper's reported results.",
+                takeaway: "Reasoning grew from reward, not from imitation."
+            ),
+            DLVizCard(
+                kicker: "CARD 06 · IT LEARNED TO THINK LONGER",
+                titleSegments: [
+                    .plain("Thinking "),
+                    .highlight("grew on its own")
+                ],
+                visualization: .trainingCurve(DLTrainingCurveSpec(
+                    xAxisLabel: "RL training steps →",
+                    yAxisLabel: "avg thinking length →",
+                    xTickLabels: ["start", "mid", "late"],
+                    yTickLabels: ["short", "", "long"],
+                    series: [
+                        DLTrainingCurveSeries(
+                            label: "Response length",
+                            color: .teal,
+                            dashed: false,
+                            points: [
+                                DLTrainingCurvePoint(x: 0.0, y: 0.08, milestone: "start",
+                                                     annotation: "Early on, answers are short, around a hundred tokens. The model mostly guesses."),
+                                DLTrainingCurvePoint(x: 0.35, y: 0.28, milestone: nil,
+                                                     annotation: "As reward favours correct answers, the model starts writing out more steps."),
+                                DLTrainingCurvePoint(x: 0.62, y: 0.58, milestone: "aha",
+                                                     annotation: "The aha moment: self-checks and backtracking appear with no prompting. Thinking gets noticeably longer."),
+                                DLTrainingCurvePoint(x: 1.0, y: 0.95, milestone: "late",
+                                                     annotation: "By late training, the model deliberates over thousands of tokens on the hardest problems, then verifies its answer."),
+                            ])
+                    ],
+                    defaultInsight: "Tap a point. Nobody set a target length. The thinking grew because longer, checked reasoning earned more reward."
+                )),
+                caption: "Average response length over RL training, sketched from the paper's R1-Zero curve.",
+                takeaway: "Longer deliberation was emergent, never an instruction."
+            ),
+        ],
+
+        completeTakeaway: "\"R1 was not shown how to think. It was rewarded for thinking well, and the rest grew itself.\"",
+        completeNextTease: "Up next: the reasoning frontier this opened.",
+        paperTitle: "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning",
+        glossary: [
+            "DeepSeek-R1":    "A 2025 open-weights reasoning model from DeepSeek-AI, trained with reinforcement learning to think step by step.",
+            "R1-Zero":        "The first version, trained with pure reinforcement learning and no worked examples. It learned to reason but its writing was messy and mixed languages.",
+            "reinforcement learning": "Learning from rewards rather than answer keys. The model tries something, gets a score, and shifts toward whatever scored higher.",
+            "RL":             "Short for reinforcement learning.",
+            "reward":         "The single number telling the model how good an attempt was. For R1 it is mostly: correct final answer, in the right format.",
+            "GRPO":           "Group Relative Policy Optimization. The model writes a group of answers per question and judges each against the group's own average, removing the need for a separate critic network.",
+            "chain of thought": "The model writing its reasoning out step by step before giving a final answer.",
+            "aha moment":     "The point in R1-Zero's training where it spontaneously began re-checking and backtracking on its own, with no instruction to do so.",
+            "distillation":   "Training a smaller model to copy a larger model's behaviour, so the small one reasons almost as well far more cheaply.",
+            "cold start":     "A small batch of clean, readable example reasoning used to warm up R1 before RL, fixing R1-Zero's messy output.",
+        ],
+        learningObjectives: [
+            DLObjective(
+                text: "Why a reward can teach reasoning with no examples",
+                gloss: "Pure RL on right/wrong answers. Good thinking habits emerge because they earn the reward."),
+            DLObjective(
+                text: "What GRPO does and why it's cheaper",
+                gloss: "Judge a group of answers against their own average. No separate critic network to train."),
+            DLObjective(
+                text: "How the 'aha moment' and distillation followed",
+                gloss: "Self-checking emerged on its own, then distilled into small models that out-reason bigger ones."),
+        ],
+        explanationCard: DLExplanationCard(
+            eyebrow: "WHAT JUST HAPPENED",
+            titleSegments: [
+                .plain("A reward, "),
+                .highlight("and reasoning grew"),
+            ],
+            mini: .deepseekR1,
+            paragraphs: [
+                DLExplanationPara(
+                    kicker: "P1 · REWARD ONLY",
+                    body: "R1-Zero started from a plain base model and trained with reinforcement learning on problems with checkable answers. The only signal was whether the final answer was right and well-formatted. No human reasoning was ever shown to copy."),
+                DLExplanationPara(
+                    kicker: "P2 · GRPO BASELINE",
+                    body: "For each question the model wrote a group of answers and scored each against the group's own average. That free baseline replaced PPO's separate critic network, which is what made reinforcement learning on a model this large affordable."),
+                DLExplanationPara(
+                    kicker: "P3 · EMERGE, THEN DISTILL",
+                    body: "Chasing the reward, the model began thinking longer and checking its own work, the aha moment. The full R1 then cleaned this up with a small readable warm-up, and the reasoning was distilled into small dense models that beat far larger ones."),
+            ],
+            takeaway: "R1 was rewarded for thinking well, and the long, self-checking reasoning grew itself."
+        ),
+        paperURL: "https://arxiv.org/abs/2501.12948"
+    )
+
+    static let instructGPT = DailyLoopContent(
+        heroEyebrow: "FOUNDATIONS · LANGUAGE",
+        heroTitleSegments: [
+            .plain("Teach a model to "),
+            .highlight("follow you")
+        ],
+        heroBody: "GPT-3 knew a great deal but often ignored what you actually asked. InstructGPT closed that gap with human feedback, and a 1.3B model ended up preferred over the 175B GPT-3.",
+        sourceLine: "arXiv:2203.02155 · OpenAI",
+
+        hookSegments: [
+            .plain("What if the model is huge, but still "),
+            .highlight("won't listen"),
+            .plain("?")
+        ],
+        hookBody: "A raw language model is trained to predict the next likely word, not to do what you ask. So GPT-3 could be fluent and knowledgeable yet unhelpful: rambling, ignoring the instruction, or making things up. InstructGPT fixed this with a three step recipe. Show it good answers (SFT), have people rank its tries to train a reward model, then use reinforcement learning to nudge it toward what people preferred. The aligned model was more helpful, more truthful, and slightly less toxic.",
+
+        coreIdeaSegments: [
+            .plain("Three moves that "),
+            .highlight("aligned the model")
+        ],
+        coreIdeaItems: [
+            DLCoreIdeaItem(
+                roman: "i",
+                title: "Show good answers (SFT)",
+                detail: "Labelers write ideal responses to real prompts, and GPT-3 is fine-tuned to imitate them. This supervised fine-tuning teaches the model the basic shape of being helpful."),
+            DLCoreIdeaItem(
+                roman: "ii",
+                title: "Rank, then score (reward model)",
+                detail: "For a prompt the model writes several answers and people rank them best to worst. Those rankings train a reward model that can score any new answer the way people would, no rulebook required."),
+            DLCoreIdeaItem(
+                roman: "iii",
+                title: "Nudge toward preferred (RLHF)",
+                detail: "Reinforcement learning optimizes the model against the reward model: generate, score, nudge. A KL penalty keeps it close to the sensible SFT model so it improves without drifting into nonsense."),
+        ],
+
+        eliAnalogyLabel: "ANALOGY · TRAINING A NEW COOK",
+        eliHeadlineSegments: [
+            .plain("Like coaching a cook by "),
+            .highlight("ranking the dishes"),
+        ],
+        eliBodyParts: [
+            .plain("You can't hand someone a formula for a "),
+            .bold("delicious"),
+            .plain(" meal. But taste a few of their dishes and you can easily say which is best and which is worst. Do that often enough and the cook learns your taste, then chases it on dishes you have never tried. InstructGPT trained a model the same way: people "),
+            .bold("ranked"),
+            .plain(" answers, and the model learned to cook to that taste."),
+        ],
+        eliArt: .kitchen,
+
+        diagramSegments: [
+            .plain("How feedback "),
+            .highlight("becomes alignment")
+        ],
+        diagramLayout: .flow,
+        diagramNodes: [
+            DLDiagramNode(
+                id: "sft",
+                label: "SFT",
+                sublabel: "show good answers",
+                panelTitle: "Supervised fine-tuning",
+                panelBody: "Labelers write ideal answers to a set of real prompts. GPT-3 is fine-tuned to imitate them. This gives the model a first sense of what a helpful, on-instruction answer looks like, before any reward is involved."),
+            DLDiagramNode(
+                id: "rm",
+                label: "Reward",
+                sublabel: "rank, then score",
+                panelTitle: "Reward model",
+                panelBody: "For each prompt the model writes several answers. People rank them best to worst, which is far easier than writing a rule for quality. Those rankings train a reward model that assigns any answer a score matching human preference, even on prompts nobody ranked."),
+            DLDiagramNode(
+                id: "rlhf",
+                label: "RLHF",
+                sublabel: "generate, score, nudge",
+                panelTitle: "Reinforcement learning from human feedback",
+                panelBody: "The model generates an answer, the reward model scores it, and PPO nudges the model toward higher-scoring replies. A KL penalty leashes it to the SFT model so it keeps improving without producing gibberish."),
+            DLDiagramNode(
+                id: "win",
+                label: "Result",
+                sublabel: "small beats big",
+                panelTitle: "Alignment beats raw size",
+                panelBody: "A 1.3B InstructGPT was preferred by labelers over the 175B GPT-3, a model a hundred times larger. It was also more truthful and slightly less toxic. How you tune mattered more than how big you built."),
+        ],
+        diagramCollapseText: nil,
+        diagramDefaultPanelBody: "Four stages of the InstructGPT recipe. Tap each to see what it does.",
+
+        vizCards: [
+            DLVizCard(
+                kicker: "CARD 05 · SMALL BEAT BIG",
+                titleSegments: [
+                    .plain("Tuning beat "),
+                    .highlight("raw scale")
+                ],
+                visualization: .barChart(DLBarChartSpec(
+                    yAxisLabel: "preferred vs 175B GPT-3 (%)",
+                    primaryLabel: "Win rate",
+                    secondaryLabel: nil,
+                    yMax: 100,
+                    yTickLabels: ["0", "50", "100"],
+                    points: [
+                        DLBarPoint(label: "GPT-3", sublabel: "175B raw", primary: 50.0, secondary: nil,
+                                   annotation: "The baseline. By definition it ties with itself, so this is the 50% line every other bar is measured against."),
+                        DLBarPoint(label: "GPT-3+", sublabel: "175B prompted", primary: 57.0, secondary: nil,
+                                   annotation: "Carefully prompting raw GPT-3 helps a little, but it still trails the tuned models by a wide margin."),
+                        DLBarPoint(label: "Instruct", sublabel: "1.3B tuned", primary: 76.0, secondary: nil,
+                                   annotation: "The headline result. A model one hundred times smaller, tuned with human feedback, was preferred over raw GPT-3 most of the time."),
+                        DLBarPoint(label: "Instruct", sublabel: "175B tuned", primary: 85.0, secondary: nil,
+                                   annotation: "Tuning the full-size model preferred even more often. Alignment compounds with scale, but the tuning is what does the work."),
+                    ],
+                    cliffIndex: 2,
+                    cliffLabel: "1.3B tuned",
+                    defaultInsight: "Tap any bar. A tuned 1.3B model beat the raw 175B GPT-3, so alignment, not size, drove the gain."
+                )),
+                caption: "Share of outputs labelers preferred over raw 175B GPT-3. Numbers are representative of the paper's reported results.",
+                takeaway: "Past a point, how you align beats how big you build."
+            ),
+            DLVizCard(
+                kicker: "CARD 06 · IT MADE FEWER THINGS UP",
+                titleSegments: [
+                    .plain("More helpful, "),
+                    .highlight("more honest")
+                ],
+                visualization: .barChart(DLBarChartSpec(
+                    yAxisLabel: "makes things up (%)",
+                    primaryLabel: "Hallucination",
+                    secondaryLabel: nil,
+                    yMax: 50,
+                    yTickLabels: ["0", "25", "50"],
+                    points: [
+                        DLBarPoint(label: "GPT-3", sublabel: "175B raw", primary: 41.0, secondary: nil,
+                                   annotation: "On closed-domain tasks, raw GPT-3 invents facts that were never in the source about 41% of the time."),
+                        DLBarPoint(label: "Instruct", sublabel: "175B tuned", primary: 21.0, secondary: nil,
+                                   annotation: "After alignment, the same size model fabricates roughly half as often. Following intent includes sticking to what is actually there."),
+                    ],
+                    cliffIndex: 1,
+                    cliffLabel: "tuned",
+                    defaultInsight: "Tap a bar. Lower is better here. Alignment roughly halved how often the model made things up."
+                )),
+                caption: "Hallucination rate on closed-domain tasks, lower is better. Numbers are representative of the paper's reported results.",
+                takeaway: "Aligning to human intent also made it more truthful."
+            ),
+        ],
+
+        completeTakeaway: "\"InstructGPT was not made smarter. It was tuned to do what people asked, and that made it far more useful.\"",
+        completeNextTease: "Up next: the assistants this recipe unlocked.",
+        paperTitle: "Training language models to follow instructions with human feedback",
+        glossary: [
+            "InstructGPT":   "A 2022 OpenAI model that fine-tuned GPT-3 with human feedback to follow instructions. The direct ancestor of ChatGPT.",
+            "alignment":     "Making a model do what people actually want (helpful, honest, harmless), not just predict likely text.",
+            "RLHF":          "Reinforcement learning from human feedback. Train a reward model from human rankings, then use reinforcement learning to push the model toward higher-scoring answers.",
+            "SFT":           "Supervised fine-tuning. Fine-tune the model to imitate human-written ideal answers.",
+            "supervised fine-tuning": "Fine-tuning the model on human-written example answers so it learns the basic shape of a helpful reply.",
+            "reward model":  "A model trained from human rankings that scores how good any answer is, standing in for a human rater.",
+            "PPO":           "Proximal Policy Optimization, the reinforcement learning algorithm used to nudge the model toward higher reward.",
+            "human feedback": "People comparing and ranking model answers, the raw material the reward model learns from.",
+            "comparison data": "Sets of answers to the same prompt, ranked by people, used to train the reward model.",
+            "KL penalty":    "A leash that keeps the tuned model from drifting too far from the sensible SFT model while chasing reward.",
+            "labeler":       "A person hired to write example answers and rank model outputs.",
+            "hallucination": "When a model states something false or unsupported as if it were fact.",
+        ],
+        learningObjectives: [
+            DLObjective(
+                text: "Why a bigger model is not automatically more useful",
+                gloss: "Raw models predict likely text, which is not the same as following your instruction."),
+            DLObjective(
+                text: "How ranking answers builds a reward model",
+                gloss: "People rank instead of defining quality, and those rankings train a model that can score any answer."),
+            DLObjective(
+                text: "How RLHF nudges the model toward what people prefer",
+                gloss: "Generate, score with the reward model, nudge, with a KL leash to stay sensible."),
+        ],
+        explanationCard: DLExplanationCard(
+            eyebrow: "WHAT JUST HAPPENED",
+            titleSegments: [
+                .plain("Feedback, "),
+                .highlight("and it listened"),
+            ],
+            mini: .instructGPT,
+            paragraphs: [
+                DLExplanationPara(
+                    kicker: "P1 · SHOW GOOD",
+                    body: "First, labelers wrote ideal answers to real prompts and GPT-3 was fine-tuned to imitate them. This SFT step gave the model a starting sense of what a helpful, on-instruction answer looks like."),
+                DLExplanationPara(
+                    kicker: "P2 · RANK, THEN SCORE",
+                    body: "Then people ranked several answers per prompt best to worst, which is far easier than writing a rule for quality. Those rankings trained a reward model that scores any answer the way people would."),
+                DLExplanationPara(
+                    kicker: "P3 · NUDGE",
+                    body: "Finally, reinforcement learning pushed the model toward higher-scoring replies, with a KL leash to the SFT model. The aligned 1.3B model was preferred over the 175B GPT-3, and made things up less often."),
+            ],
+            takeaway: "InstructGPT was tuned with human feedback to do what people asked, and that beat raw size."
+        ),
+        paperURL: "https://arxiv.org/abs/2203.02155"
+    )
+
+    static let scratchpad = DailyLoopContent(
+        heroEyebrow: "FOUNDATIONS · REASONING",
+        heroTitleSegments: [
+            .plain("Give the model "),
+            .highlight("a notepad")
+        ],
+        heroBody: "Forced to answer in one shot, a model fails long calculations because it has nowhere to put the working. Let it write intermediate steps on a scratchpad and it works the problem out, holding up even as the input grows.",
+        sourceLine: "arXiv:2112.00114 · Google",
+
+        hookSegments: [
+            .plain("What if the model just needed "),
+            .highlight("somewhere to write"),
+            .plain("?")
+        ],
+        hookBody: "Try multiplying two three-digit numbers in your head. Hard, because the half-finished pieces slip away. On paper it is easy. A language model has the same bottleneck: asked for the answer in one shot, it has no room to compute intermediate values, so it guesses and misses on long, algorithmic problems. The fix is a scratchpad: train the model to emit the working step by step before the answer. It then solves long addition, evaluates polynomials, and even executes code by tracing each variable, and it keeps working as the inputs get longer.",
+
+        coreIdeaSegments: [
+            .plain("Three things the pad "),
+            .highlight("unlocks")
+        ],
+        coreIdeaItems: [
+            DLCoreIdeaItem(
+                roman: "i",
+                title: "Room to compute",
+                detail: "Answering in one shot means holding the entire calculation in a single forward pass. The scratchpad lets the model write partial results and carries down, so no single step has to do everything at once."),
+            DLCoreIdeaItem(
+                roman: "ii",
+                title: "Taught by example",
+                detail: "The model does not reach for paper on its own. It is trained on examples that include the full working between question and answer, so it learns to lay out its own steps before answering."),
+            DLCoreIdeaItem(
+                roman: "iii",
+                title: "It holds up at length",
+                detail: "Because a longer problem is just more of the same small steps, the scratchpad keeps near-perfect accuracy on inputs far longer than anything in training, where one-shot answers collapse."),
+        ],
+
+        eliAnalogyLabel: "ANALOGY · MENTAL MATH VS PAPER",
+        eliHeadlineSegments: [
+            .plain("Like doing long division "),
+            .highlight("on paper"),
+        ],
+        eliBodyParts: [
+            .plain("Nobody does long division in their head. You write each step down, "),
+            .bold("digit by digit"),
+            .plain(", so your memory only ever holds one small thing. The scratchpad gives a model the same paper: it stops trying to leap to the answer and instead "),
+            .bold("works it out"),
+            .plain(", one tiny step at a time."),
+        ],
+        eliArt: .scratchPaper,
+
+        diagramSegments: [
+            .plain("How the pad "),
+            .highlight("does the work")
+        ],
+        diagramLayout: .flow,
+        diagramNodes: [
+            DLDiagramNode(
+                id: "oneshot",
+                label: "One shot",
+                sublabel: "no room",
+                panelTitle: "One shot · no room",
+                panelBody: "Asked for the answer directly, the model must compute everything in a single pass. For a long sum or a program there is nowhere to hold the partial results, so it produces a fluent guess that is usually wrong."),
+            DLDiagramNode(
+                id: "step1",
+                label: "Step",
+                sublabel: "write it down",
+                panelTitle: "Write the first step",
+                panelBody: "With a scratchpad, the model emits the first intermediate result: the units column of a sum, or the first variable of a program. Small, bounded work that one pass can do reliably."),
+            DLDiagramNode(
+                id: "step2",
+                label: "Step",
+                sublabel: "carry forward",
+                panelTitle: "Carry it forward",
+                panelBody: "Each new line reads the previous one and extends it, carrying digits or updating state. The model conditions on its own written work, never on memory alone, so nothing gets dropped."),
+            DLDiagramNode(
+                id: "answer",
+                label: "Answer",
+                sublabel: "read it off",
+                panelTitle: "Read off the answer",
+                panelBody: "After the working, the final answer is just the last line of the pad. Long addition, polynomial evaluation, and code execution all become reliable, and stay reliable as the input grows."),
+        ],
+        diagramCollapseText: nil,
+        diagramDefaultPanelBody: "Four beats of working on the pad. Tap each to see what it does.",
+
+        vizCards: [
+            DLVizCard(
+                kicker: "CARD 05 · ROOM TO COMPUTE",
+                titleSegments: [
+                    .plain("Near zero, "),
+                    .highlight("to near perfect")
+                ],
+                visualization: .barChart(DLBarChartSpec(
+                    yAxisLabel: "long-arithmetic accuracy (%)",
+                    primaryLabel: "Accuracy",
+                    secondaryLabel: nil,
+                    yMax: 100,
+                    yTickLabels: ["0", "50", "100"],
+                    points: [
+                        DLBarPoint(label: "One shot", sublabel: "direct", primary: 9.0, secondary: nil,
+                                   annotation: "Asked for the answer directly, the model has no room for the working and gets long sums wrong almost every time."),
+                        DLBarPoint(label: "Scratchpad", sublabel: "with working", primary: 92.0, secondary: nil,
+                                   annotation: "Allowed to write each step, the same model works the problem out and lands it. Nothing got smarter, it just got paper."),
+                    ],
+                    cliffIndex: 1,
+                    cliffLabel: "+ pad",
+                    defaultInsight: "Tap a bar. Same model, same problem. The only difference is whether it was allowed to write the working."
+                )),
+                caption: "Accuracy on long, multi-step arithmetic. Numbers are representative of the paper's reported results.",
+                takeaway: "Room to compute, not extra intelligence, drove the jump."
+            ),
+            DLVizCard(
+                kicker: "CARD 06 · IT HELD AT LENGTH",
+                titleSegments: [
+                    .plain("Stays high as inputs "),
+                    .highlight("grow")
+                ],
+                visualization: .trainingCurve(DLTrainingCurveSpec(
+                    xAxisLabel: "input length →",
+                    yAxisLabel: "accuracy →",
+                    xTickLabels: ["1", "2", "3", "5", "8"],
+                    yTickLabels: ["0", "", "100"],
+                    series: [
+                        DLTrainingCurveSeries(
+                            label: "One shot",
+                            color: .rose,
+                            dashed: true,
+                            points: [
+                                DLTrainingCurvePoint(x: 0.0, y: 0.99, milestone: "1 digit",
+                                                     annotation: "On a one-digit sum even a one-shot answer is fine."),
+                                DLTrainingCurvePoint(x: 0.4, y: 0.82, milestone: nil,
+                                                     annotation: "Two digits, and one-shot accuracy already starts slipping."),
+                                DLTrainingCurvePoint(x: 0.6, y: 0.47, milestone: nil,
+                                                     annotation: "Three digits: about half wrong. Too much to juggle in one pass."),
+                                DLTrainingCurvePoint(x: 1.0, y: 0.02, milestone: "8 digits",
+                                                     annotation: "By eight digits the one-shot answer is essentially never right."),
+                            ]),
+                        DLTrainingCurveSeries(
+                            label: "Scratchpad",
+                            color: .teal,
+                            dashed: false,
+                            points: [
+                                DLTrainingCurvePoint(x: 0.0, y: 0.99, milestone: nil,
+                                                     annotation: "The pad is just as good on the easy case."),
+                                DLTrainingCurvePoint(x: 0.4, y: 0.98, milestone: nil,
+                                                     annotation: "Two digits: barely moves. Each step is the same size as before."),
+                                DLTrainingCurvePoint(x: 0.6, y: 0.97, milestone: nil,
+                                                     annotation: "Three digits: still near perfect, because the work is just one more column."),
+                                DLTrainingCurvePoint(x: 1.0, y: 0.92, milestone: "8 digits",
+                                                     annotation: "Eight digits, longer than its training examples, and the pad still holds. That is length generalisation."),
+                            ])
+                    ],
+                    defaultInsight: "Tap a point. As inputs lengthen the one-shot line falls off a cliff while the scratchpad stays high."
+                )),
+                caption: "Accuracy against the length of the input. Sketched from the paper's length-generalisation results.",
+                takeaway: "Small repeated steps make the pad barely care how long the input is."
+            ),
+        ],
+
+        completeTakeaway: "\"The model was not made smarter. It was handed a notepad, and that was enough.\"",
+        completeNextTease: "Up next: turning the notepad into a prompt anyone can use.",
+        paperTitle: "Show Your Work: Scratchpads for Intermediate Computation with Language Models",
+        glossary: [
+            "scratchpad": "A place for the model to write intermediate steps before its final answer, acting like working memory for multi-step problems.",
+            "intermediate steps": "The partial results, like a carry or a variable's value, written between the question and the final answer.",
+            "execution trace": "The line-by-line record of a program's variables as it runs, which the model writes to the pad to predict the output.",
+            "length generalisation": "Staying accurate on inputs longer than any seen in training, which scratchpads achieve by keeping each step small.",
+            "one-shot answer": "Producing the final answer directly, with no written working, in a single pass.",
+            "fine-tuning": "Further training a model on examples, here on examples that include the full working, so it learns to use the pad.",
+            "algorithmic task": "A problem solved by a fixed procedure of steps, like long addition or running code, where scratchpads shine.",
+            "forward pass": "One run of the model from input to output. Without a pad, all the computation must fit in this single pass.",
+        ],
+        learningObjectives: [
+            DLObjective(
+                text: "Why one-shot answers fail long problems",
+                gloss: "There is no room to hold partial results, so the model has to guess the whole thing at once."),
+            DLObjective(
+                text: "How a scratchpad gives room to compute",
+                gloss: "The model writes each step down and reads its own working, so no step has to do everything."),
+            DLObjective(
+                text: "Why it keeps working at length",
+                gloss: "A longer input is just more of the same small steps, so accuracy barely drops."),
+        ],
+        explanationCard: DLExplanationCard(
+            eyebrow: "WHAT JUST HAPPENED",
+            titleSegments: [
+                .plain("It wrote the working, "),
+                .highlight("and got it right"),
+            ],
+            mini: .scratchpad,
+            paragraphs: [
+                DLExplanationPara(
+                    kicker: "P1 · NO ROOM",
+                    body: "Asked for the answer in one shot, the model must compute everything in a single pass. For a long sum or a program there is nowhere to keep the partial work, so it produces a confident wrong guess."),
+                DLExplanationPara(
+                    kicker: "P2 · GIVE IT PAPER",
+                    body: "A scratchpad lets the model emit the steps first: each column of a sum, each variable of a program. It conditions on its own written work, so nothing has to be held in memory alone."),
+                DLExplanationPara(
+                    kicker: "P3 · HOLDS AT LENGTH",
+                    body: "Because every step stays small, the pad keeps near-perfect accuracy even on inputs far longer than its training, where one-shot answers fall to near zero."),
+            ],
+            takeaway: "The scratchpad gives a model room to compute, turning one impossible leap into many easy steps."
+        ),
+        paperURL: "https://arxiv.org/abs/2112.00114"
+    )
+
+    static let selfConsistency = DailyLoopContent(
+        heroEyebrow: "FOUNDATIONS · REASONING",
+        heroTitleSegments: [
+            .plain("Sample many, "),
+            .highlight("then vote")
+        ],
+        heroBody: "A single chain of thought can take one wrong turn and confidently give a wrong answer. Sample many diverse chains and keep the answer the most of them reach, and reasoning accuracy jumps, with no new training.",
+        sourceLine: "arXiv:2203.11171 · Google",
+
+        hookSegments: [
+            .plain("What if you just "),
+            .highlight("asked the model again"),
+            .plain("?")
+        ],
+        hookBody: "Chain of thought writes one line of reasoning, and if it slips on a single step the whole answer is wrong, while the model still sounds sure. Self-consistency fixes this without changing the model. Sample many chains with a little randomness so each takes a different route, then ignore the reasoning and tally the final answers. The right answer is usually reachable by many paths, while wrong answers scatter, so the majority vote is far more reliable. On grade-school maths this lifted accuracy by roughly 18 points over a single greedy chain.",
+
+        coreIdeaSegments: [
+            .plain("Three moves that "),
+            .highlight("make the vote work")
+        ],
+        coreIdeaItems: [
+            DLCoreIdeaItem(
+                roman: "i",
+                title: "Sample, don't settle",
+                detail: "Instead of decoding the single most-likely chain, sample several with a little randomness so each follows its own route to an answer. Variety is the raw material the vote needs."),
+            DLCoreIdeaItem(
+                roman: "ii",
+                title: "Marginalise over reasoning",
+                detail: "Throw away how each chain got there and keep only where it landed. Tally the final answers like a ballot and take the majority. Different routes, one counted answer each."),
+            DLCoreIdeaItem(
+                roman: "iii",
+                title: "Truth is reachable many ways",
+                detail: "Correct answers tend to be reached by many distinct chains, while mistakes are scattered and rarely agree. So the most-voted answer is usually the right one, and a single slip gets outvoted."),
+        ],
+
+        eliAnalogyLabel: "ANALOGY · ASK THE ROOM",
+        eliHeadlineSegments: [
+            .plain("Like polling "),
+            .highlight("a whole room"),
+        ],
+        eliBodyParts: [
+            .plain("Ask one clever person and they might be wrong. Ask "),
+            .bold("twenty people"),
+            .plain(" who each work it out their own way, and the answer most of them reach is hard to beat. Self-consistency turns one model into that room: many independent attempts, then "),
+            .bold("go with the crowd"),
+            .plain("."),
+        ],
+        eliArt: .readers,
+
+        diagramSegments: [
+            .plain("How the vote "),
+            .highlight("is taken")
+        ],
+        diagramLayout: .flow,
+        diagramNodes: [
+            DLDiagramNode(
+                id: "ask",
+                label: "Ask once",
+                sublabel: "one prompt",
+                panelTitle: "One question",
+                panelBody: "You start with a single problem and the same chain-of-thought prompt. Nothing about the model or the prompt changes; the only difference is how many times you ask and what you do with the answers."),
+            DLDiagramNode(
+                id: "sample",
+                label: "Sample",
+                sublabel: "many chains",
+                panelTitle: "Sample many chains",
+                panelBody: "Decode several reasoning chains with a little randomness so each takes a different route. Some reach the right answer, some take a wrong turn, but they are genuinely varied rather than copies."),
+            DLDiagramNode(
+                id: "tally",
+                label: "Tally",
+                sublabel: "count answers",
+                panelTitle: "Tally the answers",
+                panelBody: "Ignore the reasoning and look only at the final answers. Count how many chains reached each one, like collecting ballots. This is the sample-and-marginalise step."),
+            DLDiagramNode(
+                id: "majority",
+                label: "Majority",
+                sublabel: "most agreed",
+                panelTitle: "Take the majority",
+                panelBody: "The answer reached by the most chains wins. Because the right answer is usually reachable many ways while mistakes scatter, this beats trusting any single chain, even the most confident one."),
+        ],
+        diagramCollapseText: nil,
+        diagramDefaultPanelBody: "Four beats of sample-and-vote. Tap each to see what it does.",
+
+        vizCards: [
+            DLVizCard(
+                kicker: "CARD 05 · THE VOTE WINS",
+                titleSegments: [
+                    .plain("One chain, "),
+                    .highlight("then a vote")
+                ],
+                visualization: .barChart(DLBarChartSpec(
+                    yAxisLabel: "GSM8K maths (% correct)",
+                    primaryLabel: "Accuracy",
+                    secondaryLabel: nil,
+                    yMax: 100,
+                    yTickLabels: ["0", "50", "100"],
+                    points: [
+                        DLBarPoint(label: "Greedy", sublabel: "one chain", primary: 56.0, secondary: nil,
+                                   annotation: "Taking the single most-likely chain of thought. One wrong turn and the answer is wrong, with no second opinion."),
+                        DLBarPoint(label: "Vote", sublabel: "many chains", primary: 74.0, secondary: nil,
+                                   annotation: "Sampling many chains and taking the majority answer. Same model, same prompt, roughly 18 points higher just from voting."),
+                    ],
+                    cliffIndex: 1,
+                    cliffLabel: "+ vote",
+                    defaultInsight: "Tap a bar. The only change is one chain versus a vote over many."
+                )),
+                caption: "Accuracy on GSM8K with one model. Numbers are representative of the paper's reported results.",
+                takeaway: "Voting over many chains, not a better model, drove the gain."
+            ),
+            DLVizCard(
+                kicker: "CARD 06 · MORE SAMPLES, MORE SURE",
+                titleSegments: [
+                    .plain("Accuracy climbs with "),
+                    .highlight("the count")
+                ],
+                visualization: .trainingCurve(DLTrainingCurveSpec(
+                    xAxisLabel: "chains sampled →",
+                    yAxisLabel: "accuracy →",
+                    xTickLabels: ["1", "5", "10", "20", "40"],
+                    yTickLabels: ["50", "", "80"],
+                    series: [
+                        DLTrainingCurveSeries(
+                            label: "Self-consistency",
+                            color: .teal,
+                            dashed: false,
+                            points: [
+                                DLTrainingCurvePoint(x: 0.0, y: 0.10, milestone: "1",
+                                                     annotation: "One chain is just plain chain of thought. No vote yet."),
+                                DLTrainingCurvePoint(x: 0.3, y: 0.55, milestone: "5",
+                                                     annotation: "A handful of samples already pulls the majority toward the right answer."),
+                                DLTrainingCurvePoint(x: 0.55, y: 0.75, milestone: "10",
+                                                     annotation: "Ten chains and the vote is markedly more reliable."),
+                                DLTrainingCurvePoint(x: 0.78, y: 0.9, milestone: "20",
+                                                     annotation: "Gains start to flatten. The majority is already stable."),
+                                DLTrainingCurvePoint(x: 1.0, y: 0.95, milestone: "40",
+                                                     annotation: "More samples help less and less. You trade compute for reliability with diminishing returns."),
+                            ])
+                    ],
+                    defaultInsight: "Tap a point. Accuracy rises fast with the first few samples, then plateaus."
+                )),
+                caption: "Accuracy against the number of sampled chains, normalised. Sketched from the paper's trend.",
+                takeaway: "A few samples buy most of the gain; more bring diminishing returns."
+            ),
+        ],
+
+        completeTakeaway: "\"The model did not get smarter. It got a second opinion, and a third, and then voted.\"",
+        completeNextTease: "Up next: not just voting on chains, but searching a tree of them.",
+        paperTitle: "Self-Consistency Improves Chain of Thought Reasoning in Language Models",
+        glossary: [
+            "self-consistency": "Sampling many chains of thought for one question and keeping the final answer the most of them agree on.",
+            "sample and marginalise": "Generating several reasoning paths and summing over them by their answers, then taking the majority.",
+            "majority vote": "Choosing the answer that the most sampled chains reached, like counting ballots.",
+            "greedy decoding": "Always taking the single most-likely next token, producing one deterministic chain with no variety.",
+            "temperature": "A knob on sampling randomness. Higher means more varied chains; too high turns them to noise.",
+            "chain of thought": "A line of step-by-step reasoning the model writes before its answer. Self-consistency samples many of these.",
+            "diversity": "How different the sampled chains are. Voting only helps when the chains genuinely vary.",
+            "test-time compute": "Extra computation spent when answering rather than training. Sampling many chains is a way to spend it.",
+        ],
+        learningObjectives: [
+            DLObjective(
+                text: "Why one chain of thought is fragile",
+                gloss: "A single wrong step ruins the answer, and the model still sounds confident."),
+            DLObjective(
+                text: "How voting recovers the right answer",
+                gloss: "The truth is reachable by many routes while mistakes scatter, so the majority wins."),
+            DLObjective(
+                text: "Why diversity and sample count matter",
+                gloss: "Identical samples cannot outvote a slip; more varied samples raise accuracy with diminishing returns."),
+        ],
+        explanationCard: DLExplanationCard(
+            eyebrow: "WHAT JUST HAPPENED",
+            titleSegments: [
+                .plain("Many tries, "),
+                .highlight("one answer"),
+            ],
+            mini: .selfConsistency,
+            paragraphs: [
+                DLExplanationPara(
+                    kicker: "P1 · ONE IS FRAGILE",
+                    body: "A single chain of thought can take one wrong turn and give a confident wrong answer. There is no second opinion to catch the slip."),
+                DLExplanationPara(
+                    kicker: "P2 · SAMPLE AND VOTE",
+                    body: "Self-consistency samples many chains with a little randomness so they take different routes, then ignores the reasoning and tallies the final answers, keeping the majority."),
+                DLExplanationPara(
+                    kicker: "P3 · TRUTH AGREES",
+                    body: "The right answer is usually reachable by many chains while mistakes scatter, so the vote is far more reliable. On grade-school maths it added about 18 points, with no new training."),
+            ],
+            takeaway: "Self-consistency trades a little extra compute for a vote, and the agreed answer beats any single chain."
+        ),
+        paperURL: "https://arxiv.org/abs/2203.11171"
+    )
+
+    static let treeOfThoughts = DailyLoopContent(
+        heroEyebrow: "FOUNDATIONS · REASONING",
+        heroTitleSegments: [
+            .plain("Reasoning as "),
+            .highlight("a search")
+        ],
+        heroBody: "A chain of thought commits to one line of reasoning and cannot recover from a wrong turn. Tree of thoughts branches into many thoughts, judges each, prunes the dead ones, and backtracks, solving puzzles a single chain cannot.",
+        sourceLine: "arXiv:2305.10601 · Princeton & DeepMind",
+
+        hookSegments: [
+            .plain("What if the model could "),
+            .highlight("change its mind"),
+            .plain("?")
+        ],
+        hookBody: "Solving a maze, you try a turn and walk back if it dead-ends. A chain of thought cannot do that: it picks one route and follows it off a cliff. Tree of thoughts lets the model explore instead. At each step it proposes several candidate thoughts, evaluates whether each can still reach the goal, prunes the hopeless branches, and backtracks when a path stalls. On the Game of 24, a model that solved about 4% of puzzles with one chain solved around 74% once it could search, with no retraining.",
+
+        coreIdeaSegments: [
+            .plain("Three parts of "),
+            .highlight("the search")
+        ],
+        coreIdeaItems: [
+            DLCoreIdeaItem(
+                roman: "i",
+                title: "Branch into thoughts",
+                detail: "Instead of one next step, the model proposes several candidate thoughts from the current state. Each is a different partial path, the branches of the tree."),
+            DLCoreIdeaItem(
+                roman: "ii",
+                title: "Judge each branch",
+                detail: "The model evaluates its own partial progress, labelling a branch sure, maybe, or impossible based on whether the goal is still reachable. This is the new power a chain lacks."),
+            DLCoreIdeaItem(
+                roman: "iii",
+                title: "Search and backtrack",
+                detail: "A search keeps the promising branches, prunes the dead ones, and when a path stalls it backs up to the last good fork and tries another. A wrong move is no longer fatal."),
+        ],
+
+        eliAnalogyLabel: "ANALOGY · SOLVING A MAZE",
+        eliHeadlineSegments: [
+            .plain("Like backing out of "),
+            .highlight("a dead end"),
+        ],
+        eliBodyParts: [
+            .plain("Nobody solves a maze by picking one path and refusing to turn around. You try a corridor, hit a wall, "),
+            .bold("walk back"),
+            .plain(", and try the next. Tree of thoughts gives a model that same freedom: explore a branch, and if it dead-ends, "),
+            .bold("back up and branch again"),
+            .plain("."),
+        ],
+        eliArt: .map,
+
+        diagramSegments: [
+            .plain("How the tree "),
+            .highlight("is searched")
+        ],
+        diagramLayout: .flow,
+        diagramNodes: [
+            DLDiagramNode(
+                id: "branch",
+                label: "Branch",
+                sublabel: "several thoughts",
+                panelTitle: "Branch into thoughts",
+                panelBody: "From the current state the model writes several candidate next thoughts instead of one. Each becomes a branch of the tree, a different partial attempt at the problem."),
+            DLDiagramNode(
+                id: "judge",
+                label: "Judge",
+                sublabel: "sure / maybe / no",
+                panelTitle: "Judge each branch",
+                panelBody: "The model evaluates its own partial progress on each branch, deciding whether the goal is still reachable. This self-evaluation is what a plain chain of thought never does."),
+            DLDiagramNode(
+                id: "prune",
+                label: "Prune",
+                sublabel: "drop dead ends",
+                panelTitle: "Prune the dead ends",
+                panelBody: "Branches judged impossible are abandoned, so no search effort is wasted on them. The frontier shrinks to only the paths where a solution might still live."),
+            DLDiagramNode(
+                id: "search",
+                label: "Search",
+                sublabel: "and backtrack",
+                panelTitle: "Search and backtrack",
+                panelBody: "The search keeps expanding promising branches, and when a path stalls it backtracks to the last good fork and tries another. A wrong early move can be undone, which is the whole advantage."),
+        ],
+        diagramCollapseText: nil,
+        diagramDefaultPanelBody: "Four beats of the tree search. Tap each to see what it does.",
+
+        vizCards: [
+            DLVizCard(
+                kicker: "CARD 05 · SEARCH WINS",
+                titleSegments: [
+                    .plain("Game of 24, "),
+                    .highlight("four ways")
+                ],
+                visualization: .barChart(DLBarChartSpec(
+                    yAxisLabel: "Game of 24 solved (%)",
+                    primaryLabel: "Success",
+                    secondaryLabel: nil,
+                    yMax: 100,
+                    yTickLabels: ["0", "50", "100"],
+                    points: [
+                        DLBarPoint(label: "Direct", sublabel: "answer", primary: 7.0, secondary: nil,
+                                   annotation: "Asking for the answer straight out. The puzzle needs several steps, so this almost never works."),
+                        DLBarPoint(label: "Chain", sublabel: "one line", primary: 4.0, secondary: nil,
+                                   annotation: "A single chain of thought. One wrong early move and the whole attempt is lost, with no way back."),
+                        DLBarPoint(label: "Tree", sublabel: "narrow", primary: 45.0, secondary: nil,
+                                   annotation: "A tree search that keeps just one branch at each step. Even a little exploration helps enormously."),
+                        DLBarPoint(label: "Tree", sublabel: "wider", primary: 74.0, secondary: nil,
+                                   annotation: "A wider tree that keeps several branches and backtracks. The headline result: from 4% to 74%."),
+                    ],
+                    cliffIndex: 2,
+                    cliffLabel: "search",
+                    defaultInsight: "Tap a bar. The jump comes from letting the model explore and back up, not from a bigger model."
+                )),
+                caption: "Share of Game of 24 puzzles solved by one model. Numbers are representative of the paper's reported results.",
+                takeaway: "Turning reasoning into a search is what cracked the puzzle."
+            ),
+            DLVizCard(
+                kicker: "CARD 06 · MORE EXPLORING, MORE SOLVED",
+                titleSegments: [
+                    .plain("Wider search, "),
+                    .highlight("more wins")
+                ],
+                visualization: .trainingCurve(DLTrainingCurveSpec(
+                    xAxisLabel: "branches kept →",
+                    yAxisLabel: "solved →",
+                    xTickLabels: ["1", "2", "3", "5"],
+                    yTickLabels: ["0", "", "80"],
+                    series: [
+                        DLTrainingCurveSeries(
+                            label: "Tree of thoughts",
+                            color: .teal,
+                            dashed: false,
+                            points: [
+                                DLTrainingCurvePoint(x: 0.0, y: 0.05, milestone: "1",
+                                                     annotation: "Keep one branch and it is close to a chain: little room to recover."),
+                                DLTrainingCurvePoint(x: 0.35, y: 0.45, milestone: "2",
+                                                     annotation: "Keep two and the search can already abandon a bad branch for a better one."),
+                                DLTrainingCurvePoint(x: 0.65, y: 0.65, milestone: "3",
+                                                     annotation: "Wider still: more of the tree explored, more puzzles cracked."),
+                                DLTrainingCurvePoint(x: 1.0, y: 0.74, milestone: "5",
+                                                     annotation: "Keeping five branches reaches 74%, at the cost of more thinking per puzzle."),
+                            ])
+                    ],
+                    defaultInsight: "Tap a point. Keeping more branches solves more, trading compute for success."
+                )),
+                caption: "Success against how many branches the search keeps. Sketched from the paper's results.",
+                takeaway: "Width is a dial: more exploration buys more solutions, for more compute."
+            ),
+        ],
+
+        completeTakeaway: "\"The model was not made smarter. It was allowed to explore, and to change its mind.\"",
+        completeNextTease: "Up next: reasoning trained in, not just prompted.",
+        paperTitle: "Tree of Thoughts: Deliberate Problem Solving with Large Language Models",
+        glossary: [
+            "tree of thoughts": "Reasoning shaped as a tree: at each step the model branches into several thoughts and a search explores them.",
+            "thought": "One coherent intermediate step, like a single move in a puzzle, that forms a node in the tree.",
+            "state evaluation": "The model judging a partial solution as sure, maybe, or impossible, to decide which branches to keep.",
+            "pruning": "Abandoning branches judged hopeless so the search wastes no effort on them.",
+            "backtracking": "Returning to an earlier fork after a path stalls, to try a different branch.",
+            "search": "Systematically exploring the tree of possible thoughts, for example breadth-first or depth-first.",
+            "branching factor": "How many candidate thoughts are kept at each step. Wider search solves more but costs more compute.",
+            "Game of 24": "A puzzle: combine four numbers with + - times and divide to make 24. A benchmark for deliberate reasoning.",
+            "deliberation": "Spending extra computation at answer time to weigh many possibilities before committing.",
+        ],
+        learningObjectives: [
+            DLObjective(
+                text: "Why a single chain can't recover",
+                gloss: "It commits to one line of reasoning, so an early wrong turn is fatal."),
+            DLObjective(
+                text: "How self-evaluation guides a search",
+                gloss: "The model labels branches sure, maybe, or impossible, so the search keeps only the live ones."),
+            DLObjective(
+                text: "Why backtracking unlocks hard puzzles",
+                gloss: "Backing up to a good fork turns a wrong move into just one branch among many."),
+        ],
+        explanationCard: DLExplanationCard(
+            eyebrow: "WHAT JUST HAPPENED",
+            titleSegments: [
+                .plain("It explored, "),
+                .highlight("then backed up"),
+            ],
+            mini: .treeOfThoughts,
+            paragraphs: [
+                DLExplanationPara(
+                    kicker: "P1 · BRANCH",
+                    body: "Instead of one next step, the model proposes several candidate thoughts from the current state, the branches of a tree of possible reasoning."),
+                DLExplanationPara(
+                    kicker: "P2 · JUDGE AND PRUNE",
+                    body: "The model evaluates each branch as sure, maybe, or impossible based on whether the goal is still reachable, and the hopeless ones are pruned so no effort is wasted."),
+                DLExplanationPara(
+                    kicker: "P3 · SEARCH AND BACK UP",
+                    body: "A search follows the promising branches and backtracks when a path stalls. A wrong early move is no longer fatal, which lifted Game of 24 from about 4% to 74%."),
+            ],
+            takeaway: "Tree of thoughts turns reasoning into a search the model can back out of, cracking puzzles a single chain cannot."
+        ),
+        paperURL: "https://arxiv.org/abs/2305.10601"
+    )
+
+    static let leastToMost = DailyLoopContent(
+        heroEyebrow: "FOUNDATIONS · REASONING",
+        heroTitleSegments: [
+            .plain("Easiest "),
+            .highlight("step first")
+        ],
+        heroBody: "Don't solve the hard problem in one go. Break it into a list of simpler subquestions, ordered easiest first, then solve them in sequence so each answer feeds the next. This lets a model solve problems deeper than its examples.",
+        sourceLine: "arXiv:2205.10625 · Google",
+
+        hookSegments: [
+            .plain("What if you "),
+            .highlight("planned the steps"),
+            .plain(" first?")
+        ],
+        hookBody: "Chain of thought reasons in one pass and tends to copy the difficulty of its examples, so it stumbles on problems harder than what it was shown. Least-to-most splits the job into two stages. First it decomposes the problem into simpler subquestions, ordered easiest to hardest. Then it solves them in sequence, feeding each answer into the next subquestion. Because the model only ever faces one small step, it generalises to problems far deeper than its examples, where chain of thought scores near zero.",
+
+        coreIdeaSegments: [
+            .plain("Two stages, "),
+            .highlight("one big win")
+        ],
+        coreIdeaItems: [
+            DLCoreIdeaItem(
+                roman: "i",
+                title: "Decompose first",
+                detail: "Before solving anything, the model lists the simpler subquestions the problem breaks into, ordered easiest first. This plan is produced as an explicit step of its own."),
+            DLCoreIdeaItem(
+                roman: "ii",
+                title: "Solve in sequence",
+                detail: "It answers the subquestions one at a time, and the answer to each is substituted into the next subquestion. No single step is ever harder than one small hop."),
+            DLCoreIdeaItem(
+                roman: "iii",
+                title: "Generalise past the examples",
+                detail: "Because any problem reduces to a chain of one-step pieces, least-to-most solves cases longer and deeper than the examples in its prompt, which a single chain cannot."),
+        ],
+
+        eliAnalogyLabel: "ANALOGY · A RECIPE IN STEPS",
+        eliHeadlineSegments: [
+            .plain("Like following "),
+            .highlight("a recipe"),
+        ],
+        eliBodyParts: [
+            .plain("Nobody cooks a complicated dish in one motion. You "),
+            .bold("break it into steps"),
+            .plain(", do them in order, and each finished step sets up the next. Least-to-most gives a model that same recipe: list the small steps first, then "),
+            .bold("work them in sequence"),
+            .plain("."),
+        ],
+        eliArt: .kitchen,
+
+        diagramSegments: [
+            .plain("How it "),
+            .highlight("breaks down")
+        ],
+        diagramLayout: .flow,
+        diagramNodes: [
+            DLDiagramNode(
+                id: "problem",
+                label: "Problem",
+                sublabel: "the hard one",
+                panelTitle: "The hard problem",
+                panelBody: "You start with a multi-step problem that a single chain of thought tends to fumble, especially if it is deeper than the examples the model was shown."),
+            DLDiagramNode(
+                id: "decompose",
+                label: "Decompose",
+                sublabel: "list subquestions",
+                panelTitle: "Decompose into subquestions",
+                panelBody: "Stage one. The model writes a plan: the simpler subquestions the problem breaks into, ordered easiest first. No answers yet, just the breakdown."),
+            DLDiagramNode(
+                id: "solve",
+                label: "Solve",
+                sublabel: "one at a time",
+                panelTitle: "Solve in sequence",
+                panelBody: "Stage two. It answers the easiest subquestion, then the next, working up the list. Each step is small enough that the model handles it reliably."),
+            DLDiagramNode(
+                id: "carry",
+                label: "Carry",
+                sublabel: "feed the next",
+                panelTitle: "Carry answers forward",
+                panelBody: "The answer to each subquestion is substituted into the next one before it is solved. The pieces fill in until the last subquestion is the whole problem, already worked out."),
+        ],
+        diagramCollapseText: nil,
+        diagramDefaultPanelBody: "Four beats of decompose-and-solve. Tap each to see what it does.",
+
+        vizCards: [
+            DLVizCard(
+                kicker: "CARD 05 · COMPOSITION CRACKED",
+                titleSegments: [
+                    .plain("Where a chain "),
+                    .highlight("gives up")
+                ],
+                visualization: .barChart(DLBarChartSpec(
+                    yAxisLabel: "compositional task solved (%)",
+                    primaryLabel: "Accuracy",
+                    secondaryLabel: nil,
+                    yMax: 100,
+                    yTickLabels: ["0", "50", "100"],
+                    points: [
+                        DLBarPoint(label: "Chain", sublabel: "one pass", primary: 16.0, secondary: nil,
+                                   annotation: "A single chain of thought imitates the depth of its examples and fails when the test problem is longer or deeper."),
+                        DLBarPoint(label: "Least to most", sublabel: "decompose", primary: 99.0, secondary: nil,
+                                   annotation: "Reducing the problem to one-step subquestions solves nearly all of them, however deep they go."),
+                    ],
+                    cliffIndex: 1,
+                    cliffLabel: "decompose",
+                    defaultInsight: "Tap a bar. On tasks built to test composition, decomposition is the difference between near-zero and near-perfect."
+                )),
+                caption: "Accuracy on a benchmark of problems deeper than the prompt examples. Representative of the paper's results.",
+                takeaway: "Decomposing first is what unlocked the harder problems."
+            ),
+            DLVizCard(
+                kicker: "CARD 06 · IT HELD AT DEPTH",
+                titleSegments: [
+                    .plain("Steady as problems "),
+                    .highlight("deepen")
+                ],
+                visualization: .trainingCurve(DLTrainingCurveSpec(
+                    xAxisLabel: "problem depth →",
+                    yAxisLabel: "accuracy →",
+                    xTickLabels: ["2", "3", "5", "8"],
+                    yTickLabels: ["0", "", "100"],
+                    series: [
+                        DLTrainingCurveSeries(
+                            label: "Chain",
+                            color: .rose,
+                            dashed: true,
+                            points: [
+                                DLTrainingCurvePoint(x: 0.0, y: 0.90, milestone: "2",
+                                                     annotation: "At the depth of the examples, a chain is fine."),
+                                DLTrainingCurvePoint(x: 0.3, y: 0.60, milestone: "3",
+                                                     annotation: "One step deeper than shown, and the chain starts to slip."),
+                                DLTrainingCurvePoint(x: 0.65, y: 0.22, milestone: "5",
+                                                     annotation: "Well beyond example depth: the chain mostly fails."),
+                                DLTrainingCurvePoint(x: 1.0, y: 0.04, milestone: "8",
+                                                     annotation: "Far deeper than training, and a single chain collapses."),
+                            ]),
+                        DLTrainingCurveSeries(
+                            label: "Least to most",
+                            color: .teal,
+                            dashed: false,
+                            points: [
+                                DLTrainingCurvePoint(x: 0.0, y: 0.95, milestone: nil,
+                                                     annotation: "Just as strong on the shallow case."),
+                                DLTrainingCurvePoint(x: 0.3, y: 0.93, milestone: nil,
+                                                     annotation: "One step deeper is just one more subquestion."),
+                                DLTrainingCurvePoint(x: 0.65, y: 0.90, milestone: nil,
+                                                     annotation: "Still strong: each step stayed small."),
+                                DLTrainingCurvePoint(x: 1.0, y: 0.86, milestone: "8",
+                                                     annotation: "Far past the example depth, decomposition still solves it."),
+                            ])
+                    ],
+                    defaultInsight: "Tap a point. As problems deepen the chain falls off while decomposition holds."
+                )),
+                caption: "Accuracy against problem depth. Sketched from the paper's compositional-generalisation results.",
+                takeaway: "Small one-step pieces make depth almost free."
+            ),
+        ],
+
+        completeTakeaway: "\"The model did not get smarter. It was asked to break the problem down before it solved it.\"",
+        completeNextTease: "Up next: reasoning that reaches out and acts on the world.",
+        paperTitle: "Least-to-Most Prompting Enables Complex Reasoning in Large Language Models",
+        glossary: [
+            "least-to-most": "Prompting that decomposes a problem into easier subquestions, then solves them in order, each feeding the next.",
+            "decomposition": "Breaking a hard problem into a list of simpler subproblems before solving any of them.",
+            "subquestion": "One of the smaller questions a problem is broken into, ordered easiest first.",
+            "compositional generalisation": "Solving problems that combine more steps than any example seen in training.",
+            "substitution": "Slotting the answer of one subquestion into the next subquestion before solving it.",
+            "chain of thought": "Step-by-step reasoning written in one pass. Least-to-most adds an explicit decomposition stage first.",
+            "two-stage prompting": "First decompose the problem, then solve the subquestions in sequence.",
+            "sequential solving": "Answering subproblems one at a time so each builds on the answers before it.",
+        ],
+        learningObjectives: [
+            DLObjective(
+                text: "Why a single chain stalls on deep problems",
+                gloss: "It copies the depth of its examples and gives up when the problem is deeper."),
+            DLObjective(
+                text: "How decomposition makes steps easy",
+                gloss: "Each subquestion is a small hop, and its answer feeds the next."),
+            DLObjective(
+                text: "Why it generalises past its examples",
+                gloss: "Any problem reduces to one-step pieces, so depth barely matters."),
+        ],
+        explanationCard: DLExplanationCard(
+            eyebrow: "WHAT JUST HAPPENED",
+            titleSegments: [
+                .plain("It planned, "),
+                .highlight("then solved"),
+            ],
+            mini: .leastToMost,
+            paragraphs: [
+                DLExplanationPara(
+                    kicker: "P1 · DECOMPOSE",
+                    body: "Stage one writes a plan: the simpler subquestions the problem breaks into, ordered easiest first, before any answering happens."),
+                DLExplanationPara(
+                    kicker: "P2 · SOLVE AND CARRY",
+                    body: "Stage two answers the subquestions in sequence, substituting each answer into the next, so the model only ever faces one small step."),
+                DLExplanationPara(
+                    kicker: "P3 · GENERALISE",
+                    body: "Because any problem reduces to one-step pieces, least-to-most solves cases far deeper than the examples, where a single chain scores near zero."),
+            ],
+            takeaway: "Least-to-most decomposes before it solves, turning a deep problem into a ladder of easy steps."
+        ),
+        paperURL: "https://arxiv.org/abs/2205.10625"
+    )
+
+    static let reAct = DailyLoopContent(
+        heroEyebrow: "FOUNDATIONS · REASONING",
+        heroTitleSegments: [
+            .plain("Think, "),
+            .highlight("then look")
+        ],
+        heroBody: "A model that only reasons can talk itself into confident nonsense. ReAct interleaves a thought, an action such as a search, and an observation of the result, looping until done, so the reasoning stays anchored to real facts.",
+        sourceLine: "arXiv:2210.03629 · Princeton & Google",
+
+        hookSegments: [
+            .plain("What if it could "),
+            .highlight("check its work"),
+            .plain("?")
+        ],
+        hookBody: "Chain of thought only reasons, and with nothing to check against it can reason its way to a confident wrong answer. ReAct adds the missing half. The model interleaves a thought with an action, calling a tool like a search box, then reads the observation that comes back before thinking again. The reasoning decides what to look up, and the observations feed real facts in, so the model hallucinates less and leaves a readable trail of exactly what it did and why.",
+
+        coreIdeaSegments: [
+            .plain("Three moves, "),
+            .highlight("on a loop")
+        ],
+        coreIdeaItems: [
+            DLCoreIdeaItem(
+                roman: "i",
+                title: "Thought",
+                detail: "The model reasons about what it knows and what it still needs. This is where it decides the next action, rather than charging straight to an answer."),
+            DLCoreIdeaItem(
+                roman: "ii",
+                title: "Action",
+                detail: "It calls a tool, most often a search, written as text the environment runs. Acting fetches information the model could not reliably recall on its own."),
+            DLCoreIdeaItem(
+                roman: "iii",
+                title: "Observation",
+                detail: "The tool's result comes back and is fed into the next thought. This is the grounding step: a real fact that can overrule a plausible-sounding guess."),
+        ],
+
+        eliAnalogyLabel: "ANALOGY · LOOK IT UP",
+        eliHeadlineSegments: [
+            .plain("Like checking "),
+            .highlight("the reference"),
+        ],
+        eliBodyParts: [
+            .plain("A careful researcher does not just think harder until they feel sure. They "),
+            .bold("look it up"),
+            .plain(", read what they find, and adjust. ReAct gives a model that habit: reason about what is missing, "),
+            .bold("go and fetch it"),
+            .plain(", then reason again with the fact in hand."),
+        ],
+        eliArt: .librarian,
+
+        diagramSegments: [
+            .plain("How the loop "),
+            .highlight("turns")
+        ],
+        diagramLayout: .flow,
+        diagramNodes: [
+            DLDiagramNode(
+                id: "thought",
+                label: "Thought",
+                sublabel: "what's missing?",
+                panelTitle: "Thought",
+                panelBody: "The model reasons about the question and what it still needs to answer it. Instead of guessing, it decides what action would actually help next."),
+            DLDiagramNode(
+                id: "action",
+                label: "Action",
+                sublabel: "use a tool",
+                panelTitle: "Action",
+                panelBody: "It writes a tool call, such as a search, as plain text. An external system runs it. This is how the model reaches beyond its own memory."),
+            DLDiagramNode(
+                id: "observation",
+                label: "Observation",
+                sublabel: "real result",
+                panelTitle: "Observation",
+                panelBody: "The result returns and is added to the context. A real fact now sits in front of the model, ready to correct or confirm its reasoning."),
+            DLDiagramNode(
+                id: "finish",
+                label: "Finish",
+                sublabel: "or loop again",
+                panelTitle: "Finish, or loop",
+                panelBody: "If the observation answers the question, the model finishes. If not, it thinks again and acts again. The loop repeats until grounded enough to commit."),
+        ],
+        diagramCollapseText: nil,
+        diagramDefaultPanelBody: "Four beats of the reason-act loop. Tap each to see what it does.",
+
+        vizCards: [
+            DLVizCard(
+                kicker: "CARD 05 · GROUNDING WINS",
+                titleSegments: [
+                    .plain("Reasoning, "),
+                    .highlight("plus acting")
+                ],
+                visualization: .barChart(DLBarChartSpec(
+                    yAxisLabel: "question answering (% correct)",
+                    primaryLabel: "Accuracy",
+                    secondaryLabel: nil,
+                    yMax: 60,
+                    yTickLabels: ["0", "30", "60"],
+                    points: [
+                        DLBarPoint(label: "Reason only", sublabel: "no tools", primary: 28.0, secondary: nil,
+                                   annotation: "Chain of thought with no way to check facts. It reasons fluently but cannot catch its own mistakes."),
+                        DLBarPoint(label: "Act only", sublabel: "no reasoning", primary: 25.0, secondary: nil,
+                                   annotation: "Tool calls with no reasoning to guide them. It fetches things, but not always the right things."),
+                        DLBarPoint(label: "ReAct", sublabel: "both", primary: 35.0, secondary: nil,
+                                   annotation: "Reasoning chooses what to look up and observations keep it honest. The two together beat either alone."),
+                    ],
+                    cliffIndex: 2,
+                    cliffLabel: "react",
+                    defaultInsight: "Tap a bar. Reasoning and acting each help a little; together they help most."
+                )),
+                caption: "Accuracy on knowledge-intensive question answering. Representative of the paper's reported results.",
+                takeaway: "The synergy of reasoning and acting is the point."
+            ),
+            DLVizCard(
+                kicker: "CARD 06 · FEWER MADE-UP FACTS",
+                titleSegments: [
+                    .plain("Hallucination "),
+                    .highlight("drops")
+                ],
+                visualization: .barChart(DLBarChartSpec(
+                    yAxisLabel: "answers with a made-up fact (%)",
+                    primaryLabel: "Hallucination",
+                    secondaryLabel: nil,
+                    yMax: 80,
+                    yTickLabels: ["0", "40", "80"],
+                    points: [
+                        DLBarPoint(label: "Reason only", sublabel: "from memory", primary: 56.0, secondary: nil,
+                                   annotation: "With no observation to check against, more than half of failures invented a fact that sounded right."),
+                        DLBarPoint(label: "ReAct", sublabel: "grounded", primary: 23.0, secondary: nil,
+                                   annotation: "Because each claim could be checked against a real lookup, far fewer answers contained a made-up fact. Lower is better."),
+                    ],
+                    cliffIndex: 1,
+                    cliffLabel: "grounded",
+                    defaultInsight: "Tap a bar. Lower is better: grounding in observations roughly halves invented facts."
+                )),
+                caption: "Share of wrong answers that contained a hallucinated fact. Lower is better. Representative of the paper.",
+                takeaway: "An observation can overrule a plausible but false memory."
+            ),
+        ],
+
+        completeTakeaway: "\"Reasoning decided what to do. Acting told it whether it was right.\"",
+        completeNextTease: "Up next: a model that teaches itself which tools to call.",
+        paperTitle: "ReAct: Synergizing Reasoning and Acting in Language Models",
+        glossary: [
+            "react": "Prompting that interleaves reasoning (thoughts) with acting (tool calls) and observations, looping until the task is done.",
+            "thought": "A reasoning step where the model decides what it knows, what it needs, and what action to take next.",
+            "action": "A tool call the model writes as text, such as a search, run by an external system.",
+            "observation": "The result returned by an action, fed back into the reasoning to keep it grounded.",
+            "tool use": "Letting a model call external systems, like search or a calculator, instead of relying only on memory.",
+            "hallucination": "A confident but false statement a model produces when it has nothing to check against.",
+            "grounding": "Anchoring reasoning in real observations from tools or the environment.",
+            "agent": "A model that loops between thinking and acting to carry out a multi-step task.",
+        ],
+        learningObjectives: [
+            DLObjective(
+                text: "Why pure reasoning can hallucinate",
+                gloss: "It has nothing to check against, so it cannot catch its own mistakes."),
+            DLObjective(
+                text: "How the thought-act-observe loop works",
+                gloss: "Reasoning picks an action, the tool returns a fact, reasoning continues."),
+            DLObjective(
+                text: "Why grounding cuts made-up facts",
+                gloss: "A real observation can overrule a plausible but wrong memory."),
+        ],
+        explanationCard: DLExplanationCard(
+            eyebrow: "WHAT JUST HAPPENED",
+            titleSegments: [
+                .plain("It reasoned, "),
+                .highlight("and checked"),
+            ],
+            mini: .reAct,
+            paragraphs: [
+                DLExplanationPara(
+                    kicker: "P1 · REASON HAS LIMITS",
+                    body: "A model that only reasons has no way to verify its claims, so it can produce a confident answer built on a wrong memory."),
+                DLExplanationPara(
+                    kicker: "P2 · ACT AND OBSERVE",
+                    body: "ReAct interleaves a thought with an action, such as a search, then reads the observation. The reasoning chooses what to look up; the observation supplies a real fact."),
+                DLExplanationPara(
+                    kicker: "P3 · GROUNDED AND LEGIBLE",
+                    body: "Checking each step against an observation cuts hallucination, and the thought-action-observation trail makes the model's behaviour easy to read and trust."),
+            ],
+            takeaway: "ReAct lets a model act on the world and react to what it finds, keeping its reasoning honest."
+        ),
+        paperURL: "https://arxiv.org/abs/2210.03629"
+    )
+
+    static let toolformer = DailyLoopContent(
+        heroEyebrow: "FOUNDATIONS · REASONING",
+        heroTitleSegments: [
+            .plain("It learns to "),
+            .highlight("use tools")
+        ],
+        heroBody: "A language model is shaky at arithmetic, fresh facts, and dates. Toolformer teaches itself to insert API calls into its own text, keeping only the calls whose results make the next words easier to predict, with no human labels.",
+        sourceLine: "arXiv:2302.04761 · Meta",
+
+        hookSegments: [
+            .plain("What if it "),
+            .highlight("taught itself"),
+            .plain(" to call tools?")
+        ],
+        hookBody: "Models are great at language but unreliable at sums, recent facts, and dates. The obvious fix is to let them call tools, but who labels where, in billions of words, a calculator or a search belongs? Toolformer's answer is self-supervision. The model samples candidate API calls in its own text, runs them, and keeps a call only if its result makes the following words easier to predict. It is then fine-tuned on that filtered data, so at inference it reaches for a calculator, a search, a calendar, or a translator on its own. A modest model trained this way beat far larger ones on tasks needing facts and arithmetic.",
+
+        coreIdeaSegments: [
+            .plain("Teach yourself "),
+            .highlight("in three moves")
+        ],
+        coreIdeaItems: [
+            DLCoreIdeaItem(
+                roman: "i",
+                title: "A call is just text",
+                detail: "An API call like [Calculator(400/1400)] is text the model writes. An external program runs it and pastes the result back, so writing words and writing tool calls are the same skill."),
+            DLCoreIdeaItem(
+                roman: "ii",
+                title: "Keep only what helps",
+                detail: "At each position the model tries candidate calls, executes them, and keeps a call only if its result lowers the loss on the next tokens. Useless calls are discarded. No human labels."),
+            DLCoreIdeaItem(
+                roman: "iii",
+                title: "Then fine-tune",
+                detail: "The model is trained on the text augmented with the calls that helped. Afterwards it inserts the right call, for the right tool, at the right place, all on its own."),
+        ],
+
+        eliAnalogyLabel: "ANALOGY · KNOW WHEN TO REACH",
+        eliHeadlineSegments: [
+            .plain("Like grabbing "),
+            .highlight("a calculator"),
+        ],
+        eliBodyParts: [
+            .plain("You don't do big sums in your head; you reach for a calculator, and you know "),
+            .bold("when"),
+            .plain(" to without being told. Toolformer is a model that learned the same instinct from its own writing: it noticed where a tool "),
+            .bold("would have helped"),
+            .plain(" and kept that habit."),
+        ],
+        eliArt: .exoskeleton,
+
+        diagramSegments: [
+            .plain("How it "),
+            .highlight("teaches itself")
+        ],
+        diagramLayout: .flow,
+        diagramNodes: [
+            DLDiagramNode(
+                id: "sample",
+                label: "Sample",
+                sublabel: "try calls",
+                panelTitle: "Sample candidate calls",
+                panelBody: "In ordinary text the model proposes places a tool might help and writes candidate API calls there, for example a calculator call before a percentage."),
+            DLDiagramNode(
+                id: "execute",
+                label: "Execute",
+                sublabel: "run them",
+                panelTitle: "Execute the calls",
+                panelBody: "Each candidate call is actually run by the external tool, producing a real result that can be slotted back into the text where the call was."),
+            DLDiagramNode(
+                id: "filter",
+                label: "Filter",
+                sublabel: "does it help?",
+                panelTitle: "Keep only what helps",
+                panelBody: "The key test: does the result make the following words easier to predict? Calls that lower the loss are kept; calls that do not are thrown away. This is the self-supervision."),
+            DLDiagramNode(
+                id: "finetune",
+                label: "Fine-tune",
+                sublabel: "learn the habit",
+                panelTitle: "Fine-tune on the keepers",
+                panelBody: "The model is trained on text augmented with the helpful calls. Afterwards it writes the right call for the right tool by itself, with no prompting."),
+        ],
+        diagramCollapseText: nil,
+        diagramDefaultPanelBody: "Four beats of self-taught tool use. Tap each to see what it does.",
+
+        vizCards: [
+            DLVizCard(
+                kicker: "CARD 05 · SMALL MODEL, BIG REACH",
+                titleSegments: [
+                    .plain("Tools beat "),
+                    .highlight("raw size")
+                ],
+                visualization: .barChart(DLBarChartSpec(
+                    yAxisLabel: "math benchmark (% correct)",
+                    primaryLabel: "Accuracy",
+                    secondaryLabel: nil,
+                    yMax: 60,
+                    yTickLabels: ["0", "30", "60"],
+                    points: [
+                        DLBarPoint(label: "No tools", sublabel: "6B", primary: 7.0, secondary: nil,
+                                   annotation: "The base model with no tools does arithmetic in its head and mostly gets it wrong."),
+                        DLBarPoint(label: "Big model", sublabel: "175B", primary: 34.0, secondary: nil,
+                                   annotation: "A model many times larger, still with no tools, does much better but not perfectly."),
+                        DLBarPoint(label: "Toolformer", sublabel: "6B + tools", primary: 40.0, secondary: nil,
+                                   annotation: "The small model that learned to call a calculator beats the giant, because it stops guessing and computes."),
+                    ],
+                    cliffIndex: 2,
+                    cliffLabel: "tools",
+                    defaultInsight: "Tap a bar. A 6B model with tools outscored a 175B model without them."
+                )),
+                caption: "Accuracy on a math-heavy benchmark. Numbers are representative of the paper's reported results.",
+                takeaway: "Knowing when to call a tool beat sheer scale."
+            ),
+            DLVizCard(
+                kicker: "CARD 06 · ONLY KEEP THE KEEPERS",
+                titleSegments: [
+                    .plain("Helpful calls "),
+                    .highlight("survive")
+                ],
+                visualization: .barChart(DLBarChartSpec(
+                    yAxisLabel: "makes next words easier to predict",
+                    primaryLabel: "Usefulness",
+                    secondaryLabel: nil,
+                    yMax: 100,
+                    yTickLabels: ["low", "", "high"],
+                    points: [
+                        DLBarPoint(label: "No call", sublabel: "baseline", primary: 12.0, secondary: nil,
+                                   annotation: "Without help the model must guess the number, so the next words stay hard to predict."),
+                        DLBarPoint(label: "Wrong call", sublabel: "irrelevant", primary: 8.0, secondary: nil,
+                                   annotation: "A valid but irrelevant call returns something unrelated, so it does not help prediction and is discarded."),
+                        DLBarPoint(label: "Right call", sublabel: "relevant", primary: 88.0, secondary: nil,
+                                   annotation: "The call whose result is exactly what the sentence needs makes the next words easy to predict, so it is kept."),
+                    ],
+                    cliffIndex: 2,
+                    cliffLabel: "keep",
+                    defaultInsight: "Tap a bar. A call is kept only when its result helps predict what comes next."
+                )),
+                caption: "How much each candidate call helped predict the following words, the filter that decides what to keep.",
+                takeaway: "The training signal is prediction, not human labels."
+            ),
+        ],
+
+        completeTakeaway: "\"Nobody told it where a tool helps. It tried, measured, and kept what worked.\"",
+        completeNextTease: "You have finished the reasoning trunk of the foundations.",
+        paperTitle: "Toolformer: Language Models Can Teach Themselves to Use Tools",
+        glossary: [
+            "toolformer": "A model that teaches itself to insert API calls into its text, keeping only the calls that help predict the next words.",
+            "api call": "A tool request the model writes as text, such as [Calculator(2+2)], which an external program runs.",
+            "self-supervised": "Learning without human labels, here by checking whether a tool's result improves next-word prediction.",
+            "loss": "A measure of prediction error. A call is kept when its result lowers the loss on the following tokens.",
+            "fine-tuning": "Further training the model, here on text augmented with the tool calls that proved helpful.",
+            "tool use": "Calling external systems like a calculator, search, calendar, or translator instead of relying on memory.",
+            "filtering": "Discarding candidate calls whose results do not make the next words easier to predict.",
+            "function calling": "The modern descendant: models emitting structured calls to tools and APIs on their own.",
+        ],
+        learningObjectives: [
+            DLObjective(
+                text: "Why models need tools",
+                gloss: "They are unreliable at arithmetic, fresh facts, and dates."),
+            DLObjective(
+                text: "How it learns without labels",
+                gloss: "Keep a call only if its result helps predict the next words."),
+            DLObjective(
+                text: "Why self-taught tools beat scale",
+                gloss: "A small model that computes outscored a much larger one that guessed."),
+        ],
+        explanationCard: DLExplanationCard(
+            eyebrow: "WHAT JUST HAPPENED",
+            titleSegments: [
+                .plain("It taught itself "),
+                .highlight("when to call"),
+            ],
+            mini: .toolformer,
+            paragraphs: [
+                DLExplanationPara(
+                    kicker: "P1 · A CALL IS TEXT",
+                    body: "A tool call is just text the model writes, run by an external program, with the result pasted back. So writing words and writing calls are one skill."),
+                DLExplanationPara(
+                    kicker: "P2 · KEEP WHAT HELPS",
+                    body: "The model samples candidate calls, runs them, and keeps only those whose results make the following words easier to predict. No human ever labels where tools belong."),
+                DLExplanationPara(
+                    kicker: "P3 · THEN FINE-TUNE",
+                    body: "Trained on the calls that helped, the model learns to reach for the right tool unprompted. A small Toolformer beat much larger models on facts and arithmetic."),
+            ],
+            takeaway: "Toolformer turns tool use into a self-taught skill, learned from whether a call improves prediction."
+        ),
+        paperURL: "https://arxiv.org/abs/2302.04761"
+    )
+
+    static let grokking = DailyLoopContent(
+        heroEyebrow: "FOUNDATIONS · REASONING",
+        heroTitleSegments: [
+            .plain("It clicks, "),
+            .highlight("eventually")
+        ],
+        heroBody: "A small network memorises its training data, looks hopelessly overfit, then keeps training and suddenly generalises near perfectly. Generalisation arriving long after overfitting is called grokking, and weight decay is what drives it.",
+        sourceLine: "arXiv:2201.02177 · OpenAI",
+
+        hookSegments: [
+            .plain("What if overfitting "),
+            .highlight("wasn't the end"),
+            .plain("?")
+        ],
+        hookBody: "Train a small model on a task like modular arithmetic and it memorises the training set fast: 100% training accuracy, validation stuck at chance. Textbook overfitting, the point where everyone stops. But keep training, tens of thousands of steps past that, and validation accuracy suddenly snaps to near 100%. The same network that looked hopelessly overfit has discovered the underlying rule. This delayed jump from memorising to generalising is grokking, and it only happens with enough weight decay, a gentle pressure toward simpler weights.",
+
+        coreIdeaSegments: [
+            .plain("Three beats of "),
+            .highlight("a late leap")
+        ],
+        coreIdeaItems: [
+            DLCoreIdeaItem(
+                roman: "i",
+                title: "Memorise fast",
+                detail: "The network reaches perfect training accuracy almost immediately while validation sits at chance. It has become a lookup table: great on seen pairs, lost on new ones."),
+            DLCoreIdeaItem(
+                roman: "ii",
+                title: "Generalise late",
+                detail: "Long after the training loss flatlined, validation accuracy suddenly climbs to near 100%. The model has switched from memorising answers to computing the rule that produces them."),
+            DLCoreIdeaItem(
+                roman: "iii",
+                title: "Weight decay drives it",
+                detail: "The switch is not luck. Pressure toward simpler weights makes the compact rule a better deal than a giant lookup table. Remove that pressure and the model never groks."),
+        ],
+
+        eliAnalogyLabel: "ANALOGY · DRILLING A SKILL",
+        eliHeadlineSegments: [
+            .plain("Like practice that "),
+            .highlight("finally clicks"),
+        ],
+        eliBodyParts: [
+            .plain("You drill scales or vocabulary for ages, feeling like you've only "),
+            .bold("memorised"),
+            .plain(" them, getting nowhere. Then one day, far later than you expected, it just "),
+            .bold("clicks"),
+            .plain(" and you can improvise. Grokking is a network having that exact late breakthrough."),
+        ],
+        eliArt: .scratchPaper,
+
+        diagramSegments: [
+            .plain("How the leap "),
+            .highlight("unfolds")
+        ],
+        diagramLayout: .flow,
+        diagramNodes: [
+            DLDiagramNode(
+                id: "memorise",
+                label: "Memorise",
+                sublabel: "train 100%",
+                panelTitle: "Memorise the data",
+                panelBody: "Early in training the network fits the training set perfectly. Validation accuracy stays at chance, because a memorised table has no entry for pairs it never saw."),
+            DLDiagramNode(
+                id: "plateau",
+                label: "Plateau",
+                sublabel: "looks overfit",
+                panelTitle: "The overfit plateau",
+                panelBody: "For a long stretch nothing seems to change. Training is perfect, validation is flat. This is exactly where conventional wisdom says to stop and call it overfit."),
+            DLDiagramNode(
+                id: "grok",
+                label: "Grok",
+                sublabel: "val leaps",
+                panelTitle: "Generalisation kicks in",
+                panelBody: "Then, far past the plateau, validation accuracy suddenly climbs to near 100%. The model has found the rule behind the data, not just stored the answers."),
+            DLDiagramNode(
+                id: "decay",
+                label: "Why",
+                sublabel: "weight decay",
+                panelTitle: "What made it switch",
+                panelBody: "Weight decay pressures the network toward simpler weights. The rule is simpler than a huge lookup table, so eventually it wins. Without weight decay the leap never comes."),
+        ],
+        diagramCollapseText: nil,
+        diagramDefaultPanelBody: "Four beats from memorising to grokking. Tap each to see what it does.",
+
+        vizCards: [
+            DLVizCard(
+                kicker: "CARD 05 · THE LATE LEAP",
+                titleSegments: [
+                    .plain("Validation wakes up "),
+                    .highlight("late")
+                ],
+                visualization: .trainingCurve(DLTrainingCurveSpec(
+                    xAxisLabel: "training steps (log) →",
+                    yAxisLabel: "accuracy →",
+                    xTickLabels: ["1k", "10k", "100k", "1M"],
+                    yTickLabels: ["0", "", "100"],
+                    series: [
+                        DLTrainingCurveSeries(
+                            label: "Train",
+                            color: .ink,
+                            dashed: true,
+                            points: [
+                                DLTrainingCurvePoint(x: 0.0, y: 1.0, milestone: "1k",
+                                                     annotation: "Training accuracy is already perfect: the model has memorised the data."),
+                                DLTrainingCurvePoint(x: 0.33, y: 1.0, milestone: nil,
+                                                     annotation: "Still perfect on training, and it stays that way the whole time."),
+                                DLTrainingCurvePoint(x: 0.66, y: 1.0, milestone: nil,
+                                                     annotation: "The training curve gives no hint that anything is about to change."),
+                                DLTrainingCurvePoint(x: 1.0, y: 1.0, milestone: nil,
+                                                     annotation: "Train accuracy was maxed out from the very start."),
+                            ]),
+                        DLTrainingCurveSeries(
+                            label: "Validation",
+                            color: .teal,
+                            dashed: false,
+                            points: [
+                                DLTrainingCurvePoint(x: 0.0, y: 0.05, milestone: nil,
+                                                     annotation: "Validation is at chance: the memorised table is useless on unseen pairs."),
+                                DLTrainingCurvePoint(x: 0.33, y: 0.06, milestone: "10k",
+                                                     annotation: "Tens of thousands of steps later, still flat. This is the overfit plateau."),
+                                DLTrainingCurvePoint(x: 0.66, y: 0.72, milestone: "100k",
+                                                     annotation: "Then it suddenly starts to climb. The model is grokking the rule."),
+                                DLTrainingCurvePoint(x: 1.0, y: 0.99, milestone: "1M",
+                                                     annotation: "It now generalises almost perfectly, long after it looked hopelessly overfit."),
+                            ])
+                    ],
+                    defaultInsight: "Tap a point. Train is perfect throughout; validation does nothing for ages, then leaps."
+                )),
+                caption: "Accuracy against training steps on a log axis. Sketched from the paper's grokking curves.",
+                takeaway: "Generalisation is a separate phase that can arrive much later than memorisation."
+            ),
+            DLVizCard(
+                kicker: "CARD 06 · THE KNOB THAT DECIDES",
+                titleSegments: [
+                    .plain("Weight decay "),
+                    .highlight("makes or breaks it")
+                ],
+                visualization: .barChart(DLBarChartSpec(
+                    yAxisLabel: "final validation accuracy (%)",
+                    primaryLabel: "Validation",
+                    secondaryLabel: nil,
+                    yMax: 100,
+                    yTickLabels: ["0", "50", "100"],
+                    points: [
+                        DLBarPoint(label: "None", sublabel: "no decay", primary: 5.0, secondary: nil,
+                                   annotation: "With no pressure to simplify, the model stays a lookup table forever and never groks."),
+                        DLBarPoint(label: "Tiny", sublabel: "a little", primary: 64.0, secondary: nil,
+                                   annotation: "A little weight decay eventually nudges it toward the rule, but slowly and not as far."),
+                        DLBarPoint(label: "Just right", sublabel: "sweet spot", primary: 99.0, secondary: nil,
+                                   annotation: "Enough pressure tips the model off the memorising solution and onto the rule. It groks."),
+                        DLBarPoint(label: "Too high", sublabel: "overdone", primary: 18.0, secondary: nil,
+                                   annotation: "Crank it too far and the weights are punished so hard the model can't even fit the data."),
+                    ],
+                    cliffIndex: 2,
+                    cliffLabel: "groks",
+                    defaultInsight: "Tap a bar. Only the right amount of weight decay tips the model into generalising."
+                )),
+                caption: "Final validation accuracy by weight-decay strength. Representative of the paper's findings.",
+                takeaway: "Grokking is driven by regularisation, not by more data."
+            ),
+        ],
+
+        completeTakeaway: "\"The network did not get more data. It was pushed toward simpler weights until the rule beat the lookup table.\"",
+        completeNextTease: "Up next: abilities that appear only once a model is big enough.",
+        paperTitle: "Grokking: Generalization Beyond Overfitting on Small Algorithmic Datasets",
+        glossary: [
+            "grokking": "When a model generalises suddenly, long after it has memorised the training data and looks overfit.",
+            "generalisation": "Performing well on unseen data, not just the examples seen in training.",
+            "overfitting": "Fitting the training data perfectly while failing on new data. With grokking, it turns out not to be the end of learning.",
+            "memorisation": "Storing training answers like a lookup table, with no rule that extends to unseen cases.",
+            "weight decay": "A pull toward smaller, simpler weights during training. It is what drives the switch from memorising to generalising.",
+            "regularisation": "Any pressure that favours simpler models, of which weight decay is one form.",
+            "modular arithmetic": "Arithmetic that wraps around a modulus, the small algorithmic task used to study grokking.",
+            "validation accuracy": "Accuracy on held-out data the model was not trained on, the true test of generalisation.",
+            "double descent": "A related surprise where more training or capacity helps again after a dip, also breaking simple overfitting intuition.",
+        ],
+        learningObjectives: [
+            DLObjective(
+                text: "What grokking is",
+                gloss: "Generalisation that arrives suddenly, long after a model looks overfit."),
+            DLObjective(
+                text: "Memorise vs generalise",
+                gloss: "A lookup table fails on unseen pairs; a learned rule fills them in."),
+            DLObjective(
+                text: "Why weight decay matters",
+                gloss: "Pressure toward simpler weights makes the rule beat the lookup table."),
+        ],
+        explanationCard: DLExplanationCard(
+            eyebrow: "WHAT JUST HAPPENED",
+            titleSegments: [
+                .plain("It memorised, "),
+                .highlight("then grokked"),
+            ],
+            mini: .grokking,
+            paragraphs: [
+                DLExplanationPara(
+                    kicker: "P1 · MEMORISE",
+                    body: "The network fits the training data perfectly almost at once, while validation stays at chance. It is a lookup table with no rule for unseen pairs."),
+                DLExplanationPara(
+                    kicker: "P2 · THE LATE LEAP",
+                    body: "Far past the overfit plateau, validation accuracy suddenly jumps to near 100%. The model switched from storing answers to computing the rule behind them."),
+                DLExplanationPara(
+                    kicker: "P3 · WHY",
+                    body: "Weight decay pushes the network toward simpler weights, making the compact rule win over the giant table. Without it, the leap never happens."),
+            ],
+            takeaway: "Grokking shows generalisation can be a separate, later phase of training, driven by regularisation."
+        ),
+        paperURL: "https://arxiv.org/abs/2201.02177"
     )
 }

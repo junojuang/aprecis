@@ -160,6 +160,213 @@ struct ExplanationCard: View {
         case .transformer: TransformerMini()
         case .gpt3:       GPT3Mini()
         case .bert:       BERTMini()
+        case .deepseekR1: DeepSeekR1Mini()
+        case .instructGPT: InstructGPTMini()
+        case .chainOfThought: ChainOfThoughtMini()
+        case .scratchpad: ScratchpadMini()
+        case .selfConsistency: SelfConsistencyMini()
+        case .treeOfThoughts: TreeOfThoughtsMini()
+        case .leastToMost: LeastToMostMini()
+        case .reAct: ReActMini()
+        case .toolformer: ToolformerMini()
+        case .grokking: GrokkingMini()
+        }
+    }
+}
+
+// Grokking · memorise, sit overfit, then suddenly generalise far later.
+private struct GrokkingMini: View {
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack(spacing: 5) {
+                MiniNode(label: "memorise", sub: "train 100%")
+                MiniArrow()
+                MiniNode(label: "wait", sub: "looks overfit")
+                MiniArrow()
+                MiniNode(label: "grok", sub: "val 100%", tint: amberAccent)
+            }
+            Text("generalisation arrives long after overfitting")
+                .font(.system(size: 9, weight: .semibold)).tracking(0.6)
+                .foregroundStyle(amberAccent)
+        }
+    }
+}
+
+// Least-to-Most · one hard problem splits into ordered subquestions, solved up.
+private struct LeastToMostMini: View {
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack(spacing: 5) {
+                MiniNode(label: "hard", sub: "problem")
+                MiniArrow()
+                MiniNode(label: "sub1\u{2192}sub2", sub: "decompose")
+                MiniArrow()
+                MiniNode(label: "solve", sub: "in order", tint: amberAccent)
+            }
+            Text("break into easy steps, carry each answer up")
+                .font(.system(size: 9, weight: .semibold)).tracking(0.6)
+                .foregroundStyle(amberAccent)
+        }
+    }
+}
+
+// ReAct · a loop of thought, action, observation until it finishes.
+private struct ReActMini: View {
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack(spacing: 5) {
+                MiniNode(label: "think", sub: "reason")
+                MiniArrow()
+                MiniNode(label: "act", sub: "use a tool")
+                MiniArrow()
+                MiniNode(label: "observe", sub: "then loop", tint: amberAccent)
+            }
+            Text("reason, act, read the result, repeat")
+                .font(.system(size: 9, weight: .semibold)).tracking(0.6)
+                .foregroundStyle(amberAccent)
+        }
+    }
+}
+
+// Toolformer · the model writes an API call, runs it, keeps it if it helps.
+private struct ToolformerMini: View {
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack(spacing: 5) {
+                MiniNode(label: "text", sub: "writing")
+                MiniArrow()
+                MiniNode(label: "[call]", sub: "run tool")
+                MiniArrow()
+                MiniNode(label: "keep", sub: "if it helps", tint: amberAccent)
+            }
+            Text("self-taught: keep calls that aid prediction")
+                .font(.system(size: 9, weight: .semibold)).tracking(0.6)
+                .foregroundStyle(amberAccent)
+        }
+    }
+}
+
+// Scratchpad · a problem becomes lines of working on a pad, then the answer.
+private struct ScratchpadMini: View {
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack(spacing: 5) {
+                MiniNode(label: "big", sub: "problem")
+                MiniArrow()
+                MiniNode(label: "pad", sub: "step, step")
+                MiniArrow()
+                MiniNode(label: "ans", sub: "correct", tint: amberAccent)
+            }
+            Text("write the working, hold up at any length")
+                .font(.system(size: 9, weight: .semibold)).tracking(0.6)
+                .foregroundStyle(amberAccent)
+        }
+    }
+}
+
+// Self-Consistency · one question fans into many chains that vote on an answer.
+private struct SelfConsistencyMini: View {
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack(spacing: 5) {
+                MiniNode(label: "Q", sub: "one ask")
+                MiniArrow()
+                MiniNode(label: "\u{00D7}N", sub: "many paths")
+                MiniArrow()
+                MiniNode(label: "vote", sub: "majority", tint: amberAccent)
+            }
+            Text("sample many, keep the agreed answer")
+                .font(.system(size: 9, weight: .semibold)).tracking(0.6)
+                .foregroundStyle(amberAccent)
+        }
+    }
+}
+
+// Tree-of-Thoughts · branch into candidate thoughts, score, prune, reach goal.
+private struct TreeOfThoughtsMini: View {
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack(spacing: 5) {
+                MiniNode(label: "root", sub: "start")
+                MiniArrow()
+                MiniNode(label: "branch", sub: "score, prune")
+                MiniArrow()
+                MiniNode(label: "goal", sub: "search", tint: amberAccent)
+            }
+            Text("explore a tree, backtrack from dead ends")
+                .font(.system(size: 9, weight: .semibold)).tracking(0.6)
+                .foregroundStyle(amberAccent)
+        }
+    }
+}
+
+// Chain-of-Thought · question → a chain of reasoning steps → the right answer,
+// with the steps (not a leap) doing the work.
+private struct ChainOfThoughtMini: View {
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack(spacing: 5) {
+                MiniNode(label: "Q", sub: "problem")
+                MiniArrow()
+                MiniNode(label: "step", sub: "then step")
+                MiniArrow()
+                MiniNode(label: "A", sub: "correct", tint: amberAccent)
+            }
+            Text("show the working, get it right")
+                .font(.system(size: 9, weight: .semibold)).tracking(0.8)
+                .foregroundStyle(amberAccent)
+        }
+    }
+}
+
+// InstructGPT · SFT → reward model (trained from human rankings) → RLHF, with
+// human feedback as the teacher that shapes the final, aligned answer.
+private struct InstructGPTMini: View {
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack(spacing: 5) {
+                MiniNode(label: "SFT", sub: "show good")
+                MiniArrow()
+                ZStack {
+                    Image(systemName: "person.2.fill")
+                        .font(.system(size: 9))
+                        .foregroundStyle(amberAccent)
+                        .offset(x: 0, y: -17)
+                    MiniNode(label: "reward", sub: "from ranks")
+                }
+                MiniArrow()
+                MiniNode(label: "RLHF", sub: "nudge", tint: amberAccent)
+            }
+            Text("humans rank, model learns the taste")
+                .font(.system(size: 9, weight: .semibold)).tracking(0.8)
+                .foregroundStyle(amberAccent)
+        }
+    }
+}
+
+// DeepSeek-R1 · base → reward (★) → GRPO group baseline → distill, with the
+// reward as the only teacher flowing back along the chain.
+private struct DeepSeekR1Mini: View {
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack(spacing: 5) {
+                MiniNode(label: "base", sub: "LLM")
+                MiniArrow()
+                ZStack {
+                    Image(systemName: "star.fill")
+                        .font(.system(size: 9))
+                        .foregroundStyle(amberAccent)
+                        .offset(x: 0, y: -17)
+                    MiniNode(label: "RL", sub: "reward")
+                }
+                MiniArrow()
+                MiniNode(label: "GRPO", sub: "group avg")
+                MiniArrow()
+                MiniNode(label: "distill", sub: "→ small", tint: amberAccent)
+            }
+            Text("reward is the only teacher")
+                .font(.system(size: 9, weight: .semibold)).tracking(0.8)
+                .foregroundStyle(amberAccent)
         }
     }
 }
