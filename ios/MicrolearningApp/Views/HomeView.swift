@@ -966,12 +966,18 @@ struct DeckDestination: View {
 
     var body: some View {
         Group {
-            // Hand-curated free-form lessons take precedence over the generic
-            // daily-loop reader for the papers that have one.
-            if let lesson = LearningLesson.forPaperId(deck.paperId) {
+            // A server-driven web-bundle lesson wins over every native reader,
+            // so a paper can be upgraded to a premium web lesson with no app update.
+            if let webURL = WebLessonRegistry.url(for: deck) {
+                WebLessonView(url: webURL, paperId: deck.paperId, onClose: { dismiss() })
+            } else if let lesson = LearningLesson.forPaperId(deck.paperId) {
+                // Hand-curated native free-form lessons take precedence over the
+                // generic daily-loop reader for the papers that have one.
                 LearningFlowView(lesson: lesson, onClose: { dismiss() })
             } else {
                 switch resolved {
+                case .webLesson(let webURL):
+                    WebLessonView(url: webURL, paperId: deck.paperId, onClose: { dismiss() })
                 case .dailyLoop(let content):
                     DailyLoopView(content: content)
                 case .legacy(let legacyDeck):

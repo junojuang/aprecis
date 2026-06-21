@@ -99,6 +99,13 @@ final class APIService {
         return try await perform(request)
     }
 
+    /// Map of paper_id → web-lesson bundle URL for papers that should render
+    /// from a server-driven web bundle (no app update). GET /serve-cards/web-lessons
+    func fetchWebLessons() async throws -> [String: String] {
+        let request = try makeRequest(path: "/serve-cards/web-lessons")
+        return try await perform(request)
+    }
+
     /// Fetches one deck by stable paper_id from GET /serve-cards?paper_id=<id>
     func fetchDeck(paperId: String) async throws -> CardDeck {
         let encoded = paperId.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? paperId

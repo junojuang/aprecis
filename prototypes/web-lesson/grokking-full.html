@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Grokking · full web lesson prototype</title>
+<style>
+  :root {
+    --paper:#f4f1ea; --ink:#1c1c1a; --muted:#6b7078;
+    --teal:#2aa0a0; --teal-lt:#e3f1f0; --rose:#c2566b; --rose-lt:#f7e6ea;
+    --hair:#e6e1d6; --card:#fffdf8;
+    --serif:"New York",Georgia,"Times New Roman",serif;
+    --sans:-apple-system,system-ui,"SF Pro Text",sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;height:100%;background:var(--paper);color:var(--ink);}
+  body{font-family:var(--sans);display:flex;flex-direction:column;max-width:460px;margin:0 auto;overflow:hidden;}
+
+  .progress{display:flex;gap:4px;padding:16px 20px 6px;}
+  .dot{height:3px;flex:1;border-radius:2px;background:var(--hair);transition:background .2s;}
+  .dot.on{background:var(--ink);}
+
+  .stage{flex:1;position:relative;overflow:hidden;}
+  .card{position:absolute;inset:0;padding:22px 22px 8px;overflow-y:auto;
+        opacity:0;transform:translateX(18px);transition:opacity .3s ease,transform .3s ease;pointer-events:none;}
+  .card.active{opacity:1;transform:none;pointer-events:auto;}
+  .card.prev{transform:translateX(-18px);}
+  @media (prefers-reduced-motion:reduce){.card{transition:opacity .2s;transform:none;}.card.prev{transform:none;}}
+
+  .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:12px;}
+  h1{font-family:var(--serif);font-weight:600;font-size:28px;line-height:1.22;margin:0 0 14px;}
+  h2{font-family:var(--serif);font-weight:600;font-size:22px;line-height:1.25;margin:0 0 12px;}
+  p{font-family:var(--serif);font-size:17px;line-height:1.5;color:#33332f;margin:0 0 12px;}
+  .muted{color:var(--muted);font-size:15px;}
+  .center{align-items:center;text-align:center;display:flex;flex-direction:column;justify-content:center;}
+
+  .term{font:inherit;color:var(--teal);background:none;border:0;padding:0;border-bottom:1.5px dotted var(--teal);cursor:pointer;}
+
+  .viz{background:var(--card);border:1px solid var(--hair);border-radius:16px;padding:16px 14px 12px;margin:6px 0 14px;}
+  canvas{width:100%;display:block;}
+  .legend{display:flex;gap:16px;font-size:13px;color:var(--muted);margin-top:8px;flex-wrap:wrap;}
+  .swatch{display:inline-block;width:16px;height:3px;border-radius:2px;vertical-align:middle;margin-right:6px;}
+  .control{margin-top:12px;}
+  .control label{font-size:13px;color:var(--muted);display:flex;justify-content:space-between;}
+  input[type=range]{width:100%;accent-color:var(--teal);margin-top:6px;}
+  .insight{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--ink);min-height:46px;margin-top:8px;}
+
+  .seg{display:flex;gap:6px;margin:4px 0 8px;}
+  .seg button{flex:1;border:1px solid var(--hair);background:var(--paper);border-radius:10px;padding:9px 4px;font-family:var(--sans);font-size:13px;font-weight:600;color:var(--ink);}
+  .seg button.on{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0;}
+  .chip{border:1px solid var(--hair);background:var(--paper);border-radius:999px;padding:8px 12px;font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink);}
+  .chip.ok{background:var(--teal-lt);border-color:var(--teal);color:#176b6b;}
+  .chip.bad{background:var(--rose-lt);border-color:var(--rose);color:#9b3147;}
+  .chip small{display:block;font-weight:400;color:var(--muted);font-size:11px;}
+
+  footer{padding:10px 20px 24px;}
+  button.next{width:100%;border:0;border-radius:14px;padding:16px;font-family:var(--serif);font-size:16px;font-weight:600;background:var(--ink);color:var(--paper);}
+  button.next:disabled{background:#d8d3c8;color:#9a978f;}
+  button.link{width:100%;border:1px solid var(--ink);border-radius:14px;padding:14px;background:none;font-family:var(--serif);font-size:15px;font-weight:600;color:var(--ink);margin-top:8px;}
+
+  .pop{position:fixed;inset:0;background:rgba(20,20,18,.32);display:none;align-items:flex-end;z-index:20;}
+  .pop.show{display:flex;}
+  .pop .sheet{background:var(--paper);border-radius:20px 20px 0 0;padding:22px;width:100%;max-width:460px;margin:0 auto;}
+  .pop h3{font-family:var(--serif);margin:0 0 8px;}
+</style>
+</head>
+<body>
+  <div class="progress" id="dots" aria-hidden="true"></div>
+  <div class="stage" id="stage">
+
+    <!-- 1 · cover, animated glyph -->
+    <section class="card active center" data-card>
+      <canvas id="glyph" height="150" style="max-width:240px;margin-bottom:18px"></canvas>
+      <div class="eyebrow">Daily loop · 2022</div>
+      <h1>Grokking</h1>
+      <p class="muted">How a network can memorize for an eternity, then suddenly understand.</p>
+    </section>
+
+    <!-- 2 · hook -->
+    <section class="card" data-card>
+      <div class="eyebrow">The hook</div>
+      <h1>It learned nothing for ages, then knew everything at once.</h1>
+      <p>Train accuracy hit 100% almost immediately. On unseen problems the model stayed
+         at random guessing, for ten thousand times longer, and then leapt to perfect.</p>
+    </section>
+
+    <!-- 3 · idea -->
+    <section class="card" data-card>
+      <div class="eyebrow">The idea</div>
+      <h2>Memorizing and understanding are two different solutions.</h2>
+      <p>A network can fit its training set with a giant lookup table. That is memorizing.
+         A smaller, cleaner set of weights captures the actual
+         <button class="term" data-term="rule">rule</button>, that is
+         <button class="term" data-term="generalize">generalizing</button>. Grokking is the
+         slow slide from the first to the second.</p>
+    </section>
+
+    <!-- 4 · STUDIO 1: the curve -->
+    <section class="card" data-card data-explore>
+      <div class="eyebrow">Drag the training steps</div>
+      <h2>Watch the gap snap shut.</h2>
+      <div class="viz">
+        <canvas id="curve" height="190" aria-label="Train accuracy stays high; validation stays flat then leaps late."></canvas>
+        <div class="legend">
+          <span><i class="swatch" style="background:var(--teal)"></i>Train</span>
+          <span><i class="swatch" style="background:var(--rose)"></i>Validation (unseen)</span>
+        </div>
+        <div class="control">
+          <label><span>Training steps</span><span id="stepOut">100</span></label>
+          <input type="range" id="steps" min="0" max="100" value="4" aria-label="Training steps, log scale"/>
+        </div>
+        <div class="insight" id="curveInsight"></div>
+      </div>
+      <p class="muted">Explore the leap to continue.</p>
+    </section>
+
+    <!-- 5 · on-ramp analogy -->
+    <section class="card" data-card>
+      <div class="eyebrow">Think of it like</div>
+      <h2>Cramming versus actually getting it.</h2>
+      <p>Memorize every past exam and you ace those exact papers, yet fail a fresh one.
+         Keep drilling long after you "passed" and one day the underlying method clicks,
+         now any new problem is easy. Grokking is that click, for a neural net.</p>
+    </section>
+
+    <!-- 6 · illustration: table vs rule -->
+    <section class="card" data-card center>
+      <div class="eyebrow">Two solutions, side by side</div>
+      <svg id="tableRule" viewBox="0 0 320 150" width="100%" style="max-width:340px;margin:6px 0 14px"></svg>
+      <p class="muted">Left: a lookup table with holes, right answers only where it has seen the
+         pair. Right: one rule that fills every cell, even unseen ones.</p>
+    </section>
+
+    <!-- 7 · STUDIO 2: memorize vs generalize -->
+    <section class="card" data-card data-explore>
+      <div class="eyebrow">Tap a problem</div>
+      <h2>Seen vs unseen, before and after.</h2>
+      <div class="viz">
+        <div class="seg" id="phaseSeg" role="tablist" aria-label="Phase">
+          <button class="on" data-phase="mem">Memorized</button>
+          <button data-phase="grok">Grokked</button>
+        </div>
+        <div class="muted" style="font-size:13px;margin-bottom:4px">(a + b) mod 13 · tap to check the model</div>
+        <div class="chips" id="modChips"></div>
+        <div class="insight" id="modInsight">While memorizing: seen pairs are right, unseen pairs are wrong.</div>
+      </div>
+      <p class="muted">Try a seen and an unseen one to continue.</p>
+    </section>
+
+    <!-- 8 · on-ramp -->
+    <section class="card" data-card>
+      <div class="eyebrow">So what flips it?</div>
+      <h2>A gentle pressure away from memorizing.</h2>
+      <p>The lookup-table solution needs large, messy weights. A small penalty on weight size,
+         <button class="term" data-term="wd">weight decay</button>, keeps nudging the network
+         until the cheaper rule wins. Too little and it never flips; too much and it learns nothing.</p>
+    </section>
+
+    <!-- 9 · STUDIO 3: weight decay -->
+    <section class="card" data-card data-explore>
+      <div class="eyebrow">Set the weight decay</div>
+      <h2>Find the setting that groks.</h2>
+      <div class="viz">
+        <div class="seg" id="wdSeg">
+          <button data-wd="0">None</button>
+          <button data-wd="1">Tiny</button>
+          <button data-wd="2">Just right</button>
+          <button data-wd="3">Too high</button>
+        </div>
+        <canvas id="wdCurve" height="150"></canvas>
+        <div class="insight" id="wdInsight">Pick a level to see what happens to the unseen-problem accuracy.</div>
+      </div>
+      <p class="muted">Try the levels to continue.</p>
+    </section>
+
+    <!-- 10 · payoff -->
+    <section class="card" data-card>
+      <div class="eyebrow">The payoff</div>
+      <h2>Generalization can lag memorization by orders of magnitude.</h2>
+      <p>The loss curve looked finished long before the model actually understood. "Done training"
+         and "actually learned the rule" are not the same moment.</p>
+    </section>
+
+    <!-- 11 · why it matters -->
+    <section class="card" data-card>
+      <div class="eyebrow">Why it matters</div>
+      <h2>It cracks open the black box of learning.</h2>
+      <p>Grokking gave researchers a clean, reproducible case where you can watch a network
+         move from memorizing to a real algorithm, a rare window into how understanding forms.</p>
+    </section>
+
+    <!-- 12 · recap -->
+    <section class="card" data-card>
+      <div class="eyebrow">Recap</div>
+      <h2>Three things to carry out.</h2>
+      <p>1 · Networks can memorize first and generalize much, much later.<br>
+         2 · Weight decay is the quiet force that tips them toward the rule.<br>
+         3 · A flat loss curve doesn't mean learning has stopped.</p>
+    </section>
+
+    <!-- 13 · paper link -->
+    <section class="card" data-card center>
+      <div class="eyebrow">Go deeper</div>
+      <h2>Grokking: Generalization Beyond Overfitting</h2>
+      <p class="muted">Power, Burda, Edwards, Babuschkin, Misra · OpenAI, 2022</p>
+      <button class="link" id="openPaper">Read the original (arXiv:2201.02177)</button>
+    </section>
+  </div>
+
+  <footer><button class="next" id="next">Continue</button></footer>
+
+  <div class="pop" id="pop"><div class="sheet"><h3 id="popTitle"></h3><p id="popBody" style="margin:0"></p></div></div>
+
+<script>
+const Aprecis = {
+  _send(n,b){const h=window.webkit&&window.webkit.messageHandlers&&window.webkit.messageHandlers[n];h?h.postMessage(b??{}):console.log("[Aprecis]",n,b??"");},
+  haptic(s="soft"){this._send("haptic",{style:s});},
+  markDone(){this._send("markDone");}, finish(){this._send("finish");},
+  openOriginal(u){this._send("openOriginal",{url:u});},
+};
+
+/* ── glossary ── */
+const GLOSS={
+  rule:["The rule","The underlying pattern that generates every answer, e.g. addition mod 13, rather than a stored list of specific cases."],
+  generalize:["Generalize","Get unseen problems right, not just the ones in the training set. The goal of learning."],
+  wd:["Weight decay","A small penalty that discourages large weights, pushing the network toward simpler, more general solutions."],
+};
+const pop=document.getElementById("pop");
+document.body.addEventListener("click",e=>{
+  const t=e.target.closest(".term");
+  if(t){const g=GLOSS[t.dataset.term];popTitle.textContent=g[0];popBody.textContent=g[1];pop.classList.add("show");Aprecis.haptic("light");}
+  else if(e.target===pop){pop.classList.remove("show");}
+});
+
+/* ── card nav with per-card explore gating ── */
+const cards=[...document.querySelectorAll("[data-card]")];
+cards.forEach(()=>dots.insertAdjacentHTML("beforeend",'<div class="dot"></div>'));
+const dotEls=[...document.querySelectorAll(".dot")];
+const explored=new Set();
+let i=0;
+const reduceMotion=matchMedia("(prefers-reduced-motion:reduce)").matches;
+function gateOK(){const c=cards[i];return !c.hasAttribute("data-explore")||explored.has(i);}
+function refresh(){
+  const last=i===cards.length-1;
+  next.textContent=last?"Done":(gateOK()?"Continue":"Explore above to continue");
+  next.disabled=!gateOK();
+}
+function show(n){
+  cards.forEach((c,k)=>{c.classList.toggle("active",k===n);c.classList.toggle("prev",k<n);});
+  dotEls.forEach((d,k)=>d.classList.toggle("on",k<=n));
+  i=n;refresh();cards[n].scrollTop=0;
+}
+next.addEventListener("click",()=>{
+  Aprecis.haptic();
+  if(i===cards.length-1){Aprecis.markDone();Aprecis.finish();return;}
+  if(gateOK())show(i+1);
+});
+function markExplored(){if(!explored.has(i)){explored.add(i);refresh();}}
+
+/* ── glyph: flat-then-leap curve drawing itself ── */
+(function(){
+  const c=document.getElementById("glyph"),x=c.getContext("2d");
+  function fit(){const r=c.getBoundingClientRect(),d=devicePixelRatio||1;c.width=r.width*d;c.height=150*d;x.setTransform(d,0,0,d,0,0);}
+  fit();
+  const W=()=>c.clientWidth,H=150;
+  function val(t){const g=.6;if(t<g)return .12;const k=(t-g)/(1-g);return .12+.84*(1/(1+Math.exp(-13*(k-.4))));}
+  let p=reduceMotion?1:0;
+  function frame(){
+    x.clearRect(0,0,W(),H);const pad=12,X=u=>pad+u*(W()-2*pad),Y=v=>(H-pad)-v*(H-2*pad);
+    x.strokeStyle="#2aa0a0";x.lineWidth=2.5;x.beginPath();
+    for(let s=0;s<=p*100;s++){const u=s/100;s===0?x.moveTo(X(u),Y(.95)):x.lineTo(X(u),Y(.95));}x.stroke();
+    x.strokeStyle="#c2566b";x.setLineDash([4,4]);x.beginPath();
+    for(let s=0;s<=p*100;s++){const u=s/100;s===0?x.moveTo(X(u),Y(val(u))):x.lineTo(X(u),Y(val(u)));}x.stroke();x.setLineDash([]);
+    if(p>=.62){x.fillStyle="#1c1c1a";x.font="16px Georgia";x.fillText("✦",X(.66),Y(val(.7))-6);}
+    if(p<1&&!reduceMotion){p+=.012;requestAnimationFrame(frame);}
+  }
+  frame();
+})();
+
+/* ── STUDIO 1 ── */
+(function(){
+  const c=document.getElementById("curve"),x=c.getContext("2d"),s=document.getElementById("steps");
+  function fit(){const r=c.getBoundingClientRect(),d=devicePixelRatio||1;c.width=r.width*d;c.height=190*d;x.setTransform(d,0,0,d,0,0);draw(+s.value);}
+  function val(t){const g=.62;if(t<g)return .08;const k=(t-g)/(1-g);return .08+.9*(1/(1+Math.exp(-12*(k-.4))));}
+  function draw(v){
+    const t=v/100,W=c.clientWidth,H=190,pad=14,X=u=>pad+u*(W-2*pad),Y=w=>(H-pad)-w*(H-2*pad);
+    x.clearRect(0,0,W,H);
+    x.strokeStyle="#2aa0a0";x.lineWidth=2.5;x.beginPath();for(let q=0;q<=t*100;q++){const u=q/100;q===0?x.moveTo(X(u),Y(.97)):x.lineTo(X(u),Y(.97));}x.stroke();
+    x.strokeStyle="#c2566b";x.setLineDash([4,4]);x.beginPath();for(let q=0;q<=t*100;q++){const u=q/100;q===0?x.moveTo(X(u),Y(val(u))):x.lineTo(X(u),Y(val(u)));}x.stroke();x.setLineDash([]);
+    x.fillStyle="#c2566b";x.beginPath();x.arc(X(t),Y(val(t)),4,0,7);x.fill();
+    document.getElementById("stepOut").textContent=Math.round(Math.pow(10,2+t*4)).toLocaleString();
+    const ins=document.getElementById("curveInsight");
+    ins.textContent=t<.55?"Train is near-perfect. Validation is stuck at chance: pure memorization."
+      :t<.72?"Still flat on unseen problems, but weight decay is quietly reshaping the weights."
+      :"The leap: validation snaps to near-perfect. The network finally grokked the rule.";
+    if(t>=.72)markExplored();
+  }
+  s.addEventListener("input",()=>{Aprecis.haptic("light");draw(+s.value);});
+  window.addEventListener("resize",fit);requestAnimationFrame(fit);
+})();
+
+/* ── STUDIO 2: mod-13 chips ── */
+(function(){
+  const wrap=document.getElementById("modChips"),ins=document.getElementById("modInsight");
+  let phase="mem";const tappedSeen={mem:false,grok:false},tappedUnseen={mem:false,grok:false};
+  const items=[[3,4,true],[6,2,true],[9,1,true],[5,5,true],[7,8,false],[11,6,false],[2,12,false],[10,9,false]];
+  function render(){
+    wrap.innerHTML="";
+    items.forEach(([a,b,seen],k)=>{
+      const ans=(a+b)%13,correct=phase==="grok"||seen;
+      const el=document.createElement("button");el.className="chip";
+      el.innerHTML=`${a} + ${b}<small>${seen?"seen":"unseen"}</small>`;
+      el.onclick=()=>{
+        Aprecis.haptic("light");
+        el.classList.remove("ok","bad");el.classList.add(correct?"ok":"bad");
+        el.querySelector("small").textContent=correct?`= ${ans} ✓`:`✗ wrong`;
+        if(seen)tappedSeen[phase]=true;else tappedUnseen[phase]=true;
+        if(tappedSeen[phase]&&tappedUnseen[phase])markExplored();
+      };
+      wrap.appendChild(el);
+    });
+  }
+  document.querySelectorAll("#phaseSeg button").forEach(b=>b.onclick=()=>{
+    document.querySelectorAll("#phaseSeg button").forEach(x=>x.classList.remove("on"));
+    b.classList.add("on");phase=b.dataset.phase;Aprecis.haptic();
+    ins.textContent=phase==="mem"?"While memorizing: seen pairs are right, unseen pairs are wrong."
+      :"After grokking: every pair is right, seen or unseen. The rule generalizes.";
+    render();
+  });
+  render();
+})();
+
+/* ── STUDIO 3: weight decay ── */
+(function(){
+  const c=document.getElementById("wdCurve"),x=c.getContext("2d");
+  const tried=new Set();
+  const cfg=[
+    {f:()=>.08,t:"None: the network keeps the lookup table forever. It never groks."},
+    {f:t=>t<.85?.08:.08+.6*((t-.85)/.15),t:"Tiny: it groks, but painfully slowly, right at the end."},
+    {f:t=>{const g=.55;return t<g?.08:.08+.9*(1/(1+Math.exp(-12*((t-g)/(1-g)-.4))));},t:"Just right: a clean, decisive leap to generalization."},
+    {f:()=>.3,t:"Too high: weights are crushed, it underfits and learns little at all."},
+  ];
+  function fit(){const r=c.getBoundingClientRect(),d=devicePixelRatio||1;c.width=r.width*d;c.height=150*d;x.setTransform(d,0,0,d,0,0);}
+  function draw(i){
+    fit();const W=c.clientWidth,H=150,pad=14,X=u=>pad+u*(W-2*pad),Y=w=>(H-pad)-w*(H-2*pad);
+    x.clearRect(0,0,W,H);x.strokeStyle="#c2566b";x.lineWidth=2.5;x.beginPath();
+    for(let q=0;q<=100;q++){const u=q/100;q===0?x.moveTo(X(u),Y(cfg[i].f(u))):x.lineTo(X(u),Y(cfg[i].f(u)));}x.stroke();
+    document.getElementById("wdInsight").textContent=cfg[i].t;
+  }
+  document.querySelectorAll("#wdSeg button").forEach(b=>b.onclick=()=>{
+    document.querySelectorAll("#wdSeg button").forEach(x=>x.classList.remove("on"));
+    b.classList.add("on");Aprecis.haptic();draw(+b.dataset.wd);
+    tried.add(b.dataset.wd);if(tried.size>=2)markExplored();
+  });
+})();
+
+/* ── illustration: table vs rule (SVG) ── */
+(function(){
+  const svg=document.getElementById("tableRule");if(!svg)return;
+  let h="";const cell=(x,y,fill)=>`<rect x="${x}" y="${y}" width="20" height="20" rx="3" fill="${fill}" stroke="#e6e1d6"/>`;
+  // left grid: holes
+  for(let r=0;r<4;r++)for(let col=0;col<4;col++){const seen=(r*4+col)%3!==0;h+=cell(10+col*22,20+r*22,seen?"#e3f1f0":"#f4f1ea");}
+  h+=`<text x="50" y="135" font-family="Georgia" font-size="12" fill="#6b7078" text-anchor="middle">lookup table</text>`;
+  // right grid: full
+  for(let r=0;r<4;r++)for(let col=0;col<4;col++){h+=cell(210+col*22,20+r*22,"#e3f1f0");}
+  h+=`<text x="250" y="135" font-family="Georgia" font-size="12" fill="#176b6b" text-anchor="middle">one rule</text>`;
+  h+=`<text x="160" y="56" font-family="Georgia" font-size="22" fill="#1c1c1a" text-anchor="middle">→</text>`;
+  svg.innerHTML=h;
+})();
+
+document.getElementById("openPaper").onclick=()=>{Aprecis.haptic();Aprecis.openOriginal("https://arxiv.org/abs/2201.02177");};
+show(0);
+</script>
+</body>
+</html>
