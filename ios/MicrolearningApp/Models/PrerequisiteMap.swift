@@ -22,6 +22,16 @@ enum PrerequisiteMap {
         "loop:foundational:seq2seq":      ["loop:foundational:word2vec"],
         "loop:foundational:attention":    ["loop:foundational:seq2seq"],
         "loop:foundational:gpt3":         ["loop:foundational:attention"],
+        "loop:foundational:instructgpt":  ["loop:foundational:gpt3"],
+        "loop:foundational:chain-of-thought": ["loop:foundational:gpt3"],
+        "loop:foundational:scratchpad":   ["loop:foundational:gpt3"],
+        "loop:foundational:self-consistency": ["loop:foundational:chain-of-thought"],
+        "loop:foundational:tot":          ["loop:foundational:chain-of-thought", "loop:foundational:self-consistency"],
+        "loop:foundational:least-to-most": ["loop:foundational:chain-of-thought"],
+        "loop:foundational:react":        ["loop:foundational:chain-of-thought"],
+        "loop:foundational:toolformer":   ["loop:foundational:react"],
+        "loop:foundational:grokking":     ["loop:foundational:backprop"],
+        "loop:foundational:deepseek-r1":  ["loop:foundational:instructgpt", "loop:foundational:chain-of-thought", "loop:foundational:tot"],
     ]
 
     /// All paper IDs that participate in the DAG.

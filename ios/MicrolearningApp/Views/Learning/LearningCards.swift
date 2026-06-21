@@ -602,6 +602,8 @@ struct LessonPaperLinkCard: View {
     let linkTitle: String
     let url: URL?
 
+    @State private var browser: BrowserLink?
+
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Spacer(minLength: 22)
@@ -635,7 +637,9 @@ struct LessonPaperLinkCard: View {
             Spacer(minLength: 28)
 
             if let url {
-                Link(destination: url) {
+                Button {
+                    browser = BrowserLink(url: url)
+                } label: {
                     HStack(spacing: 10) {
                         VStack(alignment: .leading, spacing: 2) {
                             Text("READ THE ORIGINAL")
@@ -665,6 +669,9 @@ struct LessonPaperLinkCard: View {
                     )
                 }
                 .buttonStyle(.plain)
+                .sheet(item: $browser) { link in
+                    SafariView(url: link.url).ignoresSafeArea()
+                }
             }
 
             Spacer(minLength: 8)

@@ -93,17 +93,37 @@ struct LessonCard: Identifiable {
 
 struct LearningLesson {
     let paperId: String
-    let cards: [LessonCard]
+
+    /// Cards exactly as authored, including any standalone `.glossary` card.
+    /// Kept private so the visible flow can drop glossary cards while their
+    /// terms still feed the inline tappable glossary below.
+    private let authoredCards: [LessonCard]
+
+    init(paperId: String, cards: [LessonCard]) {
+        self.paperId = paperId
+        self.authoredCards = cards
+    }
+
+    /// Cards shown in the flow. The standalone glossary ("words, in plain
+    /// English") card is intentionally removed from every lesson — it felt
+    /// forced and appeared out of nowhere mid-narrative. Its terms are still
+    /// preserved in `glossary` below, so tappable terms in prose keep
+    /// resolving. Glossary cards are the only cards that carry `glossaryTerms`,
+    /// so filtering on that removes exactly them and nothing else.
+    var cards: [LessonCard] {
+        authoredCards.filter { $0.glossaryTerms.isEmpty }
+    }
 
     /// Inline glossary for the whole lesson: every technical term tappable in
     /// prose resolves through here. Sourced from the curated
     /// `FoundationalGlossaries` for this paper, then overlaid with the
     /// lesson's own in-context glossary-card entries (which win, being
-    /// hand-written for this exact lesson).
+    /// hand-written for this exact lesson) even though that card is no longer
+    /// shown in the flow.
     var glossary: [String: String] {
         let slug = paperId.split(separator: ":").last.map(String.init) ?? ""
         var dict = FoundationalGlossaries.dict(for: slug)
-        for card in cards {
+        for card in authoredCards {
             for t in card.glossaryTerms { dict[t.term] = t.definition }
         }
         return dict
@@ -117,8 +137,19 @@ struct LearningFlowView: View {
     var onClose: () -> Void = {}
 
     @StateObject private var progress = FlowProgress()
-    @State private var index = 0
+    @State private var index: Int
     @State private var dragX: CGFloat = 0
+
+    init(lesson: LearningLesson, onClose: @escaping () -> Void = {}) {
+        self.lesson = lesson
+        self.onClose = onClose
+        // Resume exactly where the reader left off. The shared store keeps a
+        // per-paper last-card index; clamp it to the current card count in
+        // case the lesson changed length since it was last opened.
+        let saved = ReadingProgressStore.shared.lastCardIndex(for: lesson.paperId) ?? 0
+        let clamped = max(0, min(saved, max(lesson.cards.count - 1, 0)))
+        _index = State(initialValue: clamped)
+    }
     /// Direction of the most recent index change. Drives the asymmetric
     /// transition so swiping back actually reads as back (new card slides
     /// in from the left, old card slides off to the right) instead of
@@ -147,6 +178,22 @@ struct LearningFlowView: View {
         // any host NavigationStack chrome.
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
+        .onAppear { persistProgress() }
+        .onChange(of: index) { _, _ in persistProgress() }
+    }
+
+    /// Records the current card index so the paper resumes here next time and
+    /// the 0...1 fraction (used by progress bars / rings) stays in sync. Once
+    /// the reader reaches the final card the paper counts as finished, which
+    /// feeds the daily goal, streak, and bundle-step gating.
+    private func persistProgress() {
+        let store = ReadingProgressStore.shared
+        store.setLastCardIndex(index, totalCards: lesson.cards.count, for: lesson.paperId)
+
+        if lesson.cards.count > 1, index >= lesson.cards.count - 1 {
+            store.markCompletedToday(paperId: lesson.paperId)
+            store.markComplete(paperId: lesson.paperId)
+        }
     }
 
     // MARK: chrome

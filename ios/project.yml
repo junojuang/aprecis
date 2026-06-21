@@ -62,8 +62,8 @@ targets:
       properties:
         CFBundleName: Aprecis
         CFBundleDisplayName: Aprecis
-        CFBundleShortVersionString: "1.0"
-        CFBundleVersion: "2"
+        CFBundleShortVersionString: "1.1.0"
+        CFBundleVersion: "3"
         UILaunchScreen:
           UIColorName: ""
         UIApplicationSceneManifest:

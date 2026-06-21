@@ -246,6 +246,18 @@ private struct SignedInView: View {
         .padding(12)
         .frame(width: 164, height: 80, alignment: .topLeading)
         .background(cardBg)
+        .overlay(alignment: .bottom) {
+            let p = progressStore.progress(for: deck.paperId)
+            if p > 0.001 {
+                ZStack(alignment: .leading) {
+                    Rectangle().fill(borderColor.opacity(0.5))
+                    Rectangle()
+                        .fill(tealAccent)
+                        .frame(width: 164 * CGFloat(min(1, p)))
+                }
+                .frame(height: 3)
+            }
+        }
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         .overlay(
             RoundedRectangle(cornerRadius: 12, style: .continuous)

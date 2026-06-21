@@ -38,6 +38,16 @@ enum RelatedPapers {
         "loop:foundational:attention":  "arxiv:1706.03762",
         "loop:foundational:gpt3":       "arxiv:2005.14165",
         "loop:foundational:bert":       "arxiv:1810.04805",
+        "loop:foundational:instructgpt": "arxiv:2203.02155",
+        "loop:foundational:chain-of-thought": "arxiv:2201.11903",
+        "loop:foundational:scratchpad": "arxiv:2112.00114",
+        "loop:foundational:self-consistency": "arxiv:2203.11171",
+        "loop:foundational:tot": "arxiv:2305.10601",
+        "loop:foundational:least-to-most": "arxiv:2205.10625",
+        "loop:foundational:react": "arxiv:2210.03629",
+        "loop:foundational:toolformer": "arxiv:2302.04761",
+        "loop:foundational:grokking": "arxiv:2201.02177",
+        "loop:foundational:deepseek-r1": "arxiv:2501.12948",
     ]
 
     private static let curatedBackendToLoop: [String: String] =
@@ -90,25 +100,72 @@ enum RelatedPapers {
     static func bundle(for id: String, focusedDeck: CardDeck? = nil) async -> Bundle {
         if let hit = cache[id] { return hit }
 
-        let response: APIService.RelatedResponse
+        let response: APIService.RelatedResponse?
         do {
             response = try await APIService.shared.fetchRelated(paperId: backendId(for: id))
         } catch {
-            return .empty // do not cache a failure
+            response = nil // backend unreachable / paper not in graph yet
         }
 
         // Hidden papers must not surface in any rail (Builds on, Led to,
         // Adjacent, Surprise) even though the backend graph still returns
         // their edges.
         let visible: (String) -> Bool = { !HiddenPapers.isHidden(paperId: $0, title: nil) }
-        let bundle = Bundle(
-            buildsOn: Array(response.buildsOn.map { preferredId(for: $0) }.filter(visible).prefix(12)),
-            ledTo:    Array(response.ledTo.map { preferredId(for: $0) }.filter(visible).prefix(12)),
-            adjacent: Array(response.adjacent.map { preferredId(for: $0) }.filter(visible).prefix(8)),
-            surprise: response.surprise.map { preferredId(for: $0) }.flatMap { visible($0) ? $0 : nil }
-        )
+
+        var bundle = Bundle.empty
+        if let response {
+            bundle = Bundle(
+                buildsOn: Array(response.buildsOn.map { preferredId(for: $0) }.filter(visible).prefix(12)),
+                ledTo:    Array(response.ledTo.map { preferredId(for: $0) }.filter(visible).prefix(12)),
+                adjacent: Array(response.adjacent.map { preferredId(for: $0) }.filter(visible).prefix(3)),
+                surprise: response.surprise.map { preferredId(for: $0) }.flatMap { visible($0) ? $0 : nil }
+            )
+        }
+
+        // Graceful degradation: when the backend graph has nothing for this
+        // paper (call failed, or the paper is not yet seeded into the corpus —
+        // e.g. a freshly added curated lesson), fall back to the curated
+        // client-side maps so the Explore hub still links to related papers.
+        // Papers that ARE in the backend graph keep using its scoring; this
+        // only fills the gap for ones it doesn't know about.
+        if bundle.buildsOn.isEmpty, bundle.ledTo.isEmpty, bundle.adjacent.isEmpty {
+            if let fallback = curatedFallback(for: id, visible: visible) {
+                bundle = fallback
+            } else if response == nil {
+                return .empty // nothing to show and nothing to cache
+            }
+        }
+
         cache[id] = bundle
         return bundle
+    }
+
+    /// Rails derived from the hand-curated `PrerequisiteMap` (lineage) and
+    /// `SimilarityGraph` (concept adjacency). Returns `nil` when the paper is
+    /// not part of the curated canon, so non-curated papers don't get faked
+    /// rails. Ids are already curated `loop:` ids.
+    @MainActor
+    private static func curatedFallback(for id: String, visible: (String) -> Bool) -> Bundle? {
+        let loopId = preferredId(for: id)
+        let inPrereq = PrerequisiteMap.nodes.contains(loopId)
+        let inSimilarity = SimilarityGraph.metaById[loopId] != nil
+        guard inPrereq || inSimilarity else { return nil }
+
+        let buildsOn = PrerequisiteMap.parents(of: loopId).filter(visible)
+        let ledTo = PrerequisiteMap.prereqs
+            .filter { $0.value.contains(loopId) }
+            .map(\.key)
+            .filter(visible)
+            .sorted()
+
+        let exclude = Set(buildsOn + ledTo + [loopId])
+        let adjacent = SimilarityGraph.neighbors(of: loopId, k: 8)
+            .map(\.id)
+            .filter { !exclude.contains($0) && visible($0) }
+
+        guard !buildsOn.isEmpty || !ledTo.isEmpty || !adjacent.isEmpty else { return nil }
+        return Bundle(buildsOn: buildsOn, ledTo: ledTo,
+                      adjacent: Array(adjacent.prefix(3)), surprise: nil)
     }
 
     /// Recommended starter paper when the user opens Explore cold.

@@ -70,12 +70,16 @@ enum Roadmap {
              oneLiner: "Read both sides at once."),
         Node(id: "loop:foundational:gpt3",       title: "GPT-3",      slug: "gpt3",       year: 2020,
              oneLiner: "A model so large that examples replace training."),
+        Node(id: "loop:foundational:instructgpt", title: "InstructGPT", slug: "instructgpt", year: 2022,
+             oneLiner: "Human feedback teaches it to follow what you ask."),
+        Node(id: "loop:foundational:deepseek-r1", title: "DeepSeek-R1", slug: "deepseek-r1", year: 2025,
+             oneLiner: "Reward right answers, and reasoning grows itself."),
     ]
 
     static let trunkBranch = Branch(
         id: "trunk",
         title: "Foundation",
-        blurb: "Eleven papers, sixty-two years. The bedrock of everything you call AI. Start at Perceptron, climb to GPT-3.",
+        blurb: "Thirteen papers, sixty-seven years. The bedrock of everything you call AI. Start at Perceptron, climb to DeepSeek-R1.",
         accentHex: "1a8a8a",
         nodes: trunk
     )
@@ -119,8 +123,6 @@ enum Roadmap {
                  oneLiner: "Every NLP task as text-to-text. One model, many jobs."),
             Node(id: "loop:language:chinchilla",  title: "Chinchilla",  slug: "chinchilla",  year: 2022,
                  oneLiner: "We were training models too big and too short. Here's the fix."),
-            Node(id: "loop:language:instructgpt", title: "InstructGPT", slug: "instructgpt", year: 2022,
-                 oneLiner: "RLHF: teach models to follow human instructions."),
             Node(id: "loop:language:palm",        title: "PaLM",        slug: "palm",        year: 2022,
                  oneLiner: "Scale to 540 billion parameters. New abilities emerge."),
             Node(id: "loop:language:llama",       title: "LLaMA",       slug: "llama",       year: 2023,

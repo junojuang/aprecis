@@ -46,6 +46,10 @@ enum DLExplanationMini {
     // the visual matches the diagram the reader just left.
     case perceptron, backprop, lenet, alexnet, word2vec
     case seq2seq, gans, resnet, transformer, gpt3, bert
+    case deepseekR1, instructGPT, chainOfThought
+    case scratchpad, selfConsistency, treeOfThoughts
+    case leastToMost, reAct, toolformer
+    case grokking
 }
 
 struct DLExplanationPara {
@@ -882,7 +886,39 @@ extension DailyLoopContent {
             "token": "The smallest unit a language model reads or writes, usually a sub word piece, not a full word.",
             "parameters": "The trainable numbers (weights and biases) inside a neural network. More parameters generally means more capacity to memorise and generalise.",
             "few shot": "Showing the model a handful of worked examples in the prompt itself, with no weight updates."
-        ]
+        ],
+        learningObjectives: [
+            DLObjective(
+                text: "Why writing the steps fixes multi-step problems",
+                gloss: "Reasoning out loud gives the model room to work, so it stops skipping a step and slipping on the final answer."),
+            DLObjective(
+                text: "How a prompt alone changes behaviour",
+                gloss: "Show a few worked examples and the model copies the habit. No fine-tuning involved."),
+            DLObjective(
+                text: "Why it only works at scale",
+                gloss: "Chain of thought is an emergent ability: latent in big models, absent in small ones."),
+        ],
+        explanationCard: DLExplanationCard(
+            eyebrow: "WHAT JUST HAPPENED",
+            titleSegments: [
+                .plain("It showed its working, "),
+                .highlight("and got it right"),
+            ],
+            mini: .chainOfThought,
+            paragraphs: [
+                DLExplanationPara(
+                    kicker: "P1 · SHOW THE STEPS",
+                    body: "Instead of examples that go question then answer, chain of thought examples show the working in between. Copying that, the model writes its own steps before answering your real question."),
+                DLExplanationPara(
+                    kicker: "P2 · JUST A PROMPT",
+                    body: "Nothing was retrained. The same frozen model reasons better purely because the examples in the prompt now demonstrate reasoning. The ability was latent; the prompt elicited it."),
+                DLExplanationPara(
+                    kicker: "P3 · EMERGES AT SCALE",
+                    body: "On small models the chains come out fluent but muddled, so it does not help. Past a threshold it unlocks a large jump, like 17 to 57 percent on grade school maths."),
+            ],
+            takeaway: "Chain of thought asks a big model to show its working, and the reasoning it already held comes out."
+        ),
+        paperURL: "https://arxiv.org/abs/2201.11903"
     )
 
     // Daily paper: "When ChatGPT is gone: Creativity reverts and homogeneity

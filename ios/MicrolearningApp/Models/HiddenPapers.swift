@@ -28,6 +28,7 @@ enum HiddenPapers {
         "chain of thought",
         "2401.06816",          // Generative AI and the Lasting Homogenization
         "homogenization of human creative writing",
+        "1706.03762",          // Attention Is All You Need (backend dup; curated loop kept)
     ]
 
     static func isHidden(paperId: String, title: String?) -> Bool {

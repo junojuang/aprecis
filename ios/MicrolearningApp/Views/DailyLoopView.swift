@@ -2088,6 +2088,7 @@ private struct CompleteCard: View {
     let dismiss: DismissAction
 
     @ObservedObject private var progressStore = ReadingProgressStore.shared
+    @State private var browser: BrowserLink?
 
     private var quoteBody: String {
         var s = content.completeTakeaway
@@ -2139,7 +2140,9 @@ private struct CompleteCard: View {
                 // legacy loops (no hosted source) keep a single CTA.
                 if let urlString = content.paperURL,
                    let url = URL(string: urlString) {
-                    Link(destination: url) {
+                    Button {
+                        browser = BrowserLink(url: url)
+                    } label: {
                         HStack(spacing: 10) {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text("READ THE ORIGINAL")
@@ -2168,6 +2171,9 @@ private struct CompleteCard: View {
                     }
                     .buttonStyle(.plain)
                     .padding(.bottom, 10)
+                    .sheet(item: $browser) { link in
+                        SafariView(url: link.url).ignoresSafeArea()
+                    }
                 }
 
                 HStack(spacing: 10) {

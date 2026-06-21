@@ -603,7 +603,10 @@ func bundlePaperId(slug: String) -> String? {
     switch slug {
     case "perceptron", "backprop", "lenet", "alexnet",
          "word2vec", "seq2seq", "gans", "resnet",
-         "attention", "gpt3", "bert":
+         "attention", "gpt3", "bert", "instructgpt",
+         "chain-of-thought", "scratchpad", "self-consistency", "tot",
+         "least-to-most", "react", "toolformer", "grokking",
+         "deepseek-r1":
         return "loop:foundational:\(slug)"
     default:
         return nil

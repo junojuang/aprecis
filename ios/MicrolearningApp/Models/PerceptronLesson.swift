@@ -198,6 +198,16 @@ extension LearningLesson {
         gpt3.paperId: gpt3,
         word2vec.paperId: word2vec,
         bert.paperId: bert,
+        instructGPT.paperId: instructGPT,
+        chainOfThought.paperId: chainOfThought,
+        scratchpad.paperId: scratchpad,
+        selfConsistency.paperId: selfConsistency,
+        treeOfThoughts.paperId: treeOfThoughts,
+        leastToMost.paperId: leastToMost,
+        reAct.paperId: reAct,
+        toolformer.paperId: toolformer,
+        grokking.paperId: grokking,
+        deepseekR1.paperId: deepseekR1,
     ]
 
     static func forPaperId(_ id: String) -> LearningLesson? {

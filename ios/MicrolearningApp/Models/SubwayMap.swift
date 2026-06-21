@@ -69,6 +69,7 @@ enum SubwayMap {
                 Station(id: "loop:foundational:seq2seq",    slot: 2, label: "Seq2Seq"),
                 Station(id: "loop:foundational:attention",  slot: 3, label: "Attention"),
                 Station(id: "loop:foundational:gpt3",       slot: 4, label: "GPT-3"),
+                Station(id: "loop:foundational:instructgpt", slot: 5, label: "InstructGPT"),
              ]),
 
         Line(id: "generative",
@@ -77,6 +78,22 @@ enum SubwayMap {
              color: Color(hex: "c25a8a"),
              stations: [
                 Station(id: "loop:foundational:gans",       slot: 2, label: "GANs"),
+             ]),
+
+        Line(id: "reasoning",
+             label: "REASONING",
+             blurb: "Where language models learned to think",
+             color: Color(hex: "8a5a18"),
+             stations: [
+                Station(id: "loop:foundational:scratchpad", slot: 4, label: "Scratchpad"),
+                Station(id: "loop:foundational:chain-of-thought", slot: 5, label: "Chain of Thought"),
+                Station(id: "loop:foundational:least-to-most", slot: 6, label: "Least-to-Most"),
+                Station(id: "loop:foundational:self-consistency", slot: 7, label: "Self-Consistency"),
+                Station(id: "loop:foundational:tot", slot: 8, label: "Tree of Thoughts"),
+                Station(id: "loop:foundational:react", slot: 9, label: "ReAct"),
+                Station(id: "loop:foundational:toolformer", slot: 10, label: "Toolformer"),
+                Station(id: "loop:foundational:grokking", slot: 11, label: "Grokking"),
+                Station(id: "loop:foundational:deepseek-r1", slot: 12, label: "DeepSeek-R1"),
              ]),
     ]
 
@@ -103,6 +120,11 @@ enum SubwayMap {
         // Backprop seeded everything.
         Transfer(from: "loop:foundational:backprop", to: "loop:foundational:word2vec"),
         Transfer(from: "loop:foundational:backprop", to: "loop:foundational:gans"),
+        // Language scaled into reasoning: scratchpads and prompting first,
+        // then alignment feeding the trained reasoners.
+        Transfer(from: "loop:foundational:gpt3", to: "loop:foundational:scratchpad"),
+        Transfer(from: "loop:foundational:gpt3", to: "loop:foundational:chain-of-thought"),
+        Transfer(from: "loop:foundational:instructgpt", to: "loop:foundational:deepseek-r1"),
     ]
 
     // MARK: helpers

@@ -26,6 +26,8 @@ struct ExploreView: View {
     @State private var exploreSearchCommitted = false
     /// Optional Explore result filter (`nil` = all topics).
     @State private var exploreTopicFilter: SimilarityGraph.Cluster? = nil
+    /// Presents the "Topics" sheet (browse the catalog by theme).
+    @State private var showTopicsSheet = false
     /// Search corpus, preprocessed once when decks change. Rebuilt off the
     /// keystroke path so typing only runs cheap `contains` checks, never the
     /// per-deck lowercasing and cluster inference that made search lag.
@@ -39,14 +41,7 @@ struct ExploreView: View {
         let root = ZStack(alignment: .top) {
             switch displayMode {
             case .browse:
-                ZStack(alignment: .topTrailing) {
-                    browseView
-                    if !queryNonEmpty {
-                        discoverRandomPill
-                            .padding(.trailing, 14)
-                            .padding(.top, 10)
-                    }
-                }
+                browseView
             case .focus:
                 ExploreFocusView(
                     decks: allDecks,
@@ -69,6 +64,11 @@ struct ExploreView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .navigationBar)
+        .sheet(isPresented: $showTopicsSheet) {
+            TopicsSheet(topics: Topic.all, count: { topicCount($0) }) { topic in
+                openTopic(topic)
+            }
+        }
         .task {
             rebuildSearchIndex()          // index curated decks immediately
             await viewModel.loadAll()
@@ -100,7 +100,7 @@ struct ExploreView: View {
         )
     }
 
-    // Random — same capsule chrome as `ExploreFocusView`.
+    // Idle quick actions — Topics + Random. Same capsule chrome as `ExploreFocusView`.
 
     private var discoverChromeBackground: some View {
         Capsule()
@@ -109,27 +109,44 @@ struct ExploreView: View {
             .shadow(color: inkColor.opacity(0.06), radius: 6, x: 0, y: 2)
     }
 
-    private var discoverRandomPill: some View {
-        Button {
-            UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-            focusedId = RelatedPapers.Entry.random.seedId()
-            searchText = ""
-            searchFocused = false
-            withAnimation(.snappy(duration: 0.30)) { displayMode = .focus }
-        } label: {
-            HStack(spacing: 6) {
-                Image(systemName: "die.face.5")
-                    .font(.system(size: 11, weight: .semibold))
-                Text("Random")
-                    .font(.system(size: 11, weight: .semibold))
+    /// The two rounded entry points below the search bar in the idle state:
+    /// Topics (browse by theme) on the left, Random (a surprise paper) on
+    /// the right. Replaces the old recent-searches row.
+    private var discoverActionPills: some View {
+        HStack(spacing: 12) {
+            discoverActionPill(icon: "square.grid.2x2", title: "Topics") {
+                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                searchFocused = false
+                showTopicsSheet = true
+            }
+            discoverActionPill(icon: "die.face.5", title: "Random") {
+                UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                focusedId = RelatedPapers.Entry.random.seedId()
+                searchText = ""
+                searchFocused = false
+                withAnimation(.snappy(duration: 0.30)) { displayMode = .focus }
+            }
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    private func discoverActionPill(icon: String,
+                                    title: String,
+                                    action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: 7) {
+                Image(systemName: icon)
+                    .font(.system(size: 13, weight: .semibold))
+                Text(title)
+                    .font(.system(size: 14, weight: .semibold))
             }
             .foregroundStyle(inkColor)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 6)
+            .padding(.horizontal, 18)
+            .padding(.vertical, 10)
             .background(discoverChromeBackground)
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Open a random paper")
+        .accessibilityLabel(title == "Topics" ? "Browse papers by topic" : "Open a random paper")
     }
 
     // MARK: backdrop
@@ -185,24 +202,29 @@ struct ExploreView: View {
                 .padding(.horizontal, compactExploreHeader ? 20 : 28)
                 .id("explore-searchbar")
 
-            // Idle-only extras (recent searches) collapse the same way.
-            // Kept inside the always-present tree so the search bar never
-            // loses its sibling neighborhood.
-            //
+            if queryNonEmpty {
+                resultsCountLabel
+                    .padding(.horizontal, compactExploreHeader ? 20 : 28)
+                    .padding(.top, 7)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .transition(.opacity)
+            }
+
             // No feed-error banner here on purpose: the backend feed is
             // additive over the bundled curated catalog, so a failed or
             // slow fetch leaves the app fully usable. Surfacing a network
             // error for it would alarm users for nothing.
-            VStack(spacing: 0) {
-                if !recentSearches.queries.isEmpty {
-                    recentChips
-                        .padding(.top, 32)
-                }
-            }
-            .opacity(queryNonEmpty ? 0 : 1)
-            .frame(height: queryNonEmpty ? 0 : nil)
-            .allowsHitTesting(!queryNonEmpty)
-            .clipped()
+
+            // Idle quick actions (Latest + Random). Collapses to zero height
+            // while a query is active — same pattern the recent-searches row
+            // used — so the search bar above keeps its sibling neighborhood
+            // and is never recreated.
+            discoverActionPills
+                .padding(.top, 24)
+                .opacity(queryNonEmpty ? 0 : 1)
+                .frame(height: queryNonEmpty ? 0 : nil)
+                .allowsHitTesting(!queryNonEmpty)
+                .clipped()
 
             // Results appear when searching. We keep this inside the
             // same VStack rather than swapping the whole layout, so
@@ -254,7 +276,7 @@ struct ExploreView: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
                 .multilineTextAlignment(.center)
-            Text("A paper, a concept, or a question.")
+            Text("A paper, a concept, or an idea.")
                 .font(.system(size: 14, weight: .regular, design: .serif))
                 .foregroundStyle(mutedText)
                 .lineLimit(1)
@@ -417,6 +439,26 @@ struct ExploreView: View {
         return Array(ranked.filter { $0.cluster == filter }.prefix(12))
     }
 
+    /// Total matches after the optional topic filter (before the 12-row cap),
+    /// so the subtle count under the bar reflects everything that matched.
+    private var searchResultCount: Int {
+        let ranked = rankedExploreSearchHits
+        guard let filter = exploreTopicFilter else { return ranked.count }
+        return ranked.filter { $0.cluster == filter }.count
+    }
+
+    /// Subtle "N results found" line under the search bar while a query is
+    /// active. Hidden when nothing matches — the empty state speaks for that.
+    @ViewBuilder
+    private var resultsCountLabel: some View {
+        let total = searchResultCount
+        if total > 0 {
+            Text("\(total) \(total == 1 ? "result" : "results") found")
+                .font(.system(size: 12, weight: .medium))
+                .foregroundStyle(mutedText)
+        }
+    }
+
     @ViewBuilder
     private var resultsList: some View {
         let hits = searchResults
@@ -543,37 +585,6 @@ struct ExploreView: View {
         withAnimation(.snappy(duration: 0.30)) { displayMode = .focus }
     }
 
-    private var recentChips: some View {
-        VStack(spacing: 10) {
-            Text("Recent searches")
-                .font(.system(size: 11, weight: .medium))
-                .tracking(0.4)
-                .foregroundStyle(mutedText)
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 6) {
-                    ForEach(recentSearches.queries, id: \.self) { q in
-                        Button {
-                            searchText = q
-                            searchFocused = true
-                        } label: {
-                            Text(q)
-                                .font(.system(size: 13, weight: .regular))
-                                .foregroundStyle(inkColor.opacity(0.78))
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 6)
-                                .background(
-                                    Capsule().fill(Color.white.opacity(0.6))
-                                        .overlay(Capsule().stroke(borderColor.opacity(0.6), lineWidth: 1))
-                                )
-                        }
-                        .buttonStyle(.plain)
-                    }
-                }
-                .padding(.horizontal, 28)
-            }
-        }
-    }
-
     // MARK: dismiss
 
     /// Leave the brace hub (`ExploreFocusView`) without wiping an active query.
@@ -605,6 +616,44 @@ struct ExploreView: View {
             merged.append(CardDeck.fromLoop(paperId: entry.paperId, content: stamped))
         }
         return merged.mergingCanonicalBraceDuplicates()
+    }
+
+    /// Number of distinct papers in the corpus that match a topic's query.
+    /// Mirrors the `contains` checks used by search ranking, but only counts
+    /// hits — cheap enough to call once per topic when the sheet appears.
+    private func topicCount(_ topic: Topic) -> Int {
+        let q = topic.query.lowercased()
+        guard !q.isEmpty else { return 0 }
+        let tokens = q
+            .split(whereSeparator: { !$0.isLetter && !$0.isNumber })
+            .map(String.init)
+            .filter { $0.count >= 2 }
+        return searchIndex.reduce(into: 0) { acc, idx in
+            var matched = idx.title.contains(q) || idx.concepts.contains(q)
+                || idx.hook.contains(q) || idx.topicBlob.contains(q)
+            if !matched {
+                matched = tokens.contains { t in
+                    idx.title.contains(t) || idx.concepts.contains(t)
+                        || idx.hook.contains(t) || idx.topicBlob.contains(t)
+                }
+            }
+            if matched { acc += 1 }
+        }
+    }
+
+    /// Tapping a topic runs the existing corpus search for that topic's query,
+    /// so the browse results list surfaces every matching paper. Reuses the
+    /// search path rather than a bespoke topic feed, so ranking, topic-filter,
+    /// and the focus hub all keep working unchanged.
+    private func openTopic(_ topic: Topic) {
+        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+        showTopicsSheet = false
+        searchFocused = false
+        exploreSearchCommitted = true
+        withAnimation(.snappy(duration: 0.30)) {
+            displayMode = .browse
+            searchText = topic.query
+        }
     }
 
 }
@@ -679,6 +728,424 @@ private struct DiscoverTabReselectProbe: UIViewControllerRepresentable {
                                shouldRecognizeSimultaneouslyWith _: UIGestureRecognizer) -> Bool {
             true
         }
+    }
+}
+
+// MARK: - Topic
+
+/// A browse-by-theme entry point. `query` is fed into the existing corpus
+/// search when the topic is tapped, so each topic surfaces its matching papers
+/// without a separate feed. Ordered by appeal; the first is the featured hero.
+struct Topic: Identifiable {
+    let id: String
+    let title: String
+    let blurb: String
+    let query: String      // search string that surfaces this topic's papers
+    let symbol: String     // SF Symbol shown top-right
+    let accent: Color
+
+    static let all: [Topic] = [
+        Topic(id: "llm",
+              title: "Large Language Models",
+              blurb: "How machines learned to read, write, and reason in words.",
+              query: "language model", symbol: "text.bubble", accent: tealAccent),
+        Topic(id: "transformers",
+              title: "Transformers & Attention",
+              blurb: "The architecture under every modern model.",
+              query: "attention", symbol: "rectangle.connected.to.line.below",
+              accent: Color(hex: "2db8b8")),
+        Topic(id: "reasoning",
+              title: "Reasoning",
+              blurb: "Teaching models to think step by step.",
+              query: "reasoning", symbol: "brain", accent: Color(hex: "8a5a18")),
+        Topic(id: "vision",
+              title: "Computer Vision",
+              blurb: "Making machines see and understand images.",
+              query: "vision", symbol: "eye", accent: Color(hex: "8a4ec2")),
+        Topic(id: "generative",
+              title: "Generative Models",
+              blurb: "AI that creates: images, audio, whole worlds.",
+              query: "generative", symbol: "wand.and.stars", accent: Color(hex: "c25a8a")),
+        Topic(id: "rl",
+              title: "Reinforcement Learning",
+              blurb: "Learning from reward instead of answer keys.",
+              query: "reinforcement", symbol: "arrow.triangle.2.circlepath",
+              accent: Color(hex: "c07014")),
+        Topic(id: "foundations",
+              title: "Foundations",
+              blurb: "The building blocks: one neuron to backprop.",
+              query: "foundations", symbol: "square.stack.3d.up", accent: Color(hex: "2a6d7a")),
+        Topic(id: "embeddings",
+              title: "Embeddings",
+              blurb: "Turning words and things into geometry.",
+              query: "embedding", symbol: "point.3.connected.trianglepath.dotted",
+              accent: Color(hex: "3a7ca5")),
+        Topic(id: "training",
+              title: "Optimization & Training",
+              blurb: "The tricks that make deep networks actually learn.",
+              query: "optimization", symbol: "function", accent: Color(hex: "5a9fd8")),
+        Topic(id: "scaling",
+              title: "Scaling & Efficiency",
+              blurb: "Bigger, faster, cheaper: more model for less.",
+              query: "scaling", symbol: "chart.line.uptrend.xyaxis", accent: amberAccent),
+        Topic(id: "alignment",
+              title: "Alignment & Human Feedback",
+              blurb: "Steering models toward what people actually want.",
+              query: "feedback", symbol: "checkmark.shield", accent: Color(hex: "7a4040")),
+    ]
+}
+
+// MARK: - TopicsSheet
+//
+// Presented from the "Topics" pill on Discover. An editorial browse page: a
+// bold serif masthead, one featured topic with bespoke hand-built artwork, and
+// a two-column grid of the rest. Every topic carries its own little illustration
+// — an isometric stack of "papers" resting on a halftone-dot ground — so the
+// page reads as crafted, not a wall of icons. Tapping a topic runs the corpus
+// search for that topic and shows the results.
+
+struct TopicsSheet: View {
+    let topics: [Topic]
+    /// Live count of papers matching each topic's query (0 hides the count).
+    var count: (Topic) -> Int = { _ in 0 }
+    let onSelect: (Topic) -> Void
+    @Environment(\.dismiss) private var dismiss
+
+    private let columns = [GridItem(.flexible(), spacing: 16),
+                           GridItem(.flexible(), spacing: 16)]
+
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                sheetBackdrop.ignoresSafeArea()
+                ScrollView(showsIndicators: false) {
+                    VStack(alignment: .leading, spacing: 26) {
+                        header
+                        if let featured = topics.first {
+                            FeaturedTopicCard(topic: featured, count: count(featured)) {
+                                onSelect(featured)
+                            }
+                        }
+                        LazyVGrid(columns: columns, spacing: 22) {
+                            ForEach(Array(topics.dropFirst())) { topic in
+                                CompactTopicCard(topic: topic, count: count(topic)) {
+                                    onSelect(topic)
+                                }
+                            }
+                        }
+                        Color.clear.frame(height: 24)
+                    }
+                    .padding(.horizontal, 22)
+                    .padding(.top, 2)
+                }
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button { dismiss() } label: {
+                        Text("Done")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundStyle(inkColor)
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 7)
+                            .background(
+                                Capsule().fill(Color.white.opacity(0.95))
+                                    .overlay(Capsule().stroke(borderColor, lineWidth: 1))
+                            )
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+    }
+
+    // Soft paper backdrop with two faint blooms so the sheet reads as a
+    // composed surface, not a flat list page.
+    private var sheetBackdrop: some View {
+        ZStack {
+            paperBg
+            RadialGradient(colors: [tealAccent.opacity(0.10), .clear],
+                           center: UnitPoint(x: 0.86, y: 0.06),
+                           startRadius: 0, endRadius: 340)
+            RadialGradient(colors: [amberAccent.opacity(0.08), .clear],
+                           center: UnitPoint(x: 0.1, y: 0.96),
+                           startRadius: 0, endRadius: 320)
+        }
+    }
+
+    // Editorial masthead: tracked eyebrow + a large bold serif title.
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 7) {
+            HStack(spacing: 6) {
+                Circle().fill(tealAccent).frame(width: 5, height: 5)
+                Text("RESEARCH, BY THEME")
+                    .font(.system(size: 10, weight: .bold))
+                    .tracking(2.0)
+                    .foregroundStyle(tealAccent)
+            }
+            Text("Explore topics")
+                .font(.system(size: 33, weight: .bold, design: .serif))
+                .foregroundStyle(inkColor)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.top, 6)
+    }
+}
+
+// MARK: - Topic cards
+
+// The hero: a big white plate holding the topic's artwork with the title set
+// over it bottom-left, then an italic descriptor + chevron beneath on the
+// paper — the editorial rhythm of the reference shot.
+private struct FeaturedTopicCard: View {
+    let topic: Topic
+    let count: Int
+    let onTap: () -> Void
+
+    var body: some View {
+        Button(action: onTap) {
+            ZStack(alignment: .topLeading) {
+                RoundedRectangle(cornerRadius: 22, style: .continuous)
+                    .fill(Color.white)
+                    .overlay(
+                        RadialGradient(colors: [topic.accent.opacity(0.12), .clear],
+                                       center: UnitPoint(x: 0.85, y: 0.12),
+                                       startRadius: 0, endRadius: 240)
+                    )
+
+                VStack(alignment: .leading, spacing: 0) {
+                    TopicGlyph(topic: topic)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 130)
+                        .padding(.top, 6)
+
+                    Spacer(minLength: 12)
+
+                    Text(topic.title)
+                        .font(.system(size: 23, weight: .bold, design: .serif))
+                        .foregroundStyle(inkColor)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.leading)
+                        .fixedSize(horizontal: false, vertical: true)
+
+                    HStack(alignment: .bottom, spacing: 12) {
+                        Text(topic.blurb)
+                            .font(.system(size: 13.5, design: .serif))
+                            .italic()
+                            .foregroundStyle(mutedText)
+                            .lineLimit(2)
+                            .multilineTextAlignment(.leading)
+                            .fixedSize(horizontal: false, vertical: true)
+                        Spacer(minLength: 8)
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 13, weight: .bold))
+                            .foregroundStyle(topic.accent)
+                            .frame(width: 34, height: 34)
+                            .background(Circle().fill(topic.accent.opacity(0.10)))
+                    }
+                    .padding(.top, 9)
+                }
+                .padding(20)
+
+                if count > 0 {
+                    TopicCountChip(count: count, accent: topic.accent)
+                        .padding(18)
+                }
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 22, style: .continuous)
+                    .stroke(borderColor.opacity(0.7), lineWidth: 1)
+            )
+            .shadow(color: inkColor.opacity(0.08), radius: 16, x: 0, y: 7)
+        }
+        .buttonStyle(TopicCardPressStyle())
+    }
+}
+
+// Grid tile: artwork plate on top, title + count set beneath on the paper.
+private struct CompactTopicCard: View {
+    let topic: Topic
+    let count: Int
+    let onTap: () -> Void
+
+    var body: some View {
+        Button(action: onTap) {
+            VStack(alignment: .leading, spacing: 10) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .fill(Color.white)
+                        .overlay(
+                            RadialGradient(colors: [topic.accent.opacity(0.12), .clear],
+                                           center: UnitPoint(x: 0.84, y: 0.12),
+                                           startRadius: 0, endRadius: 130)
+                        )
+                    TopicGlyph(topic: topic, compact: true)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 92)
+                        .padding(.vertical, 10)
+                }
+                .frame(height: 118)
+                .overlay(alignment: .topLeading) {
+                    if count > 0 {
+                        TopicCountChip(count: count, accent: topic.accent)
+                            .padding(12)
+                    }
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(borderColor.opacity(0.7), lineWidth: 1)
+                )
+                .shadow(color: inkColor.opacity(0.06), radius: 9, x: 0, y: 4)
+
+                Text(topic.title)
+                    .font(.system(size: 14.5, weight: .semibold, design: .serif))
+                    .foregroundStyle(inkColor)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+                    // Reserve two lines so single-line titles keep the same
+                    // height — that way every tile aligns on one horizontal line.
+                    .frame(height: 40, alignment: .topLeading)
+                    .padding(.horizontal, 3)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        }
+        .buttonStyle(TopicCardPressStyle())
+    }
+}
+
+// Small "N papers" pill that sits over the artwork plate.
+private struct TopicCountChip: View {
+    let count: Int
+    let accent: Color
+    var body: some View {
+        Text("\(count) \(count == 1 ? "paper" : "papers")")
+            .font(.system(size: 10, weight: .bold))
+            .tracking(0.4)
+            .foregroundStyle(accent)
+            .padding(.horizontal, 9)
+            .padding(.vertical, 4)
+            .background(
+                Capsule().fill(Color.white.opacity(0.92))
+                    .overlay(Capsule().stroke(accent.opacity(0.32), lineWidth: 1))
+            )
+    }
+}
+
+// MARK: - TopicGlyph (bespoke per-topic artwork)
+//
+// Hand-built illustration shared by every topic: a halftone-dot ground (the
+// "printed" texture from the reference), an isometric fan of three papers tinted
+// with the topic's accent, and the topic's mark stamped on the front page over
+// two ruled lines. Pure SwiftUI shapes — no asset files, no chart libraries —
+// so it stays crisp at any size and recolors per topic.
+struct TopicGlyph: View {
+    let topic: Topic
+    var compact: Bool = false
+
+    var body: some View {
+        GeometryReader { geo in
+            let h = geo.size.height
+            let pw = h * 0.62          // paper width
+            let ph = h * 0.82          // paper height
+            ZStack {
+                // Halftone ground — the isometric "shadow" the stack rests on.
+                HalftoneField(color: topic.accent, gap: compact ? 6.5 : 8.5)
+                    .frame(width: pw * 1.95, height: ph * 0.52)
+                    .clipShape(Ellipse())
+                    .rotationEffect(.degrees(-3))
+                    .offset(y: ph * 0.36)
+                    .opacity(0.65)
+
+                // Back + middle papers, fanned and tinted.
+                paper(fill: topic.accent.opacity(0.20),
+                      stroke: topic.accent.opacity(0.40), w: pw, h: ph)
+                    .rotationEffect(.degrees(-11))
+                    .offset(x: -pw * 0.34, y: -h * 0.01)
+
+                paper(fill: topic.accent.opacity(0.11),
+                      stroke: topic.accent.opacity(0.30), w: pw, h: ph)
+                    .rotationEffect(.degrees(9))
+                    .offset(x: pw * 0.30, y: -h * 0.03)
+
+                // Front page: white, with the topic mark + ruled lines.
+                frontPaper(w: pw, h: ph)
+                    .rotationEffect(.degrees(-2))
+            }
+            .frame(width: geo.size.width, height: h, alignment: .center)
+        }
+    }
+
+    private func paper(fill: Color, stroke: Color, w: CGFloat, h: CGFloat) -> some View {
+        RoundedRectangle(cornerRadius: w * 0.11, style: .continuous)
+            .fill(fill)
+            .overlay(
+                RoundedRectangle(cornerRadius: w * 0.11, style: .continuous)
+                    .stroke(stroke, lineWidth: 1.2)
+            )
+            .frame(width: w, height: h)
+    }
+
+    private func frontPaper(w: CGFloat, h: CGFloat) -> some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: w * 0.11, style: .continuous)
+                .fill(Color.white)
+                .overlay(
+                    RoundedRectangle(cornerRadius: w * 0.11, style: .continuous)
+                        .stroke(topic.accent.opacity(0.5), lineWidth: 1.4)
+                )
+                .shadow(color: inkColor.opacity(0.14), radius: 5, x: 0, y: 4)
+
+            VStack(spacing: h * 0.085) {
+                Image(systemName: topic.symbol)
+                    .font(.system(size: w * 0.34, weight: .semibold))
+                    .foregroundStyle(topic.accent)
+                VStack(spacing: h * 0.05) {
+                    Capsule().fill(topic.accent.opacity(0.22))
+                        .frame(width: w * 0.54, height: max(2, h * 0.022))
+                    Capsule().fill(topic.accent.opacity(0.15))
+                        .frame(width: w * 0.38, height: max(2, h * 0.022))
+                }
+            }
+        }
+        .frame(width: w, height: h)
+    }
+}
+
+// A grid of soft dots — the "halftone" print texture under each topic's stack.
+private struct HalftoneField: View {
+    let color: Color
+    var dot: CGFloat = 2.3
+    var gap: CGFloat = 8.5
+
+    var body: some View {
+        Canvas { ctx, size in
+            guard gap > 0 else { return }
+            let cols = Int(size.width / gap) + 1
+            let rows = Int(size.height / gap) + 1
+            for r in 0..<rows {
+                for c in 0..<cols {
+                    let x = CGFloat(c) * gap + gap / 2
+                    let y = CGFloat(r) * gap + gap / 2
+                    // Fade toward the bottom edge so the ground melts into paper.
+                    let fade = 1 - Double(y / size.height)
+                    let op = 0.08 + 0.34 * max(0, fade)
+                    let rect = CGRect(x: x - dot / 2, y: y - dot / 2, width: dot, height: dot)
+                    ctx.fill(Path(ellipseIn: rect), with: .color(color.opacity(op)))
+                }
+            }
+        }
+    }
+}
+
+// Subtle tactile press: the card settles slightly, like pressing a real card.
+private struct TopicCardPressStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
+            .brightness(configuration.isPressed ? -0.015 : 0)
+            .animation(.spring(response: 0.3, dampingFraction: 0.8), value: configuration.isPressed)
     }
 }
 
