@@ -124,16 +124,16 @@ struct GPT3PromptShotsView: View {
 
                 // Eyebrow + title
                 Text("CARD 04 · IN CONTEXT LEARNING")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("Same model. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(gptInk)
-                + Text("Different prompts.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("Same model. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(gptInk)
+                + Text("Different prompts.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("GPT-3's weights never change here. Toggle the demos and watch the answer get sharper.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -147,7 +147,7 @@ struct GPT3PromptShotsView: View {
                     .padding(.bottom, 10)
 
                 Text(shot.caption)
-                    .font(.system(size: 11, design: .serif))
+                    .font(scaledSystemFont(11, design: .serif))
                     .italic()
                     .foregroundStyle(mutedText)
                     .padding(.bottom, 18)
@@ -157,7 +157,7 @@ struct GPT3PromptShotsView: View {
                     .padding(.bottom, 10)
 
                 Text(s.verdict)
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(s.verdictColor)
                     .padding(.bottom, 24)
             }
@@ -191,30 +191,30 @@ struct GPT3PromptShotsView: View {
                 Circle().fill(gptCorrect.opacity(0.65)).frame(width: 7, height: 7)
                 Spacer()
                 Text("PROMPT")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(scaledSystemFont(8, weight: .bold))
                     .tracking(1.4)
                     .foregroundStyle(gptInkSubtle)
             }
             .padding(.bottom, 4)
 
             Text(s.instruction)
-                .font(.system(size: 12, design: .monospaced))
+                .font(scaledSystemFont(12, design: .monospaced))
                 .foregroundStyle(gptInk)
                 .padding(.bottom, 4)
 
             ForEach(s.lines) { line in
                 HStack(alignment: .firstTextBaseline, spacing: 6) {
                     Text(line.prefix)
-                        .font(.system(size: 12, design: .monospaced))
+                        .font(scaledSystemFont(12, design: .monospaced))
                         .foregroundStyle(line.isQuery ? gptInk : gptInkSubtle)
                     if line.isQuery {
                         Text(typedAnswer.isEmpty ? "▍" : typedAnswer)
-                            .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                            .font(scaledSystemFont(12, weight: .semibold, design: .monospaced))
                             .foregroundStyle(tealAccent)
-                            .animation(.linear(duration: 0.05), value: typedAnswer)
+                            .motionAware(.linear(duration: 0.05), value: typedAnswer)
                     } else {
                         Text(line.value)
-                            .font(.system(size: 12, design: .monospaced))
+                            .font(scaledSystemFont(12, design: .monospaced))
                             .foregroundStyle(gptInkSubtle)
                     }
                     Spacer()
@@ -243,7 +243,7 @@ struct GPT3PromptShotsView: View {
                     UIImpactFeedbackGenerator(style: .soft).impactOccurred()
                 } label: {
                     Text(s.label)
-                        .font(.system(size: 12, weight: shot == s ? .semibold : .regular))
+                        .font(scaledSystemFont(12, weight: shot == s ? .semibold : .regular))
                         .foregroundStyle(shot == s ? .white : gptInk.opacity(0.75))
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 10)
@@ -265,12 +265,12 @@ struct GPT3PromptShotsView: View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
                 Text("ACCURACY")
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                 Spacer()
                 Text("\(Int(round(target * 100)))%")
-                    .font(.system(size: 14, weight: .regular, design: .serif))
+                    .font(scaledSystemFont(14, weight: .regular, design: .serif))
                     .foregroundStyle(gptInk)
             }
             GeometryReader { geo in
@@ -377,16 +377,16 @@ struct GPT3ScaleEmergenceView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 05 · EMERGENCE")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("Same trick. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(gptInk)
-                + Text("Different sizes.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("Same trick. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(gptInk)
+                + Text("Different sizes.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("Drag the dial. Same prompt at every stop. The capability appears, it doesn't gradually grow.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -479,10 +479,10 @@ struct GPT3ScaleEmergenceView: View {
                 ForEach(GPT3Scale.allCases) { s in
                     VStack(spacing: 2) {
                         Text(s.label)
-                            .font(.system(size: 11, weight: scale == s ? .semibold : .regular, design: .serif))
+                            .font(scaledSystemFont(11, weight: scale == s ? .semibold : .regular, design: .serif))
                             .foregroundStyle(scale == s ? gptInk : mutedText)
                         Text(s.sublabel)
-                            .font(.system(size: 8, weight: .semibold))
+                            .font(scaledSystemFont(8, weight: .semibold))
                             .tracking(0.8)
                             .foregroundStyle(scale == s ? tealAccent : mutedText.opacity(0.7))
                     }
@@ -496,28 +496,28 @@ struct GPT3ScaleEmergenceView: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text("PROMPT")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(scaledSystemFont(8, weight: .bold))
                     .tracking(1.4)
                     .foregroundStyle(gptInkSubtle)
                 Spacer()
                 Text("MODEL · \(scale.label)")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(scaledSystemFont(8, weight: .bold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
             }
 
             Text("Translate English to French.")
-                .font(.system(size: 12, design: .monospaced))
+                .font(scaledSystemFont(12, design: .monospaced))
                 .foregroundStyle(gptInkSubtle)
             Text("sea → mer")
-                .font(.system(size: 12, design: .monospaced))
+                .font(scaledSystemFont(12, design: .monospaced))
                 .foregroundStyle(gptInkSubtle)
             HStack(alignment: .firstTextBaseline, spacing: 6) {
                 Text("cat →")
-                    .font(.system(size: 12, design: .monospaced))
+                    .font(scaledSystemFont(12, design: .monospaced))
                     .foregroundStyle(gptInk)
                 Text(scale.modelOutput)
-                    .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(12, weight: .semibold, design: .monospaced))
                     .foregroundStyle(scale.verdictColor)
                     .id(scale)
                     .transition(.opacity.combined(with: .move(edge: .leading)))
@@ -527,7 +527,7 @@ struct GPT3ScaleEmergenceView: View {
             Divider().background(gptPromptEdge.opacity(0.6))
 
             Text(scale.verdict)
-                .font(.system(size: 12, design: .serif))
+                .font(scaledSystemFont(12, design: .serif))
                 .italic()
                 .foregroundStyle(scale.verdictColor)
         }
@@ -544,12 +544,12 @@ struct GPT3ScaleEmergenceView: View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
                 Text("FEW SHOT ACCURACY")
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                 Spacer()
                 Text("\(Int(round(capabilityAnim * 100)))%")
-                    .font(.system(size: 14, weight: .regular, design: .serif))
+                    .font(scaledSystemFont(14, weight: .regular, design: .serif))
                     .foregroundStyle(gptInk)
                     .contentTransition(.numericText())
             }
@@ -569,7 +569,7 @@ struct GPT3ScaleEmergenceView: View {
             .frame(height: 6)
 
             Text("The faint tick marks where in-context learning starts paying off. Below it: a parlour trick. Above: a tool.")
-                .font(.system(size: 11, design: .serif))
+                .font(scaledSystemFont(11, design: .serif))
                 .italic()
                 .foregroundStyle(mutedText)
                 .padding(.top, 6)

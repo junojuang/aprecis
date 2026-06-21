@@ -97,6 +97,23 @@ serve(async (req) => {
       return json({ paperId, buildsOn, ledTo, adjacent, surprise });
     }
 
+    // GET /serve-cards/web-lessons
+    // Returns { paper_id: web_lesson_url } for every catalog paper that has a
+    // server-driven web bundle. The iOS app loads this once and renders those
+    // papers from the bundle instead of a native reader, no app update needed.
+    if (req.method === "GET" && url.pathname.endsWith("/web-lessons")) {
+      const { data, error } = await supabase
+        .from("paper_catalog")
+        .select("paper_id, web_lesson_url")
+        .not("web_lesson_url", "is", null);
+      if (error) throw error;
+      const map: Record<string, string> = {};
+      for (const r of (data ?? []) as Array<{ paper_id: string; web_lesson_url: string }>) {
+        map[r.paper_id] = r.web_lesson_url;
+      }
+      return json(map);
+    }
+
     // GET /serve-cards
     if (req.method === "GET") {
       // Single-deck lookup: GET /serve-cards?paper_id=<id>
@@ -111,6 +128,7 @@ serve(async (req) => {
             url,
             cards,
             blueprint,
+            web_lesson_url,
             created_at,
             papers!inner (
               score,
@@ -155,6 +173,7 @@ serve(async (req) => {
           url,
           cards,
           blueprint,
+          web_lesson_url,
           created_at,
           papers!inner (
             score,

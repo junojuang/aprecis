@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Grokking</title>
+<style>
+  :root{
+    --paper:#f7f4ef; --inkdark:#0f1117; --teal:#1a8a8a; --teal-lt:#e8f5f5;
+    --teal-mid:#2db8b8; --amber:#e8a020; --muted:#6b7078; --cover-ink:#f4f1ea;
+    --rose:#d46a6a; --blue:#6a8caf; --border:rgba(15,17,23,.1);
+    --serif:ui-serif,"New York",Georgia,"Times New Roman",serif;
+    --sans:-apple-system,system-ui,"SF Pro Text",sans-serif;
+    /* live theme vars, set per-card by JS */
+    --ink:#0f1117; --themed-muted:#6b7078;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;height:100%;}
+  body{font-family:var(--sans);display:flex;flex-direction:column;
+       max-width:430px;margin:0 auto;background:var(--paper);overflow:hidden;
+       -webkit-font-smoothing:antialiased;}
+
+  /* ── stage background per theme ── */
+  #bg{position:fixed;inset:0;z-index:-1;transition:background .4s ease;}
+  #bg.paper{background:var(--paper);}
+  #bg.focus{background:
+     linear-gradient(to bottom, rgba(232,245,245,.5), rgba(232,245,245,0) 55%), var(--paper);}
+  #bg.cover{background:
+     radial-gradient(circle at 50% 34%, rgba(26,138,138,.28), transparent 60%), #10131a;}
+  @media (prefers-reduced-motion:reduce){#bg{transition:none;}}
+
+  /* ── top chrome ── */
+  .chrome{display:flex;align-items:center;gap:10px;padding:8px 18px 14px;}
+  .xmark{width:30px;height:30px;border:0;background:none;color:var(--ink);opacity:.7;
+         font-size:15px;display:flex;align-items:center;justify-content:center;}
+  .rail{flex:1;display:flex;gap:4px;}
+  .seg{flex:1;height:3px;border-radius:2px;background:color-mix(in srgb,var(--ink) 18%,transparent);
+       transition:background .3s;}
+  .seg.on{background:color-mix(in srgb,var(--ink) 90%,transparent);}
+  .count{font:600 11px var(--sans);font-family:ui-monospace,Menlo,monospace;
+         color:var(--themed-muted);width:38px;text-align:center;}
+
+  /* ── card body ── */
+  .stage{flex:1;position:relative;overflow:hidden;}
+  .card{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;
+        padding:0 22px 24px;opacity:0;transform:translateX(20px);pointer-events:none;
+        transition:opacity .34s ease,transform .34s ease;}
+  .card.active{opacity:1;transform:none;pointer-events:auto;}
+  .card.back{transform:translateX(-20px);}
+  @media (prefers-reduced-motion:reduce){.card{transition:opacity .2s;transform:none;}.card.back{transform:none;}}
+
+  /* ── advance bar ── */
+  .advance{padding:10px 22px 26px;display:flex;flex-direction:column;gap:8px;align-items:stretch;}
+  .tryhint{font:italic 12px var(--serif);color:var(--themed-muted);text-align:center;}
+  .next{display:flex;align-items:center;justify-content:center;gap:7px;border:0;
+        min-height:50px;border-radius:14px;background:var(--teal);color:#fff;
+        font:600 15px var(--sans);transition:background .2s;}
+  .next .ar{font-size:13px;font-weight:700;}
+  .next:disabled{background:color-mix(in srgb,var(--ink) 12%,transparent);color:var(--themed-muted);}
+
+  /* ── shared editorial type ── */
+  .kicker{font:700 11px var(--sans);letter-spacing:2px;text-transform:uppercase;color:var(--teal);}
+  h1.title{font:600 27px/1.22 var(--serif);color:var(--inkdark);margin:0;}
+  .prose{font:16px/1.5 var(--serif);color:rgba(15,17,23,.82);margin:0;letter-spacing:.1px;}
+  .prose .term{color:var(--teal);font-weight:600;cursor:pointer;}
+  .prose .term.gloss{border-bottom:1.5px dotted rgba(26,138,138,.5);}
+  .prose .hl{background:rgba(232,160,32,.28);}
+  .prose .b{font-weight:600;color:var(--inkdark);}
+  .stack{display:flex;flex-direction:column;align-items:flex-start;gap:16px;}
+  .sp{height:24px;flex:none;} .sp.sm{height:14px;}
+
+  /* ── cover ── */
+  .cover{display:flex;flex-direction:column;align-items:center;text-align:center;min-height:100%;}
+  .cover .eyebrow{font:700 11px var(--sans);letter-spacing:2.4px;text-transform:uppercase;
+                  color:var(--teal-mid);padding-top:18px;}
+  .cover .hero{height:220px;width:100%;display:flex;align-items:center;justify-content:center;}
+  .cover h1{font:600 40px/1.05 var(--serif);color:var(--cover-ink);margin:0;}
+  .cover h1 .amber{color:var(--amber);}
+  .cover .standfirst{font:italic 15px/1.5 var(--serif);color:rgba(244,241,234,.6);padding:14px 6px 0;}
+  .grow{flex:1 1 auto;min-height:18px;}
+  .appear{opacity:0;transform:scale(.92);transition:opacity .7s ease,transform .7s ease;}
+  .appear.in{opacity:1;transform:none;}
+
+  /* ── illustrated card frame ── */
+  .illus{background:#fff;border:1px solid var(--border);border-radius:18px;
+         padding:14px 20px;width:100%;}
+  .caption{font:italic 12px var(--serif);color:var(--muted);}
+
+  /* ── recap ── */
+  .rule{display:flex;align-items:center;gap:8px;}
+  .rule .l{height:1px;background:rgba(26,138,138,.55);}
+  .rule .dot{width:4px;height:4px;border-radius:50%;background:rgba(26,138,138,.7);}
+  .numeral{font:italic 34px var(--serif);color:var(--teal);}
+  .numeral .u{display:block;width:26px;height:1px;background:rgba(26,138,138,.55);margin-top:4px;}
+  .recap-row{display:flex;gap:18px;align-items:flex-start;}
+  .recap-row .pt{font:16px/1.45 var(--serif);color:rgba(15,17,23,.84);padding-top:10px;}
+
+  /* ── paper link ── */
+  .quote{font:86px var(--serif);color:rgba(26,138,138,.55);height:40px;line-height:1;}
+  .pquote{font:italic 22px/1.45 var(--serif);color:rgba(15,17,23,.92);}
+  .attrib{display:flex;align-items:center;gap:8px;font:italic 12px var(--serif);color:var(--muted);}
+  .attrib .l{width:18px;height:1px;background:rgba(26,138,138,.55);}
+  .srcbtn{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:#fff;
+          border:1px solid rgba(26,138,138,.35);border-radius:14px;padding:14px 16px;}
+  .srcbtn .ro{font:700 9px var(--sans);letter-spacing:1.6px;color:var(--teal);}
+  .srcbtn .lt{font:600 14px var(--serif);color:var(--inkdark);}
+  .srcbtn .ar{margin-left:auto;color:var(--teal);font-weight:700;}
+
+  /* ── studios ── */
+  .studio-kicker{font:700 11px var(--sans);letter-spacing:2px;text-transform:uppercase;color:var(--teal);}
+  .studio-intro{font:16px/1.5 var(--serif);color:rgba(15,17,23,.82);}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;border-radius:2px;
+     background:rgba(26,138,138,.25);outline:none;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;
+     background:var(--teal);box-shadow:0 1px 4px rgba(0,0,0,.2);cursor:pointer;}
+  .ticks{display:flex;}
+  .ticks span{flex:1;text-align:center;font:9.5px ui-monospace,Menlo,monospace;color:var(--muted);}
+  .ticks span.on{color:var(--teal);font-weight:700;}
+  .barwrap{display:flex;align-items:flex-end;justify-content:center;gap:26px;height:150px;}
+  .barcol{display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;}
+  .barval{font:700 13px ui-monospace,Menlo,monospace;}
+  .bartrack{width:66px;flex:1;display:flex;align-items:flex-end;}
+  .bar{width:100%;border-radius:6px;transition:height .32s ease,background .32s ease;}
+  .barlabel{font:600 10.5px var(--serif);color:rgba(15,17,23,.7);}
+  .notecard{display:flex;gap:10px;background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px;width:100%;}
+  .notechip{font:700 9px var(--sans);letter-spacing:.8px;color:var(--teal);background:rgba(26,138,138,.12);
+            border-radius:999px;padding:3px 7px;white-space:nowrap;height:fit-content;}
+  .note{font:13px/1.45 var(--serif);color:rgba(15,17,23,.78);}
+  .status{display:flex;gap:8px;align-items:flex-start;}
+  .status .d{width:9px;height:9px;border-radius:50%;flex:none;margin-top:5px;background:var(--amber);}
+  .status .d.ok{background:var(--teal);}
+  .status .t{font:600 13px/1.4 var(--serif);color:rgba(15,17,23,.8);}
+  .toggle{display:flex;align-items:center;justify-content:space-between;width:100%;}
+  .toggle .lab{font:600 14px var(--serif);color:var(--inkdark);}
+  .sw{width:50px;height:30px;border-radius:15px;background:rgba(15,17,23,.18);position:relative;transition:background .25s;border:0;}
+  .sw.on{background:var(--teal);}
+  .sw::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;
+     background:#fff;transition:transform .25s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+  .sw.on::after{transform:translateX(20px);}
+  .qrow{display:flex;align-items:center;gap:10px;border-radius:10px;padding:11px;border:1px solid var(--border);}
+  .qtag{font:700 8px var(--sans);letter-spacing:.8px;width:52px;}
+  .qprompt{font:600 14px ui-monospace,Menlo,monospace;color:rgba(15,17,23,.85);}
+  .qans{margin-left:auto;font:700 14px ui-monospace,Menlo,monospace;}
+  .seg4{display:flex;gap:0;width:100%;}
+  .seg4 span{flex:1;text-align:center;font:9.5px var(--sans);color:var(--muted);}
+  .seg4 span.on{color:var(--teal);font-weight:700;}
+  .outcard{background:#fff;border:1px solid var(--border);border-radius:11px;padding:13px;width:100%;
+           display:flex;flex-direction:column;gap:8px;}
+  .outhead{display:flex;align-items:center;justify-content:space-between;}
+  .outhead .l{font:700 10px var(--sans);letter-spacing:1px;color:rgba(15,17,23,.7);}
+  .verdict{font:700 11px var(--sans);border-radius:999px;padding:3px 8px;}
+  .vbar{height:14px;border-radius:999px;background:rgba(107,112,120,.12);overflow:hidden;}
+  .vbar .fill{height:100%;border-radius:999px;transition:width .32s ease,background .32s ease;}
+  .outfoot{display:flex;align-items:center;justify-content:space-between;}
+  .outfoot .l{font:italic 10px var(--serif);color:var(--muted);}
+  .outfoot .v{font:700 11px ui-monospace,Menlo,monospace;}
+  .noteteal{background:rgba(26,138,138,.05);border-radius:10px;padding:12px;width:100%;}
+
+  /* chips for OverfitVsGrok */
+  .panel{border-radius:10px;padding:11px;width:100%;display:flex;flex-direction:column;gap:6px;}
+  .panel .h{font:700 9px var(--sans);letter-spacing:1.3px;}
+  .chips{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+  .chip{font:600 10.5px var(--sans);border-radius:999px;padding:5px 8px;}
+  .chips .ar{font-size:8px;font-weight:700;color:var(--muted);}
+  .panel .cap{font:italic 10px var(--serif);color:var(--muted);}
+  .gridwrap{display:flex;gap:12px;}
+  .gridcol{flex:1;border-radius:10px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .gridcol .h{font:700 9px var(--sans);letter-spacing:1px;}
+  .grid5{display:grid;grid-template-columns:repeat(5,15px);gap:3px;}
+  .grid5 i{width:15px;height:15px;border-radius:2px;border:.8px solid var(--border);}
+
+  /* glossary sheet */
+  .pop{position:fixed;inset:0;background:rgba(15,17,23,.34);display:none;align-items:flex-end;z-index:30;}
+  .pop.show{display:flex;}
+  .sheet{background:var(--paper);border-radius:22px 22px 0 0;padding:22px 22px 30px;width:100%;max-width:430px;margin:0 auto;}
+  .sheet h3{font:700 18px var(--serif);color:var(--inkdark);margin:0 0 8px;}
+  .sheet p{font:15px/1.5 var(--serif);color:rgba(15,17,23,.8);margin:0;}
+</style>
+</head>
+<body>
+<div id="bg" class="cover"></div>
+<div class="chrome">
+  <button class="xmark" id="close" aria-label="Close lesson">✕</button>
+  <div class="rail" id="rail" aria-hidden="true"></div>
+  <div class="count" id="count">1/13</div>
+</div>
+<div class="stage" id="stage"></div>
+<div class="advance">
+  <div class="tryhint" id="tryhint" style="display:none">Try it above to continue</div>
+  <button class="next" id="next">Start <span class="ar">→</span></button>
+</div>
+<div class="pop" id="pop"><div class="sheet"><h3 id="popT"></h3><p id="popB"></p></div></div>
+<script>
+/* ── Aprecis bridge (console fallback so the file runs standalone) ── */
+const Aprecis={_s(n,b){const h=window.webkit&&window.webkit.messageHandlers&&window.webkit.messageHandlers[n];h?h.postMessage(b||{}):console.log("[Aprecis]",n,b||"");},
+  haptic(s){this._s("haptic",{style:s||"soft"});},select(){this._s("haptic",{style:"select"});},
+  success(){this._s("haptic",{style:"success"});},markDone(){this._s("markDone");},finish(){this._s("finish");},
+  openOriginal(u){this._s("openOriginal",{url:u});}};
+
+/* ── glossary (sourced from FoundationalGlossaries equivalents) ── */
+const GLOSS={
+  "grokking":"A model memorises its training data, looks overfit, then much later in training suddenly generalises to unseen data.",
+  "weight decay":"A regulariser that gently pushes weights toward smaller values, favouring simpler solutions over a memorised lookup table.",
+  "overfitting":"Fitting the training set perfectly while failing on new, unseen data.",
+  "generalise":"Get unseen cases right, not just the examples in the training set.",
+  "generalisation":"Getting unseen cases right, not just the examples in the training set.",
+  "modular arithmetic":"Arithmetic that wraps around a fixed number, e.g. (a + b) mod 13, the toy task grokking was first observed on.",
+  "lookup table":"A stored list of input to output pairs. Perfect on what it has seen, useless on anything new.",
+  "regularisation":"Any pressure that discourages complex solutions, nudging a model toward simpler ones that generalise."
+};
+const GTERMS=Object.keys(GLOSS).sort((a,b)=>b.length-a.length);
+function escapeHTML(s){return s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+function glossarise(text){ // wrap first occurrence of known terms as tappable
+  let out=escapeHTML(text);
+  for(const term of GTERMS){
+    const re=new RegExp("\\b("+term.replace(/[.*+?^${}()|[\\]\\\\]/g,"\\$&")+")\\b","i");
+    if(re.test(out)&&out.indexOf('data-g="')===-1){/*allow multiple*/}
+    out=out.replace(re,m=>`<span class="term gloss" data-g="${term}">${m}</span>`);
+  }
+  return out;
+}
+function seg(p){ // {t,s}
+  if(p.t==="bold")return `<span class="b">${escapeHTML(p.s)}</span>`;
+  if(p.t==="hl")  return `<span class="hl">${escapeHTML(p.s)}</span>`;
+  if(p.t==="term")return `<span class="term gloss" data-g="${(GLOSS[p.s.toLowerCase()]?p.s.toLowerCase():"")}">${escapeHTML(p.s)}</span>`;
+  return glossarise(p.s);
+}
+const P=(...segs)=>`<p class="prose">${segs.map(seg).join("")}</p>`;
+const pl=s=>({t:"plain",s}),b=s=>({t:"bold",s}),tm=s=>({t:"term",s}),hl=s=>({t:"hl",s});
+
+/* ── glyph (cover hero) ── */
+function glyph(){
+  return `<svg class="glyphsvg" viewBox="0 0 200 150" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+    <path d="M20 111 C26 111 36 39 48 39 L176 39" fill="none" stroke="#6b7078" stroke-opacity=".35"
+          stroke-width="1.6" stroke-linecap="round" stroke-dasharray="3 4"/>
+    <path id="gkleap" d="M20 111 L132 111 C144 111 156 39 176 39" fill="none" stroke="#1a8a8a"
+          stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <text id="gkspark" x="176" y="30" font-size="18" fill="#e8a020" text-anchor="middle">✦</text>
+    <text x="100" y="140" font-family="-apple-system,system-ui" font-size="9" font-weight="700"
+          letter-spacing="1.6" fill="#1a8a8a" text-anchor="middle">IT CLICKS, EVENTUALLY</text>
+  </svg>`;
+}
+function animateGlyph(root){
+  const path=root.querySelector("#gkleap"),spark=root.querySelector("#gkspark");
+  if(!path)return;
+  const len=path.getTotalLength();path.style.strokeDasharray=len;
+  const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
+  if(reduce){path.style.strokeDashoffset=0;spark.style.opacity=1;return;}
+  let start=null;const dur=2600;
+  function frame(ts){
+    if(!start)start=ts;let p=((ts-start)%(dur*2))/dur;if(p>1)p=2-p; // triangle 0..1..0
+    const e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2; // easeInOut
+    path.style.strokeDashoffset=len*(1-e);
+    spark.style.opacity=e>.92?1:0;spark.style.transform=e>.92?"scale(1)":"scale(.4)";
+    spark.style.transformOrigin="176px 30px";
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+/* ── illustrations ── */
+function overfitVsGrokArt(){
+  const chip=(s,c)=>`<span class="chip" style="color:${c};background:${c}1f">${s}</span>`;
+  const ar=`<span class="ar">▶</span>`;
+  return `<div style="display:flex;flex-direction:column;gap:12px;width:100%">
+    <div class="panel" style="background:rgba(212,106,106,.05)">
+      <div class="h" style="color:#d46a6a">THE TEXTBOOK STORY</div>
+      <div class="chips">${chip("train 100%","#6b7078")}${ar}${chip("val stuck","#d46a6a")}${ar}${chip("STOP: overfit","#d46a6a")}</div>
+      <div class="cap">most training would end right here</div>
+    </div>
+    <div class="panel" style="background:rgba(26,138,138,.05)">
+      <div class="h" style="color:#1a8a8a">GROKKING</div>
+      <div class="chips">${chip("train 100%","#6b7078")}${ar}${chip("keep going","#6a8caf")}${ar}${chip("val 100%","#1a8a8a")}</div>
+      <div class="cap">generalisation arrives long after overfitting</div>
+    </div></div>`;
+}
+function tableVsRuleArt(){
+  const cells=only=>{let h="";for(let r=0;r<5;r++)for(let c=0;c<5;c++){
+    const seen=(r+c)%2===0;const on=only?seen:true;
+    const fill=on?(only?"rgba(212,106,106,.6)":"rgba(26,138,138,.6)"):"#fff";
+    h+=`<i style="background:${fill}"></i>`;}return h;};
+  return `<div class="gridwrap">
+    <div class="gridcol" style="background:rgba(212,106,106,.05)">
+      <div class="h" style="color:#d46a6a">MEMORISE</div><div class="grid5">${cells(true)}</div>
+      <div class="caption">holes on unseen pairs</div></div>
+    <div class="gridcol" style="background:rgba(26,138,138,.05)">
+      <div class="h" style="color:#1a8a8a">GROK</div><div class="grid5">${cells(false)}</div>
+      <div class="caption">the rule fills every cell</div></div></div>`;
+}
+/* ── STUDIO 1 · GrokCurve ── */
+const GK_STEPS=[
+ {label:"100 steps",train:25,val:4,note:"Early on the model is bad at everything. It has not even memorised the training set yet."},
+ {label:"1k steps",train:100,val:5,note:"It has memorised the training data: perfect on what it has seen, no better than chance on what it hasn't. Classic overfitting."},
+ {label:"10k steps",train:100,val:6,note:"Tens of thousands of steps later, still just memorising. Most people would have stopped long ago, calling it overfit and done."},
+ {label:"100k steps",train:100,val:72,note:"Then, long after the training loss flatlined, validation accuracy suddenly starts to climb. The model is beginning to grok."},
+ {label:"1M steps",train:100,val:99,note:"It now generalises almost perfectly. The same network that looked hopelessly overfit has discovered the underlying rule."}];
+function grokCurveCard(){
+  const html=`<div class="stack"><div class="sp sm"></div>
+    <div class="studio-kicker">FAST FORWARD THE TRAINING</div>
+    <p class="studio-intro">This is one small model learning modular arithmetic. Drag through training time and watch the two accuracies. One shoots up at once; the other does something very strange.</p>
+    <div style="width:100%;display:flex;flex-direction:column;gap:8px">
+      <div class="ticks" id="c1ticks">${GK_STEPS.map((s,i)=>`<span data-i="${i}">${s.label}</span>`).join("")}</div>
+      <input type="range" id="c1slider" min="0" max="4" step="1" value="0" aria-label="Training steps"/>
+    </div>
+    <div class="barwrap">
+      <div class="barcol"><div class="barval" id="c1tv">25%</div><div class="bartrack"><div class="bar" id="c1tb"></div></div><div class="barlabel">Train</div></div>
+      <div class="barcol"><div class="barval" id="c1vv">4%</div><div class="bartrack"><div class="bar" id="c1vb"></div></div><div class="barlabel">Validation</div></div>
+    </div>
+    <div class="notecard"><span class="notechip" id="c1chip">100 STEPS</span><span class="note" id="c1note">${GK_STEPS[0].note}</span></div>
+    <div class="status"><span class="d" id="c1dot"></span><span class="t" id="c1status">Drag all the way to the end to see what happens long after overfitting.</span></div>
+    <div class="sp sm"></div></div>`;
+  function init(el,idx){
+    const sl=el.querySelector("#c1slider"),ticks=[...el.querySelectorAll("#c1ticks span")];
+    let reached=false;
+    function upd(){
+      const i=+sl.value,s=GK_STEPS[i];
+      ticks.forEach((t,k)=>t.classList.toggle("on",k===i));
+      el.querySelector("#c1tv").textContent=s.train+"%";
+      el.querySelector("#c1vv").textContent=s.val+"%";
+      el.querySelector("#c1tb").style.height=s.train+"%";
+      el.querySelector("#c1tb").style.background="rgba(107,112,120,.8)";
+      const vt=s.val>=50?"#1a8a8a":"#d46a6a";
+      el.querySelector("#c1vb").style.height=Math.max(4,s.val)+"%";
+      el.querySelector("#c1vb").style.background=vt;
+      el.querySelector("#c1vv").style.color=vt;
+      el.querySelector("#c1tv").style.color="#6b7078";
+      el.querySelector("#c1chip").textContent=s.label.toUpperCase();
+      el.querySelector("#c1note").textContent=s.note;
+      if(i===4&&!reached){reached=true;Aprecis.success();
+        el.querySelector("#c1dot").classList.add("ok");
+        el.querySelector("#c1status").textContent="That late jump is grokking: generalisation that arrives long after the model has memorised the data and looks overfit. The training curve gives no hint it is coming.";
+        markExplored(idx);}
+    }
+    sl.addEventListener("input",()=>{Aprecis.select();upd();});upd();
+  }
+  return {theme:"focus",label:"Continue",gated:true,html,init};
+}
+
+/* ── STUDIO 2 · MemorizeVsGeneralize ── */
+const GK_Q=[
+ {prompt:"2 + 3 (mod 13)",answer:"5",seen:true,mem:"5"},
+ {prompt:"7 + 4 (mod 13)",answer:"11",seen:true,mem:"11"},
+ {prompt:"9 + 6 (mod 13)",answer:"2",seen:false,mem:"7"},
+ {prompt:"11 + 8 (mod 13)",answer:"6",seen:false,mem:"0"}];
+function memorizeCard(){
+  const html=`<div class="stack"><div class="sp sm"></div>
+    <div class="studio-kicker">WHAT CHANGED AT THE LEAP</div>
+    <p class="studio-intro">Before grokking the model is a lookup table: it nails pairs it was trained on and guesses on the rest. Flip to after, and the same model answers pairs it has never seen, because it found the rule.</p>
+    <div class="toggle"><span class="lab" id="c2lab">Before grokking (1k steps)</span><button class="sw" id="c2sw" aria-label="Toggle grokking"></button></div>
+    <div style="width:100%;display:flex;flex-direction:column;gap:8px" id="c2rows"></div>
+    <div class="status"><span class="d" id="c2dot"></span><span class="t" id="c2status">The unseen pairs are wrong, because a lookup table has no entry for them. Flip the switch.</span></div>
+    <div class="sp sm"></div></div>`;
+  function init(el,idx){
+    const sw=el.querySelector("#c2sw"),rows=el.querySelector("#c2rows");let grokked=false;
+    function render(){
+      rows.innerHTML=GK_Q.map(q=>{
+        const correct=grokked||q.seen,shown=correct?q.answer:q.mem;
+        const bg=correct?"rgba(26,138,138,.05)":"rgba(212,106,106,.05)";
+        const ac=correct?"#1a8a8a":"#d46a6a";
+        return `<div class="qrow" style="background:${bg}">
+          <span class="qtag" style="color:${q.seen?"#6a8caf":"#e8a020"}">${q.seen?"SEEN":"UNSEEN"}</span>
+          <span class="qprompt">${q.prompt}</span>
+          <span class="qans" style="color:${ac}">= ${shown}</span>
+          <span style="color:${ac};font-size:15px">${correct?"✓":"✕"}</span></div>`;}).join("");
+    }
+    sw.addEventListener("click",()=>{
+      grokked=!grokked;sw.classList.toggle("on",grokked);Aprecis.select();
+      el.querySelector("#c2lab").textContent=grokked?"After grokking (1M steps)":"Before grokking (1k steps)";
+      if(grokked){Aprecis.success();el.querySelector("#c2dot").classList.add("ok");
+        el.querySelector("#c2status").textContent="Generalisation means getting unseen cases right. Memorising stores answers; grokking learns the function that produces them, so the blanks fill in on their own.";
+        markExplored(idx);}
+      else{el.querySelector("#c2dot").classList.remove("ok");
+        el.querySelector("#c2status").textContent="The unseen pairs are wrong, because a lookup table has no entry for them. Flip the switch.";}
+      render();
+    });
+    render();
+  }
+  return {theme:"focus",label:"Continue",gated:true,html,init};
+}
+
+/* ── STUDIO 3 · WeightDecay ── */
+const GK_D=[
+ {label:"None",val:5,verdict:"Never groks",groks:false,note:"With no pressure to simplify, the network is happy to stay a lookup table forever. Train is perfect, validation never moves."},
+ {label:"Tiny",val:64,verdict:"Groks slowly",groks:false,note:"A little weight decay eventually nudges it toward a rule, but it takes far longer and lands lower."},
+ {label:"Just right",val:99,verdict:"Groks",groks:true,note:"Enough pressure toward simple weights tips the model off the memorising solution and onto the rule. This is the sweet spot."},
+ {label:"Too high",val:18,verdict:"Underfits",groks:false,note:"Crank it too far and the weights are punished so hard the model can't even fit the training data, let alone generalise."}];
+function weightDecayCard(){
+  const html=`<div class="stack"><div class="sp sm"></div>
+    <div class="studio-kicker">THE KNOB THAT DECIDES</div>
+    <p class="studio-intro">Grokking is not luck. Weight decay, a gentle pull toward simpler weights, is what tips the model from memorising to generalising. Dial it and find the setting that actually groks.</p>
+    <div style="width:100%;display:flex;flex-direction:column;gap:8px">
+      <div class="seg4" id="c3ticks">${GK_D.map((d,i)=>`<span data-i="${i}">${d.label}</span>`).join("")}</div>
+      <input type="range" id="c3slider" min="0" max="3" step="1" value="0" aria-label="Weight decay"/>
+    </div>
+    <div class="outcard">
+      <div class="outhead"><span class="l" id="c3head">WEIGHT DECAY: NONE</span><span class="verdict" id="c3verdict"></span></div>
+      <div class="vbar"><div class="fill" id="c3fill"></div></div>
+      <div class="outfoot"><span class="l">validation accuracy</span><span class="v" id="c3val"></span></div>
+    </div>
+    <div class="noteteal"><span class="note" id="c3note"></span></div>
+    <div class="status"><span class="d" id="c3dot"></span><span class="t" id="c3status">Try each setting. Only one actually tips the model into generalising.</span></div>
+    <div class="sp sm"></div></div>`;
+  function init(el,idx){
+    const sl=el.querySelector("#c3slider"),ticks=[...el.querySelectorAll("#c3ticks span")];let found=false;
+    function upd(){
+      const i=+sl.value,d=GK_D[i],c=d.groks?"#1a8a8a":"#d46a6a";
+      ticks.forEach((t,k)=>t.classList.toggle("on",k===i));
+      el.querySelector("#c3head").textContent="WEIGHT DECAY: "+d.label.toUpperCase();
+      const v=el.querySelector("#c3verdict");v.textContent=d.verdict;v.style.color=c;v.style.background=c+"1f";
+      const f=el.querySelector("#c3fill");f.style.width=Math.max(8,d.val)+"%";f.style.background=c;
+      const vv=el.querySelector("#c3val");vv.textContent=d.val+"%";vv.style.color=c;
+      el.querySelector("#c3note").textContent=d.note;
+      if(d.groks&&!found){found=true;Aprecis.success();el.querySelector("#c3dot").classList.add("ok");
+        el.querySelector("#c3status").textContent="Grokking depends on regularisation. The pressure to use simpler weights is what makes the rule a better deal than the lookup table, so the model finally switches.";
+        markExplored(idx);}
+    }
+    sl.addEventListener("input",()=>{Aprecis.select();upd();});upd();
+  }
+  return {theme:"focus",label:"Continue",gated:true,html,init};
+}
+
+/* ── static card builders ── */
+function coverCard(){
+  const html=`<div class="cover">
+    <div class="eyebrow appear">APRECIS · FOUNDATIONS</div>
+    <div class="grow"></div>
+    <div class="hero appear">${glyph()}</div>
+    <div class="grow"></div>
+    <h1 class="appear">It <span class="amber">clicks</span>, eventually.</h1>
+    <div class="standfirst appear">2022. A model memorises its data, looks overfit, then keeps training and suddenly understands. Generalisation, arriving fashionably late.</div>
+    <div class="grow"></div></div>`;
+  function init(el){animateGlyph(el);
+    requestAnimationFrame(()=>el.querySelectorAll(".appear").forEach((a,i)=>setTimeout(()=>a.classList.add("in"),60+i*60)));}
+  return {theme:"cover",label:"Start",html,init};
+}
+function proseCard(kicker,title,paras,heroHTML){
+  const hero=heroHTML?`<div style="width:100%">${heroHTML}</div>`:"";
+  const html=`<div class="stack"><div class="sp${heroHTML?" sm":""}"></div>${hero}
+    <div class="kicker">${kicker}</div><h1 class="title">${title}</h1>
+    ${paras.join("")}<div class="sp sm"></div></div>`;
+  return {theme:"paper",label:"Continue",html};
+}
+function illustratedCard(kicker,title,paras,caption,illusHTML){
+  const html=`<div class="stack"><div class="sp sm"></div>
+    <div class="illus">${illusHTML}</div>
+    ${caption?`<div class="caption">${caption}</div>`:""}
+    <div class="kicker">${kicker}</div><h1 class="title" style="font-size:25px">${title}</h1>
+    ${paras.join("")}<div class="sp sm"></div></div>`;
+  return {theme:"paper",label:"Continue",html};
+}
+function recapCard(title,points){
+  const rn=["I","II","III","IV","V"];
+  const rows=points.map((p,i)=>`<div class="recap-row"><div class="numeral">${rn[i]}<span class="u"></span></div><div class="pt">${escapeHTML(p)}</div></div>`).join("");
+  const html=`<div class="stack"><div class="sp sm"></div>
+    <div class="rule"><span class="l" style="width:40px"></span><span class="dot"></span><span class="l" style="width:18px"></span></div>
+    <div class="kicker">WHAT YOU NOW KNOW</div><h1 class="title">${title}</h1>
+    <div style="display:flex;flex-direction:column;gap:20px;width:100%">${rows}</div><div class="sp sm"></div></div>`;
+  return {theme:"focus",label:"Continue",html};
+}
+function paperLinkCard(quote,attrib,linkTitle,url){
+  const html=`<div class="stack"><div class="sp sm"></div>
+    <div class="quote">&ldquo;</div>
+    <div class="pquote">${escapeHTML(quote)}&rdquo;</div>
+    <div class="attrib"><span class="l"></span>${escapeHTML(attrib)}</div>
+    <div class="sp"></div>
+    <button class="srcbtn" id="srcbtn"><div><div class="ro">READ THE ORIGINAL</div><div class="lt">${escapeHTML(linkTitle)}</div></div><span class="ar">↗</span></button>
+    <div class="sp sm"></div></div>`;
+  function init(el){el.querySelector("#srcbtn").addEventListener("click",()=>{Aprecis.haptic();Aprecis.openOriginal(url);});}
+  return {theme:"paper",label:"Finish",html,init};
+}
+
+/* ── the lesson ── */
+const CARDS=[
+  coverCard(),
+  proseCard("Start here","The penny that drops late",[
+    P(pl("You drill something for ages, getting nowhere, feeling like you've only memorised it. Then one day, long after you'd given up expecting it, it just "),b("clicks"),pl(".")),
+    P(pl("In 2022, researchers caught a neural network doing exactly that. It memorised its training set, sat there looking overfit, then "),hl("suddenly generalised"),pl(".")),
+    P(pl("They called it "),tm("grokking"),pl("."))]),
+  illustratedCard("The idea","Generalisation, fashionably late",[
+    P(pl("Train a small network on a task like modular arithmetic. It hits "),tm("100% training accuracy"),pl(" fast while validation stays at chance: textbook overfitting.")),
+    P(pl("Keep training, far past where anyone would stop, and validation accuracy "),hl("suddenly snaps to near 100%"),pl(". The model found the rule."))],
+    "Stop at overfitting and you miss it. Keep going and it groks.",overfitVsGrokArt()),
+  grokCurveCard(),
+  proseCard("A puzzle first","Memorise or understand?",[
+    P(pl("Both a memoriser and a generaliser can score 100% on the training set. So what's the real difference?")),
+    P(pl("A memoriser is a "),hl("lookup table"),pl(": perfect on pairs it has seen, lost on anything new.")),
+    P(pl("A generaliser has the "),hl("rule"),pl(", so it answers pairs it has never seen. Grokking is the switch from the first to the second."))]),
+  illustratedCard("The difference","A table with holes vs a rule",[
+    P(pl("Memorising fills in only the cells it was trained on and leaves the rest "),tm("blank"),pl(".")),
+    P(pl("Grokking learns the function behind the table, so every cell, seen or unseen, fills itself in."))],
+    "The grokked model completes the squares it was never shown.",tableVsRuleArt()),
+  memorizeCard(),
+  proseCard("One idea first","Why would it ever switch?",[
+    P(pl("If memorising already scores 100% on training, why would the model bother finding the rule?")),
+    P(pl("The push comes from "),tm("weight decay"),pl(", a gentle pressure toward simpler weights. The rule is a simpler solution than a giant lookup table.")),
+    P(pl("Turn that pressure off and the model "),hl("never groks"),pl(". It is happy to stay a memoriser forever."))]),
+  weightDecayCard(),
+  proseCard("The payoff","Overfitting isn't the end",[
+    P(pl("Grokking broke a comfortable assumption: that once training accuracy is perfect and validation has stalled, there's "),b("nothing left to learn"),pl(".")),
+    P(pl("It showed that generalisation can be a "),hl("separate, later phase"),pl(", and that regularisation, not just more data, can drive it."))]),
+  proseCard("Why it matters","A window into learning",[
+    P(pl("Grokking became a favourite testbed for "),hl("interpretability"),pl(": because the moment of understanding is so sharp, researchers can watch a clean rule form inside the weights.")),
+    P(pl("It feeds the bigger question behind every large model: when does a network truly "),hl("understand"),pl(", rather than just memorise?"))]),
+  recapCard("Grokking, in three lines",[
+    "A small model memorises its training data fast, hitting 100% train while validation stays at chance.",
+    "Far later in training, validation suddenly leaps to near 100%: it has grokked the underlying rule.",
+    "Weight decay drives the switch, by making the simple rule a better deal than a giant lookup table."]),
+  paperLinkCard("Generalisation can arrive long after a model looks hopelessly overfit.",
+    "Power et al. · OpenAI · 2022",
+    "Grokking: Generalization Beyond Overfitting on Small Algorithmic Datasets",
+    "https://arxiv.org/abs/2201.02177"),
+];
+
+/* ── shell ── */
+const stage=document.getElementById("stage"),rail=document.getElementById("rail"),
+  countEl=document.getElementById("count"),nextBtn=document.getElementById("next"),
+  tryhint=document.getElementById("tryhint"),bg=document.getElementById("bg");
+const explored=new Set();
+let cur=0,goingBack=false;
+const THEME={cover:{ink:"#f4f1ea",muted:"rgba(244,241,234,.62)"},
+  paper:{ink:"#0f1117",muted:"#6b7078"},focus:{ink:"#0f1117",muted:"#6b7078"}};
+
+CARDS.forEach((c,i)=>{
+  rail.insertAdjacentHTML("beforeend",'<div class="seg"></div>');
+  const sec=document.createElement("section");sec.className="card";sec.dataset.idx=i;sec.innerHTML=c.html;
+  stage.appendChild(sec);if(c.init)c.init(sec,i);
+});
+const sections=[...stage.children],segs=[...rail.children];
+
+function canAdvance(){const c=CARDS[cur];return !c.gated||explored.has(cur);}
+function markExplored(i){explored.add(i);if(i===cur)refresh();}
+function refresh(){
+  const c=CARDS[cur],last=cur===CARDS.length-1,ok=canAdvance();
+  nextBtn.disabled=!ok;
+  nextBtn.innerHTML=(last?"Finish":c.label)+` <span class="ar">${last?"✓":"→"}</span>`;
+  tryhint.style.display=(c.gated&&!ok)?"block":"none";
+}
+function applyTheme(t){
+  bg.className=t;const v=THEME[t];
+  document.documentElement.style.setProperty("--ink",v.ink);
+  document.documentElement.style.setProperty("--themed-muted",v.muted);
+}
+function show(n){
+  sections.forEach((s,k)=>{s.classList.toggle("active",k===n);s.classList.toggle("back",k<n);});
+  segs.forEach((s,k)=>s.classList.toggle("on",k<=n));
+  countEl.textContent=(n+1)+"/"+CARDS.length;
+  cur=n;applyTheme(CARDS[n].theme);refresh();sections[n].scrollTop=0;
+}
+nextBtn.addEventListener("click",()=>{
+  Aprecis.haptic("medium");
+  if(cur===CARDS.length-1){Aprecis.markDone();Aprecis.finish();nextBtn.textContent="Done ✓";return;}
+  if(canAdvance()){goingBack=false;show(cur+1);}
+});
+document.getElementById("close").addEventListener("click",()=>{Aprecis.haptic();Aprecis._s("close");});
+
+/* glossary */
+const pop=document.getElementById("pop");
+document.body.addEventListener("click",e=>{
+  const g=e.target.closest("[data-g]");
+  if(g&&g.dataset.g&&GLOSS[g.dataset.g]){document.getElementById("popT").textContent=g.dataset.g.charAt(0).toUpperCase()+g.dataset.g.slice(1);
+    document.getElementById("popB").textContent=GLOSS[g.dataset.g];pop.classList.add("show");Aprecis.haptic("light");}
+  else if(e.target===pop)pop.classList.remove("show");
+});
+
+/* edge-swipe back */
+let sx=0,sy=0;
+stage.addEventListener("touchstart",e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
+stage.addEventListener("touchend",e=>{
+  const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;
+  if(sx<32&&dx>80&&Math.abs(dy)<60&&cur>0){Aprecis.haptic();goingBack=true;show(cur-1);}
+});
+
+show(0);
+</script>
+
+
+</body>
+</html>

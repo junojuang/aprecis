@@ -77,7 +77,7 @@ struct ExploreView: View {
         .onChange(of: viewModel.decks.count) { _, _ in
             rebuildSearchIndex()
         }
-        .animation(.snappy(duration: 0.28), value: displayMode)
+        .motionAware(.snappy(duration: 0.28), value: displayMode)
         .onChange(of: searchFocused) { _, focused in
             if !focused, queryNonEmpty {
                 exploreSearchCommitted = true
@@ -136,9 +136,9 @@ struct ExploreView: View {
         Button(action: action) {
             HStack(spacing: 7) {
                 Image(systemName: icon)
-                    .font(.system(size: 13, weight: .semibold))
+                    .scaledFont(size: 13, weight: .semibold)
                 Text(title)
-                    .font(.system(size: 14, weight: .semibold))
+                    .scaledFont(size: 14, weight: .semibold)
             }
             .foregroundStyle(inkColor)
             .padding(.horizontal, 18)
@@ -168,11 +168,12 @@ struct ExploreView: View {
                 startRadius: 0, endRadius: 360
             )
             Text("?")
-                .font(.system(size: 440, weight: .regular, design: .serif))
+                .scaledFont(size: 440, weight: .regular, design: .serif)
                 .italic()
                 .foregroundStyle(tealAccent.opacity(0.04))
                 .offset(x: 80, y: -20)
                 .allowsHitTesting(false)
+                .accessibilityHidden(true)
         }
     }
 
@@ -249,7 +250,7 @@ struct ExploreView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         // Smooth spring so the bar floats from middle to top rather
         // than snapping. Damping tuned so it lands without bounce.
-        .animation(.spring(response: 0.42, dampingFraction: 0.88),
+        .motionAware(.spring(response: 0.42, dampingFraction: 0.88),
                    value: compactExploreHeader || queryNonEmpty)
         .contentShape(Rectangle())
         .onTapGesture { searchFocused = false }
@@ -270,14 +271,14 @@ struct ExploreView: View {
     private var heroCopy: some View {
         VStack(spacing: 8) {
             Text("Where should we begin?")
-                .font(.system(size: 28, weight: .regular, design: .serif))
+                .scaledFont(size: 28, weight: .regular, design: .serif)
                 .tracking(-0.3)
                 .foregroundStyle(inkColor)
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
                 .multilineTextAlignment(.center)
             Text("A paper, a concept, or an idea.")
-                .font(.system(size: 14, weight: .regular, design: .serif))
+                .scaledFont(size: 14, weight: .regular, design: .serif)
                 .foregroundStyle(mutedText)
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
@@ -294,9 +295,10 @@ struct ExploreView: View {
         HStack(spacing: 10) {
             Image(systemName: "magnifyingglass")
                 .foregroundStyle(searchFocused ? tealAccent : mutedText)
-                .font(.system(size: 15, weight: .regular))
+                .scaledFont(size: 15, weight: .regular)
+                .accessibilityHidden(true)
             TextField("Search papers, topics, or tags", text: $searchText)
-                .font(.system(size: 16, weight: .regular))
+                .scaledFont(size: 16, weight: .regular)
                 .foregroundStyle(inkColor)
                 .autocorrectionDisabled()
                 .submitLabel(.search)
@@ -306,9 +308,10 @@ struct ExploreView: View {
                 Button { searchText = "" } label: {
                     Image(systemName: "xmark.circle.fill")
                         .foregroundStyle(mutedText.opacity(0.7))
-                        .font(.system(size: 15))
+                        .scaledFont(size: 15)
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel("Clear search")
             }
         }
         .padding(.horizontal, 14)
@@ -320,7 +323,7 @@ struct ExploreView: View {
                 .stroke(searchFocused ? tealAccent.opacity(0.45) : borderColor.opacity(0.7), lineWidth: 1)
         )
         .shadow(color: inkColor.opacity(0.035), radius: 10, x: 0, y: 3)
-        .animation(.easeOut(duration: 0.15), value: searchFocused)
+        .motionAware(.easeOut(duration: 0.15), value: searchFocused)
     }
 
     /// Search capsule + optional topic filter (`SimilarityGraph.Cluster`).
@@ -351,7 +354,7 @@ struct ExploreView: View {
             }
         } label: {
             Image(systemName: "line.3.horizontal.decrease.circle")
-                .font(.system(size: 20, weight: .regular))
+                .scaledFont(size: 20, weight: .regular)
                 .foregroundStyle(exploreTopicFilter == nil ? mutedText : tealAccent)
                 .frame(width: 44, height: 44)
                 .contentShape(Rectangle())
@@ -454,7 +457,7 @@ struct ExploreView: View {
         let total = searchResultCount
         if total > 0 {
             Text("\(total) \(total == 1 ? "result" : "results") found")
-                .font(.system(size: 12, weight: .medium))
+                .scaledFont(size: 12, weight: .medium)
                 .foregroundStyle(mutedText)
         }
     }
@@ -500,19 +503,19 @@ struct ExploreView: View {
                     HStack(spacing: 6) {
                         Circle().fill(cluster.color).frame(width: 5, height: 5)
                         Text(cluster.label.uppercased())
-                            .font(.system(size: 9, weight: .bold))
+                            .scaledFont(size: 9, weight: .bold)
                             .tracking(1.4)
                             .foregroundStyle(cluster.color)
                     }
                     Text(deck.title ?? "Untitled")
-                        .font(.system(size: 15, weight: .semibold, design: .serif))
+                        .scaledFont(size: 15, weight: .semibold, design: .serif)
                         .foregroundStyle(inkColor)
                         .lineLimit(2)
                         .multilineTextAlignment(.leading)
                         .fixedSize(horizontal: false, vertical: true)
                     if !subtitle.isEmpty {
                         Text(subtitle)
-                            .font(.system(size: 12, design: .serif))
+                            .scaledFont(size: 12, design: .serif)
                             .italic()
                             .foregroundStyle(mutedText)
                             .lineLimit(2)
@@ -522,9 +525,10 @@ struct ExploreView: View {
                 }
                 Spacer(minLength: 0)
                 Image(systemName: "arrow.up.right")
-                    .font(.system(size: 11, weight: .bold))
+                    .scaledFont(size: 11, weight: .bold)
                     .foregroundStyle(tealAccent)
                     .padding(.top, 4)
+                    .accessibilityHidden(true)
             }
             .padding(14)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -539,6 +543,11 @@ struct ExploreView: View {
             .shadow(color: inkColor.opacity(0.04), radius: 4, x: 0, y: 2)
         }
         .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(deck.title ?? "Untitled"), \(cluster.label)")
+        .accessibilityValue(subtitle)
+        .accessibilityHint("Opens this paper")
+        .accessibilityAddTraits(.isButton)
     }
 
     private var exploreEmptyResultsState: some View {
@@ -548,25 +557,26 @@ struct ExploreView: View {
 
         return VStack(spacing: 10) {
             Image(systemName: topicFilteredOut ? "line.3.horizontal.decrease.circle" : "magnifyingglass")
-                .font(.system(size: 20, weight: .regular))
+                .scaledFont(size: 20, weight: .regular)
                 .foregroundStyle(mutedText.opacity(0.5))
+                .accessibilityHidden(true)
             if topicFilteredOut, let filter = exploreTopicFilter {
                 Text("No \(filter.label) hits for \u{201C}\(searchText.trimmingCharacters(in: .whitespacesAndNewlines))\u{201D}")
-                    .font(.system(size: 15, weight: .semibold, design: .serif))
+                    .scaledFont(size: 15, weight: .semibold, design: .serif)
                     .foregroundStyle(inkColor)
                     .multilineTextAlignment(.center)
                 Text("Try another topic filter or clear the filter to see all matches.")
-                    .font(.system(size: 13, weight: .regular))
+                    .scaledFont(size: 13, weight: .regular)
                     .foregroundStyle(mutedText)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 36)
             } else {
                 Text("No matches for \u{201C}\(searchText.trimmingCharacters(in: .whitespacesAndNewlines))\u{201D}")
-                    .font(.system(size: 15, weight: .semibold, design: .serif))
+                    .scaledFont(size: 15, weight: .semibold, design: .serif)
                     .foregroundStyle(inkColor)
                     .multilineTextAlignment(.center)
                 Text("Try a topic tag (Vision, Language, Reasoning, …), a concept like attention, or a plain question.")
-                    .font(.system(size: 13, weight: .regular))
+                    .scaledFont(size: 13, weight: .regular)
                     .foregroundStyle(mutedText)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 36)
@@ -844,7 +854,7 @@ struct TopicsSheet: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button { dismiss() } label: {
                         Text("Done")
-                            .font(.system(size: 14, weight: .semibold))
+                            .scaledFont(size: 14, weight: .semibold)
                             .foregroundStyle(inkColor)
                             .padding(.horizontal, 14)
                             .padding(.vertical, 7)
@@ -879,12 +889,12 @@ struct TopicsSheet: View {
             HStack(spacing: 6) {
                 Circle().fill(tealAccent).frame(width: 5, height: 5)
                 Text("RESEARCH, BY THEME")
-                    .font(.system(size: 10, weight: .bold))
+                    .scaledFont(size: 10, weight: .bold)
                     .tracking(2.0)
                     .foregroundStyle(tealAccent)
             }
             Text("Explore topics")
-                .font(.system(size: 33, weight: .bold, design: .serif))
+                .scaledFont(size: 33, weight: .bold, design: .serif)
                 .foregroundStyle(inkColor)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -922,7 +932,7 @@ private struct FeaturedTopicCard: View {
                     Spacer(minLength: 12)
 
                     Text(topic.title)
-                        .font(.system(size: 23, weight: .bold, design: .serif))
+                        .scaledFont(size: 23, weight: .bold, design: .serif)
                         .foregroundStyle(inkColor)
                         .lineLimit(2)
                         .multilineTextAlignment(.leading)
@@ -930,7 +940,7 @@ private struct FeaturedTopicCard: View {
 
                     HStack(alignment: .bottom, spacing: 12) {
                         Text(topic.blurb)
-                            .font(.system(size: 13.5, design: .serif))
+                            .scaledFont(size: 13.5, design: .serif)
                             .italic()
                             .foregroundStyle(mutedText)
                             .lineLimit(2)
@@ -938,7 +948,7 @@ private struct FeaturedTopicCard: View {
                             .fixedSize(horizontal: false, vertical: true)
                         Spacer(minLength: 8)
                         Image(systemName: "chevron.right")
-                            .font(.system(size: 13, weight: .bold))
+                            .scaledFont(size: 13, weight: .bold)
                             .foregroundStyle(topic.accent)
                             .frame(width: 34, height: 34)
                             .background(Circle().fill(topic.accent.opacity(0.10)))
@@ -960,6 +970,11 @@ private struct FeaturedTopicCard: View {
             .shadow(color: inkColor.opacity(0.08), radius: 16, x: 0, y: 7)
         }
         .buttonStyle(TopicCardPressStyle())
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(topic.title)
+        .accessibilityValue(count > 0 ? "\(count) \(count == 1 ? "paper" : "papers"). \(topic.blurb)" : topic.blurb)
+        .accessibilityHint("Browse this topic")
+        .accessibilityAddTraits(.isButton)
     }
 }
 
@@ -1000,7 +1015,7 @@ private struct CompactTopicCard: View {
                 .shadow(color: inkColor.opacity(0.06), radius: 9, x: 0, y: 4)
 
                 Text(topic.title)
-                    .font(.system(size: 14.5, weight: .semibold, design: .serif))
+                    .scaledFont(size: 14.5, weight: .semibold, design: .serif)
                     .foregroundStyle(inkColor)
                     .lineLimit(2)
                     .multilineTextAlignment(.leading)
@@ -1012,6 +1027,11 @@ private struct CompactTopicCard: View {
             }
         }
         .buttonStyle(TopicCardPressStyle())
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(topic.title)
+        .accessibilityValue(count > 0 ? "\(count) \(count == 1 ? "paper" : "papers")" : "")
+        .accessibilityHint("Browse this topic")
+        .accessibilityAddTraits(.isButton)
     }
 }
 
@@ -1021,7 +1041,7 @@ private struct TopicCountChip: View {
     let accent: Color
     var body: some View {
         Text("\(count) \(count == 1 ? "paper" : "papers")")
-            .font(.system(size: 10, weight: .bold))
+            .scaledFont(size: 10, weight: .bold)
             .tracking(0.4)
             .foregroundStyle(accent)
             .padding(.horizontal, 9)
@@ -1075,6 +1095,7 @@ struct TopicGlyph: View {
             }
             .frame(width: geo.size.width, height: h, alignment: .center)
         }
+        .accessibilityHidden(true)
     }
 
     private func paper(fill: Color, stroke: Color, w: CGFloat, h: CGFloat) -> some View {
@@ -1099,7 +1120,7 @@ struct TopicGlyph: View {
 
             VStack(spacing: h * 0.085) {
                 Image(systemName: topic.symbol)
-                    .font(.system(size: w * 0.34, weight: .semibold))
+                    .scaledFont(size: w * 0.34, weight: .semibold)
                     .foregroundStyle(topic.accent)
                 VStack(spacing: h * 0.05) {
                     Capsule().fill(topic.accent.opacity(0.22))
@@ -1145,7 +1166,7 @@ private struct TopicCardPressStyle: ButtonStyle {
         configuration.label
             .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
             .brightness(configuration.isPressed ? -0.015 : 0)
-            .animation(.spring(response: 0.3, dampingFraction: 0.8), value: configuration.isPressed)
+            .motionAware(.spring(response: 0.3, dampingFraction: 0.8), value: configuration.isPressed)
     }
 }
 
@@ -1163,11 +1184,11 @@ struct TrendingRowView: View {
         HStack(alignment: .center, spacing: 12) {
             VStack(alignment: .leading, spacing: 5) {
                 Text(kicker.uppercased())
-                    .font(.system(size: 9, weight: .bold))
+                    .scaledFont(size: 9, weight: .bold)
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                 Text(headline)
-                    .font(.system(size: 14, weight: .semibold, design: .serif))
+                    .scaledFont(size: 14, weight: .semibold, design: .serif)
                     .foregroundStyle(inkColor)
                     .lineLimit(2)
                     .multilineTextAlignment(.leading)
@@ -1176,7 +1197,7 @@ struct TrendingRowView: View {
                     progressBar
                 } else if let title = deck.title, !title.isEmpty, title != headline {
                     Text(title)
-                        .font(.system(size: 11))
+                        .scaledFont(size: 11)
                         .foregroundStyle(mutedText)
                         .lineLimit(1)
                 }
@@ -1184,12 +1205,17 @@ struct TrendingRowView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
 
             Image(systemName: "chevron.right")
-                .font(.system(size: 12, weight: .semibold))
+                .scaledFont(size: 12, weight: .semibold)
                 .foregroundStyle(mutedText.opacity(0.7))
+                .accessibilityHidden(true)
         }
         .padding(.horizontal, 16).padding(.vertical, 14)
         .frame(maxWidth: .infinity, alignment: .leading)
         .contentShape(Rectangle())
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(kicker). \(headline)")
+        .accessibilityValue(showProgress ? "\(Int(progress * 100)) percent read" : "")
+        .accessibilityAddTraits(.isButton)
     }
 
     private var progressBar: some View {

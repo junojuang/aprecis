@@ -79,7 +79,7 @@ struct AttentionHeatmapDiagram: View {
                 Spacer().frame(width: cellSize + 4)
                 ForEach(tokens.indices, id: \.self) { j in
                     Text(tokens[j])
-                        .font(.system(size: 8, weight: .semibold))
+                        .font(scaledSystemFont(8, weight: .semibold))
                         .foregroundStyle(activeRow == j ? teal : muted)
                         .frame(width: cellSize)
                         .lineLimit(1)
@@ -104,14 +104,14 @@ struct AttentionHeatmapDiagram: View {
                 .clipShape(Capsule())
 
                 Text("low → high")
-                    .font(.system(size: 8))
+                    .font(scaledSystemFont(8))
                     .foregroundStyle(muted)
 
                 Spacer()
 
                 if let row = activeRow, row < tokens.count {
                     Text("\"\(tokens[row])\" attends →")
-                        .font(.system(size: 8))
+                        .font(scaledSystemFont(8))
                         .italic()
                         .foregroundStyle(teal)
                 }
@@ -130,7 +130,7 @@ struct AttentionHeatmapDiagram: View {
         } label: {
             HStack(spacing: 0) {
                 Text(i < tokens.count ? tokens[i] : "")
-                    .font(.system(size: 8, weight: .semibold))
+                    .font(scaledSystemFont(8, weight: .semibold))
                     .foregroundStyle(isActive ? teal : muted)
                     .frame(width: cellSize, alignment: .trailing)
                     .padding(.trailing, 4)
@@ -148,7 +148,7 @@ struct AttentionHeatmapDiagram: View {
 
                         if isActive && w > 0.12 {
                             Text("\(Int(w * 100))")
-                                .font(.system(size: 7, weight: .bold))
+                                .font(scaledSystemFont(7, weight: .bold))
                                 .foregroundStyle(w > 0.35 ? .white : teal)
                         }
                     }
@@ -170,7 +170,7 @@ struct MultiHeadDiagram: View {
     var body: some View {
         VStack(spacing: 4) {
             Text("Tap a head to inspect")
-                .font(.system(size: 8, weight: .bold))
+                .font(scaledSystemFont(8, weight: .bold))
                 .tracking(0.6)
                 .foregroundStyle(Color(hex: "8a8f9a"))
                 .textCase(.uppercase)
@@ -197,9 +197,9 @@ struct MultiHeadDiagram: View {
                 HStack(spacing: 5) {
                     VStack(alignment: .trailing, spacing: 0) {
                         Text("H\(i + 1)")
-                            .font(.system(size: 7, weight: .bold))
+                            .font(scaledSystemFont(7, weight: .bold))
                         Text(head.name)
-                            .font(.system(size: 7))
+                            .font(scaledSystemFont(7))
                     }
                     .foregroundStyle(isActive ? headColor : Color(hex: "8a8f9a"))
                     .frame(width: 44, alignment: .trailing)
@@ -213,7 +213,7 @@ struct MultiHeadDiagram: View {
                                 .frame(height: barH)
                             if isActive && w > 0.2 && j < tokens.count {
                                 Text(tokens[j])
-                                    .font(.system(size: 6, weight: .bold))
+                                    .font(scaledSystemFont(6, weight: .bold))
                                     .foregroundStyle(.white)
                                     .lineLimit(1)
                             }
@@ -228,7 +228,7 @@ struct MultiHeadDiagram: View {
                 HStack(spacing: 0) {
                     Spacer().frame(width: 49)
                     (Text("Head \(i + 1) · ") + Text(head.name).bold() + Text(": \(head.desc)"))
-                        .font(.system(size: 9))
+                        .font(scaledSystemFont(9))
                         .foregroundStyle(Color(hex: "1a8a8a"))
                         .padding(.horizontal, 10).padding(.vertical, 6)
                         .background(Color(hex: "e8f5f5"))
@@ -262,7 +262,7 @@ struct SineWavesDiagram: View {
         VStack(alignment: .leading, spacing: 8) {
             if let caption {
                 Text(caption)
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .foregroundStyle(Color(hex: "8a8f9a"))
                     .textCase(.uppercase)
                     .tracking(0.6)
@@ -308,7 +308,7 @@ struct SineWavesDiagram: View {
                 .fill(wave.color.opacity(wave.opacity))
                 .frame(width: 14, height: 2.5)
             Text(wave.label)
-                .font(.system(size: 8))
+                .font(scaledSystemFont(8))
                 .foregroundStyle(Color(hex: "8a8f9a"))
         }
     }
@@ -325,7 +325,7 @@ struct FlowDiagram: View {
         VStack(spacing: 0) {
             if let caption {
                 Text(caption)
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .foregroundStyle(Color(hex: "8a8f9a"))
                     .textCase(.uppercase)
                     .tracking(0.6)
@@ -344,11 +344,11 @@ struct FlowDiagram: View {
                                 .frame(width: 1.5, height: 14)
                             if let lbl = edgeLabel {
                                 Text(lbl)
-                                    .font(.system(size: 8))
+                                    .font(scaledSystemFont(8))
                                     .foregroundStyle(Color(hex: "8a8f9a"))
                             }
                             Image(systemName: "chevron.down")
-                                .font(.system(size: 8, weight: .semibold))
+                                .font(scaledSystemFont(8, weight: .semibold))
                                 .foregroundStyle(Color(hex: "1a8a8a"))
                         }
                     }
@@ -369,11 +369,11 @@ private struct FlowNodeView: View {
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(node.label)
-                    .font(.system(size: 12, weight: .semibold))
+                    .font(scaledSystemFont(12, weight: .semibold))
                     .foregroundStyle(Color(hex: "1a1a1a"))
                 if let sub = node.sublabel {
                     Text(sub)
-                        .font(.system(size: 10))
+                        .font(scaledSystemFont(10))
                         .foregroundStyle(Color(hex: "8a8f9a"))
                 }
             }
@@ -403,7 +403,7 @@ struct BarChartDiagram: View {
         VStack(alignment: .leading, spacing: 10) {
             if let caption {
                 Text(caption)
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .foregroundStyle(Color(hex: "8a8f9a"))
                     .textCase(.uppercase)
                     .tracking(0.6)
@@ -415,7 +415,7 @@ struct BarChartDiagram: View {
 
             if let yLabel {
                 Text(yLabel)
-                    .font(.system(size: 9))
+                    .font(scaledSystemFont(9))
                     .foregroundStyle(Color(hex: "8a8f9a"))
             }
         }
@@ -432,16 +432,16 @@ struct BarChartDiagram: View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
                 Text(bar.label)
-                    .font(.system(size: 11, weight: .semibold))
+                    .font(scaledSystemFont(11, weight: .semibold))
                     .foregroundStyle(Color(hex: "1a1a1a"))
                 Spacer()
                 HStack(spacing: 4) {
                     Text(String(format: "%.1f", bar.value))
-                        .font(.system(size: 11, weight: .bold))
+                        .font(scaledSystemFont(11, weight: .bold))
                         .foregroundStyle(barColor(bar))
                     if let note = bar.note {
                         Text(note)
-                            .font(.system(size: 9))
+                            .font(scaledSystemFont(9))
                             .foregroundStyle(Color(hex: "e8a020"))
                     }
                 }
@@ -474,7 +474,7 @@ struct ComparisonDiagram: View {
         VStack(spacing: 0) {
             if let caption {
                 Text(caption)
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .foregroundStyle(Color(hex: "8a8f9a"))
                     .textCase(.uppercase)
                     .tracking(0.6)
@@ -485,11 +485,11 @@ struct ComparisonDiagram: View {
             HStack(spacing: 0) {
                 Spacer().frame(width: 86)
                 Text(leftLabel)
-                    .font(.system(size: 10, weight: .semibold))
+                    .font(scaledSystemFont(10, weight: .semibold))
                     .foregroundStyle(Color(hex: "8a8f9a"))
                     .frame(maxWidth: .infinity)
                 Text(rightLabel)
-                    .font(.system(size: 10, weight: .semibold))
+                    .font(scaledSystemFont(10, weight: .semibold))
                     .foregroundStyle(Color(hex: "1a8a8a"))
                     .frame(maxWidth: .infinity)
             }
@@ -507,19 +507,19 @@ struct ComparisonDiagram: View {
     private func comparisonRow(_ item: ComparisonItem, alt: Bool) -> some View {
         HStack(spacing: 0) {
             Text(item.aspect)
-                .font(.system(size: 10))
+                .font(scaledSystemFont(10))
                 .foregroundStyle(Color(hex: "8a8f9a"))
                 .frame(width: 86, alignment: .leading)
                 .padding(.vertical, 8)
 
             Text(item.before)
-                .font(.system(size: 11))
+                .font(scaledSystemFont(11))
                 .foregroundStyle(Color(hex: "1a1a1a"))
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 8)
 
             Text(item.after)
-                .font(.system(size: 11, weight: .semibold))
+                .font(scaledSystemFont(11, weight: .semibold))
                 .foregroundStyle(Color(hex: "1a8a8a"))
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 8)
@@ -547,7 +547,7 @@ struct CycleDiagram: View {
         VStack(alignment: .leading, spacing: 10) {
             if let caption {
                 Text(caption)
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .foregroundStyle(muted)
                     .textCase(.uppercase)
                     .tracking(0.6)
@@ -576,7 +576,7 @@ struct CycleDiagram: View {
 
                 // Arrow hint at top of ring
                 Image(systemName: "arrow.clockwise")
-                    .font(.system(size: 10, weight: .bold))
+                    .font(scaledSystemFont(10, weight: .bold))
                     .foregroundStyle(teal.opacity(0.7))
                     .position(x: center.x, y: center.y - radius)
 
@@ -596,11 +596,11 @@ struct CycleDiagram: View {
                     numberCircle(i, active: activeIndex == i)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(steps[i].label)
-                            .font(.system(size: 11, weight: .semibold))
+                            .font(scaledSystemFont(11, weight: .semibold))
                             .foregroundStyle(ink)
                         if let sub = steps[i].sublabel {
                             Text(sub)
-                                .font(.system(size: 9))
+                                .font(scaledSystemFont(9))
                                 .foregroundStyle(muted)
                         }
                     }
@@ -618,10 +618,10 @@ struct CycleDiagram: View {
             }
             HStack(spacing: 6) {
                 Image(systemName: "arrow.turn.down.left")
-                    .font(.system(size: 10, weight: .bold))
+                    .font(scaledSystemFont(10, weight: .bold))
                     .foregroundStyle(teal)
                 Text("repeats")
-                    .font(.system(size: 9))
+                    .font(scaledSystemFont(9))
                     .foregroundStyle(muted)
             }
             .padding(.top, 2)
@@ -648,13 +648,13 @@ struct CycleDiagram: View {
             VStack(spacing: 3) {
                 numberCircle(i, active: isActive)
                 Text(steps[i].label)
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .foregroundStyle(isActive ? teal : ink)
                     .lineLimit(2)
                     .multilineTextAlignment(.center)
                 if isActive, let sub = steps[i].sublabel {
                     Text(sub)
-                        .font(.system(size: 8))
+                        .font(scaledSystemFont(8))
                         .foregroundStyle(muted)
                         .lineLimit(2)
                         .multilineTextAlignment(.center)
@@ -674,7 +674,7 @@ struct CycleDiagram: View {
                 .stroke(teal.opacity(active ? 1.0 : 0.35), lineWidth: 1.5)
                 .frame(width: 26, height: 26)
             Text("\(i + 1)")
-                .font(.system(size: 11, weight: .bold))
+                .font(scaledSystemFont(11, weight: .bold))
                 .foregroundStyle(active ? .white : teal)
         }
     }
@@ -696,7 +696,7 @@ struct NumberBoxDiagram: View {
         VStack(spacing: 8) {
             if let caption {
                 Text(caption)
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .foregroundStyle(Color(hex: "8a8f9a"))
                     .textCase(.uppercase)
                     .tracking(0.6)
@@ -704,7 +704,7 @@ struct NumberBoxDiagram: View {
 
             VStack(spacing: 4) {
                 Text(value)
-                    .font(.system(size: 56, weight: .bold, design: .rounded))
+                    .font(scaledSystemFont(56, weight: .bold, design: .rounded))
                     .foregroundStyle(Color(hex: "1a8a8a"))
                     .minimumScaleFactor(0.5)
                     .lineLimit(1)
@@ -713,7 +713,7 @@ struct NumberBoxDiagram: View {
 
                 if !label.isEmpty {
                     Text(label)
-                        .font(.system(size: 13, weight: .semibold))
+                        .font(scaledSystemFont(13, weight: .semibold))
                         .foregroundStyle(Color(hex: "1a1a1a"))
                         .multilineTextAlignment(.center)
                         .opacity(appeared ? 1 : 0)
@@ -721,7 +721,7 @@ struct NumberBoxDiagram: View {
 
                 if let sublabel, !sublabel.isEmpty {
                     Text(sublabel)
-                        .font(.system(size: 10))
+                        .font(scaledSystemFont(10))
                         .foregroundStyle(Color(hex: "8a8f9a"))
                         .multilineTextAlignment(.center)
                         .opacity(appeared ? 1 : 0)
@@ -759,7 +759,7 @@ struct EquationDiagram: View {
         VStack(alignment: .leading, spacing: 10) {
             if let caption {
                 Text(caption)
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .foregroundStyle(Color(hex: "8a8f9a"))
                     .textCase(.uppercase)
                     .tracking(0.6)
@@ -810,7 +810,7 @@ struct EquationDiagram: View {
                     .background(isActive ? Color(hex: "1a8a8a") : Color(hex: "e5f4f4"))
                     .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
                 Text(term.meaning)
-                    .font(.system(size: 11))
+                    .font(scaledSystemFont(11))
                     .foregroundStyle(Color(hex: "1a1a1a"))
                     .frame(maxWidth: .infinity, alignment: .leading)
             }

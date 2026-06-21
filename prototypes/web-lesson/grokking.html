@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Grokking · web lesson prototype</title>
+<style>
+  /* ── Aprecis design tokens (shipped once in the app's web design kit) ── */
+  :root {
+    --paper:   #f4f1ea;   /* cream paper background */
+    --ink:     #1c1c1a;   /* near-black serif text  */
+    --muted:   #6b7078;   /* WCAG-AA secondary text */
+    --teal:    #2aa0a0;   /* accent (AA on cream)   */
+    --teal-lt: #e3f1f0;
+    --rose:    #c2566b;
+    --hair:    #e6e1d6;   /* hairline border        */
+    --serif:   "New York", Georgia, "Times New Roman", serif;
+    --sans:    -apple-system, system-ui, "SF Pro Text", sans-serif;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; height: 100%; background: var(--paper); color: var(--ink); }
+  body { font-family: var(--sans); display: flex; flex-direction: column;
+         max-width: 460px; margin: 0 auto; }
+
+  /* ── card shell (the part the design kit gives you for free) ── */
+  .progress { display: flex; gap: 6px; padding: 18px 20px 6px; }
+  .dot { height: 3px; flex: 1; border-radius: 2px; background: var(--hair); }
+  .dot.on { background: var(--ink); }
+
+  .stage { flex: 1; overflow: hidden; position: relative; }
+  .card { position: absolute; inset: 0; padding: 24px 22px;
+          display: flex; flex-direction: column; justify-content: center;
+          opacity: 0; transform: translateX(16px);
+          transition: opacity .28s ease, transform .28s ease;
+          pointer-events: none; }
+  .card.active { opacity: 1; transform: none; pointer-events: auto; }
+  @media (prefers-reduced-motion: reduce) {
+    .card { transition: opacity .2s ease; transform: none; }
+  }
+
+  .eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+             color: var(--teal); font-weight: 700; margin-bottom: 14px; }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: 30px;
+       line-height: 1.2; margin: 0 0 14px; }
+  p  { font-family: var(--serif); font-size: 18px; line-height: 1.5; color: #33332f; margin: 0 0 12px; }
+  .muted { color: var(--muted); font-size: 15px; }
+
+  /* ── the bespoke interactive: morphing train-vs-val curves ── */
+  .viz { background: #fffdf8; border: 1px solid var(--hair); border-radius: 16px;
+         padding: 16px 14px 10px; margin: 6px 0 14px; }
+  canvas { width: 100%; height: 200px; display: block; }
+  .legend { display: flex; gap: 16px; font-size: 13px; color: var(--muted); margin-top: 8px; }
+  .swatch { display: inline-block; width: 16px; height: 3px; border-radius: 2px;
+            vertical-align: middle; margin-right: 6px; }
+  .control { margin-top: 12px; }
+  .control label { font-size: 13px; color: var(--muted); display: flex; justify-content: space-between; }
+  input[type=range] { width: 100%; accent-color: var(--teal); margin-top: 6px; }
+  .insight { font-family: var(--serif); font-style: italic; font-size: 16px;
+             color: var(--ink); min-height: 48px; margin-top: 4px; }
+
+  /* ── footer next button (design kit) ── */
+  footer { padding: 12px 20px 26px; }
+  button.next { width: 100%; border: 0; border-radius: 14px; padding: 16px;
+                font-family: var(--serif); font-size: 16px; font-weight: 600;
+                background: var(--ink); color: var(--paper); }
+  button.next:active { opacity: .85; }
+</style>
+</head>
+<body>
+  <div class="progress" id="dots" aria-hidden="true"></div>
+
+  <div class="stage" id="stage">
+    <!-- Card 1 · hook -->
+    <section class="card active" data-card>
+      <div class="eyebrow">Daily loop · Grokking</div>
+      <h1>The model learned nothing for ages, then suddenly knew everything.</h1>
+      <p class="muted">Power et al., 2022. A network memorizes, plateaus at chance on
+         unseen problems, and then long after, with no warning, generalizes.</p>
+    </section>
+
+    <!-- Card 2 · bespoke interactive -->
+    <section class="card" data-card data-requires-explore>
+      <div class="eyebrow">Drag the training steps</div>
+      <h1>Watch the gap snap shut.</h1>
+      <div class="viz">
+        <canvas id="curve" aria-label="Training accuracy stays high while validation accuracy is flat, then leaps late."></canvas>
+        <div class="legend">
+          <span><i class="swatch" style="background:#2aa0a0"></i>Train</span>
+          <span><i class="swatch" style="background:#c2566b"></i>Validation (unseen)</span>
+        </div>
+        <div class="control">
+          <label><span>Training steps</span><span id="stepReadout">10<span class="muted">³</span></span></label>
+          <input type="range" id="steps" min="0" max="100" value="6"
+                 aria-label="Training steps, log scale" />
+        </div>
+        <div class="insight" id="insight">Train accuracy is already near-perfect. Validation is stuck at chance: pure memorization.</div>
+      </div>
+    </section>
+
+    <!-- Card 3 · takeaway -->
+    <section class="card" data-card>
+      <div class="eyebrow">The takeaway</div>
+      <h1>Generalization can lag memorization by orders of magnitude.</h1>
+      <p>Weight decay quietly pushes the network off the lookup-table solution and
+         onto the underlying rule, long after the loss looked done.</p>
+    </section>
+  </div>
+
+  <footer>
+    <button class="next" id="next">Continue</button>
+  </footer>
+
+<script>
+/* ── Aprecis JS SDK (shipped once in the app; here a console fallback so the
+      file runs standalone in any browser). In-app these post to Swift. ── */
+const Aprecis = {
+  _send(name, body) {
+    const h = window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers[name];
+    if (h) h.postMessage(body ?? {}); else console.log("[Aprecis]", name, body ?? "");
+  },
+  haptic(style = "soft") { this._send("haptic", { style }); },
+  markDone()             { this._send("markDone"); },
+  finish()               { this._send("finish"); },
+};
+
+/* ── card navigation (design-kit behavior) ── */
+const cards = [...document.querySelectorAll("[data-card]")];
+const dotsEl = document.getElementById("dots");
+cards.forEach(() => dotsEl.insertAdjacentHTML("beforeend", '<div class="dot"></div>'));
+const dots = [...document.querySelectorAll(".dot")];
+let i = 0;
+function show(n) {
+  cards.forEach((c, k) => c.classList.toggle("active", k === n));
+  dots.forEach((d, k) => d.classList.toggle("on", k <= n));
+  document.getElementById("next").textContent = n === cards.length - 1 ? "Done" : "Continue";
+  i = n;
+}
+document.getElementById("next").addEventListener("click", () => {
+  Aprecis.haptic();
+  if (i === cards.length - 1) { Aprecis.markDone(); Aprecis.finish(); return; }
+  show(i + 1);
+});
+show(0);
+
+/* ── the bespoke interactive: morph two curves on a canvas ── */
+const cv = document.getElementById("curve");
+const ctx = cv.getContext("2d");
+const slider = document.getElementById("steps");
+const insightEl = document.getElementById("insight");
+const readoutEl = document.getElementById("stepReadout");
+
+function resize() {
+  const r = cv.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+  cv.width = r.width * dpr; cv.height = r.height * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  draw(+slider.value);
+}
+window.addEventListener("resize", resize);
+
+// validation stays at chance until a late threshold, then snaps to ~1.
+function valAcc(t) {                       // t in 0..1 (log steps)
+  const grok = 0.62;                       // where the leap happens
+  if (t < grok) return 0.08;
+  const k = (t - grok) / (1 - grok);
+  return 0.08 + 0.9 * (1 / (1 + Math.exp(-12 * (k - 0.4))));
+}
+function draw(v) {
+  const t = v / 100;
+  const w = cv.clientWidth, h = cv.clientHeight, pad = 14;
+  ctx.clearRect(0, 0, w, h);
+  const X = x => pad + x * (w - 2 * pad);
+  const Y = y => (h - pad) - y * (h - 2 * pad);
+
+  // train line: near 1 the whole way
+  const series = (fn, color, dash) => {
+    ctx.beginPath(); ctx.lineWidth = 2.5; ctx.strokeStyle = color;
+    ctx.setLineDash(dash ? [4, 4] : []);
+    for (let s = 0; s <= t * 100; s++) {
+      const x = s / 100; const y = fn(x);
+      s === 0 ? ctx.moveTo(X(x), Y(y)) : ctx.lineTo(X(x), Y(y));
+    }
+    ctx.stroke(); ctx.setLineDash([]);
+  };
+  series(() => 0.97, "#2aa0a0", false);
+  series(valAcc, "#c2566b", true);
+
+  // moving head dot on validation
+  ctx.fillStyle = "#c2566b";
+  ctx.beginPath(); ctx.arc(X(t), Y(valAcc(t)), 4, 0, 7); ctx.fill();
+
+  // readout + narrative
+  const steps = Math.round(Math.pow(10, 2 + t * 4));     // 10^2 .. 10^6
+  readoutEl.innerHTML = steps.toLocaleString();
+  if (t < 0.55)      insightEl.textContent = "Train accuracy is near-perfect. Validation is stuck at chance: pure memorization.";
+  else if (t < 0.72) insightEl.textContent = "Still flat on unseen problems, but weight decay is quietly reshaping the weights.";
+  else               insightEl.textContent = "The leap: validation snaps to near-perfect. The network finally grokked the rule.";
+}
+slider.addEventListener("input", () => { Aprecis.haptic("light"); draw(+slider.value); });
+requestAnimationFrame(resize);
+</script>
+</body>
+</html>

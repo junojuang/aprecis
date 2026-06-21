@@ -105,11 +105,11 @@ struct MicrolearningApp: App {
 
                 if showLaunch {
                     LaunchScreen()
-                        .transition(.opacity.combined(with: .scale(scale: 1.05)))
+                        .transition(motionAwareTransition(.opacity.combined(with: .scale(scale: 1.05))))
                         .zIndex(1)
                 }
             }
-            .animation(.easeInOut(duration: 0.35), value: onboardingCompleted)
+            .motionAware(.easeInOut(duration: 0.35), value: onboardingCompleted)
             .onAppear { scheduleLaunchDismiss() }
         }
     }

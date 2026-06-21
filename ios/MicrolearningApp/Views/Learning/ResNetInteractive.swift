@@ -99,10 +99,10 @@ struct DegradeStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("DEEPER, OR WORSE?")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Drag the depth dial. Watch the training error, the error on data the network has already seen. For a plain stack, going deeper past a point makes it worse. That is not overfitting; it is the network failing to train at all.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -137,7 +137,7 @@ struct DegradeStudio: View {
                     }
                 }
                 .stroke(residual ? tealAccent : Color(hex: "c2557a"), lineWidth: 2.5)
-                .animation(.easeInOut(duration: 0.3), value: residual)
+                .motionAware(.easeInOut(duration: 0.3), value: residual)
 
                 let cx = w * CGFloat((depth - 2) / 54)
                 let cy = h - h * CGFloat(error / 0.6) * 0.9 - h * 0.05
@@ -151,7 +151,7 @@ struct DegradeStudio: View {
     private var depthSlider: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("DEPTH  \(Int(depth)) layers")
-                .font(.system(size: 10, weight: .bold, design: .monospaced))
+                .scaledFont(size: 10, weight: .bold, design: .monospaced)
                 .foregroundStyle(mutedText)
             Slider(value: $depth, in: 2...56) { editing in
                 if !editing && depth > 40 { sawDeep = true; check() }
@@ -170,7 +170,7 @@ struct DegradeStudio: View {
                     .foregroundStyle(residual ? tealAccent : inkColor.opacity(0.3))
                 Text(residual ? "Residual stack (skip connections on)"
                               : "Plain stack (no skip connections)")
-                    .font(.system(size: 14, weight: .semibold, design: .serif))
+                    .scaledFont(size: 14, weight: .semibold, design: .serif)
                     .foregroundStyle(inkColor)
                 Spacer(minLength: 0)
             }
@@ -190,7 +190,7 @@ struct DegradeStudio: View {
             Text(sawDeep && toggled
                  ? "The residual stack keeps improving with depth. The plain one cannot."
                  : "Training error \(String(format: "%.2f", error)) at \(Int(depth)) layers")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -223,10 +223,10 @@ struct SkipFlowStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("SEND THE GRADIENT BACK")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("The learning signal enters at the top and travels down. Each plain block shrinks it. The skip connection gives it a clean path that does not shrink, so it reaches the earliest layers strong enough to teach them.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -246,7 +246,7 @@ struct SkipFlowStudio: View {
                 let strength = i < arrived.count ? arrived[i] : 0
                 HStack(spacing: 10) {
                     Text("L\(blocks - i)")
-                        .font(.system(size: 11, weight: .bold, design: .monospaced))
+                        .scaledFont(size: 11, weight: .bold, design: .monospaced)
                         .foregroundStyle(mutedText)
                         .frame(width: 26)
                     GeometryReader { g in
@@ -263,13 +263,13 @@ struct SkipFlowStudio: View {
                     }
                     .frame(height: 26)
                     Text(String(format: "%.0f%%", strength * 100))
-                        .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                        .scaledFont(size: 10, weight: .semibold, design: .monospaced)
                         .foregroundStyle(mutedText)
                         .frame(width: 38, alignment: .trailing)
                 }
             }
         }
-        .animation(.snappy(duration: 0.4), value: arrived)
+        .motionAware(.snappy(duration: 0.4), value: arrived)
     }
 
     private var skipToggle: some View {
@@ -281,7 +281,7 @@ struct SkipFlowStudio: View {
                 Image(systemName: skip ? "checkmark.circle.fill" : "circle")
                     .foregroundStyle(skip ? tealAccent : inkColor.opacity(0.3))
                 Text(skip ? "Skip connections on" : "Skip connections off")
-                    .font(.system(size: 14, weight: .semibold, design: .serif))
+                    .scaledFont(size: 14, weight: .semibold, design: .serif)
                     .foregroundStyle(inkColor)
                 Spacer(minLength: 0)
             }
@@ -302,7 +302,7 @@ struct SkipFlowStudio: View {
                  ? "With skips on, the signal reaches the bottom almost whole. Off, it dies on the way down."
                  : arrived.isEmpty ? "Send a gradient backward and watch it travel."
                    : "Reached the bottom layer at \(Int(bottom * 100))% strength.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -311,7 +311,7 @@ struct SkipFlowStudio: View {
     private var sendButton: some View {
         Button { send() } label: {
             Text("Send gradient backward")
-                .font(.system(size: 14, weight: .semibold))
+                .scaledFont(size: 14, weight: .semibold)
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity, minHeight: 46)
                 .background(RoundedRectangle(cornerRadius: 12).fill(inkColor))
@@ -365,10 +365,10 @@ struct IdentityTowerStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("A TOWER OF DO-NOTHING BLOCKS")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Suppose the best thing a layer can do is leave its input alone. A residual block manages it for free: learn F(x) = 0 and the output is just x. A plain block has to learn to copy, and tiny errors pile up with depth.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -386,11 +386,11 @@ struct IdentityTowerStudio: View {
     private func readout(_ label: String, value: Double, tint: Color) -> some View {
         HStack {
             Text(label)
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
             Spacer()
             Text(String(format: "%.3f", value))
-                .font(.system(size: 15, weight: .bold, design: .monospaced))
+                .scaledFont(size: 15, weight: .bold, design: .monospaced)
                 .foregroundStyle(tint)
         }
         .padding(.horizontal, 13).padding(.vertical, 11)
@@ -400,7 +400,7 @@ struct IdentityTowerStudio: View {
     private var depthSlider: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("DEPTH  \(Int(depth)) blocks")
-                .font(.system(size: 10, weight: .bold, design: .monospaced))
+                .scaledFont(size: 10, weight: .bold, design: .monospaced)
                 .foregroundStyle(mutedText)
             Slider(value: $depth, in: 1...50) { editing in
                 if !editing && depth >= 30 {
@@ -419,7 +419,7 @@ struct IdentityTowerStudio: View {
             Text(sawDeep
                  ? "Deep, the plain output has drifted far from its input. The residual one barely moved."
                  : "Drag toward 50 blocks and compare the two outputs.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -448,7 +448,7 @@ struct FeatureHierarchyArt: View {
 
     private var arrow: some View {
         Image(systemName: "arrow.right")
-            .font(.system(size: 9, weight: .bold))
+            .scaledFont(size: 9, weight: .bold)
             .foregroundStyle(mutedText)
     }
 
@@ -463,7 +463,7 @@ struct FeatureHierarchyArt: View {
             }
             .frame(width: 60, height: 60)
             Text(label.uppercased())
-                .font(.system(size: 8, weight: .bold)).tracking(1)
+                .scaledFont(size: 8, weight: .bold).tracking(1)
                 .foregroundStyle(mutedText)
         }
     }
@@ -588,21 +588,21 @@ struct DegradationPlotArt: View {
                 line(shallow, color: tealAccent, pt: pt)
 
                 Text("56-layer")
-                    .font(.system(size: 9, weight: .bold)).tracking(0.5)
+                    .scaledFont(size: 9, weight: .bold).tracking(0.5)
                     .foregroundStyle(amberAccent)
                     .position(x: plot.maxX - 30, y: pt(0, deep[20], deep.count).y - 11)
                 Text("20-layer")
-                    .font(.system(size: 9, weight: .bold)).tracking(0.5)
+                    .scaledFont(size: 9, weight: .bold).tracking(0.5)
                     .foregroundStyle(tealAccent)
                     .position(x: plot.maxX - 30, y: pt(0, shallow[20], shallow.count).y + 12)
 
                 Text("TRAINING ERROR")
-                    .font(.system(size: 8, weight: .bold)).tracking(1)
+                    .scaledFont(size: 8, weight: .bold).tracking(1)
                     .foregroundStyle(mutedText)
                     .rotationEffect(.degrees(-90))
                     .position(x: plot.minX - 8, y: plot.midY)
                 Text("TRAINING TIME \u{2192}")
-                    .font(.system(size: 8, weight: .bold)).tracking(1)
+                    .scaledFont(size: 8, weight: .bold).tracking(1)
                     .foregroundStyle(mutedText)
                     .position(x: plot.midX, y: plot.maxY + 13)
             }
@@ -669,16 +669,16 @@ struct FadingSignalArt: View {
                         .position(x: w * 0.72, y: rowY(i))
                 }
                 Image(systemName: "arrow.down")
-                    .font(.system(size: 11, weight: .black))
+                    .scaledFont(size: 11, weight: .black)
                     .foregroundStyle(tealAccent)
                     .position(x: w * 0.72, y: topY - 20)
 
                 Text("STRONG")
-                    .font(.system(size: 8, weight: .bold)).tracking(1)
+                    .scaledFont(size: 8, weight: .bold).tracking(1)
                     .foregroundStyle(tealAccent)
                     .position(x: w * 0.93, y: topY)
                 Text("A WHISPER")
-                    .font(.system(size: 8, weight: .bold)).tracking(1)
+                    .scaledFont(size: 8, weight: .bold).tracking(1)
                     .foregroundStyle(mutedText)
                     .position(x: w * 0.9, y: botY)
             }
@@ -730,7 +730,7 @@ struct ResidualBlockArt: View {
                     .fill(tealAccent)
                     .frame(width: 30, height: 30)
                     .overlay(Image(systemName: "plus")
-                        .font(.system(size: 13, weight: .black))
+                        .scaledFont(size: 13, weight: .black)
                         .foregroundStyle(.white))
                     .position(x: mainX, y: sumY)
                 // output node
@@ -743,11 +743,11 @@ struct ResidualBlockArt: View {
                 .stroke(inkColor.opacity(0.3), lineWidth: 1.6)
 
                 Text("skip")
-                    .font(.system(size: 9, weight: .bold)).tracking(0.5)
+                    .scaledFont(size: 9, weight: .bold).tracking(0.5)
                     .foregroundStyle(tealAccent)
                     .position(x: skipX + 16, y: (topY + sumY) / 2)
                 Text("F(x)")
-                    .font(.system(size: 9, weight: .bold, design: .monospaced))
+                    .scaledFont(size: 9, weight: .bold, design: .monospaced)
                     .foregroundStyle(mutedText)
                     .position(x: mainX - 34, y: (l1Y + l2Y) / 2)
             }
@@ -760,14 +760,14 @@ struct ResidualBlockArt: View {
             .overlay(RoundedRectangle(cornerRadius: 6, style: .continuous)
                 .stroke(inkColor.opacity(0.3), lineWidth: 1))
             .overlay(Text("layer")
-                .font(.system(size: 9, weight: .semibold, design: .serif))
+                .scaledFont(size: 9, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.7)))
             .frame(width: 74, height: 26)
     }
 
     private func nodeChip(_ s: String, tint: Color) -> some View {
         Text(s)
-            .font(.system(size: 10, weight: .bold, design: .monospaced))
+            .scaledFont(size: 10, weight: .bold, design: .monospaced)
             .foregroundStyle(.white)
             .padding(.horizontal, 9).padding(.vertical, 5)
             .background(Capsule().fill(tint))
@@ -801,17 +801,17 @@ struct DepthLeapArt: View {
                     let barH = CGFloat(sqrt(Double(net.depth))) * scale
                     VStack(spacing: 5) {
                         Text("\(net.depth)")
-                            .font(.system(size: isLast ? 16 : 11,
-                                          weight: .bold, design: .serif))
+                            .scaledFont(size: isLast ? 16 : 11,
+                                          weight: .bold, design: .serif)
                             .foregroundStyle(isLast ? tealAccent : inkColor.opacity(0.7))
                         RoundedRectangle(cornerRadius: 4)
                             .fill(isLast ? tealAccent : inkColor.opacity(0.16))
                             .frame(width: w * 0.12, height: barH)
                         Text(net.name)
-                            .font(.system(size: 8.5, weight: .bold))
+                            .scaledFont(size: 8.5, weight: .bold)
                             .foregroundStyle(isLast ? tealAccent : mutedText)
                         Text(net.year)
-                            .font(.system(size: 8))
+                            .scaledFont(size: 8)
                             .foregroundStyle(mutedText.opacity(0.7))
                     }
                     .frame(maxWidth: .infinity)

@@ -46,7 +46,7 @@ struct ChainOfThoughtGlyph: View {
 
                 ForEach(Array(stepXs.enumerated()), id: \.offset) { i, x in
                     Text("\(i + 1)")
-                        .font(.system(size: 12, weight: .bold, design: .serif))
+                        .scaledFont(size: 12, weight: .bold, design: .serif)
                         .foregroundStyle(Color(hex: "f4f1ea"))
                         .frame(width: 26, height: 26)
                         .background(Circle().fill(tealAccent.opacity(0.30))
@@ -60,7 +60,7 @@ struct ChainOfThoughtGlyph: View {
                     .opacity(t > 0.85 ? 1 : 0.25)
 
                 Text("SHOW YOUR WORKING")
-                    .font(.system(size: 9, weight: .bold)).tracking(1.8)
+                    .scaledFont(size: 9, weight: .bold).tracking(1.8)
                     .foregroundStyle(tealAccent)
                     .position(x: w * 0.5, y: midY + 44)
             }
@@ -74,7 +74,7 @@ struct ChainOfThoughtGlyph: View {
 
     private func chip(text: String, fill: Color, stroke: Color, fg: Color) -> some View {
         Text(text)
-            .font(.system(size: 15, weight: .bold, design: .serif))
+            .scaledFont(size: 15, weight: .bold, design: .serif)
             .foregroundStyle(fg)
             .frame(width: 38, height: 38)
             .background(RoundedRectangle(cornerRadius: 9).fill(fill)
@@ -97,7 +97,7 @@ struct StandardVsCoTArt: View {
                     leapArc.stroke(cotRose.opacity(0.65),
                                    style: StrokeStyle(lineWidth: 1.6, dash: [3, 3]))
                         .frame(width: 90, height: 26)
-                    Text("leap").font(.system(size: 8, weight: .bold)).tracking(0.5)
+                    Text("leap").scaledFont(size: 8, weight: .bold).tracking(0.5)
                         .foregroundStyle(cotRose).offset(y: -16)
                 }
                 valueChip("8", correct: false)
@@ -123,11 +123,11 @@ struct StandardVsCoTArt: View {
         }
     }
     private var arrow: some View {
-        Image(systemName: "arrow.right").font(.system(size: 9, weight: .bold))
+        Image(systemName: "arrow.right").scaledFont(size: 9, weight: .bold)
             .foregroundStyle(mutedText)
     }
     private func miniChip(_ t: String, tint: Color) -> some View {
-        Text(t).font(.system(size: 12, weight: .bold, design: .serif))
+        Text(t).scaledFont(size: 12, weight: .bold, design: .serif)
             .foregroundStyle(inkColor.opacity(0.8))
             .frame(width: 30, height: 30)
             .background(RoundedRectangle(cornerRadius: 7).fill(Color.white)
@@ -135,9 +135,9 @@ struct StandardVsCoTArt: View {
     }
     private func carryNode(step: String, value: String) -> some View {
         VStack(spacing: 2) {
-            Text(step).font(.system(size: 10, weight: .semibold, design: .monospaced))
+            Text(step).scaledFont(size: 10, weight: .semibold, design: .monospaced)
                 .foregroundStyle(inkColor.opacity(0.75))
-            Text("= \(value)").font(.system(size: 10, weight: .bold, design: .monospaced))
+            Text("= \(value)").scaledFont(size: 10, weight: .bold, design: .monospaced)
                 .foregroundStyle(tealAccent)
         }
         .padding(.horizontal, 8).padding(.vertical, 6)
@@ -146,10 +146,10 @@ struct StandardVsCoTArt: View {
     }
     private func valueChip(_ t: String, correct: Bool) -> some View {
         HStack(spacing: 3) {
-            Text(t).font(.system(size: 12, weight: .bold, design: .serif))
+            Text(t).scaledFont(size: 12, weight: .bold, design: .serif)
                 .foregroundStyle(.white)
             Image(systemName: correct ? "checkmark" : "xmark")
-                .font(.system(size: 8, weight: .black)).foregroundStyle(.white)
+                .scaledFont(size: 8, weight: .black).foregroundStyle(.white)
         }
         .padding(.horizontal, 9).padding(.vertical, 7)
         .background(RoundedRectangle(cornerRadius: 8).fill(correct ? tealAccent : cotRose))
@@ -164,7 +164,7 @@ struct FewShotArt: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 7) {
             Text("THE PROMPT YOU SEND")
-                .font(.system(size: 9, weight: .bold)).tracking(1.3)
+                .scaledFont(size: 9, weight: .bold).tracking(1.3)
                 .foregroundStyle(mutedText)
             exemplar(q: "Q: 2 apples + 3 apples?", work: "2 and 3 make 5.", a: "A: 5", solved: true)
             exemplar(q: "Q: 4 cats + 1 cat?", work: "4 and 1 make 5.", a: "A: 5", solved: true)
@@ -178,14 +178,14 @@ struct FewShotArt: View {
 
     private func exemplar(q: String, work: String?, a: String?, solved: Bool) -> some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text(q).font(.system(size: 11.5, weight: .semibold, design: .serif))
+            Text(q).scaledFont(size: 11.5, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.85))
             if let work {
-                Text(work).font(.system(size: 11, design: .serif)).italic()
+                Text(work).scaledFont(size: 11, design: .serif).italic()
                     .foregroundStyle(tealAccent)
             }
             if let a {
-                Text(a).font(.system(size: 11.5, weight: .semibold, design: .serif))
+                Text(a).scaledFont(size: 11.5, weight: .semibold, design: .serif)
                     .foregroundStyle(inkColor.opacity(0.85))
             }
         }
@@ -209,8 +209,8 @@ struct ScaleCurveArt: View {
                   coherent: false)
             VStack(spacing: 4) {
                 Image(systemName: "arrow.right")
-                    .font(.system(size: 12, weight: .bold)).foregroundStyle(amberAccent)
-                Text("threshold").font(.system(size: 8, weight: .bold)).tracking(0.5)
+                    .scaledFont(size: 12, weight: .bold).foregroundStyle(amberAccent)
+                Text("threshold").scaledFont(size: 8, weight: .bold).tracking(0.5)
                     .foregroundStyle(amberAccent)
             }
             brain(title: "LARGE", lines: ["2\u{00D7}3 = 6", "5+6 = 11"],
@@ -223,21 +223,21 @@ struct ScaleCurveArt: View {
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 5) {
                 Image(systemName: "brain.head.profile")
-                    .font(.system(size: 12)).foregroundStyle(coherent ? tealAccent : mutedText)
-                Text(title).font(.system(size: 9, weight: .bold)).tracking(1.0)
+                    .scaledFont(size: 12).foregroundStyle(coherent ? tealAccent : mutedText)
+                Text(title).scaledFont(size: 9, weight: .bold).tracking(1.0)
                     .foregroundStyle(coherent ? tealAccent : mutedText)
             }
             ForEach(lines, id: \.self) { l in
                 Text(l)
-                    .font(.system(size: 11, design: .monospaced))
+                    .scaledFont(size: 11, design: .monospaced)
                     .foregroundStyle(coherent ? inkColor.opacity(0.8) : cotRose.opacity(0.8))
                     .italic(!coherent)
             }
             HStack(spacing: 3) {
                 Image(systemName: coherent ? "checkmark.circle.fill" : "xmark.circle.fill")
-                    .font(.system(size: 11)).foregroundStyle(coherent ? tealAccent : cotRose)
+                    .scaledFont(size: 11).foregroundStyle(coherent ? tealAccent : cotRose)
                 Text(coherent ? "lands it" : "muddled")
-                    .font(.system(size: 9, weight: .semibold)).foregroundStyle(mutedText)
+                    .scaledFont(size: 9, weight: .semibold).foregroundStyle(mutedText)
             }
         }
         .padding(11)
@@ -290,10 +290,10 @@ struct StraightVsWorkingStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("WALK THE CHAIN")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("The model can answer this two ways. Tap the quick guess to see it leap, then reveal the chain one thought at a time and watch the running total carry forward.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -306,16 +306,16 @@ struct StraightVsWorkingStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.32), value: revealed)
-        .animation(.snappy(duration: 0.3), value: showedBlurt)
+        .motionAware(.snappy(duration: 0.32), value: revealed)
+        .motionAware(.snappy(duration: 0.3), value: showedBlurt)
     }
 
     private var promptCard: some View {
         HStack(spacing: 10) {
             Image(systemName: "questionmark.circle.fill")
-                .font(.system(size: 16)).foregroundStyle(amberAccent)
+                .scaledFont(size: 16).foregroundStyle(amberAccent)
             Text(cotChain.prompt)
-                .font(.system(size: 15, weight: .semibold, design: .serif))
+                .scaledFont(size: 15, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor)
                 .fixedSize(horizontal: false, vertical: true)
             Spacer(minLength: 0)
@@ -332,17 +332,17 @@ struct StraightVsWorkingStudio: View {
             showedBlurt = true
         } label: {
             HStack(spacing: 10) {
-                Text("QUICK GUESS").font(.system(size: 9, weight: .bold)).tracking(1.3)
+                Text("QUICK GUESS").scaledFont(size: 9, weight: .bold).tracking(1.3)
                     .foregroundStyle(mutedText)
                 Spacer(minLength: 0)
                 if showedBlurt {
                     HStack(spacing: 4) {
-                        Text(cotChain.blurt).font(.system(size: 15, weight: .bold, design: .serif))
+                        Text(cotChain.blurt).scaledFont(size: 15, weight: .bold, design: .serif)
                             .foregroundStyle(inkColor)
                         Image(systemName: "xmark.circle.fill").foregroundStyle(cotRose)
                     }
                 } else {
-                    Text("tap to leap").font(.system(size: 12, design: .serif)).italic()
+                    Text("tap to leap").scaledFont(size: 12, design: .serif).italic()
                         .foregroundStyle(tealAccent)
                 }
             }
@@ -359,7 +359,7 @@ struct StraightVsWorkingStudio: View {
         HStack(alignment: .top, spacing: 12) {
             // The chain of thoughts, revealed one at a time.
             VStack(alignment: .leading, spacing: 8) {
-                Text("REASONING CHAIN").font(.system(size: 9, weight: .bold)).tracking(1.3)
+                Text("REASONING CHAIN").scaledFont(size: 9, weight: .bold).tracking(1.3)
                     .foregroundStyle(tealAccent)
                 ForEach(0..<cotChain.steps.count, id: \.self) { i in
                     thoughtBox(i: i, shown: i < revealed)
@@ -367,7 +367,7 @@ struct StraightVsWorkingStudio: View {
                 if done {
                     HStack(spacing: 5) {
                         Image(systemName: "checkmark.circle.fill").foregroundStyle(tealAccent)
-                        Text("Answer: 11").font(.system(size: 14, weight: .bold, design: .serif))
+                        Text("Answer: 11").scaledFont(size: 14, weight: .bold, design: .serif)
                             .foregroundStyle(inkColor)
                     }
                     .padding(.top, 2)
@@ -382,12 +382,12 @@ struct StraightVsWorkingStudio: View {
     private func thoughtBox(i: Int, shown: Bool) -> some View {
         HStack(alignment: .top, spacing: 8) {
             Text("\(i + 1)")
-                .font(.system(size: 11, weight: .bold, design: .serif))
+                .scaledFont(size: 11, weight: .bold, design: .serif)
                 .foregroundStyle(shown ? .white : mutedText)
                 .frame(width: 22, height: 22)
                 .background(Circle().fill(shown ? tealAccent : mutedText.opacity(0.15)))
             Text(shown ? cotChain.steps[i].thought : "hidden thought")
-                .font(.system(size: 13, design: .serif))
+                .scaledFont(size: 13, design: .serif)
                 .italic(!shown)
                 .foregroundStyle(shown ? inkColor.opacity(0.85) : mutedText.opacity(0.5))
                 .fixedSize(horizontal: false, vertical: true)
@@ -403,14 +403,14 @@ struct StraightVsWorkingStudio: View {
     private var register: some View {
         let current = revealed == 0 ? cotChain.start : cotChain.steps[revealed - 1].value
         return VStack(spacing: 6) {
-            Text("REGISTER").font(.system(size: 8, weight: .bold)).tracking(1.2)
+            Text("REGISTER").scaledFont(size: 8, weight: .bold).tracking(1.2)
                 .foregroundStyle(mutedText)
             Text("\(current)")
-                .font(.system(size: 30, weight: .bold, design: .monospaced))
+                .scaledFont(size: 30, weight: .bold, design: .monospaced)
                 .foregroundStyle(done ? tealAccent : inkColor)
                 .contentTransition(.numericText())
             Text(revealed == 0 ? "start" : cotChain.steps[revealed - 1].runs)
-                .font(.system(size: 9, design: .monospaced))
+                .scaledFont(size: 9, design: .monospaced)
                 .foregroundStyle(mutedText)
                 .multilineTextAlignment(.center)
         }
@@ -432,7 +432,7 @@ struct StraightVsWorkingStudio: View {
                 }
             } label: {
                 Text(revealed == 0 ? "Reveal first thought" : "Reveal next thought")
-                    .font(.system(size: 14, weight: .semibold))
+                    .scaledFont(size: 14, weight: .semibold)
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 12)
@@ -448,7 +448,7 @@ struct StraightVsWorkingStudio: View {
             Text(done
                  ? "Each thought fed the next: the 6 carried into 5 + 6 = 11. Writing the chain is what stops the model leaping to a guess like 10."
                  : "Reveal each thought and watch the register carry the value forward.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -470,10 +470,10 @@ struct PromptBuilderStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("BUILD THE PROMPT")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("No retraining is involved. You just show the model a couple of examples first, and it copies their style. Flip the switch to put the working into your examples, and watch what the model does with a fresh question.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -485,13 +485,13 @@ struct PromptBuilderStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.3), value: showWorking)
+        .motionAware(.snappy(duration: 0.3), value: showWorking)
     }
 
     private var toggleRow: some View {
         Toggle(isOn: $showWorking) {
             Text("Show the working in the examples")
-                .font(.system(size: 14, weight: .semibold, design: .serif))
+                .scaledFont(size: 14, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor)
         }
         .tint(tealAccent)
@@ -507,7 +507,7 @@ struct PromptBuilderStudio: View {
     private var examplesCard: some View {
         VStack(alignment: .leading, spacing: 7) {
             Text("YOUR EXAMPLES")
-                .font(.system(size: 9, weight: .bold)).tracking(1.3)
+                .scaledFont(size: 9, weight: .bold).tracking(1.3)
                 .foregroundStyle(mutedText)
             exemplar(q: "Q: 5 birds, 2 fly away. Left?",
                      work: showWorking ? "5 minus 2 is 3." : nil, a: "A: 3")
@@ -522,13 +522,13 @@ struct PromptBuilderStudio: View {
 
     private func exemplar(q: String, work: String?, a: String) -> some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text(q).font(.system(size: 12, weight: .semibold, design: .serif))
+            Text(q).scaledFont(size: 12, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.85))
             if let work {
-                Text(work).font(.system(size: 11.5, design: .serif)).italic()
+                Text(work).scaledFont(size: 11.5, design: .serif).italic()
                     .foregroundStyle(tealAccent)
             }
-            Text(a).font(.system(size: 12, weight: .semibold, design: .serif))
+            Text(a).scaledFont(size: 12, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.85))
         }
         .padding(.horizontal, 10).padding(.vertical, 7)
@@ -539,31 +539,31 @@ struct PromptBuilderStudio: View {
     private var modelAnswerCard: some View {
         VStack(alignment: .leading, spacing: 7) {
             HStack(spacing: 8) {
-                Image(systemName: "cpu").font(.system(size: 12, weight: .semibold))
+                Image(systemName: "cpu").scaledFont(size: 12, weight: .semibold)
                     .foregroundStyle(showWorking ? tealAccent : mutedText)
                 Text("NEW QUESTION: 6 marbles, lose 4, find 5. How many?")
-                    .font(.system(size: 12, weight: .semibold, design: .serif))
+                    .scaledFont(size: 12, weight: .semibold, design: .serif)
                     .foregroundStyle(inkColor.opacity(0.8))
                     .fixedSize(horizontal: false, vertical: true)
             }
             Divider()
             if showWorking {
                 Text("Start with 6. Lose 4, that leaves 2. Find 5 more, so 2 plus 5 is 7.")
-                    .font(.system(size: 13.5, design: .serif)).italic()
+                    .scaledFont(size: 13.5, design: .serif).italic()
                     .foregroundStyle(tealAccent)
                     .fixedSize(horizontal: false, vertical: true)
                 HStack(spacing: 6) {
                     Image(systemName: "checkmark.circle.fill").foregroundStyle(tealAccent)
-                    Text("A: 7").font(.system(size: 14, weight: .bold, design: .serif))
+                    Text("A: 7").scaledFont(size: 14, weight: .bold, design: .serif)
                         .foregroundStyle(inkColor)
                 }
             } else {
                 HStack(spacing: 6) {
                     Image(systemName: "xmark.circle.fill").foregroundStyle(cotRose)
-                    Text("A: 2").font(.system(size: 14, weight: .bold, design: .serif))
+                    Text("A: 2").scaledFont(size: 14, weight: .bold, design: .serif)
                         .foregroundStyle(inkColor)
                     Text("(jumped straight to a guess)")
-                        .font(.system(size: 11, design: .serif)).italic()
+                        .scaledFont(size: 11, design: .serif).italic()
                         .foregroundStyle(mutedText)
                 }
             }
@@ -582,7 +582,7 @@ struct PromptBuilderStudio: View {
             Text(showWorking
                  ? "The model copied your examples: it reasoned out loud, then answered, and got it right. One prompt change, no training."
                  : "Without working in the examples, the model mimics that too: it blurts a wrong answer. Flip the switch.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -642,10 +642,10 @@ struct CoTScaleStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("DRAG UP THE MODEL SIZE")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Same question, same prompt, four model sizes. Slide the size up and read the model's own chain of thought. Watch it go from muddled scribble to clean reasoning as it crosses the threshold.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -657,7 +657,7 @@ struct CoTScaleStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.32), value: idx)
+        .motionAware(.snappy(duration: 0.32), value: idx)
     }
 
     private var sizePicker: some View {
@@ -665,7 +665,7 @@ struct CoTScaleStudio: View {
             HStack {
                 ForEach(Array(cotSizeSamples.enumerated()), id: \.offset) { i, s in
                     Text(s.params)
-                        .font(.system(size: 11, weight: i == idx ? .bold : .regular, design: .monospaced))
+                        .scaledFont(size: 11, weight: i == idx ? .bold : .regular, design: .monospaced)
                         .foregroundStyle(i == idx ? tealAccent : mutedText)
                         .frame(maxWidth: .infinity)
                 }
@@ -688,21 +688,21 @@ struct CoTScaleStudio: View {
             HStack {
                 HStack(spacing: 6) {
                     Image(systemName: "brain.head.profile")
-                        .font(.system(size: 13)).foregroundStyle(sample.coherent ? tealAccent : mutedText)
+                        .scaledFont(size: 13).foregroundStyle(sample.coherent ? tealAccent : mutedText)
                     Text("\(sample.params) model writes:")
-                        .font(.system(size: 12, weight: .semibold, design: .serif))
+                        .scaledFont(size: 12, weight: .semibold, design: .serif)
                         .foregroundStyle(inkColor.opacity(0.8))
                 }
                 Spacer()
                 Text("\(sample.accuracy)%")
-                    .font(.system(size: 14, weight: .bold, design: .monospaced))
+                    .scaledFont(size: 14, weight: .bold, design: .monospaced)
                     .foregroundStyle(sample.coherent ? tealAccent : cotRose)
                     .contentTransition(.numericText())
             }
             Divider()
             ForEach(Array(sample.chain.enumerated()), id: \.offset) { _, line in
                 Text(line)
-                    .font(.system(size: 13.5, design: .monospaced))
+                    .scaledFont(size: 13.5, design: .monospaced)
                     .italic(!sample.coherent)
                     .foregroundStyle(sample.coherent ? inkColor.opacity(0.85) : cotRose.opacity(0.85))
                     .fixedSize(horizontal: false, vertical: true)
@@ -711,7 +711,7 @@ struct CoTScaleStudio: View {
                 Image(systemName: sample.correct ? "checkmark.circle.fill" : "xmark.circle.fill")
                     .foregroundStyle(sample.correct ? tealAccent : cotRose)
                 Text("Answer: \(sample.answer)")
-                    .font(.system(size: 14, weight: .bold, design: .serif))
+                    .scaledFont(size: 14, weight: .bold, design: .serif)
                     .foregroundStyle(inkColor)
             }
             .padding(.top, 2)
@@ -727,12 +727,12 @@ struct CoTScaleStudio: View {
     private var noteCard: some View {
         HStack(alignment: .top, spacing: 10) {
             Text(sample.params)
-                .font(.system(size: 10, weight: .bold, design: .monospaced))
+                .scaledFont(size: 10, weight: .bold, design: .monospaced)
                 .foregroundStyle(tealAccent)
                 .padding(.horizontal, 7).padding(.vertical, 3)
                 .background(Capsule().fill(tealAccent.opacity(0.12)))
             Text(sample.note)
-                .font(.system(size: 13, design: .serif))
+                .scaledFont(size: 13, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.78))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -748,7 +748,7 @@ struct CoTScaleStudio: View {
             Text(reachedTop
                  ? "The reasoning was not taught; it was latent in the big model and the prompt let it out. That sudden switch-on with size is why CoT is called an emergent ability."
                  : "Slide to the largest model to see the chain become coherent.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }

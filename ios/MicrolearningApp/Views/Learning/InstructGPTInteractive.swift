@@ -54,7 +54,7 @@ struct InstructGPTGlyph: View {
 
                 // Model box.
                 Text("LLM")
-                    .font(.system(size: 14, weight: .bold, design: .serif))
+                    .scaledFont(size: 14, weight: .bold, design: .serif)
                     .foregroundStyle(Color(hex: "f4f1ea"))
                     .frame(width: 50, height: 44)
                     .background(RoundedRectangle(cornerRadius: 10).fill(tealAccent.opacity(0.22))
@@ -74,7 +74,7 @@ struct InstructGPTGlyph: View {
                 .stroke(tealAccent.opacity(0.8), style: StrokeStyle(lineWidth: 2, lineCap: .round))
 
                 Text("HUMAN FEEDBACK")
-                    .font(.system(size: 9, weight: .bold)).tracking(1.8)
+                    .scaledFont(size: 9, weight: .bold).tracking(1.8)
                     .foregroundStyle(amberAccent)
                     .position(x: w * 0.5, y: h * 0.95)
             }
@@ -88,7 +88,7 @@ struct InstructGPTGlyph: View {
 
     private func chip(text: String, fill: Color, stroke: Color, fg: Color, wide: Bool = false) -> some View {
         Text(text)
-            .font(.system(size: wide ? 13 : 15, weight: .bold, design: .serif))
+            .scaledFont(size: wide ? 13 : 15, weight: .bold, design: .serif)
             .foregroundStyle(fg)
             .frame(width: wide ? 54 : 38, height: 38)
             .background(RoundedRectangle(cornerRadius: 9).fill(fill)
@@ -107,9 +107,9 @@ struct AlignmentGapArt: View {
         VStack(spacing: 10) {
             HStack(spacing: 8) {
                 Image(systemName: "text.bubble")
-                    .font(.system(size: 12, weight: .bold)).foregroundStyle(amberAccent)
+                    .scaledFont(size: 12, weight: .bold).foregroundStyle(amberAccent)
                 Text("\u{201C}Explain the moon to a child.\u{201D}")
-                    .font(.system(size: 12.5, weight: .semibold, design: .serif))
+                    .scaledFont(size: 12.5, weight: .semibold, design: .serif)
                     .foregroundStyle(inkColor)
                 Spacer(minLength: 0)
             }
@@ -133,13 +133,13 @@ struct AlignmentGapArt: View {
 
     private func column(tag: String, tagColor: Color, body: String, note: String, tint: Color) -> some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text(tag).font(.system(size: 9, weight: .bold)).tracking(1.2)
+            Text(tag).scaledFont(size: 9, weight: .bold).tracking(1.2)
                 .foregroundStyle(tagColor)
             Text(body)
-                .font(.system(size: 12, design: .serif))
+                .scaledFont(size: 12, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .fixedSize(horizontal: false, vertical: true)
-            Text(note).font(.system(size: 9, design: .serif)).italic()
+            Text(note).scaledFont(size: 9, design: .serif).italic()
                 .foregroundStyle(inkColor.opacity(0.5))
         }
         .padding(11)
@@ -164,7 +164,7 @@ struct ThreeStepArt: View {
                 step(num: "3", label: "RLHF", sub: "nudge toward\npreferred", tint: tealAccent)
             }
             Text("DEMONSTRATE \u{00B7} RANK \u{00B7} REINFORCE")
-                .font(.system(size: 9, weight: .bold)).tracking(1.4)
+                .scaledFont(size: 9, weight: .bold).tracking(1.4)
                 .foregroundStyle(mutedText)
         }
         .padding(.vertical, 4)
@@ -172,13 +172,13 @@ struct ThreeStepArt: View {
 
     private func step(num: String, label: String, sub: String, tint: Color) -> some View {
         VStack(spacing: 4) {
-            Text(num).font(.system(size: 11, weight: .bold))
+            Text(num).scaledFont(size: 11, weight: .bold)
                 .foregroundStyle(.white)
                 .frame(width: 20, height: 20)
                 .background(Circle().fill(tint))
-            Text(label).font(.system(size: 10, weight: .bold)).tracking(0.8)
+            Text(label).scaledFont(size: 10, weight: .bold).tracking(0.8)
                 .foregroundStyle(tint)
-            Text(sub).font(.system(size: 8.5, design: .serif)).italic()
+            Text(sub).scaledFont(size: 8.5, design: .serif).italic()
                 .multilineTextAlignment(.center)
                 .foregroundStyle(inkColor.opacity(0.55))
         }
@@ -190,7 +190,7 @@ struct ThreeStepArt: View {
 
     private func arrow() -> some View {
         Image(systemName: "arrow.right")
-            .font(.system(size: 11, weight: .bold))
+            .scaledFont(size: 11, weight: .bold)
             .foregroundStyle(mutedText)
     }
 }
@@ -208,7 +208,7 @@ struct RankArt: View {
             VStack(alignment: .leading, spacing: 6) {
                 ForEach(Array(ranks.enumerated()), id: \.offset) { i, r in
                     HStack(spacing: 8) {
-                        Text(r).font(.system(size: 10, weight: .bold))
+                        Text(r).scaledFont(size: 10, weight: .bold)
                             .foregroundStyle(.white)
                             .frame(width: 18, height: 18)
                             .background(Circle().fill(i == 0 ? tealAccent : (i == 3 ? amberAccent : mutedText)))
@@ -220,17 +220,17 @@ struct RankArt: View {
             }
             VStack(spacing: 3) {
                 Image(systemName: "arrow.right")
-                    .font(.system(size: 13, weight: .bold)).foregroundStyle(mutedText)
-                Text("teaches").font(.system(size: 8, weight: .semibold)).tracking(0.6)
+                    .scaledFont(size: 13, weight: .bold).foregroundStyle(mutedText)
+                Text("teaches").scaledFont(size: 8, weight: .semibold).tracking(0.6)
                     .foregroundStyle(mutedText)
             }
             VStack(spacing: 4) {
                 Image(systemName: "slider.horizontal.3")
-                    .font(.system(size: 22)).foregroundStyle(amberAccent)
-                Text("REWARD\nMODEL").font(.system(size: 9, weight: .bold)).tracking(0.6)
+                    .scaledFont(size: 22).foregroundStyle(amberAccent)
+                Text("REWARD\nMODEL").scaledFont(size: 9, weight: .bold).tracking(0.6)
                     .multilineTextAlignment(.center)
                     .foregroundStyle(amberAccent)
-                Text("scores any\nanswer").font(.system(size: 8.5, design: .serif)).italic()
+                Text("scores any\nanswer").scaledFont(size: 8.5, design: .serif).italic()
                     .multilineTextAlignment(.center)
                     .foregroundStyle(inkColor.opacity(0.55))
             }
@@ -259,10 +259,10 @@ struct PPOLoopArt: View {
             }
             HStack(spacing: 8) {
                 Image(systemName: "arrow.uturn.left")
-                    .font(.system(size: 12, weight: .bold))
+                    .scaledFont(size: 12, weight: .bold)
                     .foregroundStyle(amberAccent)
                 Text("NUDGE TOWARD HIGHER SCORES \u{00B7} KEEP IT ON A LEASH")
-                    .font(.system(size: 9, weight: .bold)).tracking(1.0)
+                    .scaledFont(size: 9, weight: .bold).tracking(1.0)
                     .foregroundStyle(amberAccent)
             }
             .padding(.horizontal, 12).padding(.vertical, 7)
@@ -273,9 +273,9 @@ struct PPOLoopArt: View {
 
     private func node(_ label: String, sub: String, tint: Color) -> some View {
         VStack(spacing: 3) {
-            Text(label).font(.system(size: 10, weight: .bold)).tracking(1.2)
+            Text(label).scaledFont(size: 10, weight: .bold).tracking(1.2)
                 .foregroundStyle(tint)
-            Text(sub).font(.system(size: 9, design: .serif)).italic()
+            Text(sub).scaledFont(size: 9, design: .serif).italic()
                 .foregroundStyle(inkColor.opacity(0.55))
         }
         .padding(.horizontal, 12).padding(.vertical, 10)
@@ -285,7 +285,7 @@ struct PPOLoopArt: View {
 
     private func arrow() -> some View {
         Image(systemName: "arrow.right")
-            .font(.system(size: 11, weight: .bold))
+            .scaledFont(size: 11, weight: .bold)
             .foregroundStyle(mutedText)
     }
 }
@@ -336,10 +336,10 @@ struct InstructionGapStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("WHICH ONE DID WHAT YOU ASKED?")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("A raw language model only predicts likely next words. That is not the same as doing what you asked. Both answers below are things GPT-3 might write. Tap the one that actually followed the instruction.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -352,16 +352,16 @@ struct InstructionGapStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.3), value: verdict)
-        .animation(.snappy(duration: 0.3), value: sceneIdx)
+        .motionAware(.snappy(duration: 0.3), value: verdict)
+        .motionAware(.snappy(duration: 0.3), value: sceneIdx)
     }
 
     private var promptCard: some View {
         HStack(spacing: 10) {
             Image(systemName: "text.bubble.fill")
-                .font(.system(size: 16)).foregroundStyle(amberAccent)
+                .scaledFont(size: 16).foregroundStyle(amberAccent)
             Text(scene.prompt)
-                .font(.system(size: 16, weight: .semibold, design: .serif))
+                .scaledFont(size: 16, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor)
                 .fixedSize(horizontal: false, vertical: true)
             Spacer(minLength: 0)
@@ -380,10 +380,10 @@ struct InstructionGapStudio: View {
             HStack(alignment: .top, spacing: 12) {
                 VStack(alignment: .leading, spacing: 5) {
                     Text(isAligned ? "FOLLOWED THE INSTRUCTION" : "PREDICTED NEXT WORDS")
-                        .font(.system(size: 9, weight: .bold)).tracking(1.4)
+                        .scaledFont(size: 9, weight: .bold).tracking(1.4)
                         .foregroundStyle(isAligned ? tealAccent : mutedText)
                     Text(text)
-                        .font(.system(size: 14, design: .serif))
+                        .scaledFont(size: 14, design: .serif)
                         .foregroundStyle(inkColor.opacity(0.85))
                         .multilineTextAlignment(.leading)
                         .fixedSize(horizontal: false, vertical: true)
@@ -392,7 +392,7 @@ struct InstructionGapStudio: View {
                 Image(systemName: chosen
                       ? (isAligned ? "checkmark.circle.fill" : "xmark.circle.fill")
                       : "circle")
-                    .font(.system(size: 16))
+                    .scaledFont(size: 16)
                     .foregroundStyle(chosen ? (isAligned ? tealAccent : mutedText) : mutedText.opacity(0.5))
             }
             .padding(14)
@@ -411,13 +411,13 @@ struct InstructionGapStudio: View {
         if let v = verdict {
             HStack(alignment: .top, spacing: 10) {
                 Image(systemName: v ? "checkmark.seal.fill" : "exclamationmark.triangle.fill")
-                    .font(.system(size: 14))
+                    .scaledFont(size: 14)
                     .foregroundStyle(v ? tealAccent : amberAccent)
                 VStack(alignment: .leading, spacing: 6) {
                     Text(v
                          ? "Yes. \(scene.why)"
                          : "That one just kept predicting plausible text. It is fluent, but it ignored what you wanted.")
-                        .font(.system(size: 13, weight: .semibold, design: .serif))
+                        .scaledFont(size: 13, weight: .semibold, design: .serif)
                         .foregroundStyle(inkColor.opacity(0.82))
                         .fixedSize(horizontal: false, vertical: true)
                     Button {
@@ -426,7 +426,7 @@ struct InstructionGapStudio: View {
                         sceneIdx = (sceneIdx + 1) % igGapScenes.count
                     } label: {
                         Text(v ? "Next prompt \u{2192}" : "Try again")
-                            .font(.system(size: 12, weight: .semibold))
+                            .scaledFont(size: 12, weight: .semibold)
                             .foregroundStyle(tealAccent)
                     }
                     .buttonStyle(.plain)
@@ -446,7 +446,7 @@ struct InstructionGapStudio: View {
             Text(done
                  ? "That gap, between predicting text and doing what you asked, is exactly what InstructGPT set out to close."
                  : "Helpful answers spotted: \(pickedRight.count) of 2")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -496,10 +496,10 @@ struct RankStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("RANK THE ANSWERS, BEST FIRST")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("You cannot write a rule for a good answer. So InstructGPT had people rank them instead. The model wrote four replies to one prompt. Tap them in order, best first. There is no official key, the reward model just learns to copy your taste.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -513,15 +513,15 @@ struct RankStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.3), value: ranking)
+        .motionAware(.snappy(duration: 0.3), value: ranking)
     }
 
     private var promptCard: some View {
         HStack(spacing: 10) {
             Image(systemName: "text.bubble.fill")
-                .font(.system(size: 16)).foregroundStyle(amberAccent)
+                .scaledFont(size: 16).foregroundStyle(amberAccent)
             Text(prompt)
-                .font(.system(size: 16, weight: .semibold, design: .serif))
+                .scaledFont(size: 16, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor)
                 .fixedSize(horizontal: false, vertical: true)
             Spacer(minLength: 0)
@@ -545,12 +545,12 @@ struct RankStudio: View {
                         .frame(width: 28, height: 28)
                         .overlay(Circle().stroke(ranked ? rankColor(rank!) : borderColor, lineWidth: 1.5))
                     if let r = rank {
-                        Text("\(r + 1)").font(.system(size: 13, weight: .bold))
+                        Text("\(r + 1)").scaledFont(size: 13, weight: .bold)
                             .foregroundStyle(.white)
                     }
                 }
                 Text(ans.text)
-                    .font(.system(size: 14, design: .serif))
+                    .scaledFont(size: 14, design: .serif)
                     .foregroundStyle(inkColor.opacity(0.85))
                     .multilineTextAlignment(.leading)
                     .fixedSize(horizontal: false, vertical: true)
@@ -580,9 +580,9 @@ struct RankStudio: View {
         if trained {
             HStack(alignment: .top, spacing: 10) {
                 Image(systemName: "slider.horizontal.3")
-                    .font(.system(size: 14)).foregroundStyle(amberAccent)
+                    .scaledFont(size: 14).foregroundStyle(amberAccent)
                 Text("Reward model trained. It now scores any new answer to look more like your number one and less like your number four, even on prompts it has never seen.")
-                    .font(.system(size: 13, weight: .semibold, design: .serif))
+                    .scaledFont(size: 13, weight: .semibold, design: .serif)
                     .foregroundStyle(inkColor.opacity(0.82))
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -597,7 +597,7 @@ struct RankStudio: View {
                 answers.shuffle()
             } label: {
                 Text("Rank again")
-                    .font(.system(size: 12, weight: .semibold))
+                    .scaledFont(size: 12, weight: .semibold)
                     .foregroundStyle(tealAccent)
             }
             .buttonStyle(.plain)
@@ -607,8 +607,8 @@ struct RankStudio: View {
                 ranking = []
             } label: {
                 HStack(spacing: 6) {
-                    Image(systemName: "arrow.uturn.backward").font(.system(size: 11, weight: .semibold))
-                    Text("Clear ranking").font(.system(size: 12, weight: .semibold))
+                    Image(systemName: "arrow.uturn.backward").scaledFont(size: 11, weight: .semibold)
+                    Text("Clear ranking").scaledFont(size: 12, weight: .semibold)
                 }
                 .foregroundStyle(mutedText)
             }
@@ -622,7 +622,7 @@ struct RankStudio: View {
             Text(trained
                  ? "Do this across thousands of prompts and the reward model captures what people actually prefer, no rulebook required."
                  : "Ranked: \(ranking.count) of \(answers.count). Tap answers best to worst.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -672,10 +672,10 @@ struct RLHFLoopStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("RLHF \u{00B7} GENERATE, SCORE, NUDGE")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Now put the reward model to work. The model writes an answer, the reward model scores it, and that score nudges the model toward replies people prefer. Tap to run a round and watch the answer get better.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -688,16 +688,16 @@ struct RLHFLoopStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.35), value: step)
+        .motionAware(.snappy(duration: 0.35), value: step)
     }
 
     private var answerCard: some View {
         VStack(alignment: .leading, spacing: 7) {
             Text("THE MODEL'S ANSWER")
-                .font(.system(size: 9, weight: .bold)).tracking(1.4)
+                .scaledFont(size: 9, weight: .bold).tracking(1.4)
                 .foregroundStyle(mutedText)
             Text("\u{201C}\(current.answer)\u{201D}")
-                .font(.system(size: 15, design: .serif))
+                .scaledFont(size: 15, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.85))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -710,7 +710,7 @@ struct RLHFLoopStudio: View {
     private var rewardMeter: some View {
         HStack(spacing: 10) {
             Text("REWARD")
-                .font(.system(size: 9, weight: .bold)).tracking(1.4)
+                .scaledFont(size: 9, weight: .bold).tracking(1.4)
                 .foregroundStyle(mutedText)
             GeometryReader { g in
                 ZStack(alignment: .leading) {
@@ -722,7 +722,7 @@ struct RLHFLoopStudio: View {
             }
             .frame(height: 8)
             Text(String(format: "%.2f", current.reward))
-                .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                .scaledFont(size: 11, weight: .semibold, design: .monospaced)
                 .foregroundStyle(inkColor.opacity(0.7))
                 .frame(width: 44, alignment: .trailing)
         }
@@ -731,9 +731,9 @@ struct RLHFLoopStudio: View {
     private var leashNote: some View {
         HStack(spacing: 8) {
             Image(systemName: "link")
-                .font(.system(size: 11, weight: .semibold)).foregroundStyle(tealAccent)
+                .scaledFont(size: 11, weight: .semibold).foregroundStyle(tealAccent)
             Text("A KL leash keeps each step close to the sensible SFT model, so it improves without drifting into gibberish.")
-                .font(.system(size: 11, design: .serif)).italic()
+                .scaledFont(size: 11, design: .serif).italic()
                 .foregroundStyle(inkColor.opacity(0.6))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -751,8 +751,8 @@ struct RLHFLoopStudio: View {
                 }
             } label: {
                 HStack(spacing: 8) {
-                    Image(systemName: "arrow.triangle.2.circlepath").font(.system(size: 13))
-                    Text("Run a round").font(.system(size: 13, weight: .semibold))
+                    Image(systemName: "arrow.triangle.2.circlepath").scaledFont(size: 13)
+                    Text("Run a round").scaledFont(size: 13, weight: .semibold)
                 }
                 .foregroundStyle(.white)
                 .padding(.horizontal, 16).padding(.vertical, 11)
@@ -764,7 +764,7 @@ struct RLHFLoopStudio: View {
                 UIImpactFeedbackGenerator(style: .soft).impactOccurred()
                 step = 0
             } label: {
-                Text("Reset").font(.system(size: 12, weight: .semibold)).foregroundStyle(tealAccent)
+                Text("Reset").scaledFont(size: 12, weight: .semibold).foregroundStyle(tealAccent)
             }
             .buttonStyle(.plain)
         }
@@ -777,7 +777,7 @@ struct RLHFLoopStudio: View {
             Text(done
                  ? "From noise to a genuinely helpful reply, all by chasing the reward model's score. This loop, run at scale, is what made a 1.3B model beat the 175B GPT-3 on what people prefer."
                  : "Rounds run: \(step) of \(igRLSteps.count - 1)")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }

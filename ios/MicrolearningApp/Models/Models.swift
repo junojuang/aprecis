@@ -160,6 +160,10 @@ struct CardDeck: Codable, Identifiable {
     /// Primary arXiv category (e.g. "cs.CL"), when the backend has it. Drives
     /// the display cluster without text inference. Absent on loop/bundle decks.
     let arxivCategory: String?
+    /// When set, this paper's lesson is rendered from a self-contained web
+    /// bundle (HTML/CSS/JS) in a `WebLessonView` instead of a native reader.
+    /// Lets premium lessons ship as data with no App Store update.
+    let webLessonURL: String?
 
     enum CodingKeys: String, CodingKey {
         case paperId     = "paper_id"
@@ -173,6 +177,7 @@ struct CardDeck: Codable, Identifiable {
         case publishedAt    = "published_at"
         case blueprint
         case arxivCategory  = "arxiv_category"
+        case webLessonURL   = "web_lesson_url"
     }
 
     init(
@@ -186,7 +191,8 @@ struct CardDeck: Codable, Identifiable {
         publishedAt: Date?,
         blueprint: DailyLoopBlueprint? = nil,
         url: String? = nil,
-        arxivCategory: String? = nil
+        arxivCategory: String? = nil,
+        webLessonURL: String? = nil
     ) {
         self.paperId = paperId
         self.title = title
@@ -199,6 +205,7 @@ struct CardDeck: Codable, Identifiable {
         self.publishedAt = publishedAt
         self.blueprint = blueprint
         self.arxivCategory = arxivCategory
+        self.webLessonURL = webLessonURL
     }
 
     // MARK: - Signal Strength (1 to 5)

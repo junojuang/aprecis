@@ -49,10 +49,10 @@ struct GlossText: View {
             .sheet(item: $hit) { entry in
                 VStack(alignment: .leading, spacing: 12) {
                     Text(entry.term.capitalized)
-                        .font(.system(size: 20, weight: .semibold, design: .serif))
+                        .scaledFont(size: 20, weight: .semibold, design: .serif)
                         .foregroundStyle(dlInk2)
                     Text(entry.definition)
-                        .font(.system(size: 14, design: .serif))
+                        .scaledFont(size: 14, design: .serif)
                         .foregroundStyle(dlInk3)
                         .lineSpacing(4)
                     Spacer(minLength: 0)
@@ -107,11 +107,11 @@ struct DLActionHint: View {
         HStack(alignment: .center, spacing: 12) {
             VStack(alignment: .leading, spacing: 2) {
                 Text(eyebrow)
-                    .font(.system(size: 9, weight: .bold))
+                    .scaledFont(size: 9, weight: .bold)
                     .tracking(1.6)
                     .foregroundStyle(tint)
                 Text(text)
-                    .font(.system(size: 13, weight: .regular, design: .serif))
+                    .scaledFont(size: 13, weight: .regular, design: .serif)
                     .italic()
                     .foregroundStyle(inkColor.opacity(0.82))
                     .lineSpacing(2)
@@ -119,10 +119,10 @@ struct DLActionHint: View {
             }
             Spacer(minLength: 0)
             Image(systemName: done ? "checkmark" : icon)
-                .font(.system(size: 12, weight: .bold))
+                .scaledFont(size: 12, weight: .bold)
                 .foregroundStyle(done ? Color(hex: "4a9c4a") : tint)
                 .offset(y: (done || !bob) ? -1 : 3)
-                .animation(
+                .motionAware(
                     done
                         ? .default
                         : .easeInOut(duration: 0.95).repeatForever(autoreverses: true),
@@ -203,6 +203,11 @@ final class DailyLoopState: ObservableObject {
 
     func canAdvance() -> Bool {
         if customCardComplete.contains(index) { return true }
+        // Never trap assistive-technology users behind an interactive they may
+        // not be able to operate (open-all-three, tap-every-node, etc.).
+        if UIAccessibility.isVoiceOverRunning || UIAccessibility.isSwitchControlRunning {
+            if currentSlot != .complete { return true }
+        }
         switch currentSlot {
         case .hook, .eli, .explain, .viz1, .viz2: return true
         case .core:    return openedAccordions.count == 3
@@ -251,7 +256,7 @@ struct DailyLoopView: View {
             // Background changes per card
             backgroundFor(state.index)
                 .ignoresSafeArea()
-                .animation(.easeInOut(duration: 0.35), value: state.index)
+                .motionAware(.easeInOut(duration: 0.35), value: state.index)
 
             VStack(spacing: 0) {
                 progressRail
@@ -375,11 +380,12 @@ struct DailyLoopView: View {
                     )
 
                     Text("a")
-                        .font(.system(size: 320, weight: .regular, design: .serif))
+                        .scaledFont(size: 320, weight: .regular, design: .serif)
                         .italic()
                         .foregroundStyle(tealAccent.opacity(0.07))
                         .offset(x: 60, y: -90)
                         .allowsHitTesting(false)
+                        .accessibilityHidden(true)
                 }
             case .complete:
                 ZStack {
@@ -411,10 +417,13 @@ struct DailyLoopView: View {
                 Rectangle()
                     .fill(dark ? dlTealBright : tealAccent)
                     .frame(width: geo.size.width * CGFloat(filled))
-                    .animation(.spring(response: 0.5, dampingFraction: 0.85), value: state.index)
+                    .motionAware(.spring(response: 0.5, dampingFraction: 0.85), value: state.index)
             }
         }
         .frame(height: 3)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Reading progress")
+        .accessibilityValue("Card \(state.index + 1) of \(state.lastIndex + 1)")
     }
 
     @ViewBuilder
@@ -425,13 +434,14 @@ struct DailyLoopView: View {
                 if state.index == 0 { dismiss() } else { back() }
             } label: {
                 Image(systemName: state.index == 0 ? "xmark" : "chevron.left")
-                    .font(.system(size: 12, weight: .bold))
+                    .scaledFont(size: 12, weight: .bold)
                     .foregroundStyle(dark ? Color.white : inkColor)
                     .frame(width: 32, height: 32)
                     .background(
                         Circle().fill(dark ? Color.white.opacity(0.12) : dlPaper2)
                     )
             }
+            .accessibilityLabel(state.index == 0 ? "Close" : "Previous card")
 
             Spacer()
 
@@ -448,9 +458,10 @@ struct DailyLoopView: View {
             } label: {
                 HStack(spacing: 8) {
                     Text(nextButtonText)
-                        .font(.system(size: 14, weight: .bold))
+                        .scaledFont(size: 14, weight: .bold)
                     if state.canAdvance() {
-                        Image(systemName: "arrow.right").font(.system(size: 12, weight: .bold))
+                        Image(systemName: "arrow.right").scaledFont(size: 12, weight: .bold)
+                            .accessibilityHidden(true)
                     }
                 }
                 .frame(maxWidth: .infinity)
@@ -462,6 +473,8 @@ struct DailyLoopView: View {
                 )
             }
             .disabled(!state.canAdvance())
+            .accessibilityLabel(nextButtonText)
+            .accessibilityHint("Goes to the next card")
 
             if let pid = content.paperId {
                 loopBookmarkIconButton(paperId: pid)
@@ -479,7 +492,7 @@ struct DailyLoopView: View {
             UIImpactFeedbackGenerator(style: .soft).impactOccurred()
         } label: {
             Image(systemName: saved ? "bookmark.fill" : "bookmark")
-                .font(.system(size: 16, weight: .semibold))
+                .scaledFont(size: 16, weight: .semibold)
                 .foregroundStyle(saved ? tealAccent : inkColor)
                 .frame(width: 46, height: 46)
                 .background(
@@ -587,7 +600,7 @@ private struct HookCard: View {
                         .fill(tealAccent)
                         .frame(width: 5, height: 5)
                     Text(content.heroEyebrow)
-                        .font(.system(size: 10, weight: .semibold))
+                        .scaledFont(size: 10, weight: .semibold)
                         .tracking(1.6)
                         .foregroundStyle(tealAccent)
                     Spacer()
@@ -608,7 +621,7 @@ private struct HookCard: View {
 
                 // Italic serif title, dark ink on cream for readability
                 segmentedText(content.heroTitleSegments, highlight: tealAccent)
-                    .font(.system(size: 30, weight: .regular, design: .serif))
+                    .scaledFont(size: 30, weight: .regular, design: .serif)
                     .foregroundStyle(inkColor)
                     .lineSpacing(4)
                     .fixedSize(horizontal: false, vertical: true)
@@ -624,7 +637,7 @@ private struct HookCard: View {
                 Rectangle().fill(rule).frame(height: 1).padding(.bottom, 18)
 
                 Text("BY THE END YOU'LL KNOW")
-                    .font(.system(size: 10, weight: .semibold))
+                    .scaledFont(size: 10, weight: .semibold)
                     .tracking(1.6)
                     .foregroundStyle(dim)
                     .padding(.bottom, 12)
@@ -647,7 +660,7 @@ private struct HookCard: View {
 
                 if let paperTitle = content.paperTitle, !paperTitle.isEmpty {
                     Text(paperTitle)
-                        .font(.system(size: 11, design: .serif))
+                        .scaledFont(size: 11, design: .serif)
                         .italic()
                         .foregroundStyle(dim)
                         .lineSpacing(2)
@@ -667,18 +680,18 @@ private struct HookCard: View {
     private func objectiveRow(text: String, gloss: String?) -> some View {
         HStack(alignment: .top, spacing: 10) {
             Image(systemName: "arrow.right")
-                .font(.system(size: 9, weight: .bold))
+                .scaledFont(size: 9, weight: .bold)
                 .foregroundStyle(tealAccent.opacity(0.85))
                 .padding(.top, 5)
             VStack(alignment: .leading, spacing: 3) {
                 Text(text)
-                    .font(.system(size: 14, weight: .semibold, design: .serif))
+                    .scaledFont(size: 14, weight: .semibold, design: .serif)
                     .foregroundStyle(inkColor.opacity(0.9))
                     .lineSpacing(2)
                     .fixedSize(horizontal: false, vertical: true)
                 if let g = gloss, !g.isEmpty {
                     Text(g)
-                        .font(.system(size: 12, design: .serif))
+                        .scaledFont(size: 12, design: .serif)
                         .italic()
                         .foregroundStyle(subtle)
                         .lineSpacing(2)
@@ -707,16 +720,16 @@ private struct CoreIdeaCard: View {
                 // Header row: big chapter numeral + eyebrow stack on the right
                 HStack(alignment: .center, spacing: 16) {
                     Text("01")
-                        .font(.system(size: 64, weight: .regular, design: .serif))
+                        .scaledFont(size: 64, weight: .regular, design: .serif)
                         .foregroundStyle(inkColor.opacity(0.88))
 
                     VStack(alignment: .leading, spacing: 6) {
                         Text("THE CORE IDEA")
-                            .font(.system(size: 10, weight: .semibold))
+                            .scaledFont(size: 10, weight: .semibold)
                             .tracking(1.6)
                             .foregroundStyle(tealAccent)
                         Text("\(content.coreIdeaItems.count) ideas behind the paper. Tap each to expand.")
-                            .font(.system(size: 12, design: .serif))
+                            .scaledFont(size: 12, design: .serif)
                             .italic()
                             .foregroundStyle(mutedText)
                             .lineSpacing(2)
@@ -728,7 +741,7 @@ private struct CoreIdeaCard: View {
 
                 // Italic serif title, the chapter's thesis
                 segmentedText(content.coreIdeaSegments, highlight: tealAccent)
-                    .font(.system(size: 26, weight: .regular, design: .serif))
+                    .scaledFont(size: 26, weight: .regular, design: .serif)
                     .foregroundStyle(inkColor)
                     .lineSpacing(3)
                     .fixedSize(horizontal: false, vertical: true)
@@ -737,7 +750,7 @@ private struct CoreIdeaCard: View {
                 // Progress pip row
                 HStack(alignment: .center, spacing: 10) {
                     Text("\(state.openedAccordions.count) of 3 opened")
-                        .font(.system(size: 11, weight: .semibold))
+                        .scaledFont(size: 11, weight: .semibold)
                         .tracking(0.4)
                         .foregroundStyle(mutedText)
                     GeometryReader { geo in
@@ -746,7 +759,7 @@ private struct CoreIdeaCard: View {
                             Capsule()
                                 .fill(tealAccent)
                                 .frame(width: geo.size.width * CGFloat(state.openedAccordions.count) / 3)
-                                .animation(.spring(response: 0.35), value: state.openedAccordions.count)
+                                .motionAware(.spring(response: 0.35), value: state.openedAccordions.count)
                         }
                     }
                     .frame(height: 3)
@@ -797,18 +810,18 @@ private struct AccordionRow: View {
                         Circle().fill(isOpen ? tealAccent : dlPaper2)
                             .frame(width: 28, height: 28)
                         Text(roman)
-                            .font(.system(size: 12, weight: .bold, design: .serif))
+                            .scaledFont(size: 12, weight: .bold, design: .serif)
                             .italic()
                             .foregroundStyle(isOpen ? .white : mutedText)
                     }
                     Text(title)
-                        .font(.system(size: 13, weight: .semibold))
+                        .scaledFont(size: 13, weight: .semibold)
                         .foregroundStyle(inkColor)
                         .multilineTextAlignment(.leading)
                         .lineSpacing(2)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     Image(systemName: "chevron.down")
-                        .font(.system(size: 11, weight: .semibold))
+                        .scaledFont(size: 11, weight: .semibold)
                         .foregroundStyle(mutedText)
                         .rotationEffect(.degrees(isOpen ? 180 : 0))
                 }
@@ -876,7 +889,7 @@ private struct EliCard: View {
                         .padding(.bottom, 8)
 
                     Text(content.eliAnalogyLabel)
-                        .font(.system(size: 9, weight: .semibold))
+                        .scaledFont(size: 9, weight: .semibold)
                         .tracking(1.4)
                         .foregroundStyle(dlAmberDeep.opacity(0.75))
                         .padding(.bottom, 12)
@@ -888,7 +901,7 @@ private struct EliCard: View {
                 .padding(.bottom, 18)
 
                 segmentedText(content.eliHeadlineSegments, highlight: dlAmberDeep)
-                    .font(.system(size: 22, weight: .semibold, design: .serif))
+                    .scaledFont(size: 22, weight: .semibold, design: .serif)
                     .foregroundStyle(inkColor)
                     .lineSpacing(3)
                     .padding(.horizontal, 20)
@@ -911,11 +924,11 @@ private struct HighlightedBody: View {
             switch p {
             case .plain(let s):
                 text = text + Text(s)
-                    .font(.system(size: 15, design: .serif))
+                    .font(scaledSystemFont(15, design: .serif))
                     .foregroundColor(dlInk3)
             case .bold(let s):
                 text = text + Text(s)
-                    .font(.system(size: 15, weight: .semibold, design: .serif))
+                    .font(scaledSystemFont(15, weight: .semibold, design: .serif))
                     .foregroundColor(inkColor)
             }
         }
@@ -1284,19 +1297,19 @@ private struct DiagramCard: View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
                 Text("CARD 04 · TAP TO EXPLORE")
-                    .font(.system(size: 10, weight: .bold))
+                    .scaledFont(size: 10, weight: .bold)
                     .tracking(1.8)
                     .foregroundStyle(tealAccent)
                 Spacer()
                 Text("\(state.visitedNodes.count)/\(state.totalVisitableNodes) visited")
-                    .font(.system(size: 10, weight: .bold))
+                    .scaledFont(size: 10, weight: .bold)
                     .tracking(0.8)
                     .foregroundStyle(mutedText)
             }
             .padding(.horizontal, 20)
 
             segmentedText(content.diagramSegments, highlight: tealAccent)
-                .font(.system(size: 22, weight: .semibold, design: .serif))
+                .scaledFont(size: 22, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor)
                 .padding(.horizontal, 20)
                 .padding(.top, 6)
@@ -1317,7 +1330,7 @@ private struct DiagramCard: View {
                     // Collapse marker (hub only)
                     if content.diagramLayout == .hub, let collapseText = content.diagramCollapseText {
                         Text(collapseText)
-                            .font(.system(size: 10, weight: .semibold))
+                            .scaledFont(size: 10, weight: .semibold)
                             .padding(.horizontal, 10)
                             .padding(.vertical, 6)
                             .background(
@@ -1337,7 +1350,7 @@ private struct DiagramCard: View {
                                     Circle().fill(tealAccent).frame(width: 6, height: 6)
                                     Text(hintLabel)
                                 }
-                                .font(.system(size: 9, weight: .bold))
+                                .scaledFont(size: 9, weight: .bold)
                                 .tracking(0.8)
                                 .foregroundStyle(mutedText)
                                 .padding(.trailing, 14)
@@ -1357,7 +1370,7 @@ private struct DiagramCard: View {
             }
             VStack(alignment: .leading, spacing: 4) {
                 Text(info?.panelTitle.uppercased() ?? "TAP A NODE")
-                    .font(.system(size: 10, weight: .bold))
+                    .scaledFont(size: 10, weight: .bold)
                     .tracking(1.2)
                     .foregroundStyle(dlTealDeep)
                 GlossText(raw: info?.panelBody ?? content.diagramDefaultPanelBody,
@@ -1524,10 +1537,10 @@ private struct AttnNode: View {
     var body: some View {
         VStack(spacing: 1) {
             Text(label)
-                .font(.system(size: 11, weight: .semibold))
+                .scaledFont(size: 11, weight: .semibold)
             if let sub {
                 Text(sub)
-                    .font(.system(size: 8))
+                    .scaledFont(size: 8)
                     .opacity(0.7)
             }
         }
@@ -1578,16 +1591,16 @@ private struct VizCardView: View {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 0) {
                     Text(card.kicker)
-                        .font(.system(size: isGPT3 ? 9 : 10, weight: .bold))
+                        .scaledFont(size: isGPT3 ? 9 : 10, weight: .bold)
                         .tracking(isGPT3 ? 1.6 : 1.8)
                         .foregroundStyle(tealAccent)
                         .padding(.horizontal, hPad)
                         .padding(.bottom, isGPT3 ? 8 : 6)
 
                     segmentedText(card.titleSegments, highlight: tealAccent)
-                        .font(.system(size: isGPT3 ? 24 : 22,
+                        .scaledFont(size: isGPT3 ? 24 : 22,
                                       weight: isGPT3 ? .regular : .semibold,
-                                      design: .serif))
+                                      design: .serif)
                         .foregroundStyle(inkColor)
                         .lineSpacing(isGPT3 ? 0 : 3)
                         .fixedSize(horizontal: false, vertical: true)
@@ -1595,7 +1608,7 @@ private struct VizCardView: View {
                         .padding(.bottom, isGPT3 ? 0 : 12)
 
                     Text(card.caption)
-                        .font(.system(size: isGPT3 ? 12 : 13, design: .serif))
+                        .scaledFont(size: isGPT3 ? 12 : 13, design: .serif)
                         .foregroundStyle(isGPT3 ? mutedText : dlInk3)
                         .lineSpacing(isGPT3 ? 0 : 4)
                         .fixedSize(horizontal: false, vertical: true)
@@ -1610,10 +1623,10 @@ private struct VizCardView: View {
                     // Sticky takeaway pill at the bottom of every viz card
                     HStack(spacing: 8) {
                         Image(systemName: "sparkle")
-                            .font(.system(size: 11, weight: .bold))
+                            .scaledFont(size: 11, weight: .bold)
                             .foregroundStyle(amberAccent)
                         Text(card.takeaway)
-                            .font(.system(size: 13, weight: .medium, design: .serif))
+                            .scaledFont(size: 13, weight: .medium, design: .serif)
                             .foregroundStyle(inkColor)
                             .italic()
                     }
@@ -1748,20 +1761,20 @@ private struct BarChartView: View {
             HStack(spacing: 6) {
                 RoundedRectangle(cornerRadius: 2).fill(amberAccent).frame(width: 14, height: 9)
                 Text(spec.primaryLabel)
-                    .font(.system(size: 11, weight: .semibold))
+                    .scaledFont(size: 11, weight: .semibold)
                     .foregroundStyle(dlInk3)
             }
             if let secondary = spec.secondaryLabel {
                 HStack(spacing: 6) {
                     RoundedRectangle(cornerRadius: 2).fill(tealAccent.opacity(0.55)).frame(width: 14, height: 9)
                     Text(secondary)
-                        .font(.system(size: 11, weight: .semibold))
+                        .scaledFont(size: 11, weight: .semibold)
                         .foregroundStyle(dlInk3)
                 }
             }
             Spacer(minLength: 0)
             Text(spec.yAxisLabel.uppercased())
-                .font(.system(size: 9, weight: .bold))
+                .scaledFont(size: 9, weight: .bold)
                 .tracking(1.2)
                 .foregroundStyle(mutedText)
         }
@@ -1808,7 +1821,7 @@ private struct BarChartView: View {
                 .frame(width: primaryWidth, height: max(primaryH, 2))
                 .position(x: primaryX + primaryWidth / 2, y: rect.maxY - max(primaryH, 2) / 2)
                 .opacity(activeIndex == nil || isActive ? 1.0 : 0.45)
-                .animation(.spring(response: 0.5, dampingFraction: 0.85), value: animatedIn)
+                .motionAware(.spring(response: 0.5, dampingFraction: 0.85), value: animatedIn)
 
             // Secondary bar
             if hasSecondary {
@@ -1817,7 +1830,7 @@ private struct BarChartView: View {
                     .frame(width: secondaryWidth, height: max(secondaryH, 2))
                     .position(x: centerX + gap / 2 + secondaryWidth / 2, y: rect.maxY - max(secondaryH, 2) / 2)
                     .opacity(activeIndex == nil || isActive ? 1.0 : 0.45)
-                    .animation(.spring(response: 0.5, dampingFraction: 0.85), value: animatedIn)
+                    .motionAware(.spring(response: 0.5, dampingFraction: 0.85), value: animatedIn)
             }
 
             // Tap target, covers the whole column
@@ -1850,7 +1863,7 @@ private struct BarChartView: View {
 
             if let label = spec.cliffLabel {
                 Text(label.uppercased())
-                    .font(.system(size: 8, weight: .bold))
+                    .scaledFont(size: 8, weight: .bold)
                     .tracking(1.0)
                     .foregroundStyle(Color(hex: "8a2a2a"))
                     .padding(.horizontal, 6)
@@ -1871,11 +1884,11 @@ private struct BarChartView: View {
             let centerX = rect.minX + groupWidth * (CGFloat(i) + 0.5)
             VStack(spacing: 1) {
                 Text(point.label)
-                    .font(.system(size: 11, weight: .semibold))
+                    .scaledFont(size: 11, weight: .semibold)
                     .foregroundStyle(activeIndex == i ? inkColor : dlInk3)
                 if let sub = point.sublabel {
                     Text(sub)
-                        .font(.system(size: 8, weight: .medium))
+                        .scaledFont(size: 8, weight: .medium)
                         .foregroundStyle(mutedText)
                         .lineLimit(1)
                 }
@@ -1898,11 +1911,11 @@ private struct BarChartView: View {
         }
         return VStack(alignment: .leading, spacing: 4) {
             Text(title)
-                .font(.system(size: 10, weight: .bold))
+                .scaledFont(size: 10, weight: .bold)
                 .tracking(1.2)
                 .foregroundStyle(dlTealDeep)
             Text(body)
-                .font(.system(size: 13, weight: .medium, design: .serif))
+                .scaledFont(size: 13, weight: .medium, design: .serif)
                 .foregroundStyle(inkColor)
                 .lineSpacing(3)
                 .fixedSize(horizontal: false, vertical: true)
@@ -1940,7 +1953,7 @@ private struct ScatterMorphView: View {
             HStack(spacing: 10) {
                 labelChip(spec.beforeLabel, active: progress < 0.5)
                 Image(systemName: "arrow.right")
-                    .font(.system(size: 10, weight: .bold))
+                    .scaledFont(size: 10, weight: .bold)
                     .foregroundStyle(mutedText)
                 labelChip(spec.afterLabel, active: progress >= 0.5)
                 Spacer(minLength: 0)
@@ -1986,12 +1999,12 @@ private struct ScatterMorphView: View {
 
                     // Axis labels
                     Text(spec.xAxisLabel)
-                        .font(.system(size: 9, weight: .semibold))
+                        .scaledFont(size: 9, weight: .semibold)
                         .tracking(0.5)
                         .foregroundStyle(mutedText)
                         .position(x: plotRect.midX, y: plotRect.maxY + 4)
                     Text(spec.yAxisLabel)
-                        .font(.system(size: 9, weight: .semibold))
+                        .scaledFont(size: 9, weight: .semibold)
                         .tracking(0.5)
                         .foregroundStyle(mutedText)
                         .rotationEffect(.degrees(-90))
@@ -2009,7 +2022,7 @@ private struct ScatterMorphView: View {
 
             // Caption, switches at the midpoint
             Text(progress < 0.5 ? spec.beforeCaption : spec.afterCaption)
-                .font(.system(size: 13, weight: .medium, design: .serif))
+                .scaledFont(size: 13, weight: .medium, design: .serif)
                 .foregroundStyle(inkColor)
                 .lineSpacing(3)
                 .fixedSize(horizontal: false, vertical: true)
@@ -2026,7 +2039,7 @@ private struct ScatterMorphView: View {
             // Scrubber row
             HStack(spacing: 12) {
                 Image(systemName: "hand.draw")
-                    .font(.system(size: 12, weight: .semibold))
+                    .scaledFont(size: 12, weight: .semibold)
                     .foregroundStyle(tealAccent)
                 Slider(
                     value: Binding(
@@ -2047,13 +2060,13 @@ private struct ScatterMorphView: View {
                 HStack(spacing: 6) {
                     Circle().fill(amberAccent).frame(width: 9, height: 9)
                     Text(spec.treatmentLabel)
-                        .font(.system(size: 11, weight: .semibold))
+                        .scaledFont(size: 11, weight: .semibold)
                         .foregroundStyle(dlInk3)
                 }
                 HStack(spacing: 6) {
                     Circle().fill(tealAccent.opacity(0.55)).frame(width: 9, height: 9)
                     Text(spec.controlLabel)
-                        .font(.system(size: 11, weight: .semibold))
+                        .scaledFont(size: 11, weight: .semibold)
                         .foregroundStyle(dlInk3)
                 }
                 Spacer(minLength: 0)
@@ -2063,7 +2076,7 @@ private struct ScatterMorphView: View {
 
     private func labelChip(_ text: String, active: Bool) -> some View {
         Text(text.uppercased())
-            .font(.system(size: 10, weight: .bold))
+            .scaledFont(size: 10, weight: .bold)
             .tracking(1.2)
             .foregroundStyle(active ? inkColor : mutedText)
             .padding(.horizontal, 10)
@@ -2108,14 +2121,14 @@ private struct CompleteCard: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("\u{201C}")
-                    .font(.system(size: 96, weight: .regular, design: .serif))
+                    .scaledFont(size: 96, weight: .regular, design: .serif)
                     .foregroundStyle(tealAccent.opacity(0.55))
                     .frame(height: 44, alignment: .top)
                     .padding(.top, 10)
                     .padding(.leading, -4)
 
                 Text("\(quoteBody)\u{201D}")
-                    .font(.system(size: 24, weight: .regular, design: .serif))
+                    .scaledFont(size: 24, weight: .regular, design: .serif)
                     .italic()
                     .foregroundStyle(inkColor.opacity(0.92))
                     .lineSpacing(6)
@@ -2127,7 +2140,7 @@ private struct CompleteCard: View {
                         .fill(tealAccent.opacity(0.55))
                         .frame(width: 18, height: 1)
                     Text(attribution)
-                        .font(.system(size: 12, design: .serif))
+                        .scaledFont(size: 12, design: .serif)
                         .italic()
                         .foregroundStyle(mutedText)
                 }
@@ -2146,17 +2159,18 @@ private struct CompleteCard: View {
                         HStack(spacing: 10) {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text("READ THE ORIGINAL")
-                                    .font(.system(size: 9, weight: .bold))
+                                    .scaledFont(size: 9, weight: .bold)
                                     .tracking(1.6)
                                     .foregroundStyle(tealAccent)
                                 Text("Open the full paper")
-                                    .font(.system(size: 14, weight: .semibold, design: .serif))
+                                    .scaledFont(size: 14, weight: .semibold, design: .serif)
                                     .foregroundStyle(inkColor)
                             }
                             Spacer(minLength: 0)
                             Image(systemName: "arrow.up.right")
-                                .font(.system(size: 12, weight: .bold))
+                                .scaledFont(size: 12, weight: .bold)
                                 .foregroundStyle(tealAccent)
+                                .accessibilityHidden(true)
                         }
                         .padding(.horizontal, 16)
                         .padding(.vertical, 14)
@@ -2170,6 +2184,10 @@ private struct CompleteCard: View {
                         )
                     }
                     .buttonStyle(.plain)
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("Read the original")
+                    .accessibilityHint("Opens the full paper in a browser")
+                    .accessibilityAddTraits(.isButton)
                     .padding(.bottom, 10)
                     .sheet(item: $browser) { link in
                         SafariView(url: link.url).ignoresSafeArea()
@@ -2184,8 +2202,9 @@ private struct CompleteCard: View {
                             Text("Done")
                                 .tracking(1.2)
                             Image(systemName: "checkmark")
+                                .accessibilityHidden(true)
                         }
-                        .font(.system(size: 13, weight: .bold))
+                        .scaledFont(size: 13, weight: .bold)
                         .textCase(.uppercase)
                         .foregroundStyle(paperBg)
                         .frame(maxWidth: .infinity)
@@ -2193,6 +2212,8 @@ private struct CompleteCard: View {
                         .background(RoundedRectangle(cornerRadius: 14).fill(inkColor))
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Done")
+                    .accessibilityHint("Closes the lesson")
 
                     if let pid = content.paperId {
                         CompleteCardBookmarkChip(paperId: pid)
@@ -2225,7 +2246,7 @@ private struct CompleteCardBookmarkChip: View {
             UIImpactFeedbackGenerator(style: .soft).impactOccurred()
         } label: {
             Image(systemName: savedStore.isSaved(paperId) ? "bookmark.fill" : "bookmark")
-                .font(.system(size: 16, weight: .semibold))
+                .scaledFont(size: 16, weight: .semibold)
                 .foregroundStyle(savedStore.isSaved(paperId) ? tealAccent : inkColor)
                 .frame(width: 46, height: 46)
                 .background(
@@ -2286,7 +2307,7 @@ private struct TrainingCurveView: View {
                         ForEach(Array(spec.series.enumerated()), id: \.offset) { idx, series in
                             curvePath(series: series, plot: plot)
                                 .opacity(animatedIn ? 1 : 0)
-                                .animation(.easeOut(duration: 0.7).delay(Double(idx) * 0.15), value: animatedIn)
+                                .motionAware(.easeOut(duration: 0.7).delay(Double(idx) * 0.15), value: animatedIn)
                         }
                         ForEach(Array(spec.series.enumerated()), id: \.offset) { sIdx, series in
                             ForEach(Array(series.points.enumerated()), id: \.offset) { pIdx, point in
@@ -2333,7 +2354,7 @@ private struct TrainingCurveView: View {
                     LegendStroke(color: tokenColor(series.color), dashed: series.dashed)
                         .frame(width: 18, height: 2)
                     Text(series.label)
-                        .font(.system(size: 11, weight: .semibold))
+                        .scaledFont(size: 11, weight: .semibold)
                         .foregroundStyle(dlInk2)
                 }
             }
@@ -2356,7 +2377,7 @@ private struct TrainingCurveView: View {
                 .stroke(dlLine, style: StrokeStyle(lineWidth: 1, dash: [3, 4]))
 
                 Text(spec.yTickLabels[i])
-                    .font(.system(size: 9, design: .serif))
+                    .scaledFont(size: 9, design: .serif)
                     .foregroundStyle(dlInk3)
                     .position(x: plot.minX - 18, y: y)
             }
@@ -2371,19 +2392,19 @@ private struct TrainingCurveView: View {
                 .stroke(dlInk3.opacity(0.6), lineWidth: 1)
 
                 Text(spec.xTickLabels[i])
-                    .font(.system(size: 9, design: .serif))
+                    .scaledFont(size: 9, design: .serif)
                     .foregroundStyle(dlInk3)
                     .position(x: x, y: plot.maxY + 14)
             }
             // axis labels
             Text(spec.yAxisLabel)
-                .font(.system(size: 9, weight: .medium, design: .serif))
+                .scaledFont(size: 9, weight: .medium, design: .serif)
                 .foregroundStyle(dlInk3)
                 .rotationEffect(.degrees(-90))
                 .position(x: plot.minX - 32, y: plot.midY)
 
             Text(spec.xAxisLabel)
-                .font(.system(size: 9, weight: .medium, design: .serif))
+                .scaledFont(size: 9, weight: .medium, design: .serif)
                 .foregroundStyle(dlInk3)
                 .position(x: plot.midX, y: plot.maxY + 24)
         }
@@ -2442,7 +2463,7 @@ private struct TrainingCurveView: View {
 
             if let milestone = point.milestone, !milestone.isEmpty {
                 Text(milestone)
-                    .font(.system(size: 9, weight: .bold))
+                    .scaledFont(size: 9, weight: .bold)
                     .foregroundStyle(color)
                     .padding(.horizontal, 6).padding(.vertical, 2)
                     .background(Capsule().fill(Color.white).overlay(Capsule().stroke(color.opacity(0.4), lineWidth: 1)))
@@ -2470,7 +2491,7 @@ private struct TrainingCurveView: View {
             return spec.defaultInsight
         }()
         return Text(body)
-            .font(.system(size: 12, design: .serif))
+            .scaledFont(size: 12, design: .serif)
             .foregroundStyle(dlInk3)
             .lineSpacing(3)
             .fixedSize(horizontal: false, vertical: true)
@@ -2563,7 +2584,7 @@ private struct FlowRichView: View {
                         ForEach(Array(spec.edges.enumerated()), id: \.offset) { idx, edge in
                             edgePath(edge: edge, frames: frames)
                                 .opacity(animatedIn ? 1 : 0)
-                                .animation(.easeOut(duration: 0.6).delay(0.1 + Double(idx) * 0.06), value: animatedIn)
+                                .motionAware(.easeOut(duration: 0.6).delay(0.1 + Double(idx) * 0.06), value: animatedIn)
                         }
                         ForEach(Array(spec.nodes.enumerated()), id: \.offset) { _, node in
                             if let frame = frames[node.id] {
@@ -2572,7 +2593,7 @@ private struct FlowRichView: View {
                                     .position(x: frame.midX, y: frame.midY)
                                     .opacity(animatedIn ? 1 : 0)
                                     .scaleEffect(animatedIn ? 1 : 0.92)
-                                    .animation(.spring(response: 0.55, dampingFraction: 0.78).delay(Double(node.column) * 0.08), value: animatedIn)
+                                    .motionAware(.spring(response: 0.55, dampingFraction: 0.78).delay(Double(node.column) * 0.08), value: animatedIn)
                             }
                         }
                     }
@@ -2638,7 +2659,7 @@ private struct FlowRichView: View {
     private func legendItem(color: Color, dashed: Bool, label: String) -> some View {
         HStack(spacing: 6) {
             LegendStroke(color: color, dashed: dashed).frame(width: 18, height: 2)
-            Text(label).font(.system(size: 11, weight: .semibold)).foregroundStyle(dlInk2)
+            Text(label).scaledFont(size: 11, weight: .semibold).foregroundStyle(dlInk2)
         }
     }
 
@@ -2673,7 +2694,7 @@ private struct FlowRichView: View {
 
                 if let label = edge.label {
                     Text(label)
-                        .font(.system(size: 9, weight: .medium, design: .monospaced))
+                        .scaledFont(size: 9, weight: .medium, design: .monospaced)
                         .foregroundStyle(color)
                         .padding(.horizontal, 5).padding(.vertical, 1)
                         .background(Capsule().fill(Color.white).overlay(Capsule().stroke(color.opacity(0.25), lineWidth: 0.6)))
@@ -2771,13 +2792,13 @@ private struct FlowRichView: View {
 
                 VStack(spacing: 2) {
                     Text(node.label)
-                        .font(.system(size: 12, weight: .semibold, design: .serif))
+                        .scaledFont(size: 12, weight: .semibold, design: .serif)
                         .foregroundStyle(role.text)
                         .lineLimit(1)
                         .minimumScaleFactor(0.7)
                     if let sub = node.sublabel {
                         Text(sub)
-                            .font(.system(size: 9, design: .monospaced))
+                            .scaledFont(size: 9, design: .monospaced)
                             .foregroundStyle(role.text.opacity(0.65))
                             .lineLimit(1)
                             .minimumScaleFactor(0.7)
@@ -2824,12 +2845,12 @@ private struct FlowRichView: View {
         return VStack(alignment: .leading, spacing: 6) {
             if let title {
                 Text(title.uppercased())
-                    .font(.system(size: 9, weight: .bold, design: .serif))
+                    .scaledFont(size: 9, weight: .bold, design: .serif)
                     .tracking(1.2)
                     .foregroundStyle(dlInk2.opacity(0.7))
             }
             Text(body)
-                .font(.system(size: 12, design: .serif))
+                .scaledFont(size: 12, design: .serif)
                 .foregroundStyle(dlInk3)
                 .lineSpacing(3)
                 .fixedSize(horizontal: false, vertical: true)
@@ -2867,7 +2888,7 @@ private struct EquationRichView: View {
 
                 VStack(spacing: 14) {
                     Text((spec.promptText ?? "TAP ANY TERM").uppercased())
-                        .font(.system(size: 9, weight: .bold, design: .serif))
+                        .scaledFont(size: 9, weight: .bold, design: .serif)
                         .tracking(1.4)
                         .foregroundStyle(dlInk3.opacity(0.55))
 
@@ -2902,17 +2923,17 @@ private struct EquationRichView: View {
         let color = tokenColor(term.color)
         let glyph = HStack(alignment: .firstTextBaseline, spacing: 0) {
             Text(term.display)
-                .font(.system(size: 30, design: .serif))
+                .scaledFont(size: 30, design: .serif)
                 .foregroundStyle(color)
             if let sup = term.sup {
                 Text(sup)
-                    .font(.system(size: 12, design: .serif))
+                    .scaledFont(size: 12, design: .serif)
                     .foregroundStyle(color)
                     .baselineOffset(14)
             }
             if let sub = term.sub {
                 Text(sub)
-                    .font(.system(size: 12, design: .serif))
+                    .scaledFont(size: 12, design: .serif)
                     .foregroundStyle(color)
                     .baselineOffset(-6)
             }
@@ -2948,17 +2969,17 @@ private struct EquationRichView: View {
         return VStack(alignment: .leading, spacing: 6) {
             if let term = active, let title = term.panelTitle {
                 Text(title.uppercased())
-                    .font(.system(size: 10, weight: .bold, design: .serif))
+                    .scaledFont(size: 10, weight: .bold, design: .serif)
                     .tracking(1.2)
                     .foregroundStyle(color)
                 Text(term.panelBody ?? "")
-                    .font(.system(size: 12.5, design: .serif))
+                    .scaledFont(size: 12.5, design: .serif)
                     .foregroundStyle(dlInk3)
                     .lineSpacing(3)
                     .fixedSize(horizontal: false, vertical: true)
             } else {
                 Text(spec.defaultInsight)
-                    .font(.system(size: 12, design: .serif))
+                    .scaledFont(size: 12, design: .serif)
                     .italic()
                     .foregroundStyle(dlInk3.opacity(0.7))
                     .lineSpacing(3)
@@ -2972,7 +2993,7 @@ private struct EquationRichView: View {
                 .fill(active != nil ? color.opacity(0.06) : dlPaper2)
                 .overlay(RoundedRectangle(cornerRadius: 12).stroke(color.opacity(active != nil ? 0.5 : 0.4), lineWidth: 1))
         )
-        .animation(.easeInOut(duration: 0.18), value: selection)
+        .motionAware(.easeInOut(duration: 0.18), value: selection)
     }
 
     private func tokenColor(_ token: DLEquationTermColor) -> Color {

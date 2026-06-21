@@ -49,20 +49,20 @@ struct ScratchpadGlyph: View {
 
                 // Boxed answer at the foot.
                 Text("= 1134")
-                    .font(.system(size: 13, weight: .bold, design: .monospaced))
+                    .scaledFont(size: 13, weight: .bold, design: .monospaced)
                     .foregroundStyle(tealAccent)
                     .opacity(t > 0.8 ? 1 : 0.15)
                     .position(x: w / 2, y: y0 + padH * 0.82)
 
                 // Pencil.
                 Image(systemName: "pencil")
-                    .font(.system(size: 22, weight: .semibold))
+                    .scaledFont(size: 22, weight: .semibold)
                     .foregroundStyle(amberAccent)
                     .rotationEffect(.degrees(45))
                     .position(x: x0 + padW * 0.82, y: y0 + padH * (0.26 + t * 0.4))
 
                 Text("ROOM TO COMPUTE")
-                    .font(.system(size: 9, weight: .bold)).tracking(1.8)
+                    .scaledFont(size: 9, weight: .bold).tracking(1.8)
                     .foregroundStyle(tealAccent)
                     .position(x: w / 2, y: y0 + padH + 22)
             }
@@ -85,13 +85,13 @@ struct DirectVsScratchpadArt: View {
             row(tag: "ONE SHOT", tint: spRose, correct: false) {
                 HStack(spacing: 6) {
                     chip("456 + 678")
-                    Image(systemName: "arrow.right").font(.system(size: 9, weight: .bold))
+                    Image(systemName: "arrow.right").scaledFont(size: 9, weight: .bold)
                         .foregroundStyle(mutedText)
-                    Text("?").font(.system(size: 14, weight: .bold, design: .monospaced))
+                    Text("?").scaledFont(size: 14, weight: .bold, design: .monospaced)
                         .foregroundStyle(mutedText)
                         .frame(width: 30, height: 28)
                         .background(RoundedRectangle(cornerRadius: 6).fill(mutedText.opacity(0.1)))
-                    Image(systemName: "arrow.right").font(.system(size: 9, weight: .bold))
+                    Image(systemName: "arrow.right").scaledFont(size: 9, weight: .bold)
                         .foregroundStyle(mutedText)
                     answer("1024", correct: false)
                 }
@@ -113,7 +113,7 @@ struct DirectVsScratchpadArt: View {
     private func row<Content: View>(tag: String, tint: Color, correct: Bool,
                                     @ViewBuilder _ content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text(tag).font(.system(size: 9, weight: .bold)).tracking(1.3).foregroundStyle(tint)
+            Text(tag).scaledFont(size: 9, weight: .bold).tracking(1.3).foregroundStyle(tint)
             content()
         }
         .padding(11)
@@ -122,20 +122,20 @@ struct DirectVsScratchpadArt: View {
             .overlay(RoundedRectangle(cornerRadius: 10).stroke(tint.opacity(0.25), lineWidth: 1)))
     }
     private func chip(_ t: String) -> some View {
-        Text(t).font(.system(size: 12, weight: .semibold, design: .monospaced))
+        Text(t).scaledFont(size: 12, weight: .semibold, design: .monospaced)
             .foregroundStyle(inkColor.opacity(0.8))
             .padding(.horizontal, 8).padding(.vertical, 6)
             .background(RoundedRectangle(cornerRadius: 6).fill(Color.white)
                 .overlay(RoundedRectangle(cornerRadius: 6).stroke(borderColor, lineWidth: 1)))
     }
     private func padLine(_ t: String) -> some View {
-        Text(t).font(.system(size: 10.5, design: .monospaced)).foregroundStyle(tealAccent)
+        Text(t).scaledFont(size: 10.5, design: .monospaced).foregroundStyle(tealAccent)
     }
     private func answer(_ t: String, correct: Bool) -> some View {
         HStack(spacing: 3) {
-            Text(t).font(.system(size: 12, weight: .bold, design: .monospaced)).foregroundStyle(.white)
+            Text(t).scaledFont(size: 12, weight: .bold, design: .monospaced).foregroundStyle(.white)
             Image(systemName: correct ? "checkmark" : "xmark")
-                .font(.system(size: 8, weight: .black)).foregroundStyle(.white)
+                .scaledFont(size: 8, weight: .black).foregroundStyle(.white)
         }
         .padding(.horizontal, 8).padding(.vertical, 6)
         .background(RoundedRectangle(cornerRadius: 6).fill(correct ? tealAccent : spRose))
@@ -151,7 +151,7 @@ struct ProgramTraceArt: View {
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             VStack(alignment: .leading, spacing: 3) {
-                Text("PROGRAM").font(.system(size: 9, weight: .bold)).tracking(1.2)
+                Text("PROGRAM").scaledFont(size: 9, weight: .bold).tracking(1.2)
                     .foregroundStyle(mutedText)
                 code("a = 2")
                 code("b = a + 3")
@@ -160,7 +160,7 @@ struct ProgramTraceArt: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             VStack(alignment: .leading, spacing: 3) {
-                Text("SCRATCHPAD").font(.system(size: 9, weight: .bold)).tracking(1.2)
+                Text("SCRATCHPAD").scaledFont(size: 9, weight: .bold).tracking(1.2)
                     .foregroundStyle(tealAccent)
                 trace("a = 2")
                 trace("b = 5")
@@ -174,10 +174,10 @@ struct ProgramTraceArt: View {
             .overlay(RoundedRectangle(cornerRadius: 12).stroke(borderColor, lineWidth: 1)))
     }
     private func code(_ t: String) -> some View {
-        Text(t).font(.system(size: 12, design: .monospaced)).foregroundStyle(inkColor.opacity(0.85))
+        Text(t).scaledFont(size: 12, design: .monospaced).foregroundStyle(inkColor.opacity(0.85))
     }
     private func trace(_ t: String) -> some View {
-        Text(t).font(.system(size: 12, design: .monospaced)).foregroundStyle(tealAccent)
+        Text(t).scaledFont(size: 12, design: .monospaced).foregroundStyle(tealAccent)
     }
 }
 
@@ -215,10 +215,10 @@ struct ColumnCarryStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("ADD IT ON THE PAD")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Asked for 456 + 678 in one shot, the model guesses \(blurt), and it is wrong. Give it a scratchpad and it adds one column at a time, carrying as it goes. Tap to work each column, right to left.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -230,7 +230,7 @@ struct ColumnCarryStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.32), value: step)
+        .motionAware(.snappy(duration: 0.32), value: step)
     }
 
     // Columns are drawn right-aligned: thousands, hundreds, tens, units.
@@ -266,7 +266,7 @@ struct ColumnCarryStudio: View {
 
     private func cell(_ s: String, muted: Bool = false) -> some View {
         Text(s)
-            .font(.system(size: 18, weight: .semibold, design: .monospaced))
+            .scaledFont(size: 18, weight: .semibold, design: .monospaced)
             .foregroundStyle(muted ? mutedText : inkColor.opacity(0.85))
             .frame(width: 38, height: 30)
     }
@@ -276,10 +276,10 @@ struct ColumnCarryStudio: View {
         Group {
             if colIdx >= 1 && colIdx <= 3 && carries[colIdx] > 0 && step > (colIdx - 1) {
                 Text("\(carries[colIdx])")
-                    .font(.system(size: 11, weight: .bold, design: .monospaced))
+                    .scaledFont(size: 11, weight: .bold, design: .monospaced)
                     .foregroundStyle(amberAccent)
             } else {
-                Text(" ").font(.system(size: 11, design: .monospaced))
+                Text(" ").scaledFont(size: 11, design: .monospaced)
             }
         }
         .frame(width: 38, height: 16)
@@ -288,7 +288,7 @@ struct ColumnCarryStudio: View {
     private func resultCell(_ colIdx: Int) -> some View {
         let active = colIdx == step && step < cols.count
         return Text(digits[colIdx].map(String.init) ?? "")
-            .font(.system(size: 18, weight: .bold, design: .monospaced))
+            .scaledFont(size: 18, weight: .bold, design: .monospaced)
             .foregroundStyle(tealAccent)
             .frame(width: 38, height: 32)
             .background(RoundedRectangle(cornerRadius: 6)
@@ -311,7 +311,7 @@ struct ColumnCarryStudio: View {
         }
     }
     private func noteText(_ t: String) -> some View {
-        Text(t).font(.system(size: 13, weight: .semibold, design: .monospaced))
+        Text(t).scaledFont(size: 13, weight: .semibold, design: .monospaced)
             .foregroundStyle(inkColor.opacity(0.8))
             .fixedSize(horizontal: false, vertical: true)
             .padding(11)
@@ -327,7 +327,7 @@ struct ColumnCarryStudio: View {
             } label: {
                 Text(step == 0 ? "Work the units column"
                      : step < cols.count ? "Next column" : "Drop the final carry")
-                    .font(.system(size: 14, weight: .semibold)).foregroundStyle(.white)
+                    .scaledFont(size: 14, weight: .semibold).foregroundStyle(.white)
                     .frame(maxWidth: .infinity).padding(.vertical, 12)
                     .background(RoundedRectangle(cornerRadius: 11).fill(tealAccent))
             }
@@ -341,7 +341,7 @@ struct ColumnCarryStudio: View {
             Text(done
                  ? "No single step was hard. The scratchpad just gave the model somewhere to put each partial result and carry, so nothing had to be done all at once."
                  : "Compute each column and watch the carries land on the pad.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -406,10 +406,10 @@ struct ProgramTraceStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("RUN THE CODE ON THE PAD")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Scratchpads are not just for sums. Ask for this program's output in one shot and the model guesses. Step through it instead, writing each variable's value down, and it tracks the state exactly.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -421,8 +421,8 @@ struct ProgramTraceStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.3), value: executed)
-        .animation(.snappy(duration: 0.3), value: showedBlurt)
+        .motionAware(.snappy(duration: 0.3), value: executed)
+        .motionAware(.snappy(duration: 0.3), value: showedBlurt)
     }
 
     private var blurtRow: some View {
@@ -430,17 +430,17 @@ struct ProgramTraceStudio: View {
             UIImpactFeedbackGenerator(style: .rigid).impactOccurred(); showedBlurt = true
         } label: {
             HStack(spacing: 10) {
-                Text("ONE-SHOT GUESS").font(.system(size: 9, weight: .bold)).tracking(1.3)
+                Text("ONE-SHOT GUESS").scaledFont(size: 9, weight: .bold).tracking(1.3)
                     .foregroundStyle(mutedText)
                 Spacer(minLength: 0)
                 if showedBlurt {
                     HStack(spacing: 4) {
-                        Text(blurt).font(.system(size: 15, weight: .bold, design: .monospaced))
+                        Text(blurt).scaledFont(size: 15, weight: .bold, design: .monospaced)
                             .foregroundStyle(inkColor)
                         Image(systemName: "xmark.circle.fill").foregroundStyle(spRose)
                     }
                 } else {
-                    Text("tap to guess").font(.system(size: 12, design: .serif)).italic()
+                    Text("tap to guess").scaledFont(size: 12, design: .serif).italic()
                         .foregroundStyle(tealAccent)
                 }
             }
@@ -455,11 +455,11 @@ struct ProgramTraceStudio: View {
     private var codeAndState: some View {
         HStack(alignment: .top, spacing: 12) {
             VStack(alignment: .leading, spacing: 6) {
-                Text("PROGRAM").font(.system(size: 9, weight: .bold)).tracking(1.2)
+                Text("PROGRAM").scaledFont(size: 9, weight: .bold).tracking(1.2)
                     .foregroundStyle(mutedText)
                 ForEach(Array(lines.enumerated()), id: \.offset) { i, l in
                     Text(l.code)
-                        .font(.system(size: 13, design: .monospaced))
+                        .scaledFont(size: 13, design: .monospaced)
                         .foregroundStyle(i < executed ? inkColor.opacity(0.85)
                                          : (i == executed ? inkColor : mutedText.opacity(0.4)))
                         .padding(.horizontal, 8).padding(.vertical, 4)
@@ -471,16 +471,16 @@ struct ProgramTraceStudio: View {
             .frame(maxWidth: .infinity, alignment: .leading)
 
             VStack(alignment: .leading, spacing: 6) {
-                Text("SCRATCHPAD").font(.system(size: 9, weight: .bold)).tracking(1.2)
+                Text("SCRATCHPAD").scaledFont(size: 9, weight: .bold).tracking(1.2)
                     .foregroundStyle(tealAccent)
                 stateRow("a", value: executed == 0 ? nil : lines[executed - 1].a)
                 stateRow("b", value: executed == 0 ? nil : lines[executed - 1].b)
                 let out = executed > 0 ? lines[executed - 1].out : nil
                 HStack(spacing: 6) {
                     Image(systemName: out != nil ? "checkmark.circle.fill" : "circle")
-                        .font(.system(size: 12)).foregroundStyle(out != nil ? tealAccent : mutedText.opacity(0.4))
+                        .scaledFont(size: 12).foregroundStyle(out != nil ? tealAccent : mutedText.opacity(0.4))
                     Text(out != nil ? "out: \(out!)" : "out: \u{2014}")
-                        .font(.system(size: 13, weight: .bold, design: .monospaced))
+                        .scaledFont(size: 13, weight: .bold, design: .monospaced)
                         .foregroundStyle(out != nil ? inkColor : mutedText.opacity(0.5))
                 }
             }
@@ -493,9 +493,9 @@ struct ProgramTraceStudio: View {
 
     private func stateRow(_ name: String, value: Int?) -> some View {
         HStack(spacing: 6) {
-            Text("\(name) =").font(.system(size: 13, design: .monospaced)).foregroundStyle(mutedText)
+            Text("\(name) =").scaledFont(size: 13, design: .monospaced).foregroundStyle(mutedText)
             Text(value.map(String.init) ?? "\u{2014}")
-                .font(.system(size: 13, weight: .bold, design: .monospaced))
+                .scaledFont(size: 13, weight: .bold, design: .monospaced)
                 .foregroundStyle(value == nil ? mutedText.opacity(0.5) : tealAccent)
                 .contentTransition(.numericText())
         }
@@ -510,7 +510,7 @@ struct ProgramTraceStudio: View {
                 if done { progress.markExplored(cardId); UINotificationFeedbackGenerator().notificationOccurred(.success) }
             } label: {
                 Text(executed == 0 ? "Run first line" : "Run next line")
-                    .font(.system(size: 14, weight: .semibold)).foregroundStyle(.white)
+                    .scaledFont(size: 14, weight: .semibold).foregroundStyle(.white)
                     .frame(maxWidth: .infinity).padding(.vertical, 12)
                     .background(RoundedRectangle(cornerRadius: 11).fill(tealAccent))
             }
@@ -524,7 +524,7 @@ struct ProgramTraceStudio: View {
             Text(done
                  ? "By writing a and b after every line, the model never had to hold the whole computation in its head. The pad is its working memory."
                  : "Run each line and watch the scratchpad track the variables.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -566,10 +566,10 @@ struct LengthLadderStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("MAKE THE PROBLEM LONGER")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Here is the result that mattered. Drag the input length up the ladder. Answering in one shot falls apart as the numbers grow, but the scratchpad keeps climbing, because each step stays just as small.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -581,7 +581,7 @@ struct LengthLadderStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.3), value: idx)
+        .motionAware(.snappy(duration: 0.3), value: idx)
     }
 
     private var ladder: some View {
@@ -589,7 +589,7 @@ struct LengthLadderStudio: View {
             ForEach(Array(spRungs.enumerated().reversed()), id: \.offset) { i, r in
                 HStack(spacing: 10) {
                     Text(r.label)
-                        .font(.system(size: 11, weight: i == idx ? .bold : .regular, design: .monospaced))
+                        .scaledFont(size: 11, weight: i == idx ? .bold : .regular, design: .monospaced)
                         .foregroundStyle(i == idx ? inkColor : mutedText)
                         .frame(width: 64, alignment: .leading)
                     climber("one shot", at: r.direct, here: i == idx, tint: spRose)
@@ -613,7 +613,7 @@ struct LengthLadderStudio: View {
                     .frame(width: max(8, g.size.width * CGFloat(acc) / 100), height: 10)
                 if here {
                     Text("\(acc)%")
-                        .font(.system(size: 9, weight: .bold, design: .monospaced))
+                        .scaledFont(size: 9, weight: .bold, design: .monospaced)
                         .foregroundStyle(tint)
                         .padding(.leading, max(8, g.size.width * CGFloat(acc) / 100) + 4)
                 }
@@ -638,12 +638,12 @@ struct LengthLadderStudio: View {
     private var readout: some View {
         HStack(alignment: .top, spacing: 10) {
             Text(rung.digits)
-                .font(.system(size: 11, weight: .bold, design: .monospaced))
+                .scaledFont(size: 11, weight: .bold, design: .monospaced)
                 .foregroundStyle(tealAccent)
                 .padding(.horizontal, 7).padding(.vertical, 3)
                 .background(Capsule().fill(tealAccent.opacity(0.12)))
             Text("At \(rung.label.lowercased()), one shot scores \(rung.direct)% while the scratchpad holds \(rung.pad)%.")
-                .font(.system(size: 13, design: .serif))
+                .scaledFont(size: 13, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.78))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -659,7 +659,7 @@ struct LengthLadderStudio: View {
             Text(reachedTop
                  ? "This is length generalisation: the scratchpad turns one giant problem into many tiny identical steps, so it barely cares how long the input gets."
                  : "Drag to the longest input to see the gap open.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }

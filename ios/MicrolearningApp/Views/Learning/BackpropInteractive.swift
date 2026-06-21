@@ -133,7 +133,7 @@ struct StackedCutsArt: View {
                     .fill(tealAccent)
                     .frame(width: 34, height: 34)
                     .overlay(Image(systemName: "plus")
-                        .font(.system(size: 13, weight: .black))
+                        .scaledFont(size: 13, weight: .black)
                         .foregroundStyle(.white))
                     .position(x: w * 0.5, y: h * 0.5)
                 // connector to the result
@@ -148,11 +148,11 @@ struct StackedCutsArt: View {
                     .position(x: w * 0.85, y: h * 0.5)
 
                 Text("straight cuts")
-                    .font(.system(size: 9, weight: .bold)).tracking(1)
+                    .scaledFont(size: 9, weight: .bold).tracking(1)
                     .foregroundStyle(mutedText)
                     .position(x: w * 0.16, y: h * 0.96)
                 Text("a real shape")
-                    .font(.system(size: 9, weight: .bold)).tracking(1)
+                    .scaledFont(size: 9, weight: .bold).tracking(1)
                     .foregroundStyle(mutedText)
                     .position(x: w * 0.85, y: h * 0.96)
             }
@@ -247,10 +247,10 @@ struct BackpropBlameFlow: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("WATCH THE BLAME TRAVEL")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("This little network guesses, then learns. Each round: the signal runs forward to a guess, the gap flows back, and every wire takes its share of the fix.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -301,16 +301,16 @@ struct BackpropBlameFlow: View {
 
                 // output value
                 Text(String(format: "%.2f", y))
-                    .font(.system(size: 12, weight: .bold, design: .monospaced))
+                    .scaledFont(size: 12, weight: .bold, design: .monospaced)
                     .foregroundStyle(.white)
                     .position(outP)
 
                 // labels
-                Text("inputs").font(.system(size: 9, weight: .bold)).tracking(1)
+                Text("inputs").scaledFont(size: 9, weight: .bold).tracking(1)
                     .foregroundStyle(mutedText).position(x: colX[0], y: h0 * 0.95)
-                Text("hidden").font(.system(size: 9, weight: .bold)).tracking(1)
+                Text("hidden").scaledFont(size: 9, weight: .bold).tracking(1)
                     .foregroundStyle(mutedText).position(x: colX[1], y: h0 * 0.95)
-                Text("guess").font(.system(size: 9, weight: .bold)).tracking(1)
+                Text("guess").scaledFont(size: 9, weight: .bold).tracking(1)
                     .foregroundStyle(mutedText).position(x: colX[2], y: h0 * 0.95)
             }
         }
@@ -332,7 +332,7 @@ struct BackpropBlameFlow: View {
         }
         return Path { p in p.move(to: a); p.addLine(to: b) }
             .stroke(lit, lineWidth: width)
-            .animation(.easeInOut(duration: 0.4), value: phase)
+            .motionAware(.easeInOut(duration: 0.4), value: phase)
     }
 
     private func node(_ c: CGPoint, r: CGFloat, fill: Color, ring: Color = .clear) -> some View {
@@ -341,7 +341,7 @@ struct BackpropBlameFlow: View {
             .frame(width: r * 2, height: r * 2)
             .overlay(Circle().stroke(ring, lineWidth: 3).frame(width: r * 2 + 6, height: r * 2 + 6))
             .position(c)
-            .animation(.easeInOut(duration: 0.3), value: phase)
+            .motionAware(.easeInOut(duration: 0.3), value: phase)
     }
 
     // MARK: gap bar
@@ -349,7 +349,7 @@ struct BackpropBlameFlow: View {
     private var gapBar: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text("GAP TO THE RIGHT ANSWER")
-                .font(.system(size: 10, weight: .bold)).tracking(1.6)
+                .scaledFont(size: 10, weight: .bold).tracking(1.6)
                 .foregroundStyle(mutedText)
             GeometryReader { geo in
                 let frac = min(1, abs(error) / startGap)
@@ -361,7 +361,7 @@ struct BackpropBlameFlow: View {
                 }
             }
             .frame(height: 22)
-            .animation(.snappy(duration: 0.4), value: error)
+            .motionAware(.snappy(duration: 0.4), value: error)
         }
     }
 
@@ -371,7 +371,7 @@ struct BackpropBlameFlow: View {
             Text(solved
                  ? "The guess matches the answer. The network learned it."
                  : "Round \(round) · guess \(String(format: "%.2f", y)), wants \(String(format: "%.2f", target))")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
         }
     }
@@ -381,7 +381,7 @@ struct BackpropBlameFlow: View {
     private var runButton: some View {
         Button { runRound() } label: {
             Text(solved ? "It learned the answer ✓" : "Run a learning round")
-                .font(.system(size: 14, weight: .semibold))
+                .scaledFont(size: 14, weight: .semibold)
                 .foregroundStyle(solved ? tealAccent : .white)
                 .frame(maxWidth: .infinity, minHeight: 44)
                 .background(RoundedRectangle(cornerRadius: 12)
@@ -446,10 +446,10 @@ struct GradientDescentValley: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("FIND THE BOTTOM")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("The error is a valley. Each weight rolls downhill, one step at a time. Set how big a step to take, then push it along.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -481,7 +481,7 @@ struct GradientDescentValley: View {
                     .frame(width: 16, height: 16)
                     .position(x: screenX(0, w), y: screenY(0, h))
                 Text("the answer")
-                    .font(.system(size: 9, weight: .bold)).tracking(1)
+                    .scaledFont(size: 9, weight: .bold).tracking(1)
                     .foregroundStyle(tealAccent)
                     .position(x: screenX(0, w), y: screenY(0, h) + 24)
 
@@ -501,7 +501,7 @@ struct GradientDescentValley: View {
                     .shadow(color: inkColor.opacity(0.18), radius: 3, y: 1)
                     .position(x: screenX(clampX(p), w),
                               y: screenY(curve(clampX(p)), h) - 12)
-                    .animation(.snappy(duration: 0.4), value: p)
+                    .motionAware(.snappy(duration: 0.4), value: p)
             }
         }
         .frame(height: 200)
@@ -538,11 +538,11 @@ struct GradientDescentValley: View {
         VStack(alignment: .leading, spacing: 7) {
             HStack {
                 Text("STEP SIZE")
-                    .font(.system(size: 10, weight: .bold)).tracking(1.6)
+                    .scaledFont(size: 10, weight: .bold).tracking(1.6)
                     .foregroundStyle(mutedText)
                 Spacer()
                 Text(String(format: "%.2f", lr))
-                    .font(.system(size: 12, weight: .medium, design: .monospaced))
+                    .scaledFont(size: 12, weight: .medium, design: .monospaced)
                     .foregroundStyle(rateTint)
             }
             WeightSlider(value: $rate, tint: rateTint)
@@ -559,7 +559,7 @@ struct GradientDescentValley: View {
         HStack(spacing: 8) {
             Circle().fill(statusColor).frame(width: 9, height: 9)
             Text(statusText)
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -583,7 +583,7 @@ struct GradientDescentValley: View {
         HStack(spacing: 10) {
             Button { reset() } label: {
                 Text("Reset")
-                    .font(.system(size: 14, weight: .semibold))
+                    .scaledFont(size: 14, weight: .semibold)
                     .foregroundStyle(inkColor.opacity(0.7))
                     .frame(maxWidth: 96, minHeight: 44)
                     .background(RoundedRectangle(cornerRadius: 12)
@@ -593,7 +593,7 @@ struct GradientDescentValley: View {
 
             Button { step() } label: {
                 Text(settled ? "It found the bottom ✓" : "Take a step downhill")
-                    .font(.system(size: 14, weight: .semibold))
+                    .scaledFont(size: 14, weight: .semibold)
                     .foregroundStyle(settled ? tealAccent : .white)
                     .frame(maxWidth: .infinity, minHeight: 44)
                     .background(RoundedRectangle(cornerRadius: 12)
@@ -672,10 +672,10 @@ struct XORBreakthrough: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("BRING DOWN THE WALL")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("The last lesson ended on a puzzle one neuron could never solve. This is the same four dots, given a hidden layer and trained by backprop. Push it, and watch the impossible split appear.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -750,7 +750,7 @@ struct XORBreakthrough: View {
     private var lossBar: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text("HOW WRONG THE NETWORK STILL IS")
-                .font(.system(size: 10, weight: .bold)).tracking(1.6)
+                .scaledFont(size: 10, weight: .bold).tracking(1.6)
                 .foregroundStyle(mutedText)
             GeometryReader { geo in
                 let frac = min(1, loss / 0.5)
@@ -762,7 +762,7 @@ struct XORBreakthrough: View {
                 }
             }
             .frame(height: 22)
-            .animation(.snappy(duration: 0.4), value: loss)
+            .motionAware(.snappy(duration: 0.4), value: loss)
         }
     }
 
@@ -774,7 +774,7 @@ struct XORBreakthrough: View {
                  : (taps == 0
                     ? "One flat guess for everything. No line, no curve, just wrong."
                     : "\(epochs) rounds of backprop · the regions are bending into shape"))
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -783,7 +783,7 @@ struct XORBreakthrough: View {
     private var trainButton: some View {
         Button { train() } label: {
             Text(solved ? "The wall is down ✓" : "Train it on the four dots")
-                .font(.system(size: 14, weight: .semibold))
+                .scaledFont(size: 14, weight: .semibold)
                 .foregroundStyle(solved ? tealAccent : .white)
                 .frame(maxWidth: .infinity, minHeight: 44)
                 .background(RoundedRectangle(cornerRadius: 12)
@@ -889,7 +889,7 @@ struct FeatureGridArt: View {
                     tile(tiles[i].0)
                         .frame(width: 64, height: 64)
                     Text(tiles[i].1)
-                        .font(.system(size: 10, weight: .semibold, design: .serif))
+                        .scaledFont(size: 10, weight: .semibold, design: .serif)
                         .foregroundStyle(mutedText)
                 }
             }
@@ -949,7 +949,7 @@ struct BackpropTimeline: View {
             HStack(spacing: 0) {
                 ForEach(milestones.indices, id: \.self) { i in
                     Text(milestones[i].year)
-                        .font(.system(size: 11, weight: .semibold, design: .serif))
+                        .scaledFont(size: 11, weight: .semibold, design: .serif)
                         .foregroundStyle(inkColor.opacity(0.85))
                         .frame(maxWidth: .infinity)
                 }
@@ -971,7 +971,7 @@ struct BackpropTimeline: View {
             HStack(spacing: 0) {
                 ForEach(milestones.indices, id: \.self) { i in
                     Text(milestones[i].label)
-                        .font(.system(size: 10, weight: .medium))
+                        .scaledFont(size: 10, weight: .medium)
                         .foregroundStyle(mutedText)
                         .multilineTextAlignment(.center)
                         .frame(maxWidth: .infinity)

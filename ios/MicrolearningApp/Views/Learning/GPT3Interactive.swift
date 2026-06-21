@@ -86,7 +86,7 @@ struct PromptNoteArt: View {
         VStack {
             VStack(alignment: .leading, spacing: 9) {
                 Text("THE PROMPT")
-                    .font(.system(size: 8, weight: .bold))
+                    .scaledFont(size: 8, weight: .bold)
                     .tracking(1.6)
                     .foregroundStyle(mutedText)
                 ForEach(examples.indices, id: \.self) { i in
@@ -110,13 +110,13 @@ struct PromptNoteArt: View {
     private func exampleRow(_ a: String, _ b: String, query: Bool) -> some View {
         HStack(spacing: 9) {
             Text(a)
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor)
             Image(systemName: "arrow.right")
-                .font(.system(size: 9, weight: .bold))
+                .scaledFont(size: 9, weight: .bold)
                 .foregroundStyle(mutedText)
             Text(b)
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(query ? tealAccent : inkColor)
                 .frame(minWidth: 22)
                 .padding(.horizontal, query ? 8 : 0)
@@ -149,10 +149,10 @@ struct TaskZooArt: View {
                         .frame(height: 38)
                         .overlay(
                             Image(systemName: "cpu")
-                                .font(.system(size: 14))
+                                .scaledFont(size: 14)
                                 .foregroundStyle(mutedText))
                     Text(tasks[i])
-                        .font(.system(size: 9, weight: .semibold, design: .serif))
+                        .scaledFont(size: 9, weight: .semibold, design: .serif)
                         .foregroundStyle(inkColor.opacity(0.72))
                     VStack(spacing: 2) {
                         ForEach(0..<3, id: \.self) { _ in
@@ -183,20 +183,20 @@ struct NextTokenArt: View {
         VStack(alignment: .leading, spacing: 11) {
             HStack(spacing: 6) {
                 Text(context)
-                    .font(.system(size: 14, weight: .medium, design: .serif))
+                    .scaledFont(size: 14, weight: .medium, design: .serif)
                     .foregroundStyle(inkColor)
                 RoundedRectangle(cornerRadius: 5, style: .continuous)
                     .fill(tealLight)
                     .frame(width: 26, height: 24)
                     .overlay(Text("?")
-                        .font(.system(size: 13, weight: .bold))
+                        .scaledFont(size: 13, weight: .bold)
                         .foregroundStyle(tealAccent))
             }
             .padding(.bottom, 1)
             ForEach(cands.indices, id: \.self) { i in
                 HStack(spacing: 8) {
                     Text(cands[i].0)
-                        .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                        .scaledFont(size: 12, weight: .semibold, design: .monospaced)
                         .foregroundStyle(i == 0 ? tealAccent : inkColor.opacity(0.6))
                         .frame(width: 46, alignment: .leading)
                     GeometryReader { g in
@@ -206,7 +206,7 @@ struct NextTokenArt: View {
                     }
                     .frame(height: 14)
                     Text("\(Int(cands[i].1 * 100))%")
-                        .font(.system(size: 10, weight: .bold, design: .monospaced))
+                        .scaledFont(size: 10, weight: .bold, design: .monospaced)
                         .foregroundStyle(mutedText)
                         .frame(width: 34, alignment: .trailing)
                 }
@@ -235,13 +235,13 @@ struct ScaleBarsArt: View {
                     let frac = sqrt(models[i].params / maxV)
                     VStack(spacing: 6) {
                         Text(models[i].label)
-                            .font(.system(size: 11, weight: .bold, design: .monospaced))
+                            .scaledFont(size: 11, weight: .bold, design: .monospaced)
                             .foregroundStyle(i == 2 ? tealAccent : mutedText)
                         RoundedRectangle(cornerRadius: 6)
                             .fill(i == 2 ? tealAccent : inkColor.opacity(0.22))
                             .frame(height: max(7, g.size.height * 0.66 * CGFloat(frac)))
                         Text(models[i].name)
-                            .font(.system(size: 11, weight: .semibold, design: .serif))
+                            .scaledFont(size: 11, weight: .semibold, design: .serif)
                             .foregroundStyle(inkColor.opacity(0.72))
                     }
                     .frame(maxWidth: .infinity, alignment: .bottom)
@@ -262,25 +262,25 @@ struct DecoderStackArt: View {
     var body: some View {
         VStack(spacing: 5) {
             Text("NEXT TOKEN")
-                .font(.system(size: 8, weight: .bold))
+                .scaledFont(size: 8, weight: .bold)
                 .tracking(1.4)
                 .foregroundStyle(tealAccent)
             Image(systemName: "arrow.up")
-                .font(.system(size: 9, weight: .black))
+                .scaledFont(size: 9, weight: .black)
                 .foregroundStyle(mutedText)
             ForEach(0..<3, id: \.self) { _ in block }
             Text("\u{22EE}")
-                .font(.system(size: 14, weight: .bold))
+                .scaledFont(size: 14, weight: .bold)
                 .foregroundStyle(mutedText)
             block
             Text("\u{00D7} 96 layers")
-                .font(.system(size: 9, weight: .bold, design: .monospaced))
+                .scaledFont(size: 9, weight: .bold, design: .monospaced)
                 .foregroundStyle(mutedText)
             Image(systemName: "arrow.up")
-                .font(.system(size: 9, weight: .black))
+                .scaledFont(size: 9, weight: .black)
                 .foregroundStyle(mutedText)
             Text("TOKENS IN")
-                .font(.system(size: 8, weight: .bold))
+                .scaledFont(size: 8, weight: .bold)
                 .tracking(1.4)
                 .foregroundStyle(mutedText)
         }
@@ -288,7 +288,7 @@ struct DecoderStackArt: View {
 
     private var block: some View {
         Text("Masked Attention + Feed-Forward")
-            .font(.system(size: 9.5, weight: .semibold))
+            .scaledFont(size: 9.5, weight: .semibold)
             .foregroundStyle(inkColor)
             .frame(maxWidth: .infinity, minHeight: 26)
             .background(
@@ -317,7 +317,7 @@ struct GPT3Timeline: View {
             HStack(spacing: 0) {
                 ForEach(milestones.indices, id: \.self) { i in
                     Text(milestones[i].year)
-                        .font(.system(size: 11, weight: .semibold, design: .serif))
+                        .scaledFont(size: 11, weight: .semibold, design: .serif)
                         .foregroundStyle(inkColor.opacity(0.85))
                         .frame(maxWidth: .infinity)
                 }
@@ -339,7 +339,7 @@ struct GPT3Timeline: View {
             HStack(spacing: 0) {
                 ForEach(milestones.indices, id: \.self) { i in
                     Text(milestones[i].label)
-                        .font(.system(size: 10, weight: .medium))
+                        .scaledFont(size: 10, weight: .medium)
                         .foregroundStyle(mutedText)
                         .frame(maxWidth: .infinity)
                 }
@@ -378,11 +378,11 @@ struct FewShotPromptPlayground: View {
             Spacer(minLength: 14)
 
             Text("SHOW, DON\u{2019}T TRAIN")
-                .font(.system(size: 11, weight: .bold))
+                .scaledFont(size: 11, weight: .bold)
                 .tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("The task: translate to French. Add worked examples to the prompt and watch the same model improve. It is never retrained, the prompt just grows.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -402,7 +402,7 @@ struct FewShotPromptPlayground: View {
             ForEach(modes.indices, id: \.self) { i in
                 let isSel = mode == i
                 Text(modes[i])
-                    .font(.system(size: 13, weight: .bold, design: .monospaced))
+                    .scaledFont(size: 13, weight: .bold, design: .monospaced)
                     .foregroundStyle(isSel ? .white : tealAccent)
                     .frame(maxWidth: .infinity, minHeight: 38)
                     .background(
@@ -417,7 +417,7 @@ struct FewShotPromptPlayground: View {
         VStack(alignment: .leading, spacing: 7) {
             if shownCount == 0 {
                 Text("(no examples)")
-                    .font(.system(size: 12, design: .monospaced))
+                    .scaledFont(size: 12, design: .monospaced)
                     .foregroundStyle(Color(hex: "f4f1ea").opacity(0.35))
             }
             ForEach(0..<shownCount, id: \.self) { i in
@@ -439,7 +439,7 @@ struct FewShotPromptPlayground: View {
                     .stroke(tealAccent.opacity(0.45), lineWidth: 1)
             }
         )
-        .animation(.snappy(duration: 0.25), value: mode)
+        .motionAware(.snappy(duration: 0.25), value: mode)
     }
 
     private func promptLine(_ a: String, _ b: String, isQuery: Bool) -> some View {
@@ -455,14 +455,14 @@ struct FewShotPromptPlayground: View {
                     .foregroundColor(correct ? gptGreenBright : gptRustBright)
             }
         }
-        .font(.system(size: 13, weight: .medium, design: .monospaced))
+        .scaledFont(size: 13, weight: .medium, design: .monospaced)
     }
 
     private var scoreRow: some View {
         HStack(spacing: 12) {
             VStack(alignment: .leading, spacing: 5) {
                 Text("ACCURACY")
-                    .font(.system(size: 9, weight: .bold))
+                    .scaledFont(size: 9, weight: .bold)
                     .tracking(1.4)
                     .foregroundStyle(mutedText)
                 GeometryReader { g in
@@ -476,12 +476,12 @@ struct FewShotPromptPlayground: View {
                 .frame(height: 10)
             }
             Text("\(accuracy)%")
-                .font(.system(size: 17, weight: .bold, design: .monospaced))
+                .scaledFont(size: 17, weight: .bold, design: .monospaced)
                 .foregroundStyle(correct ? gptGreen : inkColor.opacity(0.7))
             HStack(spacing: 5) {
-                Image(systemName: "lock.fill").font(.system(size: 9))
+                Image(systemName: "lock.fill").scaledFont(size: 9)
                 Text("WEIGHTS\nFROZEN")
-                    .font(.system(size: 8, weight: .bold))
+                    .scaledFont(size: 8, weight: .bold)
                     .tracking(0.5)
             }
             .foregroundStyle(tealAccent)
@@ -490,7 +490,7 @@ struct FewShotPromptPlayground: View {
             .background(RoundedRectangle(cornerRadius: 8, style: .continuous)
                 .fill(tealAccent.opacity(0.1)))
         }
-        .animation(.snappy(duration: 0.25), value: mode)
+        .motionAware(.snappy(duration: 0.25), value: mode)
     }
 
     private var caption: some View {
@@ -501,7 +501,7 @@ struct FewShotPromptPlayground: View {
             Text(correct
                  ? "Three examples and the answer is right. Not one weight moved."
                  : "Add more examples to the prompt. The model itself never changes.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -552,11 +552,11 @@ struct NextTokenPlayground: View {
             Spacer(minLength: 14)
 
             Text("BUILD THE SENTENCE")
-                .font(.system(size: 11, weight: .bold))
+                .scaledFont(size: 11, weight: .bold)
                 .tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("The model only ever does one thing: rank the next token. Tap a guess to place it, and watch the sentence feed back into the model.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -573,11 +573,11 @@ struct NextTokenPlayground: View {
     private var sentencePanel: some View {
         HStack(alignment: .firstTextBaseline, spacing: 0) {
             Text(sentence + " ")
-                .font(.system(size: 16, weight: .medium, design: .serif))
+                .scaledFont(size: 16, weight: .medium, design: .serif)
                 .foregroundStyle(inkColor)
             if !done {
                 Text("\u{25AE}")
-                    .font(.system(size: 15))
+                    .scaledFont(size: 15)
                     .foregroundStyle(tealAccent)
             }
         }
@@ -600,7 +600,7 @@ struct NextTokenPlayground: View {
                 } label: {
                     HStack(spacing: 10) {
                         Text(c.0)
-                            .font(.system(size: 14, weight: .semibold, design: .serif))
+                            .scaledFont(size: 14, weight: .semibold, design: .serif)
                             .foregroundStyle(inkColor)
                             .frame(width: 74, alignment: .leading)
                         GeometryReader { g in
@@ -613,7 +613,7 @@ struct NextTokenPlayground: View {
                         }
                         .frame(height: 12)
                         Text("\(Int(c.1 * 100))%")
-                            .font(.system(size: 11, weight: .bold, design: .monospaced))
+                            .scaledFont(size: 11, weight: .bold, design: .monospaced)
                             .foregroundStyle(mutedText)
                             .frame(width: 38, alignment: .trailing)
                     }
@@ -633,10 +633,10 @@ struct NextTokenPlayground: View {
     private var donePanel: some View {
         HStack(spacing: 10) {
             Image(systemName: "checkmark.circle.fill")
-                .font(.system(size: 18))
+                .scaledFont(size: 18)
                 .foregroundStyle(tealAccent)
             Text("Four tokens, four passes through the model. That loop is all generation ever is.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -654,7 +654,7 @@ struct NextTokenPlayground: View {
             Text(picks == 0
                  ? "Tap a guess to place the next token."
                  : "Tokens placed: \(picks). Each one was read back in before the next.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -698,11 +698,11 @@ struct ScaleEmergencePlayground: View {
             Spacer(minLength: 14)
 
             Text("DRAG THROUGH THE SIZES")
-                .font(.system(size: 11, weight: .bold))
+                .scaledFont(size: 11, weight: .bold)
                 .tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Same training, same task list. Drag from the small model to the large one and watch which abilities switch on.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -720,10 +720,10 @@ struct ScaleEmergencePlayground: View {
     private var sizeReadout: some View {
         HStack(alignment: .firstTextBaseline, spacing: 6) {
             Text(sizes[stage])
-                .font(.system(size: 30, weight: .bold, design: .monospaced))
+                .scaledFont(size: 30, weight: .bold, design: .monospaced)
                 .foregroundStyle(tealAccent)
             Text("parameters")
-                .font(.system(size: 13, design: .serif))
+                .scaledFont(size: 13, design: .serif)
                 .italic()
                 .foregroundStyle(mutedText)
         }
@@ -772,15 +772,15 @@ struct ScaleEmergencePlayground: View {
                 let newlyOn = on && (stage == 0 ? false : !pass[stage - 1][c])
                 HStack(spacing: 10) {
                     Image(systemName: on ? "checkmark.circle.fill" : "circle")
-                        .font(.system(size: 16))
+                        .scaledFont(size: 16)
                         .foregroundStyle(on ? tealAccent : inkColor.opacity(0.25))
                     Text(capabilities[c])
-                        .font(.system(size: 14, weight: .semibold, design: .serif))
+                        .scaledFont(size: 14, weight: .semibold, design: .serif)
                         .foregroundStyle(on ? inkColor : inkColor.opacity(0.4))
                     Spacer()
                     if newlyOn {
                         Text("UNLOCKED")
-                            .font(.system(size: 8, weight: .bold))
+                            .scaledFont(size: 8, weight: .bold)
                             .tracking(1.0)
                             .foregroundStyle(amberAccent)
                             .padding(.horizontal, 7)
@@ -797,7 +797,7 @@ struct ScaleEmergencePlayground: View {
                             .stroke(borderColor, lineWidth: 1)))
             }
         }
-        .animation(.snappy(duration: 0.25), value: stage)
+        .motionAware(.snappy(duration: 0.25), value: stage)
     }
 
     private var caption: some View {
@@ -808,7 +808,7 @@ struct ScaleEmergencePlayground: View {
             Text(stage == 3
                  ? "From 13B to 175B, two abilities appeared at once. Nobody trained them in."
                  : "Keep dragging. The big jump is at the largest model.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -906,7 +906,7 @@ struct FewShotScalingChart: View {
         HStack(spacing: 0) {
             ForEach(xLabels.indices, id: \.self) { i in
                 Text(xLabels[i])
-                    .font(.system(size: 9, weight: .semibold, design: .monospaced))
+                    .scaledFont(size: 9, weight: .semibold, design: .monospaced)
                     .foregroundStyle(mutedText)
                     .frame(maxWidth: .infinity)
             }
@@ -921,7 +921,7 @@ struct FewShotScalingChart: View {
                         .fill(series[s].tint)
                         .frame(width: 14, height: series[s].bold ? 3.5 : 2.5)
                     Text(series[s].name)
-                        .font(.system(size: 9, weight: .semibold, design: .monospaced))
+                        .scaledFont(size: 9, weight: .semibold, design: .monospaced)
                         .foregroundStyle(mutedText)
                 }
             }

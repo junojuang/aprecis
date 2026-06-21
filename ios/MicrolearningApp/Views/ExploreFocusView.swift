@@ -152,7 +152,7 @@ struct ExploreFocusView: View {
                 }
             }
             .id(focusedId) // reset scroll when focus changes
-            .animation(.snappy(duration: 0.26), value: focusedId)
+            .motionAware(.snappy(duration: 0.26), value: focusedId)
             .offset(x: pageDragX)
 
             topChrome
@@ -209,12 +209,13 @@ struct ExploreFocusView: View {
                     onDismiss?()
                 } label: {
                     Image(systemName: "chevron.left")
-                        .font(.system(size: 12, weight: .bold))
+                        .scaledFont(size: 12, weight: .bold)
                         .foregroundStyle(inkColor)
                         .frame(width: 30, height: 30)
                         .background(chromeBackground)
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel("Back")
             }
             Spacer()
             Button {
@@ -224,9 +225,9 @@ struct ExploreFocusView: View {
             } label: {
                 HStack(spacing: 6) {
                     Image(systemName: "die.face.5")
-                        .font(.system(size: 11, weight: .semibold))
+                        .scaledFont(size: 11, weight: .semibold)
                     Text("Random")
-                        .font(.system(size: 11, weight: .semibold))
+                        .scaledFont(size: 11, weight: .semibold)
                 }
                 .foregroundStyle(inkColor)
                 .padding(.horizontal, 10)
@@ -259,7 +260,7 @@ struct ExploreFocusView: View {
                         }
                     } label: {
                         Text(shortTitle(for: id))
-                            .font(.system(size: 10, weight: .semibold, design: .serif))
+                            .scaledFont(size: 10, weight: .semibold, design: .serif)
                             .foregroundStyle(mutedText)
                             .padding(.horizontal, 9)
                             .padding(.vertical, 4)
@@ -270,11 +271,12 @@ struct ExploreFocusView: View {
                     }
                     .buttonStyle(.plain)
                     Image(systemName: "chevron.right")
-                        .font(.system(size: 8, weight: .bold))
+                        .scaledFont(size: 8, weight: .bold)
                         .foregroundStyle(mutedText.opacity(0.6))
+                        .accessibilityHidden(true)
                 }
                 Text(shortTitle(for: focusedId))
-                    .font(.system(size: 10, weight: .bold, design: .serif))
+                    .scaledFont(size: 10, weight: .bold, design: .serif)
                     .foregroundStyle(inkColor)
                     .padding(.horizontal, 9)
                     .padding(.vertical, 4)
@@ -301,30 +303,30 @@ struct ExploreFocusView: View {
             HStack(spacing: 6) {
                 Circle().fill(cluster.color).frame(width: 6, height: 6)
                 Text(cluster.label.uppercased())
-                    .font(.system(size: 10, weight: .bold))
+                    .scaledFont(size: 10, weight: .bold)
                     .tracking(1.6)
                     .foregroundStyle(cluster.color)
                 if trending > 0.5 {
                     Text("· HOT")
-                        .font(.system(size: 10, weight: .bold))
+                        .scaledFont(size: 10, weight: .bold)
                         .tracking(1.6)
                         .foregroundStyle(amberAccent)
                 }
                 if progress >= 0.98 {
                     HStack(spacing: 3) {
                         Text("· READ")
-                            .font(.system(size: 10, weight: .bold))
+                            .scaledFont(size: 10, weight: .bold)
                             .tracking(1.6)
                             .foregroundStyle(progressGreen)
                         Image(systemName: "checkmark")
-                            .font(.system(size: 9, weight: .bold))
+                            .scaledFont(size: 9, weight: .bold)
                             .foregroundStyle(progressGreen)
                     }
                     .accessibilityElement(children: .combine)
                     .accessibilityLabel("Read")
                 }
                 Text("· \(minutes) min read")
-                    .font(.system(size: 10, design: .serif))
+                    .scaledFont(size: 10, design: .serif)
                     .italic()
                     .tracking(0.3)
                     .foregroundStyle(mutedText.opacity(0.78))
@@ -333,13 +335,13 @@ struct ExploreFocusView: View {
                     .accessibilityLabel("\(minutes) minute read")
             }
             Text(title)
-                .font(.system(size: 28, weight: .regular, design: .serif))
+                .scaledFont(size: 28, weight: .regular, design: .serif)
                 .foregroundStyle(inkColor)
                 .lineLimit(4)
                 .fixedSize(horizontal: false, vertical: true)
             if let hook, !hook.isEmpty {
                 Text(hook)
-                    .font(.system(size: 14, design: .serif))
+                    .scaledFont(size: 14, design: .serif)
                     .italic()
                     .foregroundStyle(mutedText)
                     .lineSpacing(3)
@@ -430,9 +432,9 @@ struct ExploreFocusView: View {
         } label: {
             VStack(spacing: 5) {
                 Text(kind.label)
-                    .font(.system(size: 15,
+                    .scaledFont(size: 15,
                                   weight: isActive ? .semibold : .regular,
-                                  design: .serif))
+                                  design: .serif)
                     .foregroundStyle(isActive ? inkColor : mutedText.opacity(0.85))
                 // Active-tab ink line. Owned by matchedGeometryEffect
                 // so the bar slides between labels when activeRail
@@ -453,7 +455,7 @@ struct ExploreFocusView: View {
                 // it no longer competes with the info dot for that
                 // same real estate.
                 Text("\(count)")
-                    .font(.system(size: 10, weight: .medium, design: .monospaced))
+                    .scaledFont(size: 10, weight: .medium, design: .monospaced)
                     .tracking(0.4)
                     .foregroundStyle(isActive ? tint : mutedText.opacity(0.55))
             }
@@ -483,7 +485,7 @@ struct ExploreFocusView: View {
                     .stroke(inkColor.opacity(0.30), lineWidth: 0.7)
                     .frame(width: 13, height: 13)
                 Text("i")
-                    .font(.system(size: 9, weight: .regular, design: .serif))
+                    .scaledFont(size: 9, weight: .regular, design: .serif)
                     .italic()
                     .foregroundStyle(inkColor.opacity(0.6))
                     .baselineOffset(-0.5)
@@ -550,7 +552,7 @@ struct ExploreFocusView: View {
             ProgressView()
                 .controlSize(.small)
             Text("Finding related papers")
-                .font(.system(size: 12, design: .serif))
+                .scaledFont(size: 12, design: .serif)
                 .italic()
                 .foregroundStyle(mutedText)
         }
@@ -575,7 +577,7 @@ struct ExploreFocusView: View {
                 HStack(spacing: 5) {
                     Circle().fill(cluster.color).frame(width: 5, height: 5)
                     Text(cluster.label.uppercased())
-                        .font(.system(size: 9, weight: .bold))
+                        .scaledFont(size: 9, weight: .bold)
                         .tracking(1.2)
                         .foregroundStyle(cluster.color)
                         .lineLimit(1)
@@ -585,7 +587,7 @@ struct ExploreFocusView: View {
                 // hook / distill copy, which confused users ("description"
                 // instead of bibliographic title) on Builds on / Led to / Adjacent.
                 Text(title(for: id))
-                    .font(.system(size: 13, weight: .semibold, design: .serif))
+                    .scaledFont(size: 13, weight: .semibold, design: .serif)
                     .foregroundStyle(inkColor.opacity(isRead ? 0.65 : 1.0))
                     .lineLimit(3)
                     .multilineTextAlignment(.leading)
@@ -594,8 +596,9 @@ struct ExploreFocusView: View {
                 HStack(spacing: 6) {
                     Spacer(minLength: 0)
                     Image(systemName: "arrow.right")
-                        .font(.system(size: 9, weight: .bold))
+                        .scaledFont(size: 9, weight: .bold)
                         .foregroundStyle(accent)
+                        .accessibilityHidden(true)
                 }
             }
             .padding(12)
@@ -623,6 +626,15 @@ struct ExploreFocusView: View {
             UIImpactFeedbackGenerator(style: .medium).impactOccurred()
             withAnimation(.snappy(duration: 0.18)) { previewId = id }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(title(for: id))
+        .accessibilityValue("\(cluster.label)\(isRead ? ", read" : "")")
+        .accessibilityHint("Opens this related paper")
+        .accessibilityAddTraits(.isButton)
+        .accessibilityAction(named: "Preview") {
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+            withAnimation(.snappy(duration: 0.18)) { previewId = id }
+        }
     }
 
     /// Quiet editorial "read" mark. Italic serif lowercase, hairline
@@ -632,11 +644,11 @@ struct ExploreFocusView: View {
         let color = tealAccent
         return HStack(spacing: 4) {
             Text("read")
-                .font(.system(size: 11, weight: .regular, design: .serif))
+                .scaledFont(size: 11, weight: .regular, design: .serif)
                 .italic()
                 .foregroundStyle(color)
             Image(systemName: "checkmark")
-                .font(.system(size: 8, weight: .semibold))
+                .scaledFont(size: 8, weight: .semibold)
                 .foregroundStyle(color.opacity(0.75))
         }
         .padding(.horizontal, 7)
@@ -657,9 +669,10 @@ struct ExploreFocusView: View {
             } label: {
                 HStack(spacing: 6) {
                     Text("Open paper")
-                        .font(.system(size: 14, weight: .semibold))
+                        .scaledFont(size: 14, weight: .semibold)
                     Image(systemName: "arrow.right")
-                        .font(.system(size: 12, weight: .bold))
+                        .scaledFont(size: 12, weight: .bold)
+                        .accessibilityHidden(true)
                 }
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity, minHeight: 46)
@@ -669,6 +682,7 @@ struct ExploreFocusView: View {
                 )
             }
             .buttonStyle(.plain)
+            .accessibilityHint("Opens the reading flow for this paper")
 
             Button {
                 UIImpactFeedbackGenerator(style: .soft).impactOccurred()
@@ -678,7 +692,7 @@ struct ExploreFocusView: View {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { savedFlash = false }
             } label: {
                 Image(systemName: savedStore.isSaved(focusedId) ? "bookmark.fill" : "bookmark")
-                    .font(.system(size: 16, weight: .semibold))
+                    .scaledFont(size: 16, weight: .semibold)
                     .foregroundStyle(savedStore.isSaved(focusedId) ? tealAccent : inkColor)
                     .frame(width: 46, height: 46)
                     .background(
@@ -686,9 +700,10 @@ struct ExploreFocusView: View {
                             .stroke(borderColor, lineWidth: 1)
                     )
                     .scaleEffect(savedFlash ? 1.18 : 1.0)
-                    .animation(.snappy, value: savedFlash)
+                    .motionAware(.snappy, value: savedFlash)
             }
             .buttonStyle(.plain)
+            .accessibilityLabel(savedStore.isSaved(focusedId) ? "Remove from library" : "Save to library")
         }
     }
 
@@ -723,24 +738,26 @@ struct ExploreFocusView: View {
                 .onTapGesture {
                     withAnimation(.snappy(duration: 0.18)) { previewId = nil }
                 }
+                .accessibilityLabel("Dismiss preview")
+                .accessibilityAddTraits(.isButton)
             VStack(alignment: .leading, spacing: 10) {
                 let pcl = SimilarityGraph.displayCluster(forPaperId: id, deckHint: deckById[id])
                 HStack(spacing: 5) {
                     Circle().fill(pcl.color).frame(width: 5, height: 5)
                     Text(pcl.label.uppercased())
-                        .font(.system(size: 9, weight: .bold))
+                        .scaledFont(size: 9, weight: .bold)
                         .tracking(1.4)
                         .foregroundStyle(pcl.color)
                     Spacer()
                 }
                 Text(title(for: id))
-                    .font(.system(size: 18, weight: .semibold, design: .serif))
+                    .scaledFont(size: 18, weight: .semibold, design: .serif)
                     .foregroundStyle(inkColor)
                     .lineLimit(3)
                     .fixedSize(horizontal: false, vertical: true)
                 if let hook = hook(for: id), !hook.isEmpty {
                     Text(hook)
-                        .font(.system(size: 13, design: .serif))
+                        .scaledFont(size: 13, design: .serif)
                         .italic()
                         .foregroundStyle(mutedText)
                         .lineSpacing(2)
@@ -759,7 +776,7 @@ struct ExploreFocusView: View {
                         }
                     } label: {
                         Text("Open")
-                            .font(.system(size: 12, weight: .semibold))
+                            .scaledFont(size: 12, weight: .semibold)
                             .foregroundStyle(.white)
                             .frame(maxWidth: .infinity, minHeight: 38)
                             .background(
@@ -772,7 +789,7 @@ struct ExploreFocusView: View {
                         withAnimation(.snappy(duration: 0.18)) { previewId = nil }
                     } label: {
                         Text("Dismiss")
-                            .font(.system(size: 12, weight: .semibold))
+                            .scaledFont(size: 12, weight: .semibold)
                             .foregroundStyle(inkColor)
                             .frame(maxWidth: .infinity, minHeight: 38)
                             .background(
@@ -795,6 +812,7 @@ struct ExploreFocusView: View {
             )
             .shadow(color: inkColor.opacity(0.25), radius: 28, x: 0, y: 12)
             .padding(.horizontal, 28)
+            .accessibilityAddTraits(.isModal)
         }
     }
 
@@ -928,7 +946,7 @@ struct ExploreFocusView: View {
         } else {
             VStack(spacing: 14) {
                 Text("Couldn't open this paper")
-                    .font(.system(size: 16, weight: .semibold, design: .serif))
+                    .scaledFont(size: 16, weight: .semibold, design: .serif)
                 Text(paperId)
                     .font(.system(size: 11).monospaced())
                     .foregroundStyle(mutedText)

@@ -121,9 +121,9 @@ struct AttentionArcArt: View {
                 ForEach(0..<n, id: \.self) { i in
                     let linked = arcs.contains(where: { $0.0 == i || $0.1 == i })
                     Text(words[i])
-                        .font(.system(size: 15,
+                        .scaledFont(size: 15,
                                       weight: linked ? .semibold : .regular,
-                                      design: .serif))
+                                      design: .serif)
                         .foregroundStyle(linked ? inkColor : inkColor.opacity(0.45))
                         .position(x: cx(i), y: baseY)
                 }
@@ -173,12 +173,12 @@ struct TelephoneChainArt: View {
                         .frame(width: 30, height: 30)
                         .position(x: cx(i), y: y)
                     Text(words[i])
-                        .font(.system(size: 10, weight: .medium, design: .serif))
+                        .scaledFont(size: 10, weight: .medium, design: .serif)
                         .foregroundStyle(inkColor.opacity(0.7))
                         .position(x: cx(i), y: y + 27)
                 }
                 Text("the memory blurs as it travels")
-                    .font(.system(size: 9, weight: .bold))
+                    .scaledFont(size: 9, weight: .bold)
                     .tracking(0.8)
                     .foregroundStyle(mutedText)
                     .position(x: w / 2, y: h * 0.06)
@@ -217,11 +217,11 @@ struct SelfAttentionPlayground: View {
             Spacer(minLength: 14)
 
             Text("TAP A WORD")
-                .font(.system(size: 11, weight: .bold))
+                .scaledFont(size: 11, weight: .bold)
                 .tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Tap any word to see what it reads. The lines show where its attention goes; a thicker line means it looks harder there.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -280,7 +280,7 @@ struct SelfAttentionPlayground: View {
         let active = selected != nil
         let weight = selected.map { W[$0][i] } ?? 0
         return Text(tokens[i])
-            .font(.system(size: 13, weight: .semibold, design: .serif))
+            .scaledFont(size: 13, weight: .semibold, design: .serif)
             .foregroundStyle(isSel ? .white : inkColor.opacity(0.85))
             .padding(.horizontal, 9)
             .padding(.vertical, 7)
@@ -294,7 +294,7 @@ struct SelfAttentionPlayground: View {
             .overlay(
                 RoundedRectangle(cornerRadius: 9, style: .continuous)
                     .stroke(borderColor, lineWidth: isSel ? 0 : 1))
-            .animation(.snappy(duration: 0.3), value: selected)
+            .motionAware(.snappy(duration: 0.3), value: selected)
     }
 
     private var caption: some View {
@@ -303,7 +303,7 @@ struct SelfAttentionPlayground: View {
                 .fill(selected == nil ? amberAccent : tealAccent)
                 .frame(width: 9, height: 9)
             Text(captionText)
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -366,7 +366,7 @@ struct QKVTriadArt: View {
 
                 // the source word
                 Text("cat")
-                    .font(.system(size: 15, weight: .semibold, design: .serif))
+                    .scaledFont(size: 15, weight: .semibold, design: .serif)
                     .foregroundStyle(.white)
                     .padding(.horizontal, 13)
                     .padding(.vertical, 10)
@@ -388,7 +388,7 @@ struct QKVTriadArt: View {
             ZStack {
                 Circle().fill(b.tint).frame(width: 26, height: 26)
                 Text(b.label)
-                    .font(.system(size: 12, weight: .bold, design: .monospaced))
+                    .scaledFont(size: 12, weight: .bold, design: .monospaced)
                     .foregroundStyle(.white)
             }
             VStack(alignment: .leading, spacing: 3) {
@@ -401,7 +401,7 @@ struct QKVTriadArt: View {
                 }
                 .frame(height: 18, alignment: .bottom)
                 Text(b.role)
-                    .font(.system(size: 9, weight: .bold))
+                    .scaledFont(size: 9, weight: .bold)
                     .tracking(1.0)
                     .foregroundStyle(mutedText)
             }
@@ -466,11 +466,11 @@ struct AttentionMatchPlayground: View {
             Spacer(minLength: 14)
 
             Text("DRAG THE QUERY")
-                .font(.system(size: 11, weight: .bold))
+                .scaledFont(size: 11, weight: .bold)
                 .tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Drag Q along the line. The closer it lands to a Key, the louder that Key answers. The weights always add to 100%, and the output is their blend.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -509,7 +509,7 @@ struct AttentionMatchPlayground: View {
                     .frame(width: 32, height: 32)
                     .overlay(Circle().stroke(tealAccent, lineWidth: 2.5))
                     .overlay(Text("Q")
-                        .font(.system(size: 12, weight: .bold, design: .monospaced))
+                        .scaledFont(size: 12, weight: .bold, design: .monospaced)
                         .foregroundStyle(tealAccent))
                     .shadow(color: inkColor.opacity(0.15), radius: 3, y: 1)
                     .position(x: CGFloat(query) * w, y: 27)
@@ -532,26 +532,26 @@ struct AttentionMatchPlayground: View {
             ForEach(keys.indices, id: \.self) { i in
                 VStack(spacing: 5) {
                     Text("\(Int(round(weights[i] * 100)))%")
-                        .font(.system(size: 11, weight: .bold, design: .monospaced))
+                        .scaledFont(size: 11, weight: .bold, design: .monospaced)
                         .foregroundStyle(i == topKey ? keys[i].color : mutedText)
                     RoundedRectangle(cornerRadius: 5)
                         .fill(keys[i].color.opacity(i == topKey ? 1 : 0.5))
                         .frame(height: max(4, CGFloat(weights[i]) * 96))
                     Text(keys[i].label)
-                        .font(.system(size: 10, weight: .bold, design: .monospaced))
+                        .scaledFont(size: 10, weight: .bold, design: .monospaced)
                         .foregroundStyle(mutedText)
                 }
                 .frame(maxWidth: .infinity)
             }
         }
         .frame(height: 132, alignment: .bottom)
-        .animation(.snappy(duration: 0.25), value: query)
+        .motionAware(.snappy(duration: 0.25), value: query)
     }
 
     private var outputRow: some View {
         HStack(spacing: 12) {
             Text("BLENDED VALUE")
-                .font(.system(size: 10, weight: .bold))
+                .scaledFont(size: 10, weight: .bold)
                 .tracking(1.6)
                 .foregroundStyle(mutedText)
             RoundedRectangle(cornerRadius: 7, style: .continuous)
@@ -573,7 +573,7 @@ struct AttentionMatchPlayground: View {
                 .frame(width: 30, height: 30)
                 .overlay(Circle().stroke(borderColor, lineWidth: 1))
         }
-        .animation(.snappy(duration: 0.25), value: query)
+        .motionAware(.snappy(duration: 0.25), value: query)
     }
 
     private var caption: some View {
@@ -584,7 +584,7 @@ struct AttentionMatchPlayground: View {
             Text(flipped
                  ? "You moved the winner. That shift is attention at work."
                  : "\(keys[topKey].label) is winning. Drag Q until another Key takes over.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -653,7 +653,7 @@ struct MultiHeadStrip: View {
             }
             .frame(height: 74)
             Text(p.title)
-                .font(.system(size: 9, weight: .bold))
+                .scaledFont(size: 9, weight: .bold)
                 .tracking(1.2)
                 .foregroundStyle(p.tint)
         }
@@ -697,11 +697,11 @@ struct AttentionHeadsPlayground: View {
             Spacer(minLength: 14)
 
             Text("TAP THE HEADS")
-                .font(.system(size: 11, weight: .bold))
+                .scaledFont(size: 11, weight: .bold)
                 .tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Eight heads run at once; here are four. Each reads the same sentence but chases a different pattern. Tap through them and watch the focus jump.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -720,7 +720,7 @@ struct AttentionHeadsPlayground: View {
             ForEach(heads.indices, id: \.self) { i in
                 let isSel = selected == i
                 Text(heads[i].tag)
-                    .font(.system(size: 13, weight: .bold, design: .monospaced))
+                    .scaledFont(size: 13, weight: .bold, design: .monospaced)
                     .foregroundStyle(isSel ? .white : heads[i].tint)
                     .frame(maxWidth: .infinity, minHeight: 38)
                     .background(
@@ -741,13 +741,13 @@ struct AttentionHeadsPlayground: View {
                 ForEach(tokens.indices, id: \.self) { i in
                     VStack(spacing: 6) {
                         Text("\(Int(round(head.pattern[i] * 100)))")
-                            .font(.system(size: 10, weight: .bold, design: .monospaced))
+                            .scaledFont(size: 10, weight: .bold, design: .monospaced)
                             .foregroundStyle(mutedText)
                         RoundedRectangle(cornerRadius: 5)
                             .fill(head.tint.opacity(0.4 + 0.6 * head.pattern[i]))
                             .frame(height: max(5, CGFloat(head.pattern[i]) * 104))
                         Text(tokens[i])
-                            .font(.system(size: 11, weight: .medium, design: .serif))
+                            .scaledFont(size: 11, weight: .medium, design: .serif)
                             .foregroundStyle(inkColor.opacity(0.75))
                     }
                     .frame(maxWidth: .infinity)
@@ -756,14 +756,14 @@ struct AttentionHeadsPlayground: View {
             .padding(16)
         }
         .frame(height: 184)
-        .animation(.snappy(duration: 0.3), value: selected)
+        .motionAware(.snappy(duration: 0.3), value: selected)
     }
 
     private var roleCaption: some View {
         HStack(spacing: 8) {
             Circle().fill(heads[selected].tint).frame(width: 9, height: 9)
             Text("\(heads[selected].tag) reads \(heads[selected].role).")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -835,8 +835,8 @@ struct PositionWavesArt: View {
                                 .fill(waves[i].color)
                                 .frame(width: 14, height: 3)
                             Text("dim \(i)")
-                                .font(.system(size: 9, weight: .semibold,
-                                              design: .monospaced))
+                                .scaledFont(size: 9, weight: .semibold,
+                                              design: .monospaced)
                                 .foregroundStyle(mutedText)
                         }
                     }
@@ -883,12 +883,12 @@ struct TransformerStackArt: View {
     private func tower(_ title: String, _ blocks: [Block], note: String) -> some View {
         VStack(spacing: 5) {
             Text(title)
-                .font(.system(size: 9, weight: .bold))
+                .scaledFont(size: 9, weight: .bold)
                 .tracking(1.4)
                 .foregroundStyle(mutedText)
             ForEach(blocks.indices, id: \.self) { i in
                 Text(blocks[i].label)
-                    .font(.system(size: 9.5, weight: .semibold))
+                    .scaledFont(size: 9.5, weight: .semibold)
                     .foregroundStyle(blocks[i].tint == mutedText ? mutedText : inkColor)
                     .frame(maxWidth: .infinity, minHeight: 30)
                     .background(
@@ -898,7 +898,7 @@ struct TransformerStackArt: View {
                                 .stroke(blocks[i].tint.opacity(0.55), lineWidth: 1.4)))
             }
             Text(note)
-                .font(.system(size: 8.5, weight: .bold, design: .monospaced))
+                .scaledFont(size: 8.5, weight: .bold, design: .monospaced)
                 .foregroundStyle(mutedText)
         }
         .frame(maxWidth: .infinity)
@@ -907,10 +907,10 @@ struct TransformerStackArt: View {
     private var bridge: some View {
         VStack(spacing: 0) {
             Image(systemName: "arrow.left")
-                .font(.system(size: 11, weight: .black))
+                .scaledFont(size: 11, weight: .black)
                 .foregroundStyle(tealAccent)
             Text("cross")
-                .font(.system(size: 7, weight: .bold))
+                .scaledFont(size: 7, weight: .bold)
                 .tracking(0.5)
                 .foregroundStyle(tealAccent)
                 .rotationEffect(.degrees(-90))
@@ -945,7 +945,7 @@ struct TransformerLineage: View {
             HStack(spacing: 0) {
                 ForEach(milestones.indices, id: \.self) { i in
                     Text(milestones[i].year)
-                        .font(.system(size: 11, weight: .semibold, design: .serif))
+                        .scaledFont(size: 11, weight: .semibold, design: .serif)
                         .foregroundStyle(inkColor.opacity(0.85))
                         .frame(maxWidth: .infinity)
                 }
@@ -969,7 +969,7 @@ struct TransformerLineage: View {
             HStack(spacing: 0) {
                 ForEach(milestones.indices, id: \.self) { i in
                     Text(milestones[i].label)
-                        .font(.system(size: 10, weight: .medium))
+                        .scaledFont(size: 10, weight: .medium)
                         .foregroundStyle(mutedText)
                         .multilineTextAlignment(.center)
                         .frame(maxWidth: .infinity)

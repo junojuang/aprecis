@@ -83,16 +83,16 @@ struct AttentionFlowView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 04 · SELF ATTENTION")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("Every word. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(attInk)
-                + Text("Rebuilt from the rest.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("Every word. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(attInk)
+                + Text("Rebuilt from the rest.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("Tap a token to make it the query. Q · Kᵀ scores who matters. Softmax turns scores into weights. The output is a weighted blend of V.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -107,7 +107,7 @@ struct AttentionFlowView: View {
                     .padding(.bottom, 14)
 
                 Text(flowVerdict[query] ?? "")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(attInkSubtle)
                     .padding(.bottom, 24)
@@ -150,12 +150,12 @@ struct AttentionFlowView: View {
                 } label: {
                     VStack(spacing: 4) {
                         Text(query == tok.id ? "Q" : " ")
-                            .font(.system(size: 8, weight: .bold))
+                            .font(scaledSystemFont(8, weight: .bold))
                             .tracking(1.2)
                             .foregroundStyle(tealAccent)
                             .frame(height: 9)
                         Text(tok.text)
-                            .font(.system(size: 12, weight: query == tok.id ? .semibold : .regular, design: .serif))
+                            .font(scaledSystemFont(12, weight: query == tok.id ? .semibold : .regular, design: .serif))
                             .foregroundStyle(query == tok.id ? .white : attInk.opacity(0.78))
                             .padding(.vertical, 8)
                             .padding(.horizontal, 9)
@@ -179,31 +179,31 @@ struct AttentionFlowView: View {
     private var formulaPanel: some View {
         HStack(spacing: 10) {
             Text("softmax")
-                .font(.system(size: 11, weight: .semibold, design: .serif))
+                .font(scaledSystemFont(11, weight: .semibold, design: .serif))
                 .foregroundStyle(attInkSubtle)
                 .italic()
             Text("(")
-                .font(.system(size: 14, design: .serif))
+                .font(scaledSystemFont(14, design: .serif))
                 .foregroundStyle(attInkSubtle)
             VStack(spacing: 1) {
                 Text("Q · Kᵀ")
-                    .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(11, weight: .semibold, design: .monospaced))
                     .foregroundStyle(tealAccent)
                 Rectangle().fill(attPanelEdge).frame(height: 0.6)
                 Text("√dₖ")
-                    .font(.system(size: 10, design: .monospaced))
+                    .font(scaledSystemFont(10, design: .monospaced))
                     .foregroundStyle(attInkSubtle)
             }
             .fixedSize()
             Text(")")
-                .font(.system(size: 14, design: .serif))
+                .font(scaledSystemFont(14, design: .serif))
                 .foregroundStyle(attInkSubtle)
             Text("V")
-                .font(.system(size: 13, weight: .semibold, design: .monospaced))
+                .font(scaledSystemFont(13, weight: .semibold, design: .monospaced))
                 .foregroundStyle(amberAccent)
             Spacer(minLength: 0)
             Text("EQ. 1")
-                .font(.system(size: 8, weight: .bold))
+                .font(scaledSystemFont(8, weight: .bold))
                 .tracking(1.2)
                 .foregroundStyle(attInkSubtle.opacity(0.6))
         }
@@ -220,12 +220,12 @@ struct AttentionFlowView: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text("ATTENTION FROM \"\(flowSentence[query].text.uppercased())\"")
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                 Spacer()
                 Text("Σ = 1.0")
-                    .font(.system(size: 8, weight: .bold, design: .monospaced))
+                    .font(scaledSystemFont(8, weight: .bold, design: .monospaced))
                     .tracking(0.6)
                     .foregroundStyle(attInkSubtle.opacity(0.7))
             }
@@ -236,7 +236,7 @@ struct AttentionFlowView: View {
                     let isSelf = tok.id == query
                     HStack(spacing: 8) {
                         Text(tok.text)
-                            .font(.system(size: 11, design: .serif))
+                            .font(scaledSystemFont(11, design: .serif))
                             .foregroundStyle(isSelf ? attInk : attInkSubtle)
                             .frame(width: 50, alignment: .trailing)
                         GeometryReader { geo in
@@ -251,7 +251,7 @@ struct AttentionFlowView: View {
                         }
                         .frame(height: 7)
                         Text(String(format: "%.2f", w))
-                            .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                            .font(scaledSystemFont(10, weight: .semibold, design: .monospaced))
                             .foregroundStyle(w > 0.25 ? tealAccent : attInkSubtle)
                             .frame(width: 36, alignment: .trailing)
                     }
@@ -323,16 +323,16 @@ struct AttentionCorefView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 05 · COREFERENCE EMERGES")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("It points. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(attInk)
-                + Text("To the animal.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("It points. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(attInk)
+                + Text("To the animal.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("Famous self-attention pattern from Vaswani et al. Tap any token; the bars are the weights it pays to every other word. No rule was written for coreference, the model learns it from data.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -344,7 +344,7 @@ struct AttentionCorefView: View {
                     .padding(.bottom, 12)
 
                 Text(corefVerdict[query] ?? "")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(query == 7 ? tealAccent : attInkSubtle)
                     .padding(.bottom, 24)
@@ -389,12 +389,12 @@ struct AttentionCorefView: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Text("SENTENCE")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(scaledSystemFont(8, weight: .bold))
                     .tracking(1.4)
                     .foregroundStyle(attInkSubtle)
                 Spacer()
                 Text("TAP TO QUERY")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(scaledSystemFont(8, weight: .bold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
             }
@@ -408,7 +408,7 @@ struct AttentionCorefView: View {
                         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
                     } label: {
                         Text(tok.text)
-                            .font(.system(size: 13, weight: query == tok.id ? .semibold : .regular, design: .serif))
+                            .font(scaledSystemFont(13, weight: query == tok.id ? .semibold : .regular, design: .serif))
                             .foregroundStyle(query == tok.id ? .white : attInk.opacity(0.78))
                             .padding(.vertical, 6)
                             .padding(.horizontal, 9)
@@ -437,12 +437,12 @@ struct AttentionCorefView: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text("ATTENTION WEIGHTS")
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                 Spacer()
                 Text("FROM \"\(corefSentence[query].text.uppercased())\"")
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(attInkSubtle)
             }
@@ -453,7 +453,7 @@ struct AttentionCorefView: View {
                     let isAnimal = (query == 7 && tok.id == 1)
                     HStack(spacing: 8) {
                         Text(tok.text)
-                            .font(.system(size: 11, weight: isAnimal ? .semibold : .regular, design: .serif))
+                            .font(scaledSystemFont(11, weight: isAnimal ? .semibold : .regular, design: .serif))
                             .foregroundStyle(isAnimal ? tealAccent : attInkSubtle)
                             .frame(width: 60, alignment: .trailing)
                         GeometryReader { geo in
@@ -475,7 +475,7 @@ struct AttentionCorefView: View {
                         }
                         .frame(height: 7)
                         Text(String(format: "%.2f", w))
-                            .font(.system(size: 10, weight: w > 0.30 ? .semibold : .regular, design: .monospaced))
+                            .font(scaledSystemFont(10, weight: w > 0.30 ? .semibold : .regular, design: .monospaced))
                             .foregroundStyle(w > 0.30 ? tealAccent : attInkSubtle)
                             .frame(width: 36, alignment: .trailing)
                     }
@@ -574,16 +574,16 @@ struct AttentionPathLengthView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 06 · WHY ATTENTION WON")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("One step. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(attInk)
-                + Text("Any distance.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("One step. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(attInk)
+                + Text("Any distance.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("Drag the dial. Transformer connects any two tokens in 1 hop. RNN walks the whole sequence, and the gradient travels every step.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -598,7 +598,7 @@ struct AttentionPathLengthView: View {
                     .padding(.bottom, 14)
 
                 Text(stop.verdict)
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(stop.gradientHealth.color)
                     .padding(.bottom, 24)
@@ -676,10 +676,10 @@ struct AttentionPathLengthView: View {
                 ForEach(SeqStop.allCases) { s in
                     VStack(spacing: 2) {
                         Text("n=\(s.label)")
-                            .font(.system(size: 11, weight: stop == s ? .semibold : .regular, design: .serif))
+                            .font(scaledSystemFont(11, weight: stop == s ? .semibold : .regular, design: .serif))
                             .foregroundStyle(stop == s ? attInk : mutedText)
                         Text(s.sublabel.uppercased())
-                            .font(.system(size: 8, weight: .semibold))
+                            .font(scaledSystemFont(8, weight: .semibold))
                             .tracking(0.8)
                             .foregroundStyle(stop == s ? tealAccent : mutedText.opacity(0.7))
                     }
@@ -693,12 +693,12 @@ struct AttentionPathLengthView: View {
         VStack(alignment: .leading, spacing: 14) {
             HStack {
                 Text("STEPS BETWEEN ANY TWO TOKENS")
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                 Spacer()
                 Text("n=\(stop.n)")
-                    .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(11, weight: .semibold, design: .monospaced))
                     .foregroundStyle(attInk)
                     .contentTransition(.numericText())
             }
@@ -728,14 +728,14 @@ struct AttentionPathLengthView: View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
                 Text(label)
-                    .font(.system(size: 12, weight: .semibold, design: .serif))
+                    .font(scaledSystemFont(12, weight: .semibold, design: .serif))
                     .foregroundStyle(attInk)
                 Spacer()
                 Text(tag)
-                    .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(11, weight: .semibold, design: .monospaced))
                     .foregroundStyle(color)
                 Text(note)
-                    .font(.system(size: 10, design: .serif))
+                    .font(scaledSystemFont(10, design: .serif))
                     .italic()
                     .foregroundStyle(attInkSubtle)
             }
@@ -754,7 +754,7 @@ struct AttentionPathLengthView: View {
     private var gradientStrip: some View {
         HStack(spacing: 10) {
             Text("RNN GRADIENT")
-                .font(.system(size: 9, weight: .semibold))
+                .font(scaledSystemFont(9, weight: .semibold))
                 .tracking(1.4)
                 .foregroundStyle(attInkSubtle)
             Spacer()
@@ -763,7 +763,7 @@ struct AttentionPathLengthView: View {
                     .fill(stop.gradientHealth.color)
                     .frame(width: 7, height: 7)
                 Text(stop.gradientHealth.label)
-                    .font(.system(size: 10, weight: .bold))
+                    .font(scaledSystemFont(10, weight: .bold))
                     .tracking(1.0)
                     .foregroundStyle(stop.gradientHealth.color)
             }

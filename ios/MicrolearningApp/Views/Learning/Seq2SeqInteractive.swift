@@ -97,7 +97,7 @@ struct SentenceSwapArt: View {
 
     private var arrow: some View {
         Image(systemName: "arrow.right")
-            .font(.system(size: 14, weight: .semibold))
+            .scaledFont(size: 14, weight: .semibold)
             .foregroundStyle(inkColor.opacity(0.35))
     }
 
@@ -105,13 +105,13 @@ struct SentenceSwapArt: View {
         VStack(spacing: 5) {
             ForEach(words, id: \.self) { w in
                 Text(w)
-                    .font(.system(size: 12, weight: .semibold, design: .serif))
+                    .scaledFont(size: 12, weight: .semibold, design: .serif)
                     .foregroundStyle(.white)
                     .padding(.horizontal, 10).padding(.vertical, 5)
                     .background(Capsule().fill(fill))
             }
             Text(tag)
-                .font(.system(size: 9, weight: .bold)).tracking(0.8)
+                .scaledFont(size: 9, weight: .bold).tracking(0.8)
                 .foregroundStyle(mutedText)
                 .padding(.top, 2)
         }
@@ -137,16 +137,16 @@ struct EncodeStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("READ THE SENTENCE IN")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Feed the source words one at a time. The context vector underneath absorbs each one. There is no growing list, just this fixed row of numbers, updated again and again.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
 
             wordRow
-            Image(systemName: "arrow.down").font(.system(size: 13, weight: .bold))
+            Image(systemName: "arrow.down").scaledFont(size: 13, weight: .bold)
                 .foregroundStyle(mutedText).frame(maxWidth: .infinity)
             vectorView
             statusRow
@@ -160,7 +160,7 @@ struct EncodeStudio: View {
         HStack(spacing: 8) {
             ForEach(0..<s2sWords.count, id: \.self) { i in
                 Text(s2sWords[i].word)
-                    .font(.system(size: 14, weight: .semibold, design: .serif))
+                    .scaledFont(size: 14, weight: .semibold, design: .serif)
                     .foregroundStyle(i < fed ? .white : inkColor.opacity(0.5))
                     .padding(.horizontal, 12).padding(.vertical, 9)
                     .background(RoundedRectangle(cornerRadius: 9)
@@ -175,7 +175,7 @@ struct EncodeStudio: View {
     private var vectorView: some View {
         VStack(spacing: 6) {
             Text("CONTEXT VECTOR")
-                .font(.system(size: 10, weight: .bold)).tracking(1.6)
+                .scaledFont(size: 10, weight: .bold).tracking(1.6)
                 .foregroundStyle(mutedText)
             HStack(spacing: 6) {
                 ForEach(0..<s2sVecLen, id: \.self) { k in
@@ -191,7 +191,7 @@ struct EncodeStudio: View {
                     .frame(height: 70)
                 }
             }
-            .animation(.snappy(duration: 0.35), value: context)
+            .motionAware(.snappy(duration: 0.35), value: context)
         }
     }
 
@@ -201,7 +201,7 @@ struct EncodeStudio: View {
             Text(done
                  ? "Every word is in. This one vector is now the whole sentence, ready to decode."
                  : "Fed \(fed) of \(s2sWords.count) words")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -210,7 +210,7 @@ struct EncodeStudio: View {
     private var button: some View {
         Button { feed() } label: {
             Text(done ? "Sentence encoded \u{2713}" : "Feed next word")
-                .font(.system(size: 14, weight: .semibold))
+                .scaledFont(size: 14, weight: .semibold)
                 .foregroundStyle(done ? tealAccent : .white)
                 .frame(maxWidth: .infinity, minHeight: 46)
                 .background(RoundedRectangle(cornerRadius: 12)
@@ -255,16 +255,16 @@ struct DecodeStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("WRITE THE SENTENCE OUT")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("The decoder starts from the context vector and emits one word, then reads its own word back to choose the next. It keeps going until it emits a stop token.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
 
             contextChip
-            Image(systemName: "arrow.down").font(.system(size: 13, weight: .bold))
+            Image(systemName: "arrow.down").scaledFont(size: 13, weight: .bold)
                 .foregroundStyle(mutedText).frame(maxWidth: .infinity)
             outRow
             statusRow
@@ -277,9 +277,9 @@ struct DecodeStudio: View {
     private var contextChip: some View {
         HStack(spacing: 8) {
             Image(systemName: "shippingbox.fill")
-                .font(.system(size: 13)).foregroundStyle(tealAccent)
+                .scaledFont(size: 13).foregroundStyle(tealAccent)
             Text("CONTEXT VECTOR  \u{00B7}  the encoded source sentence")
-                .font(.system(size: 11, weight: .bold)).tracking(0.6)
+                .scaledFont(size: 11, weight: .bold).tracking(0.6)
                 .foregroundStyle(inkColor.opacity(0.7))
         }
         .padding(.horizontal, 12).padding(.vertical, 10)
@@ -291,14 +291,14 @@ struct DecodeStudio: View {
         HStack(spacing: 8) {
             ForEach(0..<s2sOutput.count, id: \.self) { i in
                 Text(s2sOutput[i])
-                    .font(.system(size: 14, weight: .semibold, design: .serif))
+                    .scaledFont(size: 14, weight: .semibold, design: .serif)
                     .foregroundStyle(i < emitted ? .white : inkColor.opacity(0.3))
                     .padding(.horizontal, 11).padding(.vertical, 9)
                     .background(RoundedRectangle(cornerRadius: 9)
                         .fill(i < emitted ? tealAccent : inkColor.opacity(0.05)))
             }
             Text("\u{25A0}")
-                .font(.system(size: 12, weight: .bold))
+                .scaledFont(size: 12, weight: .bold)
                 .foregroundStyle(emitted > s2sOutput.count ? amberAccent : inkColor.opacity(0.2))
                 .padding(.horizontal, 9).padding(.vertical, 9)
                 .background(RoundedRectangle(cornerRadius: 9)
@@ -306,7 +306,7 @@ struct DecodeStudio: View {
                                                      : inkColor.opacity(0.05)))
         }
         .frame(maxWidth: .infinity)
-        .animation(.snappy(duration: 0.3), value: emitted)
+        .motionAware(.snappy(duration: 0.3), value: emitted)
     }
 
     private var statusRow: some View {
@@ -316,7 +316,7 @@ struct DecodeStudio: View {
                  ? "Stop token emitted. The translation is complete, and it is shorter in words yet means the same."
                  : emitted == 0 ? "Emit the first word from the context vector."
                    : "Emitted \(emitted) word(s), each one feeding the next step")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -326,7 +326,7 @@ struct DecodeStudio: View {
         Button { emit() } label: {
             Text(done ? "Translation done \u{2713}"
                       : emitted == s2sOutput.count ? "Emit the stop token" : "Emit next word")
-                .font(.system(size: 14, weight: .semibold))
+                .scaledFont(size: 14, weight: .semibold)
                 .foregroundStyle(done ? tealAccent : .white)
                 .frame(maxWidth: .infinity, minHeight: 46)
                 .background(RoundedRectangle(cornerRadius: 12)
@@ -368,10 +368,10 @@ struct BottleneckStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("THE FIXED-SIZE CATCH")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("The context vector is one size, always. A four-word sentence and a thirty-word sentence get the exact same room. Drag the length and watch the pressure build.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -388,7 +388,7 @@ struct BottleneckStudio: View {
     private var vectorWithWords: some View {
         VStack(spacing: 8) {
             Text("ONE VECTOR, \(Int(length)) WORDS SHARING IT")
-                .font(.system(size: 10, weight: .bold)).tracking(1.4)
+                .scaledFont(size: 10, weight: .bold).tracking(1.4)
                 .foregroundStyle(mutedText)
             GeometryReader { g in
                 let n = Int(length)
@@ -407,7 +407,7 @@ struct BottleneckStudio: View {
                 }
             }
             .frame(height: 44)
-            .animation(.snappy(duration: 0.3), value: length)
+            .motionAware(.snappy(duration: 0.3), value: length)
         }
     }
 
@@ -415,11 +415,11 @@ struct BottleneckStudio: View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
                 Text("COMPRESSION STRAIN")
-                    .font(.system(size: 10, weight: .bold)).tracking(1.6)
+                    .scaledFont(size: 10, weight: .bold).tracking(1.6)
                     .foregroundStyle(mutedText)
                 Spacer()
                 Text(strain > 0.66 ? "high" : strain > 0.33 ? "rising" : "low")
-                    .font(.system(size: 11, weight: .bold))
+                    .scaledFont(size: 11, weight: .bold)
                     .foregroundStyle(strain > 0.5 ? Color(hex: "c2557a") : inkColor.opacity(0.7))
             }
             GeometryReader { g in
@@ -431,14 +431,14 @@ struct BottleneckStudio: View {
                 }
             }
             .frame(height: 20)
-            .animation(.snappy(duration: 0.3), value: strain)
+            .motionAware(.snappy(duration: 0.3), value: strain)
         }
     }
 
     private var lengthSlider: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("SENTENCE LENGTH  \(Int(length)) words")
-                .font(.system(size: 10, weight: .bold, design: .monospaced))
+                .scaledFont(size: 10, weight: .bold, design: .monospaced)
                 .foregroundStyle(mutedText)
             Slider(value: $length, in: 3...30) { editing in
                 if !editing && length >= 22 {
@@ -457,7 +457,7 @@ struct BottleneckStudio: View {
             Text(sawLong
                  ? "A long sentence is squeezed hard. The fix, letting the decoder look back at every word, is the next paper: attention."
                  : "Room per word: \(String(format: "%.0f%%", roomPerWord * 100)) of the vector")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }

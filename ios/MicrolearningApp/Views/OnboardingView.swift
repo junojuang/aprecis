@@ -28,7 +28,7 @@ struct OnboardingView: View {
                     }
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
-                .animation(.easeInOut, value: page)
+                .motionAware(.easeInOut, value: page)
 
                 pageDots
                 ctaBlock
@@ -40,7 +40,7 @@ struct OnboardingView: View {
         HStack {
             Spacer()
             Button("Skip") { finish() }
-                .font(.system(size: 13, weight: .semibold))
+                .scaledFont(size: 13, weight: .semibold)
                 .foregroundStyle(mutedText)
         }
         .padding(.horizontal, 24)
@@ -53,24 +53,25 @@ struct OnboardingView: View {
             Spacer(minLength: 12)
             illustration(for: p)
                 .padding(.bottom, 28)
+                .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 12) {
                 Text(p.eyebrow)
-                    .font(.system(size: 10, weight: .bold))
+                    .scaledFont(size: 10, weight: .bold)
                     .tracking(1.8)
                     .foregroundStyle(tealAccent)
                 Text(p.title)
-                    .font(.system(size: 30, weight: .regular, design: .serif))
+                    .scaledFont(size: 30, weight: .regular, design: .serif)
                     .foregroundStyle(inkColor)
                     .lineSpacing(2)
                     .fixedSize(horizontal: false, vertical: true)
                 Text(p.body)
-                    .font(.system(size: 14, design: .serif))
+                    .scaledFont(size: 14, design: .serif)
                     .foregroundStyle(mutedText)
                     .lineSpacing(4)
                     .fixedSize(horizontal: false, vertical: true)
                 if let footnote = p.footnote {
                     Text(footnote)
-                        .font(.system(size: 12, design: .serif))
+                        .scaledFont(size: 12, design: .serif)
                         .italic()
                         .foregroundStyle(mutedText.opacity(0.8))
                         .lineSpacing(3)
@@ -80,6 +81,7 @@ struct OnboardingView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 28)
+            .accessibilityElement(children: .combine)
             Spacer(minLength: 0)
         }
     }
@@ -100,7 +102,7 @@ struct OnboardingView: View {
         ZStack {
             Circle().fill(tealLight).frame(width: 220, height: 220)
             Text("a")
-                .font(.system(size: 180, weight: .regular, design: .serif))
+                .scaledFont(size: 180, weight: .regular, design: .serif)
                 .italic()
                 .foregroundStyle(tealAccent.opacity(0.85))
                 .offset(y: -8)
@@ -123,7 +125,7 @@ struct OnboardingView: View {
             }
             VStack(alignment: .leading, spacing: 8) {
                 Text("TODAY · 7 MIN")
-                    .font(.system(size: 9, weight: .bold))
+                    .scaledFont(size: 9, weight: .bold)
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                 Rectangle().fill(inkColor.opacity(0.85)).frame(height: 9).cornerRadius(2)
@@ -168,7 +170,7 @@ struct OnboardingView: View {
                 )
                 .shadow(color: inkColor.opacity(0.05), radius: 3, y: 1)
             Image(systemName: glyph)
-                .font(.system(size: 13, weight: .bold))
+                .scaledFont(size: 13, weight: .bold)
                 .foregroundStyle(filled ? .white : color)
         }
         .offset(x: offset)
@@ -189,7 +191,7 @@ struct OnboardingView: View {
         VStack(spacing: 10) {
             HStack(spacing: 10) {
                 Image(systemName: "bookmark.fill")
-                    .font(.system(size: 12, weight: .bold))
+                    .scaledFont(size: 12, weight: .bold)
                     .foregroundStyle(tealAccent)
                     .frame(width: 28, height: 28)
                     .background(Circle().fill(tealLight))
@@ -206,7 +208,7 @@ struct OnboardingView: View {
 
             HStack(spacing: 10) {
                 Image(systemName: "bookmark.fill")
-                    .font(.system(size: 12, weight: .bold))
+                    .scaledFont(size: 12, weight: .bold)
                     .foregroundStyle(tealAccent)
                     .frame(width: 28, height: 28)
                     .background(Circle().fill(tealLight))
@@ -240,7 +242,7 @@ struct OnboardingView: View {
             (Text("Stack ")
                 + Text(glossaryTermAttributed)
                 + Text(" layers and depth becomes capacity."))
-                .font(.system(size: 15, design: .serif))
+                .scaledFont(size: 15, design: .serif)
                 .foregroundStyle(inkColor)
                 .lineSpacing(3)
                 .multilineTextAlignment(.center)
@@ -250,16 +252,16 @@ struct OnboardingView: View {
             VStack(alignment: .leading, spacing: 6) {
                 HStack(spacing: 6) {
                     Text("ATTENTION")
-                        .font(.system(size: 9, weight: .bold))
+                        .scaledFont(size: 9, weight: .bold)
                         .tracking(1.6)
                         .foregroundStyle(tealAccent)
                     Spacer()
                     Image(systemName: "xmark")
-                        .font(.system(size: 9, weight: .bold))
+                        .scaledFont(size: 9, weight: .bold)
                         .foregroundStyle(mutedText)
                 }
                 Text("A mechanism that lets each token weigh every other token by relevance.")
-                    .font(.system(size: 12, design: .serif))
+                    .scaledFont(size: 12, design: .serif)
                     .foregroundStyle(inkColor)
                     .lineSpacing(2)
                     .fixedSize(horizontal: false, vertical: true)
@@ -280,11 +282,13 @@ struct OnboardingView: View {
                 Capsule()
                     .fill(i == page ? tealAccent : mutedText.opacity(0.25))
                     .frame(width: i == page ? 22 : 6, height: 6)
-                    .animation(.spring(response: 0.32, dampingFraction: 0.85), value: page)
+                    .motionAware(.spring(response: 0.32, dampingFraction: 0.85), value: page)
             }
         }
         .padding(.top, 14)
         .padding(.bottom, 16)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Page \(page + 1) of \(pages.count)")
     }
 
     private var ctaBlock: some View {
@@ -297,7 +301,7 @@ struct OnboardingView: View {
                 }
             } label: {
                 Text(page == pages.count - 1 ? "Start reading" : "Continue")
-                    .font(.system(size: 14, weight: .bold))
+                    .scaledFont(size: 14, weight: .bold)
                     .tracking(0.6)
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity, minHeight: 50)
@@ -312,7 +316,7 @@ struct OnboardingView: View {
                 withAnimation { page -= 1 }
             } label: {
                 Text("Back")
-                    .font(.system(size: 13, weight: .semibold))
+                    .scaledFont(size: 13, weight: .semibold)
                     .foregroundStyle(mutedText)
             }
             .opacity(page > 0 ? 1 : 0)

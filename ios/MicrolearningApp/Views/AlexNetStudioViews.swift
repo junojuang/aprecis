@@ -93,16 +93,16 @@ struct AlexNetAblationView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 04 · FIVE TRICKS COMPOUND")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("Flip each on. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(axInk)
-                + Text("Watch error collapse.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("Flip each on. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(axInk)
+                + Text("Watch error collapse.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("Each row is one of AlexNet's five practical ideas. Toggle any combination. The top-5 error tile recomputes the contribution of what's on.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -114,7 +114,7 @@ struct AlexNetAblationView: View {
                     .padding(.bottom, 14)
 
                 Text(verdictLine)
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(axInkSubtle)
                     .padding(.bottom, 24)
@@ -158,23 +158,23 @@ struct AlexNetAblationView: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Text("IMAGENET TOP-5 ERROR")
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                 Spacer()
                 Text("2012")
-                    .font(.system(size: 9, weight: .bold, design: .monospaced))
+                    .font(scaledSystemFont(9, weight: .bold, design: .monospaced))
                     .tracking(0.8)
                     .foregroundStyle(axInkSubtle.opacity(0.7))
             }
 
             HStack(alignment: .firstTextBaseline, spacing: 8) {
                 Text(String(format: "%.1f", animatedError))
-                    .font(.system(size: 56, weight: .regular, design: .serif))
+                    .font(scaledSystemFont(56, weight: .regular, design: .serif))
                     .foregroundStyle(tealAccent)
                     .contentTransition(.numericText(value: animatedError))
                 Text("%")
-                    .font(.system(size: 20, weight: .regular, design: .serif))
+                    .font(scaledSystemFont(20, weight: .regular, design: .serif))
                     .foregroundStyle(axInkSubtle)
                 Spacer()
                 deltaChip
@@ -195,11 +195,11 @@ struct AlexNetAblationView: View {
 
             HStack {
                 Text("baseline 25.6%")
-                    .font(.system(size: 9, design: .monospaced))
+                    .font(scaledSystemFont(9, design: .monospaced))
                     .foregroundStyle(amberAccent)
                 Spacer()
                 Text("AlexNet 16.0%")
-                    .font(.system(size: 9, design: .monospaced))
+                    .font(scaledSystemFont(9, design: .monospaced))
                     .foregroundStyle(tealAccent)
             }
         }
@@ -216,7 +216,7 @@ struct AlexNetAblationView: View {
         let label = delta < 0.05 ? "no improvement" : "−\(String(format: "%.1f", delta)) pt"
         let color: Color = delta < 0.05 ? axInkSubtle : tealAccent
         return Text(label)
-            .font(.system(size: 10, weight: .bold))
+            .font(scaledSystemFont(10, weight: .bold))
             .tracking(0.8)
             .foregroundStyle(color)
             .padding(.horizontal, 8)
@@ -253,16 +253,16 @@ struct AlexNetAblationView: View {
                         .frame(width: 22, height: 22)
                     if isOn {
                         Image(systemName: "checkmark")
-                            .font(.system(size: 11, weight: .bold))
+                            .font(scaledSystemFont(11, weight: .bold))
                             .foregroundStyle(.white)
                     }
                 }
                 VStack(alignment: .leading, spacing: 2) {
                     Text(t.name)
-                        .font(.system(size: 13, weight: .semibold, design: .serif))
+                        .font(scaledSystemFont(13, weight: .semibold, design: .serif))
                         .foregroundStyle(axInk)
                     Text(t.subtitle)
-                        .font(.system(size: 10, design: .serif))
+                        .font(scaledSystemFont(10, design: .serif))
                         .foregroundStyle(axInkSubtle)
                         .multilineTextAlignment(.leading)
                         .fixedSize(horizontal: false, vertical: true)
@@ -270,10 +270,10 @@ struct AlexNetAblationView: View {
                 Spacer(minLength: 6)
                 VStack(alignment: .trailing, spacing: 1) {
                     Text(isOn ? "−\(String(format: "%.1f", t.deltaPct))" : "+\(String(format: "%.1f", t.deltaPct))")
-                        .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                        .font(scaledSystemFont(12, weight: .semibold, design: .monospaced))
                         .foregroundStyle(isOn ? tealAccent : amberAccent)
                     Text("pt")
-                        .font(.system(size: 8, weight: .bold))
+                        .font(scaledSystemFont(8, weight: .bold))
                         .tracking(0.8)
                         .foregroundStyle(axInkSubtle.opacity(0.7))
                 }
@@ -364,16 +364,16 @@ struct AlexNetReluRaceView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 05 · TRAINING SPEED")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("Six times faster. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(axInk)
-                + Text("That's the whole story.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("Six times faster. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(axInk)
+                + Text("That's the whole story.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("Tap each activation to add its training curve. ReLU hits 25% error in 6 epochs. tanh needs 36. Sigmoid almost never gets there.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -388,7 +388,7 @@ struct AlexNetReluRaceView: View {
                     .padding(.bottom, 14)
 
                 Text(hovered.verdict)
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(hovered.color)
                     .padding(.bottom, 24)
@@ -427,7 +427,7 @@ struct AlexNetReluRaceView: View {
                     HStack(spacing: 6) {
                         Circle().fill(a.color).frame(width: 8, height: 8)
                         Text(a.name)
-                            .font(.system(size: 11, weight: visible.contains(a) ? .semibold : .regular, design: .serif))
+                            .font(scaledSystemFont(11, weight: visible.contains(a) ? .semibold : .regular, design: .serif))
                             .foregroundStyle(visible.contains(a) ? axInk : axInkSubtle)
                     }
                     .padding(.horizontal, 12)
@@ -448,12 +448,12 @@ struct AlexNetReluRaceView: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text("TRAINING ERROR · 0 → 40 EPOCHS")
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                 Spacer()
                 Text("target = 25%")
-                    .font(.system(size: 9, weight: .bold, design: .monospaced))
+                    .font(scaledSystemFont(9, weight: .bold, design: .monospaced))
                     .foregroundStyle(axInkSubtle.opacity(0.7))
             }
 
@@ -480,7 +480,7 @@ struct AlexNetReluRaceView: View {
                     .stroke(tealAccent.opacity(0.5), style: StrokeStyle(lineWidth: 1.0, dash: [4, 3]))
 
                     Text("25%")
-                        .font(.system(size: 8, weight: .bold, design: .monospaced))
+                        .font(scaledSystemFont(8, weight: .bold, design: .monospaced))
                         .foregroundStyle(tealAccent)
                         .position(x: w - 18, y: tY - 8)
 
@@ -507,7 +507,7 @@ struct AlexNetReluRaceView: View {
                 Spacer()
                 Text("40 epochs")
             }
-            .font(.system(size: 8, weight: .semibold, design: .monospaced))
+            .font(scaledSystemFont(8, weight: .semibold, design: .monospaced))
             .foregroundStyle(axInkSubtle.opacity(0.7))
         }
         .padding(16)
@@ -540,14 +540,14 @@ struct AlexNetReluRaceView: View {
                     HStack(spacing: 6) {
                         Circle().fill(a.color).frame(width: 7, height: 7)
                         Text(a.name)
-                            .font(.system(size: 10, weight: .semibold, design: .serif))
+                            .font(scaledSystemFont(10, weight: .semibold, design: .serif))
                             .foregroundStyle(axInk)
                     }
                     Text("\(a.epochsToTarget)")
-                        .font(.system(size: 18, weight: .semibold, design: .monospaced))
+                        .font(scaledSystemFont(18, weight: .semibold, design: .monospaced))
                         .foregroundStyle(a.color)
                     Text("epochs to 25%")
-                        .font(.system(size: 8, weight: .bold))
+                        .font(scaledSystemFont(8, weight: .bold))
                         .tracking(0.8)
                         .foregroundStyle(axInkSubtle.opacity(0.8))
                 }
@@ -627,16 +627,16 @@ struct AlexNetCliffView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 06 · THE 2012 CLIFF")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("Three years. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(axInk)
-                + Text("One phase transition.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("Three years. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(axInk)
+                + Text("One phase transition.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("ImageNet top-5 error. Tap any year to see the team and method. The runner-up in 2012 still used hand-crafted features and landed where the trend predicted.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -648,7 +648,7 @@ struct AlexNetCliffView: View {
                     .padding(.bottom, 14)
 
                 Text(currentEntry.blurb)
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(currentEntry.isAlexNet ? tealAccent : axInkSubtle)
                     .padding(.bottom, 24)
@@ -675,12 +675,12 @@ struct AlexNetCliffView: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text("TOP-5 ERROR (%)")
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                 Spacer()
                 Text("lower = better")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(scaledSystemFont(8, weight: .bold))
                     .tracking(0.8)
                     .foregroundStyle(axInkSubtle.opacity(0.7))
             }
@@ -711,7 +711,7 @@ struct AlexNetCliffView: View {
                         .frame(height: bandBot - bandTop)
                         .position(x: w / 2, y: (bandTop + bandBot) / 2)
                     Text("hand-crafted ceiling")
-                        .font(.system(size: 8, weight: .bold))
+                        .font(scaledSystemFont(8, weight: .bold))
                         .tracking(0.8)
                         .foregroundStyle(amberAccent)
                         .position(x: 78, y: bandTop + 6)
@@ -745,13 +745,13 @@ struct AlexNetCliffView: View {
 
                         // value tag
                         Text(String(format: "%.1f", e.topFive))
-                            .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                            .font(scaledSystemFont(10, weight: .semibold, design: .monospaced))
                             .foregroundStyle(color)
                             .position(x: cx, y: barY - 10)
 
                         // year label
                         Text(e.year)
-                            .font(.system(size: 9, weight: isSel ? .bold : .semibold, design: .serif))
+                            .font(scaledSystemFont(9, weight: isSel ? .bold : .semibold, design: .serif))
                             .foregroundStyle(isSel ? axInk : axInkSubtle)
                             .position(x: cx, y: h + 12)
 
@@ -777,7 +777,7 @@ struct AlexNetCliffView: View {
                     .stroke(tealAccent.opacity(0.7), style: StrokeStyle(lineWidth: 1.2, dash: [3, 3]))
 
                     Text("−9.8 pt")
-                        .font(.system(size: 9, weight: .bold, design: .monospaced))
+                        .font(scaledSystemFont(9, weight: .bold, design: .monospaced))
                         .foregroundStyle(.white)
                         .padding(.horizontal, 6)
                         .padding(.vertical, 3)
@@ -802,13 +802,13 @@ struct AlexNetCliffView: View {
         return VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text("\(e.year) · \(e.team.uppercased())")
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(color.opacity(0.85))
                 Spacer()
                 if e.isAlexNet {
                     Text("DEEP LEARNING")
-                        .font(.system(size: 8, weight: .bold))
+                        .font(scaledSystemFont(8, weight: .bold))
                         .tracking(1.0)
                         .foregroundStyle(.white)
                         .padding(.horizontal, 6)
@@ -816,7 +816,7 @@ struct AlexNetCliffView: View {
                         .background(Capsule().fill(tealAccent))
                 } else {
                     Text("HAND CRAFTED")
-                        .font(.system(size: 8, weight: .bold))
+                        .font(scaledSystemFont(8, weight: .bold))
                         .tracking(1.0)
                         .foregroundStyle(amberAccent)
                         .padding(.horizontal, 6)
@@ -826,14 +826,14 @@ struct AlexNetCliffView: View {
                 }
             }
             Text(e.method)
-                .font(.system(size: 16, weight: .semibold, design: .serif))
+                .font(scaledSystemFont(16, weight: .semibold, design: .serif))
                 .foregroundStyle(axInk)
             HStack(alignment: .firstTextBaseline, spacing: 4) {
                 Text(String(format: "%.1f", e.topFive))
-                    .font(.system(size: 32, weight: .regular, design: .serif))
+                    .font(scaledSystemFont(32, weight: .regular, design: .serif))
                     .foregroundStyle(color)
                 Text("% top-5 error")
-                    .font(.system(size: 11, design: .serif))
+                    .font(scaledSystemFont(11, design: .serif))
                     .foregroundStyle(axInkSubtle)
             }
         }

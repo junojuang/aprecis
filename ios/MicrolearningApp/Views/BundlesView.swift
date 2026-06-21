@@ -44,10 +44,10 @@ struct BundlesView: View {
     private var pageHeader: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text("Bundles")
-                .font(.system(size: 32, weight: .regular, design: .serif))
+                .scaledFont(size: 32, weight: .regular, design: .serif)
                 .foregroundStyle(inkColor)
             Text("Pick a path. Each one runs ten papers deep.")
-                .font(.system(size: 13, design: .serif))
+                .scaledFont(size: 13, design: .serif)
                 .italic()
                 .foregroundStyle(mutedText)
         }
@@ -85,23 +85,23 @@ private struct BundleCard: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 8) {
                 Text(bundle.level.rawValue.uppercased())
-                    .font(.system(size: 9, weight: .bold))
+                    .scaledFont(size: 9, weight: .bold)
                     .tracking(1.2)
                     .foregroundStyle(bundle.isLocked ? mutedText : accent)
                     .padding(.horizontal, 8).padding(.vertical, 3)
                     .background((bundle.isLocked ? mutedText : accent).opacity(0.12))
                     .clipShape(Capsule())
                 Text("\(bundle.count) papers")
-                    .font(.system(size: 10, design: .serif))
+                    .scaledFont(size: 10, design: .serif)
                     .italic()
                     .foregroundStyle(mutedText)
                 Spacer()
                 if bundle.isLocked {
                     HStack(spacing: 4) {
                         Image(systemName: "lock.fill")
-                            .font(.system(size: 9, weight: .bold))
+                            .scaledFont(size: 9, weight: .bold)
                         Text("COMING SOON")
-                            .font(.system(size: 9, weight: .bold))
+                            .scaledFont(size: 9, weight: .bold)
                             .tracking(1.2)
                     }
                     .foregroundStyle(mutedText)
@@ -109,19 +109,19 @@ private struct BundleCard: View {
                     .background(Capsule().stroke(mutedText.opacity(0.35), lineWidth: 1))
                 } else {
                     Image(systemName: "chevron.right")
-                        .font(.system(size: 11, weight: .medium))
+                        .scaledFont(size: 11, weight: .medium)
                         .foregroundStyle(mutedText.opacity(0.5))
                 }
             }
 
             Text(bundle.title)
-                .font(.system(size: 20, weight: .semibold, design: .serif))
+                .scaledFont(size: 20, weight: .semibold, design: .serif)
                 .foregroundStyle(bundle.isLocked ? inkColor.opacity(0.55) : inkColor)
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
 
             Text(bundle.subtitle)
-                .font(.system(size: 12.5, design: .serif))
+                .scaledFont(size: 12.5, design: .serif)
                 .italic()
                 .foregroundStyle(mutedText)
                 .lineLimit(2)
@@ -138,7 +138,7 @@ private struct BundleCard: View {
                 }
                 .frame(height: 4)
                 Text(bundle.isLocked ? "Locked" : "\(doneCount)/\(bundle.count)")
-                    .font(.system(size: 9, weight: .bold))
+                    .scaledFont(size: 9, weight: .bold)
                     .tracking(0.8)
                     .foregroundStyle(bundle.isLocked ? mutedText : accent)
             }
@@ -250,25 +250,25 @@ struct StagePathView: View {
                     .frame(width: 48, height: 48)
                 if isLocked {
                     Image(systemName: "lock.fill")
-                        .font(.system(size: 14, weight: .bold))
+                        .scaledFont(size: 14, weight: .bold)
                         .foregroundStyle(mutedText)
                 } else {
                     Text("\(stageNumber)")
-                        .font(.system(size: 20, weight: .semibold, design: .serif))
+                        .scaledFont(size: 20, weight: .semibold, design: .serif)
                         .foregroundStyle(accent)
                 }
             }
             VStack(alignment: .leading, spacing: 3) {
                 Text("STAGE \(stageNumber) · \(bundle.level.rawValue.uppercased())")
-                    .font(.system(size: 9, weight: .bold))
+                    .scaledFont(size: 9, weight: .bold)
                     .tracking(1.4)
                     .foregroundStyle(mutedText)
                 Text(bundle.title)
-                    .font(.system(size: 18, weight: .semibold, design: .serif))
+                    .scaledFont(size: 18, weight: .semibold, design: .serif)
                     .foregroundStyle(isLocked ? mutedText : inkColor)
                     .lineLimit(2)
                 Text(bundle.subtitle)
-                    .font(.system(size: 12, design: .serif))
+                    .scaledFont(size: 12, design: .serif)
                     .italic()
                     .foregroundStyle(mutedText)
                     .lineLimit(2)
@@ -292,7 +292,7 @@ struct StagePathView: View {
             }
             .frame(height: 4)
             Text("\(dynamicDoneCount)/\(bundle.count)")
-                .font(.system(size: 9, weight: .bold))
+                .scaledFont(size: 9, weight: .bold)
                 .tracking(0.8)
                 .foregroundStyle(isLocked ? mutedText : accent)
         }
@@ -344,7 +344,7 @@ struct StagePathView: View {
             .offset(x: xOffset)
 
             Text(tagline)
-                .font(.system(size: 10.5, design: .serif))
+                .scaledFont(size: 10.5, design: .serif)
                 .italic()
                 .foregroundStyle(mutedText.opacity(status == .locked || status == .comingSoon ? 0.4 : 0.65))
                 .lineLimit(2)
@@ -440,7 +440,7 @@ struct StagePathView: View {
                 nodeGlyph(index: index, status: status)
             }
             Text(label.uppercased())
-                .font(.system(size: 9, weight: .bold))
+                .scaledFont(size: 9, weight: .bold)
                 .tracking(1.0)
                 .foregroundStyle(labelColor(status: status))
                 .lineLimit(1)
@@ -454,19 +454,19 @@ struct StagePathView: View {
         switch status {
         case .completed:
             Image(systemName: "checkmark")
-                .font(.system(size: 18, weight: .bold))
+                .scaledFont(size: 18, weight: .bold)
                 .foregroundStyle(.white)
         case .current:
             Image(systemName: "play.fill")
-                .font(.system(size: 14, weight: .bold))
+                .scaledFont(size: 14, weight: .bold)
                 .foregroundStyle(.white)
         case .locked:
             Image(systemName: "lock.fill")
-                .font(.system(size: 14, weight: .bold))
+                .scaledFont(size: 14, weight: .bold)
                 .foregroundStyle(mutedText)
         case .comingSoon:
             Image(systemName: "hourglass")
-                .font(.system(size: 13, weight: .semibold))
+                .scaledFont(size: 13, weight: .semibold)
                 .foregroundStyle(mutedText)
         }
     }
@@ -582,7 +582,7 @@ struct StagePathView: View {
         HStack(spacing: 10) {
             Rectangle().fill(borderColor).frame(height: 1)
             Image(systemName: dynamicComplete ? "checkmark.seal.fill" : "arrow.down")
-                .font(.system(size: 11, weight: .semibold))
+                .scaledFont(size: 11, weight: .semibold)
                 .foregroundStyle(dynamicComplete ? accent : mutedText)
             Rectangle().fill(borderColor).frame(height: 1)
             Rectangle().fill(borderColor.opacity(0.5)).frame(width: 22, height: 1)

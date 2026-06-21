@@ -82,16 +82,16 @@ struct LearnView: View {
     private var pageHeader: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("APRECIS · LEARN")
-                .font(.system(size: 10, weight: .bold))
+                .scaledFont(size: 10, weight: .bold)
                 .tracking(2.2)
                 .foregroundStyle(tealAccent)
 
             Text("Climb the map.")
-                .font(.system(size: 32, weight: .regular, design: .serif))
+                .scaledFont(size: 32, weight: .regular, design: .serif)
                 .foregroundStyle(inkColor)
 
             Text("Eleven papers, sixty-two years. Begin at Perceptron, climb to the Transformer, then branch into the field that pulls you.")
-                .font(.system(size: 13, design: .serif))
+                .scaledFont(size: 13, design: .serif)
                 .italic()
                 .foregroundStyle(mutedText)
                 .fixedSize(horizontal: false, vertical: true)
@@ -113,11 +113,11 @@ struct LearnView: View {
 
             VStack(spacing: 3) {
                 Text("START HERE")
-                    .font(.system(size: 10, weight: .bold))
+                    .scaledFont(size: 10, weight: .bold)
                     .tracking(2.4)
                     .foregroundStyle(tealAccent)
                 Text("Perceptron, 1958")
-                    .font(.system(size: 12, design: .serif))
+                    .scaledFont(size: 12, design: .serif)
                     .italic()
                     .foregroundStyle(mutedText)
             }
@@ -134,9 +134,9 @@ struct LearnView: View {
             HStack(spacing: 6) {
                 Text("Suggest the next path")
                 Image(systemName: "arrow.right")
-                    .font(.system(size: 11, weight: .bold))
+                    .scaledFont(size: 11, weight: .bold)
             }
-            .font(.system(size: 12, weight: .semibold, design: .serif))
+            .scaledFont(size: 12, weight: .semibold, design: .serif)
             .italic()
             .foregroundStyle(mutedText)
             .padding(.horizontal, 14)
@@ -271,11 +271,11 @@ private struct BranchColumn: View {
             // Header
             VStack(spacing: 3) {
                 Text(branch.title.uppercased())
-                    .font(.system(size: 10, weight: .bold))
+                    .scaledFont(size: 10, weight: .bold)
                     .tracking(1.8)
                     .foregroundStyle(branch.accent)
                 Text(branch.blurb)
-                    .font(.system(size: 9, design: .serif))
+                    .scaledFont(size: 9, design: .serif)
                     .italic()
                     .foregroundStyle(mutedText)
                     .multilineTextAlignment(.center)
@@ -337,7 +337,7 @@ private struct SpineNodeRow: View {
 
             capsule
                 .scaleEffect(pressed ? 0.97 : 1.0)
-                .animation(.spring(response: 0.28, dampingFraction: 0.7), value: pressed)
+                .motionAware(.spring(response: 0.28, dampingFraction: 0.7), value: pressed)
                 .onTapGesture {
                     pressed = true
                     onTap()
@@ -380,7 +380,7 @@ private struct SpineNodeRow: View {
                     .blur(radius: 4)
                     .scaleEffect(pulse ? 1.04 : 1.0)
                     .opacity(pulse ? 0.4 : 0.75)
-                    .animation(.easeInOut(duration: 1.6).repeatForever(autoreverses: true), value: pulse)
+                    .motionAware(.easeInOut(duration: 1.6).repeatForever(autoreverses: true), value: pulse)
             }
 
             HStack(spacing: 14) {
@@ -390,15 +390,15 @@ private struct SpineNodeRow: View {
                 VStack(alignment: .leading, spacing: 3) {
                     HStack(spacing: 8) {
                         Text(node.title)
-                            .font(.system(size: 17, weight: .semibold, design: .serif))
+                            .scaledFont(size: 17, weight: .semibold, design: .serif)
                             .foregroundStyle(titleColor)
                             .lineLimit(1)
                         Text("\(verbatimYear)")
-                            .font(.system(size: 11, weight: .medium, design: .monospaced))
+                            .scaledFont(size: 11, weight: .medium, design: .monospaced)
                             .foregroundStyle(mutedText)
                     }
                     Text(node.oneLiner)
-                        .font(.system(size: 11, design: .serif))
+                        .scaledFont(size: 11, design: .serif)
                         .italic()
                         .foregroundStyle(subtitleColor)
                         .lineLimit(2)
@@ -472,7 +472,7 @@ private struct SpineNodeRow: View {
             ZStack {
                 Circle().fill(paperBg)
                 Image(systemName: "checkmark")
-                    .font(.system(size: 14, weight: .bold))
+                    .scaledFont(size: 14, weight: .bold)
                     .foregroundStyle(accent)
             }
         case .current:
@@ -484,21 +484,21 @@ private struct SpineNodeRow: View {
             ZStack {
                 Circle().fill(accent.opacity(0.12))
                 Image(systemName: "arrow.up.right")
-                    .font(.system(size: 12, weight: .bold))
+                    .scaledFont(size: 12, weight: .bold)
                     .foregroundStyle(accent)
             }
         case .lockedAhead:
             ZStack {
                 Circle().fill(mutedText.opacity(0.10))
                 Image(systemName: "lock.fill")
-                    .font(.system(size: 12, weight: .bold))
+                    .scaledFont(size: 12, weight: .bold)
                     .foregroundStyle(mutedText)
             }
         case .comingSoon:
             ZStack {
                 Circle().fill(mutedText.opacity(0.10))
                 Image(systemName: "hourglass")
-                    .font(.system(size: 12, weight: .bold))
+                    .scaledFont(size: 12, weight: .bold)
                     .foregroundStyle(mutedText)
             }
         }
@@ -508,7 +508,7 @@ private struct SpineNodeRow: View {
     private var stateBadge: some View {
         let (label, color, bg) = badgeStyle
         Text(label)
-            .font(.system(size: 9, weight: .bold))
+            .scaledFont(size: 9, weight: .bold)
             .tracking(1.4)
             .foregroundStyle(color)
             .padding(.horizontal, 8)
@@ -544,7 +544,7 @@ private struct BranchNodeRow: View {
             connector(visible: !isFirstInColumn)
             capsule
                 .scaleEffect(pressed ? 0.97 : 1.0)
-                .animation(.spring(response: 0.28, dampingFraction: 0.7), value: pressed)
+                .motionAware(.spring(response: 0.28, dampingFraction: 0.7), value: pressed)
                 .onTapGesture {
                     pressed = true
                     onTap()
@@ -580,12 +580,12 @@ private struct BranchNodeRow: View {
                 HStack(spacing: 4) {
                     miniIcon
                     Text(node.title)
-                        .font(.system(size: 11, weight: .semibold, design: .serif))
+                        .scaledFont(size: 11, weight: .semibold, design: .serif)
                         .foregroundStyle(titleColor)
                         .lineLimit(1)
                 }
                 Text("\(node.year)")
-                    .font(.system(size: 8, weight: .medium, design: .monospaced))
+                    .scaledFont(size: 8, weight: .medium, design: .monospaced)
                     .foregroundStyle(mutedText)
             }
             .padding(.horizontal, 8)
@@ -622,21 +622,21 @@ private struct BranchNodeRow: View {
         switch state {
         case .completed:
             Image(systemName: "checkmark")
-                .font(.system(size: 8, weight: .bold))
+                .scaledFont(size: 8, weight: .bold)
                 .foregroundStyle(paperBg)
         case .current:
             Circle().fill(accent).frame(width: 6, height: 6)
         case .unlocked:
             Image(systemName: "arrow.up.right")
-                .font(.system(size: 8, weight: .bold))
+                .scaledFont(size: 8, weight: .bold)
                 .foregroundStyle(accent)
         case .lockedAhead:
             Image(systemName: "lock.fill")
-                .font(.system(size: 8, weight: .bold))
+                .scaledFont(size: 8, weight: .bold)
                 .foregroundStyle(mutedText)
         case .comingSoon:
             Image(systemName: "hourglass")
-                .font(.system(size: 8, weight: .bold))
+                .scaledFont(size: 8, weight: .bold)
                 .foregroundStyle(mutedText)
         }
     }
@@ -684,13 +684,13 @@ private struct ComingSoonPaperView: View {
     var body: some View {
         VStack(spacing: 14) {
             Image(systemName: "hourglass")
-                .font(.system(size: 28, weight: .light))
+                .scaledFont(size: 28, weight: .light)
                 .foregroundStyle(mutedText)
             Text("This paper is being prepared.")
-                .font(.system(size: 18, weight: .regular, design: .serif))
+                .scaledFont(size: 18, weight: .regular, design: .serif)
                 .foregroundStyle(inkColor)
             Text("Check back soon, or tell us which path to build next from the Learn tab.")
-                .font(.system(size: 13, design: .serif))
+                .scaledFont(size: 13, design: .serif)
                 .italic()
                 .foregroundStyle(mutedText)
                 .multilineTextAlignment(.center)
@@ -714,16 +714,16 @@ private struct RequestPathSheet: View {
                 paperBg.ignoresSafeArea()
                 VStack(alignment: .leading, spacing: 18) {
                     Text("APRECIS · LEARN")
-                        .font(.system(size: 10, weight: .bold))
+                        .scaledFont(size: 10, weight: .bold)
                         .tracking(2.0)
                         .foregroundStyle(tealAccent)
 
                     Text("Suggest the next path.")
-                        .font(.system(size: 26, weight: .regular, design: .serif))
+                        .scaledFont(size: 26, weight: .regular, design: .serif)
                         .foregroundStyle(inkColor)
 
                     Text("Tell us the topic you want to climb. We use this to decide which path to build next.")
-                        .font(.system(size: 13, design: .serif))
+                        .scaledFont(size: 13, design: .serif)
                         .italic()
                         .foregroundStyle(mutedText)
                         .fixedSize(horizontal: false, vertical: true)
@@ -733,7 +733,7 @@ private struct RequestPathSheet: View {
                             Image(systemName: "checkmark.seal.fill")
                                 .foregroundStyle(tealAccent)
                             Text("Thanks. We've noted it.")
-                                .font(.system(size: 14, design: .serif))
+                                .scaledFont(size: 14, design: .serif)
                                 .italic()
                                 .foregroundStyle(mutedText)
                         }
@@ -741,7 +741,7 @@ private struct RequestPathSheet: View {
                     } else {
                         VStack(spacing: 12) {
                             TextField("e.g. agents, robotics, alignment…", text: $text)
-                                .font(.system(size: 14, design: .serif))
+                                .scaledFont(size: 14, design: .serif)
                                 .foregroundStyle(inkColor)
                                 .padding(.horizontal, 14)
                                 .padding(.vertical, 14)
@@ -759,7 +759,7 @@ private struct RequestPathSheet: View {
                                     Text("Send")
                                     Image(systemName: "arrow.right")
                                 }
-                                .font(.system(size: 14, weight: .bold))
+                                .scaledFont(size: 14, weight: .bold)
                                 .foregroundStyle(paperBg)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 15)

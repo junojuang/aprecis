@@ -49,7 +49,7 @@ struct SelfConsistencyGlyph: View {
                     .position(x: endX, y: midY)
                     .opacity(t > 0.8 ? 1 : 0.3)
                 Text("LET THE ANSWERS VOTE")
-                    .font(.system(size: 9, weight: .bold)).tracking(1.8)
+                    .scaledFont(size: 9, weight: .bold).tracking(1.8)
                     .foregroundStyle(tealAccent)
                     .position(x: w / 2, y: h * 0.9)
             }
@@ -59,7 +59,7 @@ struct SelfConsistencyGlyph: View {
         }
     }
     private func node(_ s: String, fill: Color, stroke: Color, fg: Color) -> some View {
-        Text(s).font(.system(size: 15, weight: .bold, design: .serif)).foregroundStyle(fg)
+        Text(s).scaledFont(size: 15, weight: .bold, design: .serif).foregroundStyle(fg)
             .frame(width: 38, height: 38)
             .background(RoundedRectangle(cornerRadius: 9).fill(fill)
                 .overlay(RoundedRectangle(cornerRadius: 9).stroke(stroke, lineWidth: 1.5)))
@@ -75,7 +75,7 @@ struct OneChainVsManyArt: View {
     var body: some View {
         VStack(spacing: 12) {
             VStack(alignment: .leading, spacing: 6) {
-                Text("ONE CHAIN").font(.system(size: 9, weight: .bold)).tracking(1.3)
+                Text("ONE CHAIN").scaledFont(size: 9, weight: .bold).tracking(1.3)
                     .foregroundStyle(scRose)
                 HStack(spacing: 6) {
                     dot("Q", mutedText)
@@ -86,7 +86,7 @@ struct OneChainVsManyArt: View {
             .background(RoundedRectangle(cornerRadius: 10).fill(scRose.opacity(0.05)))
 
             VStack(alignment: .leading, spacing: 6) {
-                Text("MANY CHAINS, THEN VOTE").font(.system(size: 9, weight: .bold)).tracking(1.3)
+                Text("MANY CHAINS, THEN VOTE").scaledFont(size: 9, weight: .bold).tracking(1.3)
                     .foregroundStyle(tealAccent)
                 ForEach(0..<3, id: \.self) { i in
                     HStack(spacing: 6) {
@@ -97,7 +97,7 @@ struct OneChainVsManyArt: View {
                 }
                 HStack(spacing: 6) {
                     Image(systemName: "checkmark.seal.fill").foregroundStyle(tealAccent)
-                    Text("majority: 3").font(.system(size: 12, weight: .bold, design: .serif))
+                    Text("majority: 3").scaledFont(size: 12, weight: .bold, design: .serif)
                         .foregroundStyle(inkColor)
                 }
                 .padding(.top, 2)
@@ -108,18 +108,18 @@ struct OneChainVsManyArt: View {
         .padding(.vertical, 4)
     }
     private var seg: some View {
-        Image(systemName: "arrow.right").font(.system(size: 8, weight: .bold)).foregroundStyle(mutedText)
+        Image(systemName: "arrow.right").scaledFont(size: 8, weight: .bold).foregroundStyle(mutedText)
     }
     private func dot(_ s: String, _ tint: Color) -> some View {
-        Text(s).font(.system(size: 11, weight: .bold, design: .serif)).foregroundStyle(inkColor.opacity(0.8))
+        Text(s).scaledFont(size: 11, weight: .bold, design: .serif).foregroundStyle(inkColor.opacity(0.8))
             .frame(width: 26, height: 26)
             .background(RoundedRectangle(cornerRadius: 6).fill(Color.white)
                 .overlay(RoundedRectangle(cornerRadius: 6).stroke(tint.opacity(0.5), lineWidth: 1)))
     }
     private func ans(_ s: String, correct: Bool) -> some View {
         HStack(spacing: 3) {
-            Text(s).font(.system(size: 11, weight: .bold, design: .serif)).foregroundStyle(.white)
-            Image(systemName: correct ? "checkmark" : "xmark").font(.system(size: 7, weight: .black))
+            Text(s).scaledFont(size: 11, weight: .bold, design: .serif).foregroundStyle(.white)
+            Image(systemName: correct ? "checkmark" : "xmark").scaledFont(size: 7, weight: .black)
                 .foregroundStyle(.white)
         }
         .padding(.horizontal, 7).padding(.vertical, 5)
@@ -135,7 +135,7 @@ struct OneChainVsManyArt: View {
 struct BallotArt: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("THE BALLOT").font(.system(size: 9, weight: .bold)).tracking(1.3)
+            Text("THE BALLOT").scaledFont(size: 9, weight: .bold).tracking(1.3)
                 .foregroundStyle(mutedText)
             tally(answer: "3", count: 4, leader: true)
             tally(answer: "4", count: 1, leader: false)
@@ -147,7 +147,7 @@ struct BallotArt: View {
     }
     private func tally(answer: String, count: Int, leader: Bool) -> some View {
         HStack(spacing: 10) {
-            Text("ans \(answer)").font(.system(size: 12, weight: .semibold, design: .monospaced))
+            Text("ans \(answer)").scaledFont(size: 12, weight: .semibold, design: .monospaced)
                 .foregroundStyle(inkColor.opacity(0.8)).frame(width: 50, alignment: .leading)
             HStack(spacing: 3) {
                 ForEach(0..<count, id: \.self) { _ in
@@ -157,7 +157,7 @@ struct BallotArt: View {
                 }
             }
             if leader {
-                Image(systemName: "crown.fill").font(.system(size: 11)).foregroundStyle(amberAccent)
+                Image(systemName: "crown.fill").scaledFont(size: 11).foregroundStyle(amberAccent)
             }
             Spacer(minLength: 0)
         }
@@ -202,10 +202,10 @@ struct SamplePathsStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("SAMPLE AND TALLY")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("One question: a robe needs 2 bolts of blue and half that of white. Instead of trusting one chain, sample several. Each takes its own route. Tap to draw paths and watch the answers vote.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -217,7 +217,7 @@ struct SamplePathsStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.3), value: drawn)
+        .motionAware(.snappy(duration: 0.3), value: drawn)
     }
 
     private var pathsList: some View {
@@ -225,10 +225,10 @@ struct SamplePathsStudio: View {
             ForEach(0..<scPaths.count, id: \.self) { i in
                 if i < drawn {
                     HStack(alignment: .top, spacing: 9) {
-                        Text("#\(i + 1)").font(.system(size: 10, weight: .bold, design: .monospaced))
+                        Text("#\(i + 1)").scaledFont(size: 10, weight: .bold, design: .monospaced)
                             .foregroundStyle(mutedText).padding(.top, 2)
                         Text(scPaths[i].chain)
-                            .font(.system(size: 13, design: .serif)).foregroundStyle(inkColor.opacity(0.82))
+                            .scaledFont(size: 13, design: .serif).foregroundStyle(inkColor.opacity(0.82))
                             .fixedSize(horizontal: false, vertical: true)
                         Spacer(minLength: 0)
                         answerChip(scPaths[i].answer, correct: scPaths[i].correct)
@@ -243,7 +243,7 @@ struct SamplePathsStudio: View {
     }
 
     private func answerChip(_ a: String, correct: Bool) -> some View {
-        Text(a).font(.system(size: 13, weight: .bold, design: .serif)).foregroundStyle(.white)
+        Text(a).scaledFont(size: 13, weight: .bold, design: .serif).foregroundStyle(.white)
             .frame(width: 30, height: 26)
             .background(RoundedRectangle(cornerRadius: 7).fill(correct ? tealAccent : scRose))
     }
@@ -252,11 +252,11 @@ struct SamplePathsStudio: View {
     private var tallyBar: some View {
         if drawn > 0 {
             VStack(alignment: .leading, spacing: 6) {
-                Text("VOTES SO FAR").font(.system(size: 9, weight: .bold)).tracking(1.2)
+                Text("VOTES SO FAR").scaledFont(size: 9, weight: .bold).tracking(1.2)
                     .foregroundStyle(tealAccent)
                 ForEach(counts.sorted(by: { $0.value > $1.value }), id: \.key) { answer, count in
                     HStack(spacing: 8) {
-                        Text("ans \(answer)").font(.system(size: 12, weight: .semibold, design: .monospaced))
+                        Text("ans \(answer)").scaledFont(size: 12, weight: .semibold, design: .monospaced)
                             .foregroundStyle(inkColor.opacity(0.8)).frame(width: 50, alignment: .leading)
                         HStack(spacing: 3) {
                             ForEach(0..<count, id: \.self) { _ in
@@ -266,7 +266,7 @@ struct SamplePathsStudio: View {
                             }
                         }
                         if answer == leader && done {
-                            Image(systemName: "crown.fill").font(.system(size: 11)).foregroundStyle(amberAccent)
+                            Image(systemName: "crown.fill").scaledFont(size: 11).foregroundStyle(amberAccent)
                         }
                         Spacer(minLength: 0)
                     }
@@ -287,7 +287,7 @@ struct SamplePathsStudio: View {
                 if done { progress.markExplored(cardId); UINotificationFeedbackGenerator().notificationOccurred(.success) }
             } label: {
                 Text(drawn == 0 ? "Sample a reasoning path" : "Sample another path")
-                    .font(.system(size: 14, weight: .semibold)).foregroundStyle(.white)
+                    .scaledFont(size: 14, weight: .semibold).foregroundStyle(.white)
                     .frame(maxWidth: .infinity).padding(.vertical, 12)
                     .background(RoundedRectangle(cornerRadius: 11).fill(tealAccent))
             }
@@ -301,7 +301,7 @@ struct SamplePathsStudio: View {
             Text(done
                  ? "One path took a wrong turn and answered 4. But four of five routes reached 3, so the majority vote lands on the right answer. That is self-consistency."
                  : "Keep sampling. Different routes, but the right answer keeps coming up.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -325,10 +325,10 @@ struct GreedyVsVoteStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("ONE CONFIDENT GUESS, OR A VOTE")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("The usual way is to take the single most-likely chain, the one the model is most confident in. Reveal it, then reveal what happens when you sample many and let them vote.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -339,8 +339,8 @@ struct GreedyVsVoteStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.3), value: showGreedy)
-        .animation(.snappy(duration: 0.3), value: showVote)
+        .motionAware(.snappy(duration: 0.3), value: showGreedy)
+        .motionAware(.snappy(duration: 0.3), value: showVote)
     }
 
     private var greedyCard: some View {
@@ -349,18 +349,18 @@ struct GreedyVsVoteStudio: View {
         } label: {
             VStack(alignment: .leading, spacing: 6) {
                 Text("GREEDY: THE SINGLE MOST-LIKELY CHAIN")
-                    .font(.system(size: 9, weight: .bold)).tracking(1.2).foregroundStyle(mutedText)
+                    .scaledFont(size: 9, weight: .bold).tracking(1.2).foregroundStyle(mutedText)
                 if showGreedy {
                     Text("\"2 bolts of blue, and white is another 2, so 2 + 2 = 4.\"")
-                        .font(.system(size: 13.5, design: .serif)).italic().foregroundStyle(inkColor.opacity(0.82))
+                        .scaledFont(size: 13.5, design: .serif).italic().foregroundStyle(inkColor.opacity(0.82))
                         .fixedSize(horizontal: false, vertical: true)
                     HStack(spacing: 6) {
                         Image(systemName: "xmark.circle.fill").foregroundStyle(scRose)
-                        Text("Answer: 4").font(.system(size: 14, weight: .bold, design: .serif)).foregroundStyle(inkColor)
+                        Text("Answer: 4").scaledFont(size: 14, weight: .bold, design: .serif).foregroundStyle(inkColor)
                     }
                 } else {
                     Text("tap to reveal the greedy chain")
-                        .font(.system(size: 12, design: .serif)).italic().foregroundStyle(tealAccent)
+                        .scaledFont(size: 12, design: .serif).italic().foregroundStyle(tealAccent)
                 }
             }
             .padding(13).frame(maxWidth: .infinity, alignment: .leading)
@@ -382,7 +382,7 @@ struct GreedyVsVoteStudio: View {
             } label: {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("SELF-CONSISTENCY: VOTE OVER 40 SAMPLES")
-                        .font(.system(size: 9, weight: .bold)).tracking(1.2).foregroundStyle(tealAccent)
+                        .scaledFont(size: 9, weight: .bold).tracking(1.2).foregroundStyle(tealAccent)
                     if showVote {
                         HStack(spacing: 14) {
                             voteStat("3", "31 votes", true)
@@ -391,11 +391,11 @@ struct GreedyVsVoteStudio: View {
                         }
                         HStack(spacing: 6) {
                             Image(systemName: "checkmark.seal.fill").foregroundStyle(tealAccent)
-                            Text("Answer: 3").font(.system(size: 14, weight: .bold, design: .serif)).foregroundStyle(inkColor)
+                            Text("Answer: 3").scaledFont(size: 14, weight: .bold, design: .serif).foregroundStyle(inkColor)
                         }
                     } else {
                         Text("tap to sample many and count the votes")
-                            .font(.system(size: 12, design: .serif)).italic().foregroundStyle(tealAccent)
+                            .scaledFont(size: 12, design: .serif).italic().foregroundStyle(tealAccent)
                     }
                 }
                 .padding(13).frame(maxWidth: .infinity, alignment: .leading)
@@ -409,9 +409,9 @@ struct GreedyVsVoteStudio: View {
 
     private func voteStat(_ ans: String, _ n: String, _ win: Bool) -> some View {
         VStack(spacing: 2) {
-            Text(ans).font(.system(size: 18, weight: .bold, design: .serif))
+            Text(ans).scaledFont(size: 18, weight: .bold, design: .serif)
                 .foregroundStyle(win ? tealAccent : mutedText)
-            Text(n).font(.system(size: 10, design: .monospaced)).foregroundStyle(mutedText)
+            Text(n).scaledFont(size: 10, design: .monospaced).foregroundStyle(mutedText)
         }
     }
 
@@ -421,7 +421,7 @@ struct GreedyVsVoteStudio: View {
             Text(showVote
                  ? "The model's single most-confident chain was wrong. But across many samples, the right answer was reachable by far more routes, so the vote recovered it."
                  : "Reveal the greedy chain, then the vote.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -466,10 +466,10 @@ struct DiversityStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("DIAL THE DIVERSITY")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Voting only works if the samples differ. Turn the sampling temperature up and down. Find the setting where the paths vary just enough to agree on the truth.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -481,7 +481,7 @@ struct DiversityStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.32), value: idx)
+        .motionAware(.snappy(duration: 0.32), value: idx)
     }
 
     private var dial: some View {
@@ -489,7 +489,7 @@ struct DiversityStudio: View {
             HStack {
                 ForEach(Array(scDiversities.enumerated()), id: \.offset) { i, s in
                     Text(s.label.components(separatedBy: " (").first ?? s.label)
-                        .font(.system(size: 10, weight: i == idx ? .bold : .regular))
+                        .scaledFont(size: 10, weight: i == idx ? .bold : .regular)
                         .foregroundStyle(i == idx ? (s.good ? tealAccent : scRose) : mutedText)
                         .frame(maxWidth: .infinity)
                 }
@@ -510,16 +510,16 @@ struct DiversityStudio: View {
     private var samplesRow: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
-                Text("FIVE SAMPLES").font(.system(size: 9, weight: .bold)).tracking(1.2)
+                Text("FIVE SAMPLES").scaledFont(size: 9, weight: .bold).tracking(1.2)
                     .foregroundStyle(mutedText)
                 Spacer()
-                Text("\(d.accuracy)%").font(.system(size: 14, weight: .bold, design: .monospaced))
+                Text("\(d.accuracy)%").scaledFont(size: 14, weight: .bold, design: .monospaced)
                     .foregroundStyle(d.good ? tealAccent : scRose)
                     .contentTransition(.numericText())
             }
             HStack(spacing: 8) {
                 ForEach(Array(d.answers.enumerated()), id: \.offset) { _, a in
-                    Text(a).font(.system(size: 15, weight: .bold, design: .serif)).foregroundStyle(.white)
+                    Text(a).scaledFont(size: 15, weight: .bold, design: .serif).foregroundStyle(.white)
                         .frame(width: 34, height: 34)
                         .background(RoundedRectangle(cornerRadius: 8)
                             .fill(a == "3" ? tealAccent : mutedText.opacity(0.55)))
@@ -534,9 +534,9 @@ struct DiversityStudio: View {
     private var noteCard: some View {
         HStack(alignment: .top, spacing: 10) {
             Image(systemName: d.good ? "checkmark.seal.fill" : "exclamationmark.triangle.fill")
-                .font(.system(size: 14)).foregroundStyle(d.good ? tealAccent : amberAccent)
+                .scaledFont(size: 14).foregroundStyle(d.good ? tealAccent : amberAccent)
             Text(d.blurb)
-                .font(.system(size: 13, design: .serif)).foregroundStyle(inkColor.opacity(0.78))
+                .scaledFont(size: 13, design: .serif).foregroundStyle(inkColor.opacity(0.78))
                 .fixedSize(horizontal: false, vertical: true)
         }
         .padding(12).frame(maxWidth: .infinity, alignment: .leading)
@@ -549,7 +549,7 @@ struct DiversityStudio: View {
             Text(foundSweet
                  ? "Diversity is the fuel. Identical samples cannot outvote a mistake, and pure noise has no majority. The middle ground is where self-consistency pays off."
                  : "Find the setting where the samples vary but still agree on the right answer.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }

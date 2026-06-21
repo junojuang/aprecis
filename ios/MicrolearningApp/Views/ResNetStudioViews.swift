@@ -140,16 +140,16 @@ struct ResNetBlockView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 04 · WHAT F LEARNS")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("Learn the change. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(rnInk)
-                + Text("Not the whole.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("Learn the change. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(rnInk)
+                + Text("Not the whole.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("Pick a target output H(x). A plain block forces F to be H. A residual block lets F be H − x. When the answer is mostly x, F learns almost nothing.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -164,7 +164,7 @@ struct ResNetBlockView: View {
                     .padding(.bottom, 14)
 
                 Text(target.verdict)
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(rnInkSubtle)
                     .padding(.bottom, 24)
@@ -189,12 +189,12 @@ struct ResNetBlockView: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Text("TARGET MAPPING")
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                 Spacer()
                 Text(target.hExpression)
-                    .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(12, weight: .semibold, design: .monospaced))
                     .foregroundStyle(rnInk)
                     .id(target)
                     .transition(.opacity)
@@ -209,7 +209,7 @@ struct ResNetBlockView: View {
                         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
                     } label: {
                         Text(t.label)
-                            .font(.system(size: 10, weight: target == t ? .bold : .semibold))
+                            .font(scaledSystemFont(10, weight: target == t ? .bold : .semibold))
                             .tracking(1.0)
                             .foregroundStyle(target == t ? .white : rnInk.opacity(0.75))
                             .frame(maxWidth: .infinity)
@@ -265,11 +265,11 @@ struct ResNetBlockView: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 6) {
                 Text(title)
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.2)
                     .foregroundStyle(accent)
                 Text(subtitle)
-                    .font(.system(size: 9, design: .serif))
+                    .font(scaledSystemFont(9, design: .serif))
                     .italic()
                     .foregroundStyle(rnInkSubtle)
                 Spacer(minLength: 0)
@@ -277,11 +277,11 @@ struct ResNetBlockView: View {
 
             VStack(alignment: .leading, spacing: 4) {
                 Text("F MUST LEARN")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(scaledSystemFont(8, weight: .bold))
                     .tracking(1.2)
                     .foregroundStyle(rnInkSubtle)
                 Text(fExpr)
-                    .font(.system(size: 13, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(13, weight: .semibold, design: .monospaced))
                     .foregroundStyle(rnInk)
                     .id(fExpr)
                     .transition(.opacity)
@@ -289,23 +289,23 @@ struct ResNetBlockView: View {
 
             VStack(alignment: .leading, spacing: 4) {
                 Text("OUTPUT")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(scaledSystemFont(8, weight: .bold))
                     .tracking(1.2)
                     .foregroundStyle(rnInkSubtle)
                 Text(hExpr)
-                    .font(.system(size: 11, design: .monospaced))
+                    .font(scaledSystemFont(11, design: .monospaced))
                     .foregroundStyle(rnInkSubtle)
             }
 
             VStack(alignment: .leading, spacing: 4) {
                 HStack {
                     Text("DIFFICULTY")
-                        .font(.system(size: 8, weight: .bold))
+                        .font(scaledSystemFont(8, weight: .bold))
                         .tracking(1.2)
                         .foregroundStyle(rnInkSubtle)
                     Spacer()
                     Text(tag)
-                        .font(.system(size: 8, weight: .bold))
+                        .font(scaledSystemFont(8, weight: .bold))
                         .tracking(1.0)
                         .foregroundStyle(tagColor)
                         .padding(.horizontal, 6)
@@ -324,7 +324,7 @@ struct ResNetBlockView: View {
                     }
                 }
                 .frame(height: 6)
-                .animation(.spring(response: 0.5, dampingFraction: 0.85), value: difficulty)
+                .motionAware(.spring(response: 0.5, dampingFraction: 0.85), value: difficulty)
             }
         }
         .padding(14)
@@ -340,12 +340,12 @@ struct ResNetBlockView: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Text("LIVE INPUT")
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                 Spacer()
                 Text("x = \(xString(x))")
-                    .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(11, weight: .semibold, design: .monospaced))
                     .foregroundStyle(rnInk)
             }
 
@@ -404,11 +404,11 @@ struct ResNetBlockView: View {
     private func outputChip(label: String, value: Double, accent: Color) -> some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(label)
-                .font(.system(size: 8, weight: .bold))
+                .font(scaledSystemFont(8, weight: .bold))
                 .tracking(1.0)
                 .foregroundStyle(rnInkSubtle)
             Text(xString(value))
-                .font(.system(size: 13, weight: .semibold, design: .monospaced))
+                .font(scaledSystemFont(13, weight: .semibold, design: .monospaced))
                 .foregroundStyle(accent)
                 .contentTransition(.numericText())
         }
@@ -444,16 +444,16 @@ struct ResNetDepthView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 05 · BUILD THE TOWERS")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("Plain breaks. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(rnInk)
-                + Text("ResNet bends.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("Plain breaks. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(rnInk)
+                + Text("ResNet bends.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("Tap GROW to add layers. Two networks build in parallel. Past 20 layers the plain tower's error climbs; past 100 it diverges entirely.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -465,7 +465,7 @@ struct ResNetDepthView: View {
                     .padding(.bottom, 14)
 
                 Text(verdictForDepth(depth))
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(plainDiverged ? rnWarn : rnInkSubtle)
                     .padding(.bottom, 24)
@@ -573,17 +573,17 @@ struct ResNetDepthView: View {
             // Top readout
             VStack(spacing: 2) {
                 Text(title)
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.2)
                     .foregroundStyle(accent)
                 if diverged {
                     Text("DIVERGED")
-                        .font(.system(size: 10, weight: .bold))
+                        .font(scaledSystemFont(10, weight: .bold))
                         .tracking(1.0)
                         .foregroundStyle(rnWarn)
                 } else {
                     Text(String(format: "%.1f%%", error))
-                        .font(.system(size: 16, weight: .semibold, design: .serif))
+                        .font(scaledSystemFont(16, weight: .semibold, design: .serif))
                         .foregroundStyle(rnInk)
                         .contentTransition(.numericText())
                 }
@@ -624,11 +624,11 @@ struct ResNetDepthView: View {
                 }
             }
             .frame(width: 44, height: containerHeight)
-            .animation(.spring(response: 0.45, dampingFraction: 0.9), value: depth)
+            .motionAware(.spring(response: 0.45, dampingFraction: 0.9), value: depth)
 
             // Depth label
             Text("L=\(depth)")
-                .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                .font(scaledSystemFont(10, weight: .semibold, design: .monospaced))
                 .foregroundStyle(rnInkSubtle)
         }
         .frame(maxWidth: .infinity)
@@ -658,11 +658,11 @@ struct ResNetDepthView: View {
             HStack(spacing: 8) {
                 controlButton(title: "RESET", action: { animateTo(0) }, fill: Color.white, isPrimary: false)
                 Text("DEPTH")
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(rnInkSubtle)
                 Text("\(depth) / \(maxDepth)")
-                    .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(12, weight: .semibold, design: .monospaced))
                     .foregroundStyle(rnInk)
                     .contentTransition(.numericText())
                     .frame(maxWidth: .infinity, alignment: .trailing)
@@ -699,7 +699,7 @@ struct ResNetDepthView: View {
     private func controlButton(title: String, action: @escaping () -> Void, fill: Color, isPrimary: Bool) -> some View {
         Button(action: action) {
             Text(title)
-                .font(.system(size: 11, weight: .bold))
+                .font(scaledSystemFont(11, weight: .bold))
                 .tracking(1.0)
                 .foregroundStyle(isPrimary ? .white : rnInk)
                 .padding(.vertical, 10)
@@ -732,16 +732,16 @@ struct ResNetGradientView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 06 · GRADIENT HIGHWAY")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("Signal survives. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(rnInk)
-                + Text("The skip.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("Signal survives. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(rnInk)
+                + Text("The skip.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("Two rails, gradient strength along each layer. Plain (amber) fades from output to input. ResNet (teal) holds. Drag the probe to read either off.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -753,7 +753,7 @@ struct ResNetGradientView: View {
                     .padding(.bottom, 14)
 
                 Text(verdict)
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(plainHealthy ? rnInkSubtle : rnWarn)
                     .padding(.bottom, 24)
@@ -807,17 +807,17 @@ struct ResNetGradientView: View {
         VStack(alignment: .leading, spacing: 14) {
             HStack {
                 Text("INPUT")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(scaledSystemFont(8, weight: .bold))
                     .tracking(1.4)
                     .foregroundStyle(rnInkSubtle)
                 Spacer()
                 Text("BACKPROP DIRECTION ←")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(scaledSystemFont(8, weight: .bold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                 Spacer()
                 Text("OUTPUT")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(scaledSystemFont(8, weight: .bold))
                     .tracking(1.4)
                     .foregroundStyle(rnInkSubtle)
             }
@@ -859,18 +859,18 @@ struct ResNetGradientView: View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
                 Text(label)
-                    .font(.system(size: 11, weight: .semibold, design: .serif))
+                    .font(scaledSystemFont(11, weight: .semibold, design: .serif))
                     .foregroundStyle(rnInk)
                 Circle()
                     .fill(healthy ? rnCorrect : rnWarn)
                     .frame(width: 6, height: 6)
                 Text(healthy ? "alive" : "vanished")
-                    .font(.system(size: 9, design: .serif))
+                    .font(scaledSystemFont(9, design: .serif))
                     .italic()
                     .foregroundStyle(healthy ? rnCorrect : rnWarn)
                 Spacer()
                 Text(magnitudeString(log10))
-                    .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(11, weight: .semibold, design: .monospaced))
                     .foregroundStyle(healthy ? accent : rnWarn)
                     .contentTransition(.numericText())
             }
@@ -936,19 +936,19 @@ struct ResNetGradientView: View {
 
             HStack {
                 Text("L=1")
-                    .font(.system(size: 9, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(9, weight: .semibold, design: .monospaced))
                     .foregroundStyle(rnInkSubtle)
                 Spacer()
                 Text("L=50")
-                    .font(.system(size: 9, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(9, weight: .semibold, design: .monospaced))
                     .foregroundStyle(rnInkSubtle)
                 Spacer()
                 Text("L=100")
-                    .font(.system(size: 9, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(9, weight: .semibold, design: .monospaced))
                     .foregroundStyle(rnInkSubtle)
                 Spacer()
                 Text("L=152")
-                    .font(.system(size: 9, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(9, weight: .semibold, design: .monospaced))
                     .foregroundStyle(rnInkSubtle)
             }
         }
@@ -986,11 +986,11 @@ struct ResNetGradientView: View {
     private func readoutChip(label: String, value: String, accent: Color) -> some View {
         VStack(alignment: .leading, spacing: 3) {
             Text(label)
-                .font(.system(size: 8, weight: .bold))
+                .font(scaledSystemFont(8, weight: .bold))
                 .tracking(1.0)
                 .foregroundStyle(rnInkSubtle)
             Text(value)
-                .font(.system(size: 13, weight: .semibold, design: .monospaced))
+                .font(scaledSystemFont(13, weight: .semibold, design: .monospaced))
                 .foregroundStyle(accent)
                 .contentTransition(.numericText())
         }

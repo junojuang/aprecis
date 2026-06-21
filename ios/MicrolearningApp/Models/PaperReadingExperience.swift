@@ -11,10 +11,16 @@ import Foundation
 // 4. Legacy concept cards (`PaperDetailView`)
 
 enum PaperReadingExperience {
+    case webLesson(URL)
     case dailyLoop(DailyLoopContent)
     case legacy(CardDeck)
 
     static func resolve(_ deck: CardDeck) -> PaperReadingExperience {
+        // A web-bundle lesson (server-driven, no app update) wins over every
+        // native reader, so any paper can be replaced with a premium web lesson.
+        if let webURL = WebLessonRegistry.url(for: deck) {
+            return .webLesson(webURL)
+        }
         if deck.paperId.hasPrefix("loop:"),
            let base = CuratedPaperCatalog.content(forPaperId: deck.paperId) {
             return .dailyLoop(base.withPaperId(deck.paperId))

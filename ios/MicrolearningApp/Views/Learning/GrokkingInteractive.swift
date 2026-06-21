@@ -57,13 +57,13 @@ struct GrokkingGlyph: View {
 
                 // The spark at the moment of grokking.
                 Image(systemName: "sparkles")
-                    .font(.system(size: 20)).foregroundStyle(amberAccent)
+                    .scaledFont(size: 20).foregroundStyle(amberAccent)
                     .position(x: w * 0.88, y: top - 2)
                     .opacity(t > 0.92 ? 1 : 0)
                     .scaleEffect(t > 0.92 ? 1 : 0.4)
 
                 Text("IT CLICKS, EVENTUALLY")
-                    .font(.system(size: 9, weight: .bold)).tracking(1.6)
+                    .scaledFont(size: 9, weight: .bold).tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .position(x: w * 0.5, y: h * 0.93)
             }
@@ -83,31 +83,31 @@ struct OverfitVsGrokArt: View {
     var body: some View {
         VStack(spacing: 12) {
             VStack(alignment: .leading, spacing: 6) {
-                Text("THE TEXTBOOK STORY").font(.system(size: 9, weight: .bold)).tracking(1.3).foregroundStyle(gkRose)
+                Text("THE TEXTBOOK STORY").scaledFont(size: 9, weight: .bold).tracking(1.3).foregroundStyle(gkRose)
                 HStack(spacing: 6) {
                     chip("train 100%", tint: mutedText)
-                    Image(systemName: "arrow.right").font(.system(size: 8, weight: .bold)).foregroundStyle(mutedText)
+                    Image(systemName: "arrow.right").scaledFont(size: 8, weight: .bold).foregroundStyle(mutedText)
                     chip("val stuck", tint: gkRose)
-                    Image(systemName: "arrow.right").font(.system(size: 8, weight: .bold)).foregroundStyle(mutedText)
+                    Image(systemName: "arrow.right").scaledFont(size: 8, weight: .bold).foregroundStyle(mutedText)
                     chip("STOP: overfit", tint: gkRose)
                 }
                 Text("most training would end right here")
-                    .font(.system(size: 10, design: .serif)).italic().foregroundStyle(mutedText)
+                    .scaledFont(size: 10, design: .serif).italic().foregroundStyle(mutedText)
             }
             .padding(11).frame(maxWidth: .infinity, alignment: .leading)
             .background(RoundedRectangle(cornerRadius: 10).fill(gkRose.opacity(0.05)))
 
             VStack(alignment: .leading, spacing: 6) {
-                Text("GROKKING").font(.system(size: 9, weight: .bold)).tracking(1.3).foregroundStyle(tealAccent)
+                Text("GROKKING").scaledFont(size: 9, weight: .bold).tracking(1.3).foregroundStyle(tealAccent)
                 HStack(spacing: 6) {
                     chip("train 100%", tint: mutedText)
-                    Image(systemName: "arrow.right").font(.system(size: 8, weight: .bold)).foregroundStyle(mutedText)
+                    Image(systemName: "arrow.right").scaledFont(size: 8, weight: .bold).foregroundStyle(mutedText)
                     chip("keep going", tint: gkBlue)
-                    Image(systemName: "arrow.right").font(.system(size: 8, weight: .bold)).foregroundStyle(mutedText)
+                    Image(systemName: "arrow.right").scaledFont(size: 8, weight: .bold).foregroundStyle(mutedText)
                     chip("val 100%", tint: tealAccent)
                 }
                 Text("generalisation arrives long after overfitting")
-                    .font(.system(size: 10, design: .serif)).italic().foregroundStyle(mutedText)
+                    .scaledFont(size: 10, design: .serif).italic().foregroundStyle(mutedText)
             }
             .padding(11).frame(maxWidth: .infinity, alignment: .leading)
             .background(RoundedRectangle(cornerRadius: 10).fill(tealAccent.opacity(0.05)))
@@ -115,7 +115,7 @@ struct OverfitVsGrokArt: View {
         .padding(.vertical, 4)
     }
     private func chip(_ s: String, tint: Color) -> some View {
-        Text(s).font(.system(size: 10.5, weight: .semibold)).foregroundStyle(tint)
+        Text(s).scaledFont(size: 10.5, weight: .semibold).foregroundStyle(tint)
             .padding(.horizontal, 8).padding(.vertical, 5)
             .background(Capsule().fill(tint.opacity(0.12)))
     }
@@ -129,17 +129,17 @@ struct TableVsRuleArt: View {
     var body: some View {
         HStack(spacing: 12) {
             VStack(spacing: 6) {
-                Text("MEMORISE").font(.system(size: 9, weight: .bold)).tracking(1.0).foregroundStyle(gkRose)
+                Text("MEMORISE").scaledFont(size: 9, weight: .bold).tracking(1.0).foregroundStyle(gkRose)
                 grid(filledOnly: true)
-                Text("holes on unseen pairs").font(.system(size: 9, design: .serif)).italic().foregroundStyle(mutedText)
+                Text("holes on unseen pairs").scaledFont(size: 9, design: .serif).italic().foregroundStyle(mutedText)
             }
             .padding(10).frame(maxWidth: .infinity)
             .background(RoundedRectangle(cornerRadius: 10).fill(gkRose.opacity(0.05)))
 
             VStack(spacing: 6) {
-                Text("GROK").font(.system(size: 9, weight: .bold)).tracking(1.0).foregroundStyle(tealAccent)
+                Text("GROK").scaledFont(size: 9, weight: .bold).tracking(1.0).foregroundStyle(tealAccent)
                 grid(filledOnly: false)
-                Text("the rule fills every cell").font(.system(size: 9, design: .serif)).italic().foregroundStyle(mutedText)
+                Text("the rule fills every cell").scaledFont(size: 9, design: .serif).italic().foregroundStyle(mutedText)
             }
             .padding(10).frame(maxWidth: .infinity)
             .background(RoundedRectangle(cornerRadius: 10).fill(tealAccent.opacity(0.05)))
@@ -205,10 +205,10 @@ struct GrokCurveStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("FAST FORWARD THE TRAINING")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("This is one small model learning modular arithmetic. Drag through training time and watch the two accuracies. One shoots up at once; the other does something very strange.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -220,7 +220,7 @@ struct GrokCurveStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.32), value: idx)
+        .motionAware(.snappy(duration: 0.32), value: idx)
     }
 
     private var stepPicker: some View {
@@ -228,7 +228,7 @@ struct GrokCurveStudio: View {
             HStack {
                 ForEach(Array(grokSteps.enumerated()), id: \.offset) { i, st in
                     Text(st.label)
-                        .font(.system(size: 9.5, weight: i == idx ? .bold : .regular, design: .monospaced))
+                        .scaledFont(size: 9.5, weight: i == idx ? .bold : .regular, design: .monospaced)
                         .foregroundStyle(i == idx ? tealAccent : mutedText)
                         .frame(maxWidth: .infinity)
                 }
@@ -256,7 +256,7 @@ struct GrokCurveStudio: View {
 
     private func bar(label: String, value: Int, tint: Color) -> some View {
         VStack(spacing: 6) {
-            Text("\(value)%").font(.system(size: 13, weight: .bold, design: .monospaced))
+            Text("\(value)%").scaledFont(size: 13, weight: .bold, design: .monospaced)
                 .foregroundStyle(tint).contentTransition(.numericText())
             GeometryReader { g in
                 VStack { Spacer(minLength: 0)
@@ -265,18 +265,18 @@ struct GrokCurveStudio: View {
                 }
             }
             .frame(width: 66)
-            Text(label).font(.system(size: 10.5, weight: .semibold, design: .serif))
+            Text(label).scaledFont(size: 10.5, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.7))
         }
     }
 
     private var noteCard: some View {
         HStack(alignment: .top, spacing: 10) {
-            Text(s.label.uppercased()).font(.system(size: 9, weight: .bold)).tracking(0.8)
+            Text(s.label.uppercased()).scaledFont(size: 9, weight: .bold).tracking(0.8)
                 .foregroundStyle(tealAccent)
                 .padding(.horizontal, 7).padding(.vertical, 3)
                 .background(Capsule().fill(tealAccent.opacity(0.12)))
-            Text(s.note).font(.system(size: 13, design: .serif)).foregroundStyle(inkColor.opacity(0.78))
+            Text(s.note).scaledFont(size: 13, design: .serif).foregroundStyle(inkColor.opacity(0.78))
                 .fixedSize(horizontal: false, vertical: true)
         }
         .padding(12).frame(maxWidth: .infinity, alignment: .leading)
@@ -290,7 +290,7 @@ struct GrokCurveStudio: View {
             Text(reachedGrok
                  ? "That late jump is grokking: generalisation that arrives long after the model has memorised the data and looks overfit. The training curve gives no hint it is coming."
                  : "Drag all the way to the end to see what happens long after overfitting.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -327,10 +327,10 @@ struct MemorizeVsGeneralizeStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("WHAT CHANGED AT THE LEAP")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Before grokking the model is a lookup table: it nails pairs it was trained on and guesses on the rest. Flip to after, and the same model answers pairs it has never seen, because it found the rule.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -341,13 +341,13 @@ struct MemorizeVsGeneralizeStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.3), value: grokked)
+        .motionAware(.snappy(duration: 0.3), value: grokked)
     }
 
     private var toggleRow: some View {
         Toggle(isOn: $grokked) {
             Text(grokked ? "After grokking (1M steps)" : "Before grokking (1k steps)")
-                .font(.system(size: 14, weight: .semibold, design: .serif)).foregroundStyle(inkColor)
+                .scaledFont(size: 14, weight: .semibold, design: .serif).foregroundStyle(inkColor)
         }
         .tint(tealAccent)
         .onChange(of: grokked) { _, on in
@@ -370,15 +370,15 @@ struct MemorizeVsGeneralizeStudio: View {
         let shown = correct ? q.answer : q.memorizedAnswer
         return HStack(spacing: 10) {
             Text(q.seen ? "SEEN" : "UNSEEN")
-                .font(.system(size: 8, weight: .bold)).tracking(0.8)
+                .scaledFont(size: 8, weight: .bold).tracking(0.8)
                 .foregroundStyle(q.seen ? gkBlue : amberAccent)
                 .frame(width: 52, alignment: .leading)
             Text(q.prompt)
-                .font(.system(size: 14, weight: .semibold, design: .monospaced))
+                .scaledFont(size: 14, weight: .semibold, design: .monospaced)
                 .foregroundStyle(inkColor.opacity(0.85))
             Spacer(minLength: 0)
             Text("= \(shown)")
-                .font(.system(size: 14, weight: .bold, design: .monospaced))
+                .scaledFont(size: 14, weight: .bold, design: .monospaced)
                 .foregroundStyle(correct ? tealAccent : gkRose)
             Image(systemName: correct ? "checkmark.circle.fill" : "xmark.circle.fill")
                 .foregroundStyle(correct ? tealAccent : gkRose)
@@ -395,7 +395,7 @@ struct MemorizeVsGeneralizeStudio: View {
             Text(grokked
                  ? "Generalisation means getting unseen cases right. Memorising stores answers; grokking learns the function that produces them, so the blanks fill in on their own."
                  : "The unseen pairs are wrong, because a lookup table has no entry for them. Flip the switch.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -441,10 +441,10 @@ struct WeightDecayStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("THE KNOB THAT DECIDES")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Grokking is not luck. Weight decay, a gentle pull toward simpler weights, is what tips the model from memorising to generalising. Dial it and find the setting that actually groks.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -456,7 +456,7 @@ struct WeightDecayStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.32), value: idx)
+        .motionAware(.snappy(duration: 0.32), value: idx)
     }
 
     private var picker: some View {
@@ -464,7 +464,7 @@ struct WeightDecayStudio: View {
             HStack {
                 ForEach(Array(decaySettings.enumerated()), id: \.offset) { i, st in
                     Text(st.label)
-                        .font(.system(size: 9.5, weight: i == idx ? .bold : .regular))
+                        .scaledFont(size: 9.5, weight: i == idx ? .bold : .regular)
                         .foregroundStyle(i == idx ? tealAccent : mutedText)
                         .frame(maxWidth: .infinity)
                 }
@@ -486,10 +486,10 @@ struct WeightDecayStudio: View {
         VStack(spacing: 8) {
             HStack {
                 Text("WEIGHT DECAY: \(d.label.uppercased())")
-                    .font(.system(size: 10, weight: .bold)).tracking(1.0).foregroundStyle(inkColor.opacity(0.7))
+                    .scaledFont(size: 10, weight: .bold).tracking(1.0).foregroundStyle(inkColor.opacity(0.7))
                 Spacer()
                 Text(d.verdict)
-                    .font(.system(size: 11, weight: .bold))
+                    .scaledFont(size: 11, weight: .bold)
                     .foregroundStyle(d.groks ? tealAccent : gkRose)
                     .padding(.horizontal, 8).padding(.vertical, 3)
                     .background(Capsule().fill((d.groks ? tealAccent : gkRose).opacity(0.12)))
@@ -504,9 +504,9 @@ struct WeightDecayStudio: View {
             .frame(height: 16)
             HStack {
                 Text("validation accuracy")
-                    .font(.system(size: 10, design: .serif)).italic().foregroundStyle(mutedText)
+                    .scaledFont(size: 10, design: .serif).italic().foregroundStyle(mutedText)
                 Spacer()
-                Text("\(d.valAcc)%").font(.system(size: 11, weight: .bold, design: .monospaced))
+                Text("\(d.valAcc)%").scaledFont(size: 11, weight: .bold, design: .monospaced)
                     .foregroundStyle(d.groks ? tealAccent : gkRose).contentTransition(.numericText())
             }
         }
@@ -517,7 +517,7 @@ struct WeightDecayStudio: View {
 
     private var noteCard: some View {
         Text(d.note)
-            .font(.system(size: 13, design: .serif)).foregroundStyle(inkColor.opacity(0.78))
+            .scaledFont(size: 13, design: .serif).foregroundStyle(inkColor.opacity(0.78))
             .fixedSize(horizontal: false, vertical: true)
             .padding(12).frame(maxWidth: .infinity, alignment: .leading)
             .background(RoundedRectangle(cornerRadius: 10).fill(tealAccent.opacity(0.05)))
@@ -529,7 +529,7 @@ struct WeightDecayStudio: View {
             Text(foundIt
                  ? "Grokking depends on regularisation. The pressure to use simpler weights is what makes the rule a better deal than the lookup table, so the model finally switches."
                  : "Try each setting. Only one actually tips the model into generalising.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }

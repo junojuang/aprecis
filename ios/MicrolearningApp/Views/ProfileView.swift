@@ -109,22 +109,22 @@ private struct SignedInView: View {
                                 style: StrokeStyle(lineWidth: 4, lineCap: .round))
                         .rotationEffect(.degrees(-90))
                         .frame(width: 56, height: 56)
-                        .animation(.snappy, value: pct)
+                        .motionAware(.snappy, value: pct)
                     Text("\(read)/\(goal)")
-                        .font(.system(size: 12, weight: .semibold, design: .serif))
+                        .scaledFont(size: 12, weight: .semibold, design: .serif)
                         .foregroundStyle(inkColor)
                 }
 
                 VStack(alignment: .leading, spacing: 3) {
                     Text("TODAY'S GOAL")
-                        .font(.system(size: 9, weight: .bold))
+                        .scaledFont(size: 9, weight: .bold)
                         .tracking(1.4)
                         .foregroundStyle(mutedText)
                     Text(goalHeadline(read: read, goal: goal))
-                        .font(.system(size: 15, weight: .regular, design: .serif))
+                        .scaledFont(size: 15, weight: .regular, design: .serif)
                         .foregroundStyle(inkColor)
                     Text(goalSubcopy(read: read, goal: goal))
-                        .font(.system(size: 11, design: .serif))
+                        .scaledFont(size: 11, design: .serif)
                         .italic()
                         .foregroundStyle(mutedText)
                         .lineLimit(1)
@@ -132,8 +132,9 @@ private struct SignedInView: View {
 
                 Spacer(minLength: 0)
                 Image(systemName: "chevron.right")
-                    .font(.system(size: 11, weight: .semibold))
+                    .scaledFont(size: 11, weight: .semibold)
                     .foregroundStyle(mutedText.opacity(0.7))
+                    .accessibilityHidden(true)
             }
             .padding(14)
             .background(cardBg)
@@ -144,6 +145,11 @@ private struct SignedInView: View {
             )
         }
         .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Today's goal, \(read) of \(goal) read")
+        .accessibilityValue("\(goalHeadline(read: read, goal: goal)). \(goalSubcopy(read: read, goal: goal))")
+        .accessibilityHint("Opens daily goal settings")
+        .accessibilityAddTraits(.isButton)
     }
 
     private func goalHeadline(read: Int, goal: Int) -> String {
@@ -169,7 +175,7 @@ private struct SignedInView: View {
                 HStack(spacing: 8) {
                     Circle().fill(amberAccent).frame(width: 4, height: 4)
                     Text("RECENTLY OPENED")
-                        .font(.system(size: 10, weight: .semibold))
+                        .scaledFont(size: 10, weight: .semibold)
                         .tracking(1.8)
                         .foregroundStyle(amberAccent)
                 }
@@ -226,7 +232,7 @@ private struct SignedInView: View {
     private func recentChip(deck: CardDeck, openedAt: Date) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(deck.title ?? "Untitled")
-                .font(.system(size: 12, weight: .regular, design: .serif))
+                .scaledFont(size: 12, weight: .regular, design: .serif)
                 .foregroundStyle(inkColor)
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
@@ -236,9 +242,9 @@ private struct SignedInView: View {
             TimelineView(.periodic(from: openedAt, by: 60)) { _ in
                 HStack(spacing: 4) {
                     Image(systemName: "clock")
-                        .font(.system(size: 8, weight: .semibold))
+                        .scaledFont(size: 8, weight: .semibold)
                     Text(relativeVisit(openedAt))
-                        .font(.system(size: 10, weight: .medium))
+                        .scaledFont(size: 10, weight: .medium)
                 }
                 .foregroundStyle(mutedText)
             }
@@ -263,6 +269,14 @@ private struct SignedInView: View {
             RoundedRectangle(cornerRadius: 12, style: .continuous)
                 .stroke(borderColor, lineWidth: 1)
         )
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(deck.title ?? "Untitled")
+        .accessibilityValue({
+            let p = progressStore.progress(for: deck.paperId)
+            let read = p > 0.001 ? ", \(Int(min(1, p) * 100)) percent read" : ""
+            return "Opened \(relativeVisit(openedAt))\(read)"
+        }())
+        .accessibilityHint("Opens this paper")
     }
 
 
@@ -300,24 +314,24 @@ private struct SignedInView: View {
             HStack(spacing: 8) {
                 Circle().fill(tealAccent).frame(width: 4, height: 4)
                 Text("FROM YOUR SHELF")
-                    .font(.system(size: 10, weight: .semibold))
+                    .scaledFont(size: 10, weight: .semibold)
                     .tracking(1.8)
                     .foregroundStyle(tealAccent)
             }
             HStack(alignment: .firstTextBaseline) {
                 Text("Library")
-                    .font(.system(size: 30, weight: .regular, design: .serif))
+                    .scaledFont(size: 30, weight: .regular, design: .serif)
                     .foregroundStyle(inkColor)
                 Spacer()
                 if !libraryDecks.isEmpty {
                     Text("\(libraryDecks.count)".uppercased())
-                        .font(.system(size: 14, weight: .semibold, design: .serif))
+                        .scaledFont(size: 14, weight: .semibold, design: .serif)
                         .italic()
                         .foregroundStyle(tealAccent)
                 }
             }
             Text(libraryHeaderSubtitle)
-                .font(.system(size: 13, design: .serif))
+                .scaledFont(size: 13, design: .serif)
                 .italic()
                 .foregroundStyle(mutedText)
         }
@@ -342,14 +356,15 @@ private struct SignedInView: View {
                     .stroke(borderColor, style: StrokeStyle(lineWidth: 1, dash: [3, 4]))
                     .frame(width: 72, height: 72)
                 Image(systemName: "bookmark")
-                    .font(.system(size: 22, weight: .light))
+                    .scaledFont(size: 22, weight: .light)
                     .foregroundStyle(mutedText.opacity(0.7))
+                    .accessibilityHidden(true)
             }
             Text("Your shelf is empty")
-                .font(.system(size: 14, weight: .semibold, design: .serif))
+                .scaledFont(size: 14, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor)
             Text("Tap the bookmark on any paper to keep it here.")
-                .font(.system(size: 12, design: .serif))
+                .scaledFont(size: 12, design: .serif)
                 .italic()
                 .foregroundStyle(mutedText)
                 .multilineTextAlignment(.center)
@@ -368,14 +383,14 @@ private struct SignedInView: View {
 
             VStack(alignment: .leading, spacing: 6) {
                 Text(displayName)
-                    .font(.system(size: 24, weight: .semibold, design: .serif))
+                    .scaledFont(size: 24, weight: .semibold, design: .serif)
                     .foregroundStyle(inkColor)
                     .lineLimit(1)
             }
             Spacer()
             Button { showSettings = true } label: {
                 Image(systemName: "gearshape.fill")
-                    .font(.system(size: 14, weight: .semibold))
+                    .scaledFont(size: 14, weight: .semibold)
                     .foregroundStyle(tealAccent)
                     .frame(width: 36, height: 36)
                     .background(Circle().fill(tealLight))
@@ -393,11 +408,12 @@ private struct SignedInView: View {
             Circle()
                 .stroke(tealAccent.opacity(0.25), lineWidth: 1)
             Text(initial)
-                .font(.system(size: 22, weight: .semibold, design: .serif))
+                .scaledFont(size: 22, weight: .semibold, design: .serif)
                 .foregroundStyle(tealAccent)
         }
         .frame(width: 52, height: 52)
         .accessibilityLabel("Edit display name")
+        .accessibilityAddTraits(.isButton)
     }
 
     // MARK: 8. Preferences
@@ -441,30 +457,33 @@ private struct SignedInView: View {
         Button(action: action) {
             HStack {
                 Text(label.uppercased())
-                    .font(.system(size: 9, weight: .bold))
+                    .scaledFont(size: 9, weight: .bold)
                     .tracking(1.6)
                     .foregroundStyle(mutedText)
                 Spacer()
                 Text(value)
-                    .font(.system(size: 13, design: .serif))
+                    .scaledFont(size: 13, design: .serif)
                     .foregroundStyle(inkColor)
                     .lineLimit(1)
                     .truncationMode(.middle)
                 Image(systemName: "chevron.right")
-                    .font(.system(size: 11, weight: .semibold))
+                    .scaledFont(size: 11, weight: .semibold)
                     .foregroundStyle(mutedText.opacity(0.7))
+                    .accessibilityHidden(true)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 14)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(label)
+        .accessibilityValue(value)
     }
 
     private func prefToggleRow(label: String, isOn: Binding<Bool>) -> some View {
         HStack {
             Text(label.uppercased())
-                .font(.system(size: 9, weight: .bold))
+                .scaledFont(size: 9, weight: .bold)
                 .tracking(1.6)
                 .foregroundStyle(mutedText)
             Spacer()
@@ -497,12 +516,12 @@ private struct SignedInView: View {
     private func accountRow(label: String, value: String) -> some View {
         HStack {
             Text(label.uppercased())
-                .font(.system(size: 9, weight: .bold))
+                .scaledFont(size: 9, weight: .bold)
                 .tracking(1.6)
                 .foregroundStyle(mutedText)
             Spacer()
             Text(value)
-                .font(.system(size: 13, design: .serif))
+                .scaledFont(size: 13, design: .serif)
                 .foregroundStyle(inkColor)
                 .lineLimit(1)
                 .truncationMode(.middle)
@@ -532,13 +551,13 @@ private struct SignedInView: View {
         VStack(spacing: 14) {
             Button { showClearDataConfirm = true } label: {
                 Text("Clear local data")
-                    .font(.system(size: 12, weight: .medium))
+                    .scaledFont(size: 12, weight: .medium)
                     .foregroundStyle(mutedText)
             }
             .buttonStyle(.plain)
 
             Text("Clears your reading progress, streaks and saved papers from this device. This cannot be undone.")
-                .font(.system(size: 10, design: .serif))
+                .scaledFont(size: 10, design: .serif)
                 .italic()
                 .foregroundStyle(mutedText.opacity(0.85))
                 .multilineTextAlignment(.center)
@@ -598,12 +617,12 @@ private struct SignedInView: View {
     private func sectionHeader(_ title: String, trailing: String?) -> some View {
         HStack(alignment: .firstTextBaseline) {
             Text(title)
-                .font(.system(size: 18, weight: .regular, design: .serif))
+                .scaledFont(size: 18, weight: .regular, design: .serif)
                 .foregroundStyle(inkColor)
             Spacer()
             if let trailing = trailing {
                 Text(trailing.uppercased())
-                    .font(.system(size: 9, weight: .bold))
+                    .scaledFont(size: 9, weight: .bold)
                     .tracking(1.4)
                     .foregroundStyle(mutedText)
             }
@@ -626,10 +645,10 @@ private struct EditDisplayNameSheet: View {
             paperBg.ignoresSafeArea()
             VStack(alignment: .leading, spacing: 20) {
                 Text("Display name")
-                    .font(.system(size: 22, weight: .regular, design: .serif))
+                    .scaledFont(size: 22, weight: .regular, design: .serif)
                     .foregroundStyle(inkColor)
                 Text("How you'll appear in Aprecis. Leave blank to use your email handle.")
-                    .font(.system(size: 13))
+                    .scaledFont(size: 13)
                     .foregroundStyle(mutedText)
 
                 TextField("e.g. Justin", text: $draft)
@@ -637,7 +656,7 @@ private struct EditDisplayNameSheet: View {
                     .autocorrectionDisabled()
                     .submitLabel(.done)
                     .focused($focused)
-                    .font(.system(size: 16, design: .serif))
+                    .scaledFont(size: 16, design: .serif)
                     .padding(14)
                     .background(cardBg)
                     .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
@@ -672,7 +691,7 @@ private struct EditDisplayNameSheet: View {
                     }
                     .buttonStyle(.plain)
                 }
-                .font(.system(size: 14, weight: .semibold))
+                .scaledFont(size: 14, weight: .semibold)
 
                 Spacer()
             }
@@ -698,10 +717,10 @@ private struct DailyGoalSheet: View {
             paperBg.ignoresSafeArea()
             VStack(alignment: .leading, spacing: 22) {
                 Text("Daily goal")
-                    .font(.system(size: 22, weight: .regular, design: .serif))
+                    .scaledFont(size: 22, weight: .regular, design: .serif)
                     .foregroundStyle(inkColor)
                 Text("Papers to read each day. Streak counts any day you hit at least one.")
-                    .font(.system(size: 13))
+                    .scaledFont(size: 13)
                     .foregroundStyle(mutedText)
 
                 HStack(spacing: 18) {
@@ -711,12 +730,12 @@ private struct DailyGoalSheet: View {
 
                     VStack(spacing: 4) {
                         Text("\(draft)")
-                            .font(.system(size: 56, weight: .regular, design: .serif))
+                            .scaledFont(size: 56, weight: .regular, design: .serif)
                             .foregroundStyle(tealAccent)
                             .contentTransition(.numericText())
-                            .animation(.snappy, value: draft)
+                            .motionAware(.snappy, value: draft)
                         Text(draft == 1 ? "PAPER / DAY" : "PAPERS / DAY")
-                            .font(.system(size: 9, weight: .bold))
+                            .scaledFont(size: 9, weight: .bold)
                             .tracking(1.6)
                             .foregroundStyle(mutedText)
                     }
@@ -734,7 +753,7 @@ private struct DailyGoalSheet: View {
                 } label: {
                     Text("Save goal")
                         .frame(maxWidth: .infinity, minHeight: 48)
-                        .font(.system(size: 14, weight: .semibold))
+                        .scaledFont(size: 14, weight: .semibold)
                         .foregroundStyle(.white)
                         .background(
                             RoundedRectangle(cornerRadius: 12, style: .continuous)
@@ -754,7 +773,7 @@ private struct DailyGoalSheet: View {
     private func stepperButton(symbol: String, enabled: Bool, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Image(systemName: symbol)
-                .font(.system(size: 16, weight: .bold))
+                .scaledFont(size: 16, weight: .bold)
                 .frame(width: 46, height: 46)
                 .foregroundStyle(enabled ? inkColor : mutedText.opacity(0.5))
                 .background(
@@ -763,6 +782,7 @@ private struct DailyGoalSheet: View {
         }
         .buttonStyle(.plain)
         .disabled(!enabled)
+        .accessibilityLabel(symbol == "minus" ? "Decrease daily goal" : "Increase daily goal")
     }
 }
 
@@ -792,16 +812,16 @@ struct SavedPapersListView: View {
                     HStack(alignment: .firstTextBaseline) {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("LIBRARY")
-                                .font(.system(size: 10, weight: .bold))
+                                .scaledFont(size: 10, weight: .bold)
                                 .tracking(2.0)
                                 .foregroundStyle(mutedText)
                             Text("Saved papers")
-                                .font(.system(size: 28, weight: .regular, design: .serif))
+                                .scaledFont(size: 28, weight: .regular, design: .serif)
                                 .foregroundStyle(inkColor)
                         }
                         Spacer()
                         Text("\(saved.count)".uppercased())
-                            .font(.system(size: 14, weight: .semibold, design: .serif))
+                            .scaledFont(size: 14, weight: .semibold, design: .serif)
                             .foregroundStyle(tealAccent)
                     }
                     .padding(.horizontal, 20)
@@ -810,10 +830,11 @@ struct SavedPapersListView: View {
                     if saved.isEmpty {
                         VStack(spacing: 10) {
                             Image(systemName: "bookmark")
-                                .font(.system(size: 28))
+                                .scaledFont(size: 28)
                                 .foregroundStyle(mutedText.opacity(0.7))
+                                .accessibilityHidden(true)
                             Text("Empty library")
-                                .font(.system(size: 14, weight: .semibold))
+                                .scaledFont(size: 14, weight: .semibold)
                                 .foregroundStyle(inkColor)
                         }
                         .frame(maxWidth: .infinity)

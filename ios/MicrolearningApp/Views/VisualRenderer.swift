@@ -83,7 +83,7 @@ private struct FlowNodeView: View {
     let label: String
     var body: some View {
         Text(label)
-            .font(.system(size: 13, weight: .semibold))
+            .scaledFont(size: 13, weight: .semibold)
             .foregroundStyle(.white)
             .multilineTextAlignment(.center)
             .lineLimit(2)
@@ -105,12 +105,12 @@ private struct FlowArrowView: View {
                 .frame(width: 1.5, height: 12)
             if let label, !label.isEmpty {
                 Text(label)
-                    .font(.system(size: 9, weight: .medium))
+                    .scaledFont(size: 9, weight: .medium)
                     .foregroundStyle(mutedText)
                     .padding(.vertical, 1)
             }
             Image(systemName: "arrowtriangle.down.fill")
-                .font(.system(size: 7))
+                .scaledFont(size: 7)
                 .foregroundStyle(VS.arrowFill)
             Rectangle()
                 .fill(VS.arrow)
@@ -249,7 +249,7 @@ private struct BranchNodeView: View {
     let label: String
     var body: some View {
         Text(label)
-            .font(.system(size: 12, weight: .semibold))
+            .scaledFont(size: 12, weight: .semibold)
             .foregroundStyle(.white)
             .multilineTextAlignment(.center)
             .lineLimit(2)
@@ -291,14 +291,14 @@ private struct CompareColumn: View {
     var body: some View {
         VStack(spacing: 8) {
             Text(title.uppercased())
-                .font(.system(size: 9, weight: .bold))
+                .scaledFont(size: 9, weight: .bold)
                 .tracking(0.8)
                 .foregroundStyle(accent)
                 .padding(.bottom, 2)
 
             ForEach(nodes) { node in
                 Text(node.label)
-                    .font(.system(size: 12, weight: .medium))
+                    .scaledFont(size: 12, weight: .medium)
                     .foregroundStyle(accent == tealAccent ? tealAccent : inkColor)
                     .multilineTextAlignment(.center)
                     .lineLimit(3)

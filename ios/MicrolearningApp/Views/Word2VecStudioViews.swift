@@ -115,16 +115,16 @@ struct Word2VecVectorView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 04 · MEANING AS GEOMETRY")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("Tap any word. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(w2vInk)
-                + Text("Watch its meaning resolve.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("Tap any word. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(w2vInk)
+                + Text("Watch its meaning resolve.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("Each dot is a 300-dim vector projected to 2D. Cosine similarity ranks the five nearest. Toggle Analogy to play king − man + woman.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 16)
@@ -141,7 +141,7 @@ struct Word2VecVectorView: View {
                 Text(analogyMode
                      ? "vec(king) − vec(man) + vec(woman) lands at cosine 0.74 of vec(queen). The same offset works for tense, plurality, capital-of."
                      : (w2vVerdict[selected] ?? ""))
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(w2vInkSubtle)
                     .padding(.bottom, 24)
@@ -169,7 +169,7 @@ struct Word2VecVectorView: View {
                 }
             } label: {
                 Text("Explore")
-                    .font(.system(size: 11, weight: analogyMode ? .regular : .semibold, design: .serif))
+                    .font(scaledSystemFont(11, weight: analogyMode ? .regular : .semibold, design: .serif))
                     .foregroundStyle(analogyMode ? w2vInkSubtle : .white)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 9)
@@ -192,9 +192,9 @@ struct Word2VecVectorView: View {
                 UIImpactFeedbackGenerator(style: .soft).impactOccurred()
             } label: {
                 HStack(spacing: 6) {
-                    Image(systemName: "play.fill").font(.system(size: 9, weight: .bold))
+                    Image(systemName: "play.fill").font(scaledSystemFont(9, weight: .bold))
                     Text("Analogy: king − man + woman")
-                        .font(.system(size: 11, weight: analogyMode ? .semibold : .regular, design: .serif))
+                        .font(scaledSystemFont(11, weight: analogyMode ? .semibold : .regular, design: .serif))
                 }
                 .foregroundStyle(analogyMode ? .white : w2vInkSubtle)
                 .frame(maxWidth: .infinity)
@@ -282,7 +282,7 @@ struct Word2VecVectorView: View {
                                 )
                                 .frame(width: isSel ? 12 : 8, height: isSel ? 12 : 8)
                             Text(wd.text)
-                                .font(.system(size: isSel ? 11 : 10,
+                                .font(scaledSystemFont(isSel ? 11 : 10,
                                               weight: isSel ? .semibold : .regular,
                                               design: .serif))
                                 .foregroundStyle(isSel ? w2vInk
@@ -367,7 +367,7 @@ struct Word2VecVectorView: View {
                 .frame(width: 26, height: 26)
                 .position(x: qx, y: qy)
             Text("≈ queen")
-                .font(.system(size: 10, weight: .bold))
+                .font(scaledSystemFont(10, weight: .bold))
                 .tracking(0.6)
                 .foregroundStyle(tealAccent)
                 .padding(.horizontal, 6)
@@ -383,12 +383,12 @@ struct Word2VecVectorView: View {
                 Text(analogyMode
                      ? "RESULT VECTOR · NEAREST WORDS"
                      : "NEAREST TO \"\(w2vWords[selected].text.uppercased())\"")
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                 Spacer()
                 Text("cosine")
-                    .font(.system(size: 8, weight: .bold, design: .monospaced))
+                    .font(scaledSystemFont(8, weight: .bold, design: .monospaced))
                     .tracking(0.6)
                     .foregroundStyle(w2vInkSubtle.opacity(0.7))
             }
@@ -406,7 +406,7 @@ struct Word2VecVectorView: View {
                     if let wd = w2vWords.first(where: { $0.id == n.id }) {
                         HStack(spacing: 8) {
                             Text(wd.text)
-                                .font(.system(size: 11, design: .serif))
+                                .font(scaledSystemFont(11, design: .serif))
                                 .foregroundStyle(w2vInk)
                                 .frame(width: 70, alignment: .trailing)
                             GeometryReader { geo in
@@ -420,7 +420,7 @@ struct Word2VecVectorView: View {
                             }
                             .frame(height: 7)
                             Text(String(format: "%.2f", n.cos))
-                                .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                                .font(scaledSystemFont(10, weight: .semibold, design: .monospaced))
                                 .foregroundStyle(n.cos > 0.5 ? tealAccent : w2vInkSubtle)
                                 .frame(width: 36, alignment: .trailing)
                         }
@@ -521,16 +521,16 @@ struct Word2VecNegSamplingView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 05 · THE 1000× TRICK")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("Skip the softmax. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(w2vInk)
-                + Text("Sample a few negatives.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("Skip the softmax. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(w2vInk)
+                + Text("Sample a few negatives.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("Drag the dial. Full softmax compares against all 1M words. Negative sampling contrasts the true context against K random words. Same gradient direction, far less work.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -545,7 +545,7 @@ struct Word2VecNegSamplingView: View {
                     .padding(.bottom, 14)
 
                 Text(stop.verdict)
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(w2vInkSubtle)
                     .padding(.bottom, 24)
@@ -623,10 +623,10 @@ struct Word2VecNegSamplingView: View {
                 ForEach(NegStop.allCases) { s in
                     VStack(spacing: 2) {
                         Text(s.label)
-                            .font(.system(size: 11, weight: stop == s ? .semibold : .regular, design: .serif))
+                            .font(scaledSystemFont(11, weight: stop == s ? .semibold : .regular, design: .serif))
                             .foregroundStyle(stop == s ? w2vInk : mutedText)
                         Text(s == .full ? "softmax" : "negatives")
-                            .font(.system(size: 8, weight: .semibold))
+                            .font(scaledSystemFont(8, weight: .semibold))
                             .tracking(0.8)
                             .foregroundStyle(stop == s ? tealAccent : mutedText.opacity(0.7))
                     }
@@ -640,12 +640,12 @@ struct Word2VecNegSamplingView: View {
         VStack(alignment: .leading, spacing: 14) {
             HStack {
                 Text("OPS PER TRAINING EXAMPLE")
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                 Spacer()
                 Text(formatOps(stop.ops))
-                    .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(11, weight: .semibold, design: .monospaced))
                     .foregroundStyle(w2vInk)
                     .contentTransition(.numericText())
             }
@@ -682,14 +682,14 @@ struct Word2VecNegSamplingView: View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
                 Text(label)
-                    .font(.system(size: 12, weight: .semibold, design: .serif))
+                    .font(scaledSystemFont(12, weight: .semibold, design: .serif))
                     .foregroundStyle(w2vInk)
                 Spacer()
                 Text(tag)
-                    .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(11, weight: .semibold, design: .monospaced))
                     .foregroundStyle(color)
                 Text(note)
-                    .font(.system(size: 10, design: .serif))
+                    .font(scaledSystemFont(10, design: .serif))
                     .italic()
                     .foregroundStyle(w2vInkSubtle)
             }
@@ -709,11 +709,11 @@ struct Word2VecNegSamplingView: View {
     private func statChip(label: String, value: String) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(label)
-                .font(.system(size: 8, weight: .bold))
+                .font(scaledSystemFont(8, weight: .bold))
                 .tracking(1.2)
                 .foregroundStyle(w2vInkSubtle.opacity(0.8))
             Text(value)
-                .font(.system(size: 14, weight: .semibold, design: .monospaced))
+                .font(scaledSystemFont(14, weight: .semibold, design: .monospaced))
                 .foregroundStyle(tealAccent)
                 .contentTransition(.numericText())
         }
@@ -749,7 +749,7 @@ struct Word2VecNegSamplingView: View {
     private var qualityStrip: some View {
         HStack(spacing: 10) {
             Text("ANALOGY ACCURACY")
-                .font(.system(size: 9, weight: .semibold))
+                .font(scaledSystemFont(9, weight: .semibold))
                 .tracking(1.4)
                 .foregroundStyle(w2vInkSubtle)
             Spacer()
@@ -758,10 +758,10 @@ struct Word2VecNegSamplingView: View {
                     .fill(qualityColor)
                     .frame(width: 7, height: 7)
                 Text("\(Int(stop.accuracy * 100))%")
-                    .font(.system(size: 10, weight: .bold, design: .monospaced))
+                    .font(scaledSystemFont(10, weight: .bold, design: .monospaced))
                     .foregroundStyle(qualityColor)
                 Text(qualityLabel)
-                    .font(.system(size: 10, weight: .bold))
+                    .font(scaledSystemFont(10, weight: .bold))
                     .tracking(1.0)
                     .foregroundStyle(qualityColor)
             }
@@ -811,16 +811,16 @@ struct Word2VecArchView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 06 · CBOW · SKIP GRAM")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("Two ways. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(w2vInk)
-                + Text("To learn from context.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("Two ways. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(w2vInk)
+                + Text("To learn from context.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("Same data, opposite directions. CBOW averages neighbours to predict the centre. Skip-Gram uses the centre to predict each neighbour.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -837,7 +837,7 @@ struct Word2VecArchView: View {
                 Text(skipGram
                      ? "Per-context updates produce sharper analogy directions. Each rare word gets its own gradient signal, so embeddings stay crisp deep in the long tail."
                      : "Averaging context vectors halves the work and dominates on speed. Frequent words get plenty of signal; rare words blur into their neighbours.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(w2vInkSubtle)
                     .padding(.bottom, 24)
@@ -888,10 +888,10 @@ struct Word2VecArchView: View {
         Button(action: action) {
             VStack(spacing: 2) {
                 Text(title)
-                    .font(.system(size: 12, weight: .semibold, design: .serif))
+                    .font(scaledSystemFont(12, weight: .semibold, design: .serif))
                     .foregroundStyle(on ? .white : w2vInk)
                 Text(subtitle)
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .tracking(0.8)
                     .foregroundStyle(on ? .white.opacity(0.85) : w2vInkSubtle)
             }
@@ -935,7 +935,7 @@ struct Word2VecArchView: View {
                     .frame(width: 60, height: 26)
                     .position(x: centerX, y: projY)
                 Text(skipGram ? "PROJECTION" : "AVG")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(scaledSystemFont(8, weight: .bold))
                     .tracking(1.0)
                     .foregroundStyle(tealAccent)
                     .position(x: centerX, y: projY)
@@ -972,7 +972,7 @@ struct Word2VecArchView: View {
 
                 // Arrows label
                 Text(skipGram ? "centre predicts each neighbour" : "context averages, predicts centre")
-                    .font(.system(size: 10, weight: .semibold, design: .serif))
+                    .font(scaledSystemFont(10, weight: .semibold, design: .serif))
                     .italic()
                     .foregroundStyle(w2vInkSubtle)
                     .position(x: centerX, y: centerY + 28)
@@ -1028,11 +1028,11 @@ struct Word2VecArchView: View {
     private func tokenChip(text: String, role: String, isCenter: Bool, dim: Bool) -> some View {
         VStack(spacing: 2) {
             Text(role)
-                .font(.system(size: 7, weight: .bold))
+                .font(scaledSystemFont(7, weight: .bold))
                 .tracking(1.0)
                 .foregroundStyle(isCenter ? tealAccent : w2vInkSubtle.opacity(0.7))
             Text(text)
-                .font(.system(size: isCenter ? 13 : 11,
+                .font(scaledSystemFont(isCenter ? 13 : 11,
                               weight: isCenter ? .semibold : .regular,
                               design: .serif))
                 .foregroundStyle(dim ? w2vInkSubtle.opacity(0.5) : (isCenter ? .white : w2vInk))
@@ -1053,7 +1053,7 @@ struct Word2VecArchView: View {
     private var metricsPanel: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("TRAINING TRADE-OFFS")
-                .font(.system(size: 9, weight: .semibold))
+                .font(scaledSystemFont(9, weight: .semibold))
                 .tracking(1.4)
                 .foregroundStyle(tealAccent.opacity(0.85))
 
@@ -1092,11 +1092,11 @@ struct Word2VecArchView: View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
                 Text(label)
-                    .font(.system(size: 12, weight: .semibold, design: .serif))
+                    .font(scaledSystemFont(12, weight: .semibold, design: .serif))
                     .foregroundStyle(w2vInk)
                 Spacer()
                 Text(winner == .cbow ? "CBOW" : "SKIP")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(scaledSystemFont(8, weight: .bold))
                     .tracking(1.0)
                     .foregroundStyle(.white)
                     .padding(.horizontal, 6)
@@ -1105,7 +1105,7 @@ struct Word2VecArchView: View {
             }
             HStack(spacing: 6) {
                 Text("CBOW")
-                    .font(.system(size: 9, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(9, weight: .semibold, design: .monospaced))
                     .foregroundStyle(w2vInkSubtle)
                     .frame(width: 38, alignment: .trailing)
                 GeometryReader { geo in
@@ -1120,7 +1120,7 @@ struct Word2VecArchView: View {
             }
             HStack(spacing: 6) {
                 Text("SKIP")
-                    .font(.system(size: 9, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(9, weight: .semibold, design: .monospaced))
                     .foregroundStyle(w2vInkSubtle)
                     .frame(width: 38, alignment: .trailing)
                 GeometryReader { geo in
@@ -1134,7 +1134,7 @@ struct Word2VecArchView: View {
                 .frame(height: 6)
             }
             Text(note)
-                .font(.system(size: 10, design: .serif))
+                .font(scaledSystemFont(10, design: .serif))
                 .italic()
                 .foregroundStyle(w2vInkSubtle.opacity(0.85))
         }

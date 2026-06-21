@@ -43,7 +43,7 @@ struct DeepSeekR1Glyph: View {
 
                 // Reward star pulsing at the end of the ribbon.
                 Image(systemName: "star.fill")
-                    .font(.system(size: 22))
+                    .scaledFont(size: 22)
                     .foregroundStyle(amberAccent)
                     .scaleEffect(1.0 + 0.16 * sin(t * .pi * 2))
                     .shadow(color: amberAccent.opacity(0.6), radius: 10)
@@ -55,7 +55,7 @@ struct DeepSeekR1Glyph: View {
                     .opacity(t > 0.7 ? 1 : 0.25)
 
                 Text("REWARD")
-                    .font(.system(size: 9, weight: .bold)).tracking(1.8)
+                    .scaledFont(size: 9, weight: .bold).tracking(1.8)
                     .foregroundStyle(amberAccent)
                     .position(x: w * 0.82, y: midY - 54)
             }
@@ -69,7 +69,7 @@ struct DeepSeekR1Glyph: View {
 
     private func chip(text: String, fill: Color, stroke: Color, fg: Color) -> some View {
         Text(text)
-            .font(.system(size: 15, weight: .bold, design: .serif))
+            .scaledFont(size: 15, weight: .bold, design: .serif)
             .foregroundStyle(fg)
             .frame(width: 38, height: 38)
             .background(RoundedRectangle(cornerRadius: 9).fill(fill)
@@ -95,10 +95,10 @@ struct RewardLoopArt: View {
             }
             HStack(spacing: 8) {
                 Image(systemName: "arrow.uturn.left")
-                    .font(.system(size: 12, weight: .bold))
+                    .scaledFont(size: 12, weight: .bold)
                     .foregroundStyle(amberAccent)
                 Text("REWARD FLOWS BACK · KEEP WHAT WORKED")
-                    .font(.system(size: 9, weight: .bold)).tracking(1.2)
+                    .scaledFont(size: 9, weight: .bold).tracking(1.2)
                     .foregroundStyle(amberAccent)
             }
             .padding(.horizontal, 12).padding(.vertical, 7)
@@ -109,9 +109,9 @@ struct RewardLoopArt: View {
 
     private func node(_ label: String, sub: String, tint: Color) -> some View {
         VStack(spacing: 3) {
-            Text(label).font(.system(size: 10, weight: .bold)).tracking(1.2)
+            Text(label).scaledFont(size: 10, weight: .bold).tracking(1.2)
                 .foregroundStyle(tint)
-            Text(sub).font(.system(size: 9, design: .serif)).italic()
+            Text(sub).scaledFont(size: 9, design: .serif).italic()
                 .foregroundStyle(inkColor.opacity(0.55))
         }
         .padding(.horizontal, 10).padding(.vertical, 10)
@@ -121,7 +121,7 @@ struct RewardLoopArt: View {
 
     private func arrow() -> some View {
         Image(systemName: "arrow.right")
-            .font(.system(size: 11, weight: .bold))
+            .scaledFont(size: 11, weight: .bold)
             .foregroundStyle(mutedText)
     }
 }
@@ -138,7 +138,7 @@ struct GRPOGroupArt: View {
         let avg = scores.reduce(0, +) / Double(scores.count)
         return VStack(alignment: .leading, spacing: 8) {
             Text("ONE QUESTION → A GROUP OF TRIES")
-                .font(.system(size: 9, weight: .bold)).tracking(1.2)
+                .scaledFont(size: 9, weight: .bold).tracking(1.2)
                 .foregroundStyle(mutedText)
             GeometryReader { g in
                 let w = g.size.width, h = g.size.height
@@ -157,7 +157,7 @@ struct GRPOGroupArt: View {
                             let above = s >= avg
                             VStack(spacing: 3) {
                                 Image(systemName: above ? "arrow.up" : "arrow.down")
-                                    .font(.system(size: 9, weight: .bold))
+                                    .scaledFont(size: 9, weight: .bold)
                                     .foregroundStyle(above ? tealAccent : amberAccent)
                                 RoundedRectangle(cornerRadius: 4)
                                     .fill(above ? tealAccent.opacity(0.7) : amberAccent.opacity(0.55))
@@ -169,7 +169,7 @@ struct GRPOGroupArt: View {
             }
             .frame(height: 96)
             Text("Above the dashed average → reinforce. Below → discourage.")
-                .font(.system(size: 11, design: .serif)).italic()
+                .scaledFont(size: 11, design: .serif).italic()
                 .foregroundStyle(inkColor.opacity(0.6))
         }
     }
@@ -196,14 +196,14 @@ struct AhaLoopArt: View {
                 .foregroundStyle(tealAccent.opacity(0.85))
 
                 Text("wait, re-check")
-                    .font(.system(size: 11, weight: .semibold, design: .serif)).italic()
+                    .scaledFont(size: 11, weight: .semibold, design: .serif).italic()
                     .foregroundStyle(amberAccent)
                     .padding(.horizontal, 9).padding(.vertical, 5)
                     .background(RoundedRectangle(cornerRadius: 7).fill(amberAccent.opacity(0.12)))
                     .position(x: w * 0.7, y: h * 0.28)
 
                 Image(systemName: "lightbulb.fill")
-                    .font(.system(size: 15))
+                    .scaledFont(size: 15)
                     .foregroundStyle(amberAccent)
                     .position(x: w * 0.92, y: h * 0.78)
             }
@@ -221,25 +221,25 @@ struct DistillArt: View {
         HStack(spacing: 16) {
             VStack(spacing: 4) {
                 Image(systemName: "brain.head.profile")
-                    .font(.system(size: 34))
+                    .scaledFont(size: 34)
                     .foregroundStyle(tealAccent)
-                Text("R1").font(.system(size: 11, weight: .bold)).foregroundStyle(tealAccent)
-                Text("teacher").font(.system(size: 9, design: .serif)).italic()
+                Text("R1").scaledFont(size: 11, weight: .bold).foregroundStyle(tealAccent)
+                Text("teacher").scaledFont(size: 9, design: .serif).italic()
                     .foregroundStyle(inkColor.opacity(0.55))
             }
             VStack(spacing: 4) {
                 Image(systemName: "arrow.right")
-                    .font(.system(size: 13, weight: .bold)).foregroundStyle(mutedText)
-                Text("its reasoning").font(.system(size: 8, weight: .semibold)).tracking(0.8)
+                    .scaledFont(size: 13, weight: .bold).foregroundStyle(mutedText)
+                Text("its reasoning").scaledFont(size: 8, weight: .semibold).tracking(0.8)
                     .foregroundStyle(mutedText)
             }
             VStack(alignment: .leading, spacing: 8) {
                 ForEach(["1.5B", "7B", "32B"], id: \.self) { size in
                     HStack(spacing: 7) {
                         Image(systemName: "brain")
-                            .font(.system(size: 14)).foregroundStyle(amberAccent)
+                            .scaledFont(size: 14).foregroundStyle(amberAccent)
                         Text("small model · \(size)")
-                            .font(.system(size: 11, design: .serif))
+                            .scaledFont(size: 11, design: .serif)
                             .foregroundStyle(inkColor.opacity(0.75))
                     }
                 }
@@ -297,10 +297,10 @@ struct RewardSignalStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("HAND OUT THE REWARD")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("The model tried this problem two ways. You are the reward. Give the point to the answer you'd keep. That single choice is the only thing teaching it how to think.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -313,16 +313,16 @@ struct RewardSignalStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.3), value: verdict)
-        .animation(.snappy(duration: 0.3), value: sceneIdx)
+        .motionAware(.snappy(duration: 0.3), value: verdict)
+        .motionAware(.snappy(duration: 0.3), value: sceneIdx)
     }
 
     private var promptCard: some View {
         HStack(spacing: 10) {
             Image(systemName: "questionmark.circle.fill")
-                .font(.system(size: 16)).foregroundStyle(amberAccent)
+                .scaledFont(size: 16).foregroundStyle(amberAccent)
             Text(scene.prompt)
-                .font(.system(size: 16, weight: .semibold, design: .serif))
+                .scaledFont(size: 16, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor)
             Spacer(minLength: 0)
         }
@@ -341,10 +341,10 @@ struct RewardSignalStudio: View {
             HStack(alignment: .top, spacing: 12) {
                 VStack(alignment: .leading, spacing: 5) {
                     Text(isWorked ? "WORKED IT OUT" : "QUICK GUESS")
-                        .font(.system(size: 9, weight: .bold)).tracking(1.4)
+                        .scaledFont(size: 9, weight: .bold).tracking(1.4)
                         .foregroundStyle(isWorked ? tealAccent : mutedText)
                     Text(text)
-                        .font(.system(size: 14, design: .serif))
+                        .scaledFont(size: 14, design: .serif)
                         .foregroundStyle(inkColor.opacity(0.85))
                         .multilineTextAlignment(.leading)
                         .fixedSize(horizontal: false, vertical: true)
@@ -353,7 +353,7 @@ struct RewardSignalStudio: View {
                 Image(systemName: chosen
                       ? (isRightChoice ? "star.fill" : "xmark.circle.fill")
                       : "star")
-                    .font(.system(size: 16))
+                    .scaledFont(size: 16)
                     .foregroundStyle(chosen ? (isRightChoice ? amberAccent : mutedText) : mutedText.opacity(0.5))
             }
             .padding(14)
@@ -372,13 +372,13 @@ struct RewardSignalStudio: View {
         if let v = verdict {
             HStack(alignment: .top, spacing: 10) {
                 Image(systemName: v ? "checkmark.seal.fill" : "exclamationmark.triangle.fill")
-                    .font(.system(size: 14))
+                    .scaledFont(size: 14)
                     .foregroundStyle(v ? tealAccent : amberAccent)
                 VStack(alignment: .leading, spacing: 6) {
                     Text(v
                          ? "Rewarded. The model keeps this habit: \(scene.learn)"
                          : "That answer was wrong, so no point. The model learns to do less of that.")
-                        .font(.system(size: 13, weight: .semibold, design: .serif))
+                        .scaledFont(size: 13, weight: .semibold, design: .serif)
                         .foregroundStyle(inkColor.opacity(0.82))
                         .fixedSize(horizontal: false, vertical: true)
                     Button {
@@ -387,7 +387,7 @@ struct RewardSignalStudio: View {
                         sceneIdx = (sceneIdx + 1) % r1RewardScenes.count
                     } label: {
                         Text(v ? "Next problem \u{2192}" : "Try again")
-                            .font(.system(size: 12, weight: .semibold))
+                            .scaledFont(size: 12, weight: .semibold)
                             .foregroundStyle(tealAccent)
                     }
                     .buttonStyle(.plain)
@@ -407,7 +407,7 @@ struct RewardSignalStudio: View {
             Text(done
                  ? "You rewarded the worked-out answer twice. Do this a few million times and the model teaches itself to reason. No worked examples ever shown."
                  : "Right answers rewarded: \(rewardedRight.count) of 2")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -469,10 +469,10 @@ struct GRPOGroupStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("GRPO · LEARN FROM THE GROUP")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("For one question, the model writes a whole group of answers. Each gets a score. The group's own average (dashed line) becomes the bar to beat, with no separate judge model needed. Beat the average, get reinforced.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -484,15 +484,15 @@ struct GRPOGroupStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.35), value: groupIdx)
+        .motionAware(.snappy(duration: 0.35), value: groupIdx)
     }
 
     private var questionCard: some View {
         HStack(spacing: 10) {
             Image(systemName: "questionmark.circle.fill")
-                .font(.system(size: 16)).foregroundStyle(amberAccent)
+                .scaledFont(size: 16).foregroundStyle(amberAccent)
             Text("Flip a fair coin 3 times. P(at least one head)?")
-                .font(.system(size: 15, weight: .semibold, design: .serif))
+                .scaledFont(size: 15, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor)
                 .fixedSize(horizontal: false, vertical: true)
             Spacer(minLength: 0)
@@ -517,7 +517,7 @@ struct GRPOGroupStudio: View {
                     .foregroundStyle(inkColor.opacity(0.5))
 
                     Text("group avg")
-                        .font(.system(size: 9, weight: .semibold))
+                        .scaledFont(size: 9, weight: .semibold)
                         .foregroundStyle(inkColor.opacity(0.55))
                         .position(x: w - 34, y: h * (1 - a) - 9)
 
@@ -526,14 +526,14 @@ struct GRPOGroupStudio: View {
                             let above = ans.score >= a
                             VStack(spacing: 4) {
                                 Image(systemName: above ? "arrow.up.circle.fill" : "arrow.down.circle.fill")
-                                    .font(.system(size: 12))
+                                    .scaledFont(size: 12)
                                     .foregroundStyle(above ? tealAccent : amberAccent)
                                 RoundedRectangle(cornerRadius: 5)
                                     .fill(above ? tealAccent.opacity(0.75) : amberAccent.opacity(0.5))
                                     .frame(maxWidth: .infinity)
                                     .frame(height: max(8, h * CGFloat(ans.score) * 0.82))
                                 Text(ans.label)
-                                    .font(.system(size: 9, weight: .medium, design: .serif))
+                                    .scaledFont(size: 9, weight: .medium, design: .serif)
                                     .foregroundStyle(inkColor.opacity(0.7))
                                     .lineLimit(1)
                             }
@@ -556,9 +556,9 @@ struct GRPOGroupStudio: View {
             }
         } label: {
             HStack(spacing: 8) {
-                Image(systemName: "dice.fill").font(.system(size: 13))
+                Image(systemName: "dice.fill").scaledFont(size: 13)
                 Text("Sample another group")
-                    .font(.system(size: 13, weight: .semibold))
+                    .scaledFont(size: 13, weight: .semibold)
             }
             .foregroundStyle(.white)
             .padding(.horizontal, 16).padding(.vertical, 11)
@@ -574,7 +574,7 @@ struct GRPOGroupStudio: View {
             Text(done
                  ? "Different group, different average, same rule. The baseline is free: it's just the group's mean. That's the trick that lets GRPO skip the heavy critic network PPO needs."
                  : "Groups sampled: \(seen.count) of \(r1Groups.count)")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -631,10 +631,10 @@ struct AhaThinkingStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("DRAG UP THE DIFFICULTY")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Nobody told the model to think longer on hard problems. It discovered that on its own, just chasing the reward. Slide up the difficulty and watch the thinking grow until it starts checking its own work.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -646,7 +646,7 @@ struct AhaThinkingStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.3), value: idx)
+        .motionAware(.snappy(duration: 0.3), value: idx)
     }
 
     private var difficultyPicker: some View {
@@ -654,7 +654,7 @@ struct AhaThinkingStudio: View {
             HStack {
                 ForEach(Array(r1Difficulties.enumerated()), id: \.offset) { i, d in
                     Text(d.label)
-                        .font(.system(size: 11, weight: i == idx ? .bold : .regular))
+                        .scaledFont(size: 11, weight: i == idx ? .bold : .regular)
                         .foregroundStyle(i == idx ? tealAccent : mutedText)
                         .frame(maxWidth: .infinity)
                 }
@@ -675,7 +675,7 @@ struct AhaThinkingStudio: View {
     private var tokenMeter: some View {
         HStack(spacing: 10) {
             Text("THINKING")
-                .font(.system(size: 9, weight: .bold)).tracking(1.4)
+                .scaledFont(size: 9, weight: .bold).tracking(1.4)
                 .foregroundStyle(mutedText)
             GeometryReader { g in
                 ZStack(alignment: .leading) {
@@ -687,7 +687,7 @@ struct AhaThinkingStudio: View {
             }
             .frame(height: 8)
             Text("\(diff.tokens) tok")
-                .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                .scaledFont(size: 11, weight: .semibold, design: .monospaced)
                 .foregroundStyle(inkColor.opacity(0.7))
                 .frame(width: 64, alignment: .trailing)
         }
@@ -697,9 +697,9 @@ struct AhaThinkingStudio: View {
         VStack(alignment: .leading, spacing: 9) {
             HStack(spacing: 8) {
                 Image(systemName: "text.alignleft")
-                    .font(.system(size: 11, weight: .semibold)).foregroundStyle(tealAccent)
+                    .scaledFont(size: 11, weight: .semibold).foregroundStyle(tealAccent)
                 Text("THE MODEL'S SCRATCHPAD")
-                    .font(.system(size: 10, weight: .bold)).tracking(1.4)
+                    .scaledFont(size: 10, weight: .bold).tracking(1.4)
                     .foregroundStyle(tealAccent)
             }
             ForEach(Array(diff.trace.enumerated()), id: \.offset) { _, line in
@@ -710,7 +710,7 @@ struct AhaThinkingStudio: View {
                         .frame(width: 5, height: 5)
                         .padding(.top, 7)
                     Text(line)
-                        .font(.system(size: 13, design: .serif))
+                        .scaledFont(size: 13, design: .serif)
                         .italic(isAha)
                         .foregroundStyle(isAha ? amberAccent : inkColor.opacity(0.8))
                         .fixedSize(horizontal: false, vertical: true)
@@ -718,7 +718,7 @@ struct AhaThinkingStudio: View {
             }
             if diff.aha {
                 Text("\u{2191} That self-check appeared on its own. The paper calls it the \u{201C}aha moment.\u{201D}")
-                    .font(.system(size: 11, weight: .semibold, design: .serif))
+                    .scaledFont(size: 11, weight: .semibold, design: .serif)
                     .foregroundStyle(amberAccent)
                     .padding(.top, 2)
                     .fixedSize(horizontal: false, vertical: true)
@@ -736,7 +736,7 @@ struct AhaThinkingStudio: View {
             Text(reachedHard
                  ? "From one line to a checked, multi-step solution, all emergent. Longer thinking on harder problems was never programmed; the reward pulled it out."
                  : "Slide all the way to Hard to see the aha moment.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }

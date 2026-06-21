@@ -53,10 +53,10 @@ struct LaunchScreen: View {
 
                 HStack(spacing: 0) {
                     Text("aprecis")
-                        .font(.system(size: 26, weight: .semibold, design: .serif))
+                        .scaledFont(size: 26, weight: .semibold, design: .serif)
                         .foregroundStyle(tealAccent)
                     Text(".")
-                        .font(.system(size: 26, weight: .semibold, design: .serif))
+                        .scaledFont(size: 26, weight: .semibold, design: .serif)
                         .italic()
                         .foregroundStyle(inkColor)
                 }

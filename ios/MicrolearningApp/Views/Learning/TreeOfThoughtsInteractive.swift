@@ -78,11 +78,11 @@ struct TreeOfThoughtsGlyph: View {
                         i == 2 ? "" : "\u{2717}")
                 }
                 Image(systemName: "star.fill")
-                    .font(.system(size: 16)).foregroundStyle(amberAccent)
+                    .scaledFont(size: 16).foregroundStyle(amberAccent)
                     .position(goal).opacity(t > 0.7 ? 1 : 0.2)
 
                 Text("EXPLORE, EVALUATE, BACKTRACK")
-                    .font(.system(size: 9, weight: .bold)).tracking(1.4)
+                    .scaledFont(size: 9, weight: .bold).tracking(1.4)
                     .foregroundStyle(tealAccent)
                     .position(x: w / 2, y: h * 0.96)
             }
@@ -92,7 +92,7 @@ struct TreeOfThoughtsGlyph: View {
         }
     }
     private func dot(_ x: CGFloat, _ y: CGFloat, _ fill: Color, _ s: String) -> some View {
-        Text(s).font(.system(size: 11, weight: .bold)).foregroundStyle(.white)
+        Text(s).scaledFont(size: 11, weight: .bold).foregroundStyle(.white)
             .frame(width: 24, height: 24)
             .background(Circle().fill(fill))
             .position(x: x, y: y)
@@ -108,36 +108,36 @@ struct ChainVsTreeArt: View {
     var body: some View {
         VStack(spacing: 12) {
             VStack(alignment: .leading, spacing: 6) {
-                Text("A CHAIN").font(.system(size: 9, weight: .bold)).tracking(1.3).foregroundStyle(toRose)
+                Text("A CHAIN").scaledFont(size: 9, weight: .bold).tracking(1.3).foregroundStyle(toRose)
                 HStack(spacing: 6) {
                     node("start", tealAccent)
                     seg; node("step", tealAccent); seg; node("step", mutedText)
-                    Image(systemName: "nosign").font(.system(size: 14)).foregroundStyle(toRose)
+                    Image(systemName: "nosign").scaledFont(size: 14).foregroundStyle(toRose)
                 }
-                Text("one wrong turn, no way back").font(.system(size: 10, design: .serif)).italic()
+                Text("one wrong turn, no way back").scaledFont(size: 10, design: .serif).italic()
                     .foregroundStyle(mutedText)
             }
             .padding(11).frame(maxWidth: .infinity, alignment: .leading)
             .background(RoundedRectangle(cornerRadius: 10).fill(toRose.opacity(0.05)))
 
             VStack(alignment: .leading, spacing: 8) {
-                Text("A TREE").font(.system(size: 9, weight: .bold)).tracking(1.3).foregroundStyle(tealAccent)
+                Text("A TREE").scaledFont(size: 9, weight: .bold).tracking(1.3).foregroundStyle(tealAccent)
                 HStack(spacing: 6) {
                     node("start", tealAccent)
                     seg
                     VStack(spacing: 5) {
                         HStack(spacing: 4) {
                             node("a", mutedText)
-                            Image(systemName: "xmark").font(.system(size: 9, weight: .black)).foregroundStyle(toRose)
+                            Image(systemName: "xmark").scaledFont(size: 9, weight: .black).foregroundStyle(toRose)
                         }
                         HStack(spacing: 4) {
                             node("b", tealAccent)
-                            Image(systemName: "arrow.right").font(.system(size: 8, weight: .bold)).foregroundStyle(mutedText)
-                            Image(systemName: "star.fill").font(.system(size: 11)).foregroundStyle(amberAccent)
+                            Image(systemName: "arrow.right").scaledFont(size: 8, weight: .bold).foregroundStyle(mutedText)
+                            Image(systemName: "star.fill").scaledFont(size: 11).foregroundStyle(amberAccent)
                         }
                     }
                 }
-                Text("dead end pruned, another branch wins").font(.system(size: 10, design: .serif)).italic()
+                Text("dead end pruned, another branch wins").scaledFont(size: 10, design: .serif).italic()
                     .foregroundStyle(mutedText)
             }
             .padding(11).frame(maxWidth: .infinity, alignment: .leading)
@@ -146,10 +146,10 @@ struct ChainVsTreeArt: View {
         .padding(.vertical, 4)
     }
     private var seg: some View {
-        Image(systemName: "arrow.right").font(.system(size: 8, weight: .bold)).foregroundStyle(mutedText)
+        Image(systemName: "arrow.right").scaledFont(size: 8, weight: .bold).foregroundStyle(mutedText)
     }
     private func node(_ s: String, _ tint: Color) -> some View {
-        Text(s).font(.system(size: 10, weight: .semibold, design: .serif)).foregroundStyle(inkColor.opacity(0.8))
+        Text(s).scaledFont(size: 10, weight: .semibold, design: .serif).foregroundStyle(inkColor.opacity(0.8))
             .padding(.horizontal, 8).padding(.vertical, 5)
             .background(RoundedRectangle(cornerRadius: 6).fill(Color.white)
                 .overlay(RoundedRectangle(cornerRadius: 6).stroke(tint.opacity(0.5), lineWidth: 1)))
@@ -164,7 +164,7 @@ struct ChainVsTreeArt: View {
 struct EvaluatePruneArt: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("FROM 6, 9, 13 \u{2014} THREE MOVES").font(.system(size: 9, weight: .bold)).tracking(1.2)
+            Text("FROM 6, 9, 13 \u{2014} THREE MOVES").scaledFont(size: 9, weight: .bold).tracking(1.2)
                 .foregroundStyle(mutedText)
             candidate("13 - 9 = 4", verdict: .sure, note: "leaves 6 and 4")
             candidate("6 + 9 = 15", verdict: .impossible, note: "15 and 13 fall short")
@@ -176,13 +176,13 @@ struct EvaluatePruneArt: View {
     }
     private func candidate(_ expr: String, verdict: ToTVerdict, note: String) -> some View {
         HStack(spacing: 10) {
-            Text(expr).font(.system(size: 12, weight: .semibold, design: .monospaced))
+            Text(expr).scaledFont(size: 12, weight: .semibold, design: .monospaced)
                 .foregroundStyle(inkColor.opacity(0.82)).frame(width: 100, alignment: .leading)
-            Text(note).font(.system(size: 11, design: .serif)).italic().foregroundStyle(mutedText)
+            Text(note).scaledFont(size: 11, design: .serif).italic().foregroundStyle(mutedText)
             Spacer(minLength: 0)
             HStack(spacing: 3) {
-                Image(systemName: verdict.icon).font(.system(size: 11)).foregroundStyle(verdict.color)
-                Text(verdict.label).font(.system(size: 10, weight: .bold)).foregroundStyle(verdict.color)
+                Image(systemName: verdict.icon).scaledFont(size: 11).foregroundStyle(verdict.color)
+                Text(verdict.label).scaledFont(size: 10, weight: .bold).foregroundStyle(verdict.color)
             }
         }
         .padding(.horizontal, 10).padding(.vertical, 7)
@@ -224,10 +224,10 @@ struct EvaluateStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("CAN THIS STILL REACH 24?")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("The game is 24: combine 4, 9, 10, 13 with + - \u{00D7} \u{00F7} to make 24. Before searching, a tree needs one new power: the model can judge a half-finished attempt. Tap each first move to see its verdict.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -239,7 +239,7 @@ struct EvaluateStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.3), value: revealed)
+        .motionAware(.snappy(duration: 0.3), value: revealed)
     }
 
     private func candidateRow(i: Int, c: ToTCandidate) -> some View {
@@ -251,22 +251,22 @@ struct EvaluateStudio: View {
         } label: {
             VStack(alignment: .leading, spacing: 6) {
                 HStack(spacing: 10) {
-                    Text(c.expr).font(.system(size: 14, weight: .bold, design: .monospaced))
+                    Text(c.expr).scaledFont(size: 14, weight: .bold, design: .monospaced)
                         .foregroundStyle(inkColor.opacity(0.85))
-                    Image(systemName: "arrow.right").font(.system(size: 9, weight: .bold)).foregroundStyle(mutedText)
-                    Text(c.result).font(.system(size: 13, design: .monospaced)).foregroundStyle(mutedText)
+                    Image(systemName: "arrow.right").scaledFont(size: 9, weight: .bold).foregroundStyle(mutedText)
+                    Text(c.result).scaledFont(size: 13, design: .monospaced).foregroundStyle(mutedText)
                     Spacer(minLength: 0)
                     if shown {
                         HStack(spacing: 3) {
-                            Image(systemName: c.verdict.icon).font(.system(size: 13)).foregroundStyle(c.verdict.color)
-                            Text(c.verdict.label).font(.system(size: 11, weight: .bold)).foregroundStyle(c.verdict.color)
+                            Image(systemName: c.verdict.icon).scaledFont(size: 13).foregroundStyle(c.verdict.color)
+                            Text(c.verdict.label).scaledFont(size: 11, weight: .bold).foregroundStyle(c.verdict.color)
                         }
                     } else {
-                        Text("evaluate").font(.system(size: 11, weight: .semibold)).foregroundStyle(tealAccent)
+                        Text("evaluate").scaledFont(size: 11, weight: .semibold).foregroundStyle(tealAccent)
                     }
                 }
                 if shown {
-                    Text(c.note).font(.system(size: 12.5, design: .serif)).foregroundStyle(inkColor.opacity(0.75))
+                    Text(c.note).scaledFont(size: 12.5, design: .serif).foregroundStyle(inkColor.opacity(0.75))
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
@@ -285,7 +285,7 @@ struct EvaluateStudio: View {
             Text(done
                  ? "This is the new ingredient. A chain just charges ahead, but a tree can ask 'is this branch still worth it?' and label each one before committing."
                  : "Evaluate all three first moves to see how the model scores partial progress.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -340,10 +340,10 @@ struct Game24TreeStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("SEARCH THE TREE FOR 24")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Now do the search yourself. Pick a move; the model evaluates where it leads. A live branch moves you forward, a dead branch gets pruned and you back up and try another.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -355,19 +355,19 @@ struct Game24TreeStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.32), value: level)
-        .animation(.snappy(duration: 0.3), value: pruned)
-        .animation(.snappy(duration: 0.3), value: solved)
+        .motionAware(.snappy(duration: 0.32), value: level)
+        .motionAware(.snappy(duration: 0.3), value: pruned)
+        .motionAware(.snappy(duration: 0.3), value: solved)
     }
 
     private var pathView: some View {
         HStack(spacing: 6) {
             ForEach(Array(chosen.enumerated()), id: \.offset) { i, s in
                 if i > 0 {
-                    Image(systemName: "arrow.right").font(.system(size: 9, weight: .bold)).foregroundStyle(tealAccent)
+                    Image(systemName: "arrow.right").scaledFont(size: 9, weight: .bold).foregroundStyle(tealAccent)
                 }
                 Text("{ \(s) }")
-                    .font(.system(size: 12, weight: .bold, design: .monospaced))
+                    .scaledFont(size: 12, weight: .bold, design: .monospaced)
                     .foregroundStyle(i == chosen.count - 1 ? tealAccent : inkColor.opacity(0.6))
                     .padding(.horizontal, 8).padding(.vertical, 6)
                     .background(RoundedRectangle(cornerRadius: 7)
@@ -388,19 +388,19 @@ struct Game24TreeStudio: View {
                 } label: {
                     HStack(spacing: 10) {
                         Text(m.expr)
-                            .font(.system(size: 13, weight: .bold, design: .monospaced))
+                            .scaledFont(size: 13, weight: .bold, design: .monospaced)
                             .foregroundStyle(isPruned ? mutedText : inkColor.opacity(0.85))
                             .strikethrough(isPruned)
-                        Image(systemName: "arrow.right").font(.system(size: 8, weight: .bold)).foregroundStyle(mutedText)
-                        Text(m.result).font(.system(size: 12, design: .monospaced)).foregroundStyle(mutedText)
+                        Image(systemName: "arrow.right").scaledFont(size: 8, weight: .bold).foregroundStyle(mutedText)
+                        Text(m.result).scaledFont(size: 12, design: .monospaced).foregroundStyle(mutedText)
                         Spacer(minLength: 0)
                         if isPruned {
                             HStack(spacing: 3) {
-                                Image(systemName: m.verdict.icon).font(.system(size: 12)).foregroundStyle(m.verdict.color)
-                                Text(m.verdict.label).font(.system(size: 10, weight: .bold)).foregroundStyle(m.verdict.color)
+                                Image(systemName: m.verdict.icon).scaledFont(size: 12).foregroundStyle(m.verdict.color)
+                                Text(m.verdict.label).scaledFont(size: 10, weight: .bold).foregroundStyle(m.verdict.color)
                             }
                         } else {
-                            Image(systemName: "magnifyingglass").font(.system(size: 12)).foregroundStyle(tealAccent)
+                            Image(systemName: "magnifyingglass").scaledFont(size: 12).foregroundStyle(tealAccent)
                         }
                     }
                     .padding(12).frame(maxWidth: .infinity, alignment: .leading)
@@ -417,12 +417,12 @@ struct Game24TreeStudio: View {
     private var solvedView: some View {
         VStack(spacing: 8) {
             HStack(spacing: 8) {
-                Text("6 \u{00D7} 4 = 24").font(.system(size: 18, weight: .bold, design: .monospaced))
+                Text("6 \u{00D7} 4 = 24").scaledFont(size: 18, weight: .bold, design: .monospaced)
                     .foregroundStyle(tealAccent)
-                Image(systemName: "star.fill").font(.system(size: 16)).foregroundStyle(amberAccent)
+                Image(systemName: "star.fill").scaledFont(size: 16).foregroundStyle(amberAccent)
             }
             Text("Solved. (10 - 4) \u{00D7} (13 - 9) = 24")
-                .font(.system(size: 13, weight: .semibold, design: .monospaced)).foregroundStyle(inkColor.opacity(0.8))
+                .scaledFont(size: 13, weight: .semibold, design: .monospaced).foregroundStyle(inkColor.opacity(0.8))
         }
         .padding(16).frame(maxWidth: .infinity)
         .background(RoundedRectangle(cornerRadius: 12).fill(tealAccent.opacity(0.08))
@@ -431,8 +431,8 @@ struct Game24TreeStudio: View {
 
     private func noteRow(_ n: String) -> some View {
         HStack(alignment: .top, spacing: 9) {
-            Image(systemName: "info.circle.fill").font(.system(size: 13)).foregroundStyle(amberAccent)
-            Text(n).font(.system(size: 13, design: .serif)).foregroundStyle(inkColor.opacity(0.78))
+            Image(systemName: "info.circle.fill").scaledFont(size: 13).foregroundStyle(amberAccent)
+            Text(n).scaledFont(size: 13, design: .serif).foregroundStyle(inkColor.opacity(0.78))
                 .fixedSize(horizontal: false, vertical: true)
         }
         .padding(11).frame(maxWidth: .infinity, alignment: .leading)
@@ -445,7 +445,7 @@ struct Game24TreeStudio: View {
             Text(solved
                  ? "That is tree of thoughts: branch, evaluate, prune the dead ends, and follow the live path. A chain could never have backed out of a wrong first move."
                  : "Pick a move. Dead branches get pruned, so back up and try another.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -487,10 +487,10 @@ struct ChainVsTreeStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("STUCK, OR BACK UP?")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Suppose the very first move was a bad one: 4 \u{00D7} 9 = 36. Flip between how a chain and a tree handle that same wrong turn.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -501,7 +501,7 @@ struct ChainVsTreeStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.32), value: treeMode)
+        .motionAware(.snappy(duration: 0.32), value: treeMode)
     }
 
     private var modeToggle: some View {
@@ -523,23 +523,23 @@ struct ChainVsTreeStudio: View {
             row(state: "36, 10, 13", label: "4 \u{00D7} 9 = 36  \u{2014} bad move", tint: toRose, struckOut: true)
             if treeMode {
                 HStack(spacing: 6) {
-                    Image(systemName: "arrow.uturn.left").font(.system(size: 12, weight: .bold)).foregroundStyle(amberAccent)
-                    Text("backtrack").font(.system(size: 11, weight: .bold)).foregroundStyle(amberAccent)
+                    Image(systemName: "arrow.uturn.left").scaledFont(size: 12, weight: .bold).foregroundStyle(amberAccent)
+                    Text("backtrack").scaledFont(size: 11, weight: .bold).foregroundStyle(amberAccent)
                 }
                 .padding(.leading, 4)
                 row(state: "6, 9, 13", label: "10 - 4 = 6  \u{2014} try another", tint: tealAccent, struckOut: false)
                 arrowDown
                 HStack(spacing: 8) {
                     Text("\u{2192} 6 \u{00D7} 4 = 24")
-                        .font(.system(size: 14, weight: .bold, design: .monospaced)).foregroundStyle(tealAccent)
-                    Image(systemName: "star.fill").font(.system(size: 13)).foregroundStyle(amberAccent)
+                        .scaledFont(size: 14, weight: .bold, design: .monospaced).foregroundStyle(tealAccent)
+                    Image(systemName: "star.fill").scaledFont(size: 13).foregroundStyle(amberAccent)
                 }
                 .padding(.leading, 4)
             } else {
                 HStack(spacing: 6) {
-                    Image(systemName: "nosign").font(.system(size: 14)).foregroundStyle(toRose)
+                    Image(systemName: "nosign").scaledFont(size: 14).foregroundStyle(toRose)
                     Text("stuck \u{2014} the chain already committed, with no way back")
-                        .font(.system(size: 12, design: .serif)).italic().foregroundStyle(mutedText)
+                        .scaledFont(size: 12, design: .serif).italic().foregroundStyle(mutedText)
                 }
                 .padding(.leading, 4)
             }
@@ -551,19 +551,19 @@ struct ChainVsTreeStudio: View {
     }
 
     private var arrowDown: some View {
-        Image(systemName: "arrow.down").font(.system(size: 11, weight: .bold)).foregroundStyle(mutedText)
+        Image(systemName: "arrow.down").scaledFont(size: 11, weight: .bold).foregroundStyle(mutedText)
             .padding(.leading, 12)
     }
     private func row(state: String, label: String, tint: Color, struckOut: Bool) -> some View {
         HStack(spacing: 10) {
             Text("{ \(state) }")
-                .font(.system(size: 12, weight: .bold, design: .monospaced))
+                .scaledFont(size: 12, weight: .bold, design: .monospaced)
                 .foregroundStyle(struckOut ? mutedText : inkColor.opacity(0.85))
                 .strikethrough(struckOut)
                 .padding(.horizontal, 8).padding(.vertical, 6)
                 .background(RoundedRectangle(cornerRadius: 7).fill(tint.opacity(0.08))
                     .overlay(RoundedRectangle(cornerRadius: 7).stroke(tint.opacity(0.4), lineWidth: 1)))
-            Text(label).font(.system(size: 11, design: .serif)).italic().foregroundStyle(mutedText)
+            Text(label).scaledFont(size: 11, design: .serif).italic().foregroundStyle(mutedText)
             Spacer(minLength: 0)
         }
     }
@@ -574,7 +574,7 @@ struct ChainVsTreeStudio: View {
             Text(treeMode
                  ? "A tree treats a wrong move as one branch among many. It backs up and explores another, which is exactly why it can solve puzzles a single chain cannot."
                  : "In chain mode the model is stuck. Flip to tree mode to see it recover.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
