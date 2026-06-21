@@ -14,8 +14,10 @@ let tealLight   = Color(hex: "e8f5f5")
 let tealMid     = Color(hex: "2db8b8")
 /// Amber accent
 let amberAccent = Color(hex: "e8a020")
-/// Muted text
-let mutedText   = Color(hex: "8a8f9a")
+/// Muted text. Darkened from the original `#8a8f9a` to `#6b7078` so secondary
+/// copy clears WCAG AA (~4.5:1) on the cream paper background — the old value
+/// sat near 2.9:1, failing contrast for the many places muted text is used.
+let mutedText   = Color(hex: "6b7078")
 /// Card surface
 let cardBg      = Color.white
 /// Border

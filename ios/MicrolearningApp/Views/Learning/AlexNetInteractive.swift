@@ -90,11 +90,11 @@ struct PhotoToLabelArt: View {
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(borderColor, lineWidth: 1)))
 
             Image(systemName: "arrow.right")
-                .font(.system(size: 17, weight: .semibold))
+                .scaledFont(size: 17, weight: .semibold)
                 .foregroundStyle(inkColor.opacity(0.4))
 
             Text("\u{201C}dog\u{201D}")
-                .font(.system(size: 21, weight: .bold, design: .serif))
+                .scaledFont(size: 21, weight: .bold, design: .serif)
                 .foregroundStyle(inkColor)
                 .padding(.horizontal, 16).padding(.vertical, 11)
                 .background(Capsule().fill(tealAccent.opacity(0.15))
@@ -156,7 +156,7 @@ struct ConvWindowArt: View {
                     .frame(width: cell * 3 + gap * 2, height: cell * 3 + gap * 2)
                     .shadow(color: tealAccent.opacity(0.4), radius: 5)
                     .offset(offset(for: i))
-                    .animation(.easeInOut(duration: 0.55), value: i)
+                    .motionAware(.easeInOut(duration: 0.55), value: i)
             }
             .padding(9)
             .background(RoundedRectangle(cornerRadius: 10).fill(Color.white)
@@ -188,10 +188,10 @@ struct ReLUStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("PICK AN ACTIVATION")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Slide the input. Watch each activation's gradient, the strength of the learning signal it passes back. Sigmoid's dies at the ends. ReLU's does not.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -241,7 +241,7 @@ struct ReLUStudio: View {
     private var slider: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("INPUT  x = \(String(format: "%.1f", x))")
-                .font(.system(size: 10, weight: .bold, design: .monospaced))
+                .scaledFont(size: 10, weight: .bold, design: .monospaced)
                 .foregroundStyle(mutedText)
             Slider(value: $x, in: -4...4) { editing in
                 if !editing { moves += 1; checkDone() }
@@ -253,15 +253,15 @@ struct ReLUStudio: View {
     private func row(_ name: String, value: Double, grad: Double, warn: Bool) -> some View {
         HStack(spacing: 10) {
             Text(name)
-                .font(.system(size: 13, weight: .bold, design: .serif))
+                .scaledFont(size: 13, weight: .bold, design: .serif)
                 .foregroundStyle(name == "ReLU" ? tealAccent : amberAccent)
                 .frame(width: 64, alignment: .leading)
             Text("out \(String(format: "%.2f", value))")
-                .font(.system(size: 12, design: .monospaced))
+                .scaledFont(size: 12, design: .monospaced)
                 .foregroundStyle(inkColor.opacity(0.7))
             Spacer()
             Text("gradient \(String(format: "%.2f", grad))")
-                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                .scaledFont(size: 12, weight: .semibold, design: .monospaced)
                 .foregroundStyle(warn ? Color(hex: "c2557a") : inkColor.opacity(0.8))
         }
         .padding(.horizontal, 12).padding(.vertical, 9)
@@ -274,7 +274,7 @@ struct ReLUStudio: View {
             Text(moves >= 3
                  ? "Push x far out and sigmoid's gradient nearly vanishes. ReLU keeps a clean 1, so deep nets keep learning."
                  : "Slide the input toward the extremes and compare the gradients.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -307,10 +307,10 @@ struct DropoutStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("RUN TRAINING PASSES")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Each pass drops a random half of the neurons. The network still has to produce an answer with whoever is left, so no neuron can rely on a fixed partner.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -335,9 +335,9 @@ struct DropoutStudio: View {
                             .frame(width: 38, height: 38)
                             .overlay(Circle().stroke(borderColor, lineWidth: 1))
                             .overlay(off ? Image(systemName: "xmark")
-                                .font(.system(size: 11, weight: .bold))
+                                .scaledFont(size: 11, weight: .bold)
                                 .foregroundStyle(mutedText) : nil)
-                            .animation(.snappy(duration: 0.25), value: off)
+                            .motionAware(.snappy(duration: 0.25), value: off)
                     }
                 }
             }
@@ -351,7 +351,7 @@ struct DropoutStudio: View {
             Text(passes >= 5
                  ? "Five passes, five different networks trained. At test time all neurons return, an averaged ensemble."
                  : "Pass \(passes) of 5 \u{00B7} a different thinned network each time")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -360,7 +360,7 @@ struct DropoutStudio: View {
     private var button: some View {
         Button { runPass() } label: {
             Text(passes >= 5 ? "Done \u{2713}" : "Run a training pass")
-                .font(.system(size: 14, weight: .semibold))
+                .scaledFont(size: 14, weight: .semibold)
                 .foregroundStyle(passes >= 5 ? tealAccent : .white)
                 .frame(maxWidth: .infinity, minHeight: 46)
                 .background(RoundedRectangle(cornerRadius: 12)
@@ -415,10 +415,10 @@ struct ScaleStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("LINE UP THE DIALS")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Deep convolutional nets existed before 2012. What changed was three things arriving together. Flip them and watch the accuracy.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -439,11 +439,11 @@ struct ScaleStudio: View {
     private var accuracyBar: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
-                Text("ACCURACY").font(.system(size: 10, weight: .bold)).tracking(1.6)
+                Text("ACCURACY").scaledFont(size: 10, weight: .bold).tracking(1.6)
                     .foregroundStyle(mutedText)
                 Spacer()
                 Text("\(Int(accuracy * 100))%")
-                    .font(.system(size: 13, weight: .bold, design: .monospaced))
+                    .scaledFont(size: 13, weight: .bold, design: .monospaced)
                     .foregroundStyle(allOn ? tealAccent : inkColor.opacity(0.7))
             }
             GeometryReader { g in
@@ -459,9 +459,9 @@ struct ScaleStudio: View {
                 }
             }
             .frame(height: 24)
-            .animation(.snappy(duration: 0.35), value: accuracy)
+            .motionAware(.snappy(duration: 0.35), value: accuracy)
             Text("Rose line: the best result before 2012.")
-                .font(.system(size: 11, design: .serif)).italic()
+                .scaledFont(size: 11, design: .serif).italic()
                 .foregroundStyle(mutedText)
         }
     }
@@ -470,14 +470,14 @@ struct ScaleStudio: View {
         Button { on.wrappedValue.toggle(); UIImpactFeedbackGenerator(style: .soft).impactOccurred(); check() } label: {
             HStack(spacing: 12) {
                 Image(systemName: on.wrappedValue ? "checkmark.circle.fill" : "circle")
-                    .font(.system(size: 20))
+                    .scaledFont(size: 20)
                     .foregroundStyle(on.wrappedValue ? tealAccent : inkColor.opacity(0.3))
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title)
-                        .font(.system(size: 14, weight: .semibold, design: .serif))
+                        .scaledFont(size: 14, weight: .semibold, design: .serif)
                         .foregroundStyle(inkColor)
                     Text(detail)
-                        .font(.system(size: 11, design: .serif))
+                        .scaledFont(size: 11, design: .serif)
                         .foregroundStyle(mutedText)
                 }
                 Spacer(minLength: 0)
@@ -497,7 +497,7 @@ struct ScaleStudio: View {
             Text(allOn
                  ? "All three together clear the old wall by a wide margin. That is the 2012 result."
                  : "No single dial is enough. They had to arrive at once.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }

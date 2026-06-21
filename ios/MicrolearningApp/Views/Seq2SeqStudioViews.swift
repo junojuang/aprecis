@@ -81,16 +81,16 @@ struct Seq2SeqPipelineView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 04 · COMPRESS, EXPAND")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("One sticky note. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(s2sInk)
-                + Text("Two languages.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("One sticky note. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(s2sInk)
+                + Text("Two languages.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("Tap each stage to see how a sentence becomes a single vector and back again. The thought vector in the middle is the bottleneck.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -102,7 +102,7 @@ struct Seq2SeqPipelineView: View {
                     .padding(.bottom, 14)
 
                 Text(stage.caption)
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(s2sInkSubtle)
                     .padding(.bottom, 24)
@@ -129,12 +129,12 @@ struct Seq2SeqPipelineView: View {
         VStack(alignment: .leading, spacing: 14) {
             HStack {
                 Text("EN → FR · \"I love cats\"")
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                 Spacer()
                 Text("LSTM · 1000 dim")
-                    .font(.system(size: 8, weight: .bold, design: .monospaced))
+                    .font(scaledSystemFont(8, weight: .bold, design: .monospaced))
                     .tracking(0.6)
                     .foregroundStyle(s2sInkSubtle.opacity(0.7))
             }
@@ -142,7 +142,7 @@ struct Seq2SeqPipelineView: View {
             // Source row, reversed
             VStack(alignment: .leading, spacing: 6) {
                 Text("SOURCE (reversed in)")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(scaledSystemFont(8, weight: .bold))
                     .tracking(1.0)
                     .foregroundStyle(stage == .source ? tealAccent : s2sInkSubtle.opacity(0.7))
                 HStack(spacing: 6) {
@@ -156,7 +156,7 @@ struct Seq2SeqPipelineView: View {
             // Encoder row, three LSTM cells with hidden state arrow
             VStack(alignment: .leading, spacing: 6) {
                 Text("ENCODER · LSTM CELLS")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(scaledSystemFont(8, weight: .bold))
                     .tracking(1.0)
                     .foregroundStyle(stage == .encoder ? tealAccent : s2sInkSubtle.opacity(0.7))
                 HStack(spacing: 0) {
@@ -164,13 +164,13 @@ struct Seq2SeqPipelineView: View {
                         cellChip(label: "h\(i+1)", color: amberAccent, active: stage == .encoder)
                         if i < 2 {
                             Image(systemName: "arrow.right")
-                                .font(.system(size: 9, weight: .bold))
+                                .font(scaledSystemFont(9, weight: .bold))
                                 .foregroundStyle(stage == .encoder ? amberAccent : s2sInkSubtle.opacity(0.5))
                                 .frame(width: 18)
                         }
                     }
                     Image(systemName: "arrow.right")
-                        .font(.system(size: 9, weight: .bold))
+                        .font(scaledSystemFont(9, weight: .bold))
                         .foregroundStyle(stage == .encoder || stage == .context ? amberAccent : s2sInkSubtle.opacity(0.5))
                         .frame(width: 18)
                     Spacer()
@@ -180,7 +180,7 @@ struct Seq2SeqPipelineView: View {
             // Context: single thought vector node
             HStack(spacing: 10) {
                 Text("THOUGHT")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(scaledSystemFont(8, weight: .bold))
                     .tracking(1.0)
                     .foregroundStyle(stage == .context ? tealAccent : s2sInkSubtle.opacity(0.7))
                 ZStack {
@@ -194,15 +194,15 @@ struct Seq2SeqPipelineView: View {
                                 .opacity(stage == .context ? 1 - pulse * 0.7 : 0)
                         )
                     Text("c")
-                        .font(.system(size: 11, weight: .bold, design: .monospaced))
+                        .font(scaledSystemFont(11, weight: .bold, design: .monospaced))
                         .foregroundStyle(stage == .context ? .white : tealAccent)
                 }
                 Text("1×1000")
-                    .font(.system(size: 9, design: .monospaced))
+                    .font(scaledSystemFont(9, design: .monospaced))
                     .foregroundStyle(s2sInkSubtle)
                 Spacer()
                 Text("← bottleneck")
-                    .font(.system(size: 9, design: .serif))
+                    .font(scaledSystemFont(9, design: .serif))
                     .italic()
                     .foregroundStyle(stage == .context ? tealAccent : s2sInkSubtle.opacity(0.7))
             }
@@ -211,19 +211,19 @@ struct Seq2SeqPipelineView: View {
             // Decoder row
             VStack(alignment: .leading, spacing: 6) {
                 Text("DECODER · LSTM CELLS")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(scaledSystemFont(8, weight: .bold))
                     .tracking(1.0)
                     .foregroundStyle(stage == .decoder ? tealAccent : s2sInkSubtle.opacity(0.7))
                 HStack(spacing: 0) {
                     Image(systemName: "arrow.right")
-                        .font(.system(size: 9, weight: .bold))
+                        .font(scaledSystemFont(9, weight: .bold))
                         .foregroundStyle(stage == .decoder || stage == .context ? amberAccent : s2sInkSubtle.opacity(0.5))
                         .frame(width: 18)
                     ForEach(0..<3) { i in
                         cellChip(label: "h'\(i+1)", color: amberAccent, active: stage == .decoder)
                         if i < 2 {
                             Image(systemName: "arrow.right")
-                                .font(.system(size: 9, weight: .bold))
+                                .font(scaledSystemFont(9, weight: .bold))
                                 .foregroundStyle(stage == .decoder ? amberAccent : s2sInkSubtle.opacity(0.5))
                                 .frame(width: 18)
                         }
@@ -235,7 +235,7 @@ struct Seq2SeqPipelineView: View {
             // Target row
             VStack(alignment: .leading, spacing: 6) {
                 Text("TARGET (left to right)")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(scaledSystemFont(8, weight: .bold))
                     .tracking(1.0)
                     .foregroundStyle(stage == .target ? tealAccent : s2sInkSubtle.opacity(0.7))
                 HStack(spacing: 6) {
@@ -258,7 +258,7 @@ struct Seq2SeqPipelineView: View {
     @ViewBuilder
     private func tokenChip(text: String, on: Bool, color: Color, mono: Bool = false) -> some View {
         Text(text)
-            .font(.system(size: 11,
+            .font(scaledSystemFont(11,
                           weight: on ? .semibold : .regular,
                           design: mono ? .monospaced : .serif))
             .foregroundStyle(on ? .white : s2sInk)
@@ -277,7 +277,7 @@ struct Seq2SeqPipelineView: View {
     @ViewBuilder
     private func cellChip(label: String, color: Color, active: Bool) -> some View {
         Text(label)
-            .font(.system(size: 10, weight: .semibold, design: .monospaced))
+            .font(scaledSystemFont(10, weight: .semibold, design: .monospaced))
             .foregroundStyle(active ? .white : color)
             .frame(width: 38, height: 28)
             .background(
@@ -298,7 +298,7 @@ struct Seq2SeqPipelineView: View {
                     UIImpactFeedbackGenerator(style: .soft).impactOccurred()
                 } label: {
                     Text(s.label)
-                        .font(.system(size: 9, weight: stage == s ? .bold : .semibold))
+                        .font(scaledSystemFont(9, weight: stage == s ? .bold : .semibold))
                         .tracking(1.0)
                         .foregroundStyle(stage == s ? .white : s2sInkSubtle)
                         .frame(maxWidth: .infinity)
@@ -398,16 +398,16 @@ struct Seq2SeqLengthView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 05 · LENGTH CLIFF")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("One vector. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(s2sInk)
-                + Text("Finite capacity.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("One vector. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(s2sInk)
+                + Text("Finite capacity.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("Drag the dial. The thought vector is fixed at 1000 dimensions; the sentence is not. Past twenty tokens, compression starts losing the thread.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -422,7 +422,7 @@ struct Seq2SeqLengthView: View {
                     .padding(.bottom, 14)
 
                 Text(stop.verdict)
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(s2sInkSubtle)
                     .padding(.bottom, 24)
@@ -504,10 +504,10 @@ struct Seq2SeqLengthView: View {
                 ForEach(S2SLength.allCases) { s in
                     VStack(spacing: 2) {
                         Text("\(s.n)")
-                            .font(.system(size: 11, weight: stop == s ? .semibold : .regular, design: .serif))
+                            .font(scaledSystemFont(11, weight: stop == s ? .semibold : .regular, design: .serif))
                             .foregroundStyle(stop == s ? s2sInk : mutedText)
                         Text("tokens")
-                            .font(.system(size: 8, weight: .semibold))
+                            .font(scaledSystemFont(8, weight: .semibold))
                             .tracking(0.8)
                             .foregroundStyle(stop == s ? tealAccent : mutedText.opacity(0.7))
                     }
@@ -521,13 +521,13 @@ struct Seq2SeqLengthView: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Text("BLEU SCORE · WMT'14 EN→FR")
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                 Spacer()
                 let lead = s2sAnim - phraseAnim
                 Text(lead >= 0 ? "+\(String(format: "%.1f", lead)) BLEU" : "\(String(format: "%.1f", lead)) BLEU")
-                    .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(11, weight: .semibold, design: .monospaced))
                     .foregroundStyle(lead >= 0 ? tealAccent : amberAccent)
                     .contentTransition(.numericText(value: lead))
             }
@@ -558,15 +558,15 @@ struct Seq2SeqLengthView: View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
                 Text(label)
-                    .font(.system(size: 12, weight: .semibold, design: .serif))
+                    .font(scaledSystemFont(12, weight: .semibold, design: .serif))
                     .foregroundStyle(s2sInk)
                 Spacer()
                 Text(tag)
-                    .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(11, weight: .semibold, design: .monospaced))
                     .foregroundStyle(color)
                     .contentTransition(.numericText(value: value))
                 Text(note)
-                    .font(.system(size: 10, design: .serif))
+                    .font(scaledSystemFont(10, design: .serif))
                     .italic()
                     .foregroundStyle(s2sInkSubtle)
             }
@@ -592,12 +592,12 @@ struct Seq2SeqLengthView: View {
         return VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Text("THOUGHT VECTOR CAPACITY")
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(s2sInkSubtle)
                 Spacer()
                 Text(isOver ? "OVERFLOW" : "\(Int(cap * 100))%")
-                    .font(.system(size: 10, weight: .bold, design: .monospaced))
+                    .font(scaledSystemFont(10, weight: .bold, design: .monospaced))
                     .tracking(0.6)
                     .foregroundStyle(gaugeColor)
             }
@@ -640,16 +640,16 @@ struct Seq2SeqReverseView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 06 · REVERSE THE SOURCE")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("Five BLEU. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(s2sInk)
-                + Text("From a one line change.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("Five BLEU. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(s2sInk)
+                + Text("From a one line change.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("Same model, same data. Feed the source backwards and the gradient path between matching tokens collapses from O(n) hops to O(1).")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -666,7 +666,7 @@ struct Seq2SeqReverseView: View {
                 Text(reversed
                      ? "Reversed. Source token \"I\" sits adjacent to target token \"J'aime\" in the unrolled graph. Gradients have a direct path between them. +4.7 BLEU, no architecture change."
                      : "Forward. Source token \"I\" must travel six LSTM steps before reaching target \"J'aime\". Each step shrinks the gradient. By the time it lands, the signal is faint.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(reversed ? tealAccent : amberAccent)
                     .padding(.bottom, 24)
@@ -713,10 +713,10 @@ struct Seq2SeqReverseView: View {
         Button(action: action) {
             VStack(spacing: 2) {
                 Text(title)
-                    .font(.system(size: 12, weight: .semibold, design: .serif))
+                    .font(scaledSystemFont(12, weight: .semibold, design: .serif))
                     .foregroundStyle(on ? .white : s2sInk)
                 Text(subtitle)
-                    .font(.system(size: 9, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(9, weight: .semibold, design: .monospaced))
                     .foregroundStyle(on ? .white.opacity(0.85) : s2sInkSubtle)
             }
             .frame(maxWidth: .infinity)
@@ -777,13 +777,13 @@ struct Seq2SeqReverseView: View {
 
                 // Section labels
                 Text("SOURCE TOKENS")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(scaledSystemFont(8, weight: .bold))
                     .tracking(1.0)
                     .foregroundStyle(s2sInkSubtle.opacity(0.7))
                     .position(x: 70, y: topY - 12)
 
                 Text("TARGET TOKENS")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(scaledSystemFont(8, weight: .bold))
                     .tracking(1.0)
                     .foregroundStyle(s2sInkSubtle.opacity(0.7))
                     .position(x: 70, y: bottomY + 18)
@@ -803,7 +803,7 @@ struct Seq2SeqReverseView: View {
 
                 // Hop indicator label
                 Text(reversed ? "1 hop" : "6 hops")
-                    .font(.system(size: 10, weight: .bold, design: .monospaced))
+                    .font(scaledSystemFont(10, weight: .bold, design: .monospaced))
                     .foregroundStyle(.white)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 3)
@@ -820,19 +820,19 @@ struct Seq2SeqReverseView: View {
                 HStack(spacing: 4) {
                     if reversed {
                         Text("fed in:")
-                            .font(.system(size: 8, weight: .bold))
+                            .font(scaledSystemFont(8, weight: .bold))
                             .tracking(0.8)
                             .foregroundStyle(amberAccent)
                         Image(systemName: "arrow.left")
-                            .font(.system(size: 9, weight: .bold))
+                            .font(scaledSystemFont(9, weight: .bold))
                             .foregroundStyle(amberAccent)
                     } else {
                         Text("fed in:")
-                            .font(.system(size: 8, weight: .bold))
+                            .font(scaledSystemFont(8, weight: .bold))
                             .tracking(0.8)
                             .foregroundStyle(amberAccent)
                         Image(systemName: "arrow.right")
-                            .font(.system(size: 9, weight: .bold))
+                            .font(scaledSystemFont(9, weight: .bold))
                             .foregroundStyle(amberAccent)
                     }
                 }
@@ -851,7 +851,7 @@ struct Seq2SeqReverseView: View {
     @ViewBuilder
     private func sourceChip(text: String, highlighted: Bool, position: Int) -> some View {
         Text(text)
-            .font(.system(size: 11, weight: highlighted ? .semibold : .regular, design: .serif))
+            .font(scaledSystemFont(11, weight: highlighted ? .semibold : .regular, design: .serif))
             .foregroundStyle(highlighted ? .white : s2sInk)
             .padding(.horizontal, 9)
             .padding(.vertical, 6)
@@ -868,7 +868,7 @@ struct Seq2SeqReverseView: View {
     @ViewBuilder
     private func targetChip(text: String, highlighted: Bool) -> some View {
         Text(text)
-            .font(.system(size: 11, weight: highlighted ? .semibold : .regular, design: .serif))
+            .font(scaledSystemFont(11, weight: highlighted ? .semibold : .regular, design: .serif))
             .foregroundStyle(highlighted ? .white : s2sInk)
             .padding(.horizontal, 9)
             .padding(.vertical, 6)
@@ -888,14 +888,14 @@ struct Seq2SeqReverseView: View {
             statTile(label: "REVERSED", bleu: 30.6, accent: tealAccent,  on: reversed)
             VStack(alignment: .leading, spacing: 4) {
                 Text("DELTA")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(scaledSystemFont(8, weight: .bold))
                     .tracking(1.2)
                     .foregroundStyle(s2sInkSubtle.opacity(0.8))
                 Text("+4.7")
-                    .font(.system(size: 18, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(18, weight: .semibold, design: .monospaced))
                     .foregroundStyle(tealAccent)
                 Text("BLEU")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(scaledSystemFont(8, weight: .bold))
                     .tracking(0.8)
                     .foregroundStyle(s2sInkSubtle.opacity(0.8))
             }
@@ -913,14 +913,14 @@ struct Seq2SeqReverseView: View {
     private func statTile(label: String, bleu: Double, accent: Color, on: Bool) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(label)
-                .font(.system(size: 8, weight: .bold))
+                .font(scaledSystemFont(8, weight: .bold))
                 .tracking(1.2)
                 .foregroundStyle(on ? accent : s2sInkSubtle.opacity(0.8))
             Text(String(format: "%.1f", bleu))
-                .font(.system(size: 18, weight: .semibold, design: .monospaced))
+                .font(scaledSystemFont(18, weight: .semibold, design: .monospaced))
                 .foregroundStyle(accent)
             Text("BLEU")
-                .font(.system(size: 8, weight: .bold))
+                .font(scaledSystemFont(8, weight: .bold))
                 .tracking(0.8)
                 .foregroundStyle(s2sInkSubtle.opacity(0.8))
         }

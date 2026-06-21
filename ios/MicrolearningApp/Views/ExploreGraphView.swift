@@ -78,7 +78,7 @@ struct GraphCanvas: View {
                         .padding(.bottom, 16)
                 }
             }
-            .animation(.snappy(duration: 0.20), value: focusedId)
+            .motionAware(.snappy(duration: 0.20), value: focusedId)
             .navigationDestination(item: $pendingNavId) { id in
                 if let deck = deckById[id] {
                     DeckDestination(deck: deck)
@@ -146,7 +146,7 @@ struct GraphCanvas: View {
                 HStack(spacing: 6) {
                     Circle().fill(line.color).frame(width: 6, height: 6)
                     Text(line.label)
-                        .font(.system(size: 9, weight: .bold))
+                        .scaledFont(size: 9, weight: .bold)
                         .tracking(1.4)
                         .foregroundStyle(line.color)
                         .lineLimit(1)
@@ -250,7 +250,7 @@ struct GraphCanvas: View {
                         .frame(width: stationDiameter, height: stationDiameter)
                     if progress >= 0.98 {
                         Image(systemName: "checkmark")
-                            .font(.system(size: 7, weight: .heavy))
+                            .scaledFont(size: 7, weight: .heavy)
                             .foregroundStyle(progressGreen)
                     } else if progress > 0.04 {
                         Circle()
@@ -259,7 +259,7 @@ struct GraphCanvas: View {
                     }
                 }
                 Text(station.label)
-                    .font(.system(size: 10, weight: isFocused ? .semibold : .regular, design: .serif))
+                    .scaledFont(size: 10, weight: isFocused ? .semibold : .regular, design: .serif)
                     .foregroundStyle(isFocused ? inkColor : inkColor.opacity(0.78))
                     .multilineTextAlignment(.center)
                     .lineLimit(2)
@@ -308,13 +308,13 @@ struct GraphCanvas: View {
                 if let line {
                     Circle().fill(line.color).frame(width: 5, height: 5)
                     Text(line.label)
-                        .font(.system(size: 9, weight: .bold))
+                        .scaledFont(size: 9, weight: .bold)
                         .tracking(1.4)
                         .foregroundStyle(line.color)
                 }
                 if station != nil {
                     Text("· STATION")
-                        .font(.system(size: 9, weight: .bold))
+                        .scaledFont(size: 9, weight: .bold)
                         .tracking(1.4)
                         .foregroundStyle(mutedText)
                 }
@@ -323,20 +323,20 @@ struct GraphCanvas: View {
                     withAnimation(.snappy(duration: 0.18)) { focusedId = nil }
                 } label: {
                     Image(systemName: "xmark")
-                        .font(.system(size: 11, weight: .bold))
+                        .scaledFont(size: 11, weight: .bold)
                         .foregroundStyle(mutedText)
                         .padding(6)
                 }
                 .buttonStyle(.plain)
             }
             Text(title)
-                .font(.system(size: 16, weight: .semibold, design: .serif))
+                .scaledFont(size: 16, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor)
                 .lineLimit(2)
                 .fixedSize(horizontal: false, vertical: true)
             if let hook, !hook.isEmpty {
                 Text(hook)
-                    .font(.system(size: 12, design: .serif))
+                    .scaledFont(size: 12, design: .serif)
                     .italic()
                     .foregroundStyle(mutedText)
                     .lineLimit(2)
@@ -346,7 +346,7 @@ struct GraphCanvas: View {
             if !neighbors.isEmpty {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("NEXT STOPS")
-                        .font(.system(size: 9, weight: .bold))
+                        .scaledFont(size: 9, weight: .bold)
                         .tracking(1.4)
                         .foregroundStyle(mutedText)
                     ScrollView(.horizontal, showsIndicators: false) {
@@ -365,9 +365,9 @@ struct GraphCanvas: View {
             } label: {
                 HStack(spacing: 6) {
                     Text("Open paper")
-                        .font(.system(size: 13, weight: .semibold))
+                        .scaledFont(size: 13, weight: .semibold)
                     Image(systemName: "arrow.right")
-                        .font(.system(size: 11, weight: .bold))
+                        .scaledFont(size: 11, weight: .bold)
                 }
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity, minHeight: 40)
@@ -401,7 +401,7 @@ struct GraphCanvas: View {
             HStack(spacing: 6) {
                 Circle().fill(line?.color ?? tealAccent).frame(width: 5, height: 5)
                 Text(title)
-                    .font(.system(size: 11, design: .serif))
+                    .scaledFont(size: 11, design: .serif)
                     .foregroundStyle(inkColor)
                     .lineLimit(1)
             }
@@ -423,7 +423,7 @@ struct GraphCanvas: View {
                 HStack(spacing: 5) {
                     Circle().fill(line.color).frame(width: 6, height: 6)
                     Text(line.label)
-                        .font(.system(size: 9, weight: .bold))
+                        .scaledFont(size: 9, weight: .bold)
                         .tracking(1.0)
                         .foregroundStyle(mutedText)
                 }
@@ -451,7 +451,7 @@ struct GraphCanvas: View {
                     onDismiss?()
                 } label: {
                     Image(systemName: "chevron.left")
-                        .font(.system(size: 12, weight: .bold))
+                        .scaledFont(size: 12, weight: .bold)
                         .foregroundStyle(inkColor)
                         .frame(width: 30, height: 30)
                         .background(
@@ -464,11 +464,11 @@ struct GraphCanvas: View {
             }
             VStack(alignment: .leading, spacing: 1) {
                 Text("MAP")
-                    .font(.system(size: 8.5, weight: .bold))
+                    .scaledFont(size: 8.5, weight: .bold)
                     .tracking(1.4)
                     .foregroundStyle(mutedText)
                 Text("Lineages")
-                    .font(.system(size: 14, weight: .regular, design: .serif))
+                    .scaledFont(size: 14, weight: .regular, design: .serif)
                     .foregroundStyle(inkColor)
             }
             .padding(.horizontal, 10)

@@ -91,15 +91,15 @@ struct LessonGlossarySheet: View {
             HStack(spacing: 8) {
                 Circle().fill(tealAccent).frame(width: 4, height: 4)
                 Text("DEFINITION")
-                    .font(.system(size: 10, weight: .bold))
+                    .scaledFont(size: 10, weight: .bold)
                     .tracking(1.8)
                     .foregroundStyle(tealAccent)
             }
             Text(hit.term)
-                .font(.system(size: 22, weight: .semibold, design: .serif))
+                .scaledFont(size: 22, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor)
             Text(hit.definition)
-                .font(.system(size: 15, design: .serif))
+                .scaledFont(size: 15, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.78))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)

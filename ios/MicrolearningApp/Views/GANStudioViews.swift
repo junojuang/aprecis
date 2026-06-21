@@ -75,17 +75,17 @@ struct GANRoundView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 04 · THE GAME")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("Forge. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(ganInk)
-                + Text("Detect. ").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
-                + Text("Repeat.").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(ganInk)
+                Text("Forge. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(ganInk)
+                + Text("Detect. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                + Text("Repeat.").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(ganInk)
 
                 Text("Tap PLAY to run a round. The forger paints, the detective inspects, both update. Watch fake features drift toward real and D's accuracy slide.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -103,7 +103,7 @@ struct GANRoundView: View {
                     .padding(.bottom, 14)
 
                 Text(verdictForRound(round))
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(round >= 7 ? tealAccent : ganInkSubtle)
                     .padding(.bottom, 24)
@@ -127,11 +127,11 @@ struct GANRoundView: View {
     private var roundHeader: some View {
         HStack {
             Text("ROUND")
-                .font(.system(size: 9, weight: .bold))
+                .font(scaledSystemFont(9, weight: .bold))
                 .tracking(1.4)
                 .foregroundStyle(ganInkSubtle)
             Text("\(round) / \(scenario.totalRounds)")
-                .font(.system(size: 14, weight: .semibold, design: .serif))
+                .font(scaledSystemFont(14, weight: .semibold, design: .serif))
                 .foregroundStyle(ganInk)
                 .contentTransition(.numericText())
             Spacer()
@@ -152,14 +152,14 @@ struct GANRoundView: View {
         }
         return HStack(spacing: 6) {
             Text("D =")
-                .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                .font(scaledSystemFont(10, weight: .semibold, design: .monospaced))
                 .foregroundStyle(ganInkSubtle)
             Text(String(format: "%.2f", acc))
-                .font(.system(size: 11, weight: .bold, design: .monospaced))
+                .font(scaledSystemFont(11, weight: .bold, design: .monospaced))
                 .foregroundStyle(ganInk)
                 .contentTransition(.numericText())
             Text(label)
-                .font(.system(size: 9, weight: .bold))
+                .font(scaledSystemFont(9, weight: .bold))
                 .tracking(1.0)
                 .foregroundStyle(color)
         }
@@ -184,12 +184,12 @@ struct GANRoundView: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Text(title)
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.2)
                     .foregroundStyle(accent)
                 Spacer()
                 Text(subtitle)
-                    .font(.system(size: 9, design: .serif))
+                    .font(scaledSystemFont(9, design: .serif))
                     .italic()
                     .foregroundStyle(ganInkSubtle)
             }
@@ -198,11 +198,11 @@ struct GANRoundView: View {
                     let delta = abs(v - refValues[i])
                     HStack(spacing: 6) {
                         Text("f\(i)")
-                            .font(.system(size: 9, weight: .semibold, design: .monospaced))
+                            .font(scaledSystemFont(9, weight: .semibold, design: .monospaced))
                             .foregroundStyle(ganInkSubtle.opacity(0.7))
                             .frame(width: 18, alignment: .leading)
                         Text(String(format: "%.2f", v))
-                            .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                            .font(scaledSystemFont(12, weight: .semibold, design: .monospaced))
                             .foregroundStyle(ganInk)
                             .contentTransition(.numericText())
                         Spacer(minLength: 0)
@@ -236,7 +236,7 @@ struct GANRoundView: View {
         return VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text("ARMS RACE")
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                 Spacer()
@@ -260,11 +260,11 @@ struct GANRoundView: View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
                 Text(label)
-                    .font(.system(size: 11, design: .serif))
+                    .font(scaledSystemFont(11, design: .serif))
                     .foregroundStyle(ganInk)
                 Spacer()
                 Text(String(format: "%.0f%%", fraction * 100))
-                    .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(10, weight: .semibold, design: .monospaced))
                     .foregroundStyle(accent)
                     .contentTransition(.numericText())
             }
@@ -277,7 +277,7 @@ struct GANRoundView: View {
                 }
             }
             .frame(height: 6)
-            .animation(.spring(response: 0.5, dampingFraction: 0.85), value: fraction)
+            .motionAware(.spring(response: 0.5, dampingFraction: 0.85), value: fraction)
         }
     }
 
@@ -287,7 +287,7 @@ struct GANRoundView: View {
                 step()
             } label: {
                 Text(round >= scenario.totalRounds ? "AT NASH" : "PLAY ROUND")
-                    .font(.system(size: 11, weight: .bold))
+                    .font(scaledSystemFont(11, weight: .bold))
                     .tracking(1.0)
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
@@ -304,7 +304,7 @@ struct GANRoundView: View {
                 autoPlay()
             } label: {
                 Text("AUTO")
-                    .font(.system(size: 11, weight: .bold))
+                    .font(scaledSystemFont(11, weight: .bold))
                     .tracking(1.0)
                     .foregroundStyle(ganInk)
                     .frame(maxWidth: .infinity)
@@ -324,7 +324,7 @@ struct GANRoundView: View {
                 UIImpactFeedbackGenerator(style: .soft).impactOccurred()
             } label: {
                 Text("RESET")
-                    .font(.system(size: 11, weight: .bold))
+                    .font(scaledSystemFont(11, weight: .bold))
                     .tracking(1.0)
                     .foregroundStyle(ganInkSubtle)
                     .padding(.horizontal, 14)
@@ -413,16 +413,16 @@ struct GANConvergenceView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 05 · CONVERGENCE")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("D falls to ½. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(ganInk)
-                + Text("G has won.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("D falls to ½. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(ganInk)
+                + Text("G has won.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("Drag the cursor across training. D-accuracy slides from near-perfect to chance. The slope is the only honest metric a GAN reports.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -437,7 +437,7 @@ struct GANConvergenceView: View {
                     .padding(.bottom, 14)
 
                 Text(annotationFor(step: step))
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(currentAccuracy() < 0.55 ? tealAccent : ganInkSubtle)
                     .padding(.bottom, 24)
@@ -484,12 +484,12 @@ struct GANConvergenceView: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text("D ACCURACY")
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                 Spacer()
                 Text("STEP × 1k")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(scaledSystemFont(8, weight: .bold))
                     .tracking(1.2)
                     .foregroundStyle(ganInkSubtle)
             }
@@ -527,7 +527,7 @@ struct GANConvergenceView: View {
             }
             .stroke(ganPanelEdge, style: StrokeStyle(lineWidth: 0.6, dash: [3, 4]))
             Text(txt)
-                .font(.system(size: 8, weight: .semibold, design: .monospaced))
+                .font(scaledSystemFont(8, weight: .semibold, design: .monospaced))
                 .foregroundStyle(ganInkSubtle)
                 .position(x: rect.minX - 14, y: y)
         }
@@ -539,7 +539,7 @@ struct GANConvergenceView: View {
         ForEach(stops, id: \.1) { val, txt in
             let x = rect.minX + rect.width * CGFloat(val / totalSteps)
             Text(txt)
-                .font(.system(size: 8, weight: .semibold, design: .monospaced))
+                .font(scaledSystemFont(8, weight: .semibold, design: .monospaced))
                 .foregroundStyle(ganInkSubtle)
                 .position(x: x, y: rect.maxY + 12)
         }
@@ -600,7 +600,7 @@ struct GANConvergenceView: View {
 
                 if let label = pt.label {
                     Text(label.uppercased())
-                        .font(.system(size: 8, weight: .bold))
+                        .font(scaledSystemFont(8, weight: .bold))
                         .tracking(1.0)
                         .foregroundStyle(ganInkSubtle)
                         .padding(.horizontal, 4)
@@ -671,11 +671,11 @@ struct GANConvergenceView: View {
     private func chip(label: String, value: String, accent: Color) -> some View {
         VStack(alignment: .leading, spacing: 3) {
             Text(label)
-                .font(.system(size: 8, weight: .bold))
+                .font(scaledSystemFont(8, weight: .bold))
                 .tracking(1.0)
                 .foregroundStyle(ganInkSubtle)
             Text(value)
-                .font(.system(size: 13, weight: .semibold, design: .monospaced))
+                .font(scaledSystemFont(13, weight: .semibold, design: .monospaced))
                 .foregroundStyle(accent)
                 .contentTransition(.numericText())
         }
@@ -694,7 +694,7 @@ struct GANConvergenceView: View {
                 playFromStart()
             } label: {
                 Text("PLAY")
-                    .font(.system(size: 11, weight: .bold))
+                    .font(scaledSystemFont(11, weight: .bold))
                     .tracking(1.0)
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
@@ -707,7 +707,7 @@ struct GANConvergenceView: View {
                 UIImpactFeedbackGenerator(style: .soft).impactOccurred()
             } label: {
                 Text("RESET")
-                    .font(.system(size: 11, weight: .bold))
+                    .font(scaledSystemFont(11, weight: .bold))
                     .tracking(1.0)
                     .foregroundStyle(ganInkSubtle)
                     .padding(.horizontal, 14)
@@ -766,16 +766,16 @@ struct GANModeCollapseView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 06 · MODE COLLAPSE")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("When G plays ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(ganInk)
-                + Text("too safe.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("When G plays ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(ganInk)
+                + Text("too safe.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("A healthy G covers every mode of the real distribution. A collapsed G locks onto one and stops exploring. D can't tell, both pass its check.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -793,7 +793,7 @@ struct GANModeCollapseView: View {
                     .padding(.bottom, 14)
 
                 Text(verdict)
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(collapsed ? ganWarn : tealAccent)
                     .padding(.bottom, 24)
@@ -837,7 +837,7 @@ struct GANModeCollapseView: View {
                 UIImpactFeedbackGenerator(style: .soft).impactOccurred()
             } label: {
                 Image(systemName: "arrow.clockwise")
-                    .font(.system(size: 12, weight: .bold))
+                    .font(scaledSystemFont(12, weight: .bold))
                     .foregroundStyle(ganInkSubtle)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 10)
@@ -859,7 +859,7 @@ struct GANModeCollapseView: View {
                     .overlay(Circle().stroke(isOn ? Color.clear : ganPanelEdge, lineWidth: 1))
                     .frame(width: 8, height: 8)
                 Text(title)
-                    .font(.system(size: 11, weight: .bold))
+                    .font(scaledSystemFont(11, weight: .bold))
                     .tracking(1.0)
                     .foregroundStyle(isOn ? .white : ganInk.opacity(0.75))
             }
@@ -883,19 +883,19 @@ struct GANModeCollapseView: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Text("DISTRIBUTION SPACE")
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                 Spacer()
                 HStack(spacing: 6) {
                     Circle().fill(ganInkSubtle.opacity(0.4)).frame(width: 6, height: 6)
                     Text("real")
-                        .font(.system(size: 9, design: .serif))
+                        .font(scaledSystemFont(9, design: .serif))
                         .italic()
                         .foregroundStyle(ganInkSubtle)
                     Circle().fill(collapsed ? ganWarn : tealAccent).frame(width: 6, height: 6)
                     Text("G samples")
-                        .font(.system(size: 9, design: .serif))
+                        .font(scaledSystemFont(9, design: .serif))
                         .italic()
                         .foregroundStyle(ganInkSubtle)
                 }
@@ -912,7 +912,7 @@ struct GANModeCollapseView: View {
                             .frame(width: 64, height: 64)
                             .position(x: m.center.x * W, y: m.center.y * H)
                         Text(m.label)
-                            .font(.system(size: 8, weight: .bold))
+                            .font(scaledSystemFont(8, weight: .bold))
                             .tracking(1.0)
                             .foregroundStyle(ganInkSubtle)
                             .position(x: m.center.x * W, y: m.center.y * H + 28)
@@ -976,12 +976,12 @@ struct GANModeCollapseView: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text("MODE COVERAGE")
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                 Spacer()
                 Text(collapsed ? "1 / 4 MODES" : "4 / 4 MODES")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.0)
                     .foregroundStyle(collapsed ? ganWarn : ganCorrect)
             }
@@ -990,7 +990,7 @@ struct GANModeCollapseView: View {
                     let cov = coverageFor(modeIndex: i)
                     HStack(spacing: 8) {
                         Text(m.label)
-                            .font(.system(size: 11, design: .serif))
+                            .font(scaledSystemFont(11, design: .serif))
                             .foregroundStyle(ganInkSubtle)
                             .frame(width: 56, alignment: .leading)
                         GeometryReader { geo in
@@ -1005,7 +1005,7 @@ struct GANModeCollapseView: View {
                         }
                         .frame(height: 6)
                         Text(String(format: "%.0f%%", cov * 100))
-                            .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                            .font(scaledSystemFont(10, weight: .semibold, design: .monospaced))
                             .foregroundStyle(cov > 0.05 ? (collapsed ? ganWarn : tealAccent) : ganInkSubtle.opacity(0.6))
                             .frame(width: 36, alignment: .trailing)
                     }
@@ -1033,14 +1033,14 @@ struct GANModeCollapseView: View {
     private var dPunchline: some View {
         HStack(spacing: 10) {
             Text("D'S VERDICT")
-                .font(.system(size: 9, weight: .bold))
+                .font(scaledSystemFont(9, weight: .bold))
                 .tracking(1.4)
                 .foregroundStyle(ganInkSubtle)
             Spacer()
             HStack(spacing: 6) {
                 Circle().fill(ganCorrect).frame(width: 7, height: 7)
                 Text("PASSES")
-                    .font(.system(size: 11, weight: .bold))
+                    .font(scaledSystemFont(11, weight: .bold))
                     .tracking(1.0)
                     .foregroundStyle(ganCorrect)
             }

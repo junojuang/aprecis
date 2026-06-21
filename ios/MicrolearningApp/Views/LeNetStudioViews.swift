@@ -123,16 +123,16 @@ struct LeNetFilterView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 04 · ONE FILTER, EVERYWHERE")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("Pick a filter. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(lnInk)
-                + Text("Slide it across the digit.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("Pick a filter. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(lnInk)
+                + Text("Slide it across the digit.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("The same 5×5 kernel slides over every position. Activations highlight where the pattern fires. Translation invariance for free.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -147,7 +147,7 @@ struct LeNetFilterView: View {
                     .padding(.bottom, 14)
 
                 Text(filter.verdict)
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(lnInkSubtle)
                     .padding(.bottom, 24)
@@ -176,7 +176,7 @@ struct LeNetFilterView: View {
                     UIImpactFeedbackGenerator(style: .soft).impactOccurred()
                 } label: {
                     Text(f.name)
-                        .font(.system(size: 11, weight: filter == f ? .semibold : .regular, design: .serif))
+                        .font(scaledSystemFont(11, weight: filter == f ? .semibold : .regular, design: .serif))
                         .foregroundStyle(filter == f ? .white : lnInkSubtle)
                         .padding(.horizontal, 12).padding(.vertical, 8)
                         .background(
@@ -302,11 +302,11 @@ struct LeNetFilterView: View {
             }
             VStack(alignment: .leading, spacing: 4) {
                 Text("KERNEL · 5×5 · 25 WEIGHTS")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                 Text("Same 25 weights at every position. A dense layer of comparable receptive field would need ~780,000 weights to do the same job.")
-                    .font(.system(size: 11, design: .serif))
+                    .font(scaledSystemFont(11, design: .serif))
                     .foregroundStyle(lnInk)
                     .lineSpacing(3)
             }
@@ -379,16 +379,16 @@ struct LeNetReceptiveView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 05 · DEPTH GROWS THE PATCH")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("Each layer ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(lnInk)
-                + Text("sees a wider patch.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("Each layer ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(lnInk)
+                + Text("sees a wider patch.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("Tap any layer. The amber square shows what one unit at that layer can see in the original input. Five pixels at the bottom, the entire image at the top.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -403,7 +403,7 @@ struct LeNetReceptiveView: View {
                     .padding(.bottom, 14)
 
                 Text(active.verdict)
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(lnInkSubtle)
                     .padding(.bottom, 24)
@@ -433,15 +433,15 @@ struct LeNetReceptiveView: View {
                 } label: {
                     HStack(spacing: 12) {
                         Text(l.name)
-                            .font(.system(size: 12, weight: active == l ? .semibold : .regular, design: .serif))
+                            .font(scaledSystemFont(12, weight: active == l ? .semibold : .regular, design: .serif))
                             .foregroundStyle(active == l ? .white : lnInk)
                             .frame(width: 60, alignment: .leading)
                         Text(l.subtitle)
-                            .font(.system(size: 10, design: .serif))
+                            .font(scaledSystemFont(10, design: .serif))
                             .foregroundStyle(active == l ? .white.opacity(0.8) : lnInkSubtle)
                             .frame(maxWidth: .infinity, alignment: .leading)
                         Text("\(l.rf)px")
-                            .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                            .font(scaledSystemFont(11, weight: .semibold, design: .monospaced))
                             .foregroundStyle(active == l ? .white : tealAccent)
                     }
                     .padding(.horizontal, 14)
@@ -509,7 +509,7 @@ struct LeNetReceptiveView: View {
                     .frame(width: cell * CGFloat(rf), height: cell * CGFloat(rf))
                     .position(x: xOff + CGFloat(startCol) * cell + cell * CGFloat(rf)/2,
                               y: yOff + CGFloat(startRow) * cell + cell * CGFloat(rf)/2)
-                    .animation(.spring(response: 0.45, dampingFraction: 0.8), value: active)
+                    .motionAware(.spring(response: 0.45, dampingFraction: 0.8), value: active)
             }
         }
         .frame(height: 270)
@@ -527,11 +527,11 @@ struct LeNetReceptiveView: View {
     private func statTile(label: String, value: String, color: Color) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(label)
-                .font(.system(size: 9, weight: .bold))
+                .font(scaledSystemFont(9, weight: .bold))
                 .tracking(1.2)
                 .foregroundStyle(lnInkSubtle.opacity(0.7))
             Text(value)
-                .font(.system(size: 16, weight: .semibold, design: .serif))
+                .font(scaledSystemFont(16, weight: .semibold, design: .serif))
                 .foregroundStyle(color)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -585,16 +585,16 @@ struct LeNetParamView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 06 · PARAM SAVINGS")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("Same accuracy. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(lnInk)
-                + Text("A fraction of the weights.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("Same accuracy. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(lnInk)
+                + Text("A fraction of the weights.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("Tap a layer. Conv (teal) reuses one filter across the whole image. Dense (amber) gives every pixel its own weight. Five thousand times more parameters, no accuracy gain.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -609,7 +609,7 @@ struct LeNetParamView: View {
                     .padding(.bottom, 14)
 
                 Text(verdict)
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(lnInkSubtle)
                     .padding(.bottom, 24)
@@ -651,7 +651,7 @@ struct LeNetParamView: View {
                             .fill(v == .conv ? tealAccent : amberAccent)
                             .frame(width: 8, height: 8)
                         Text(v.name)
-                            .font(.system(size: 11, weight: active == v ? .semibold : .regular, design: .serif))
+                            .font(scaledSystemFont(11, weight: active == v ? .semibold : .regular, design: .serif))
                             .foregroundStyle(active == v ? lnInk : lnInkSubtle)
                     }
                     .padding(.horizontal, 12).padding(.vertical, 8)
@@ -673,12 +673,12 @@ struct LeNetParamView: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Text("TRAINABLE PARAMETERS")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                 Spacer()
                 Text("LOG SCALE")
-                    .font(.system(size: 8, weight: .bold))
+                    .font(scaledSystemFont(8, weight: .bold))
                     .tracking(1.0)
                     .foregroundStyle(lnInkSubtle.opacity(0.7))
             }
@@ -703,11 +703,11 @@ struct LeNetParamView: View {
         return VStack(alignment: .leading, spacing: 6) {
             HStack {
                 Text(v.name)
-                    .font(.system(size: 11, weight: .semibold, design: .serif))
+                    .font(scaledSystemFont(11, weight: .semibold, design: .serif))
                     .foregroundStyle(active == v ? color : lnInk)
                 Spacer()
                 Text(formatWeights(v.paramK))
-                    .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(12, weight: .semibold, design: .monospaced))
                     .foregroundStyle(color)
             }
             GeometryReader { geo in
@@ -735,7 +735,7 @@ struct LeNetParamView: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Text("MNIST ACCURACY")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                 Spacer()
@@ -758,15 +758,15 @@ struct LeNetParamView: View {
         let color: Color = v == .conv ? tealAccent : amberAccent
         return VStack(alignment: .leading, spacing: 4) {
             Text(v.name)
-                .font(.system(size: 9, weight: .bold))
+                .font(scaledSystemFont(9, weight: .bold))
                 .tracking(0.6)
                 .foregroundStyle(lnInkSubtle)
             HStack(alignment: .firstTextBaseline, spacing: 4) {
                 Text(String(format: "%.1f", v.accuracy * 100))
-                    .font(.system(size: 28, weight: .regular, design: .serif))
+                    .font(scaledSystemFont(28, weight: .regular, design: .serif))
                     .foregroundStyle(color)
                 Text("%")
-                    .font(.system(size: 14, design: .serif))
+                    .font(scaledSystemFont(14, design: .serif))
                     .foregroundStyle(lnInkSubtle)
             }
         }

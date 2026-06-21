@@ -159,14 +159,22 @@ struct LearningFlowView: View {
     private var card: LessonCard { lesson.cards[min(index, lesson.cards.count - 1)] }
     private var isLast: Bool { index >= lesson.cards.count - 1 }
     private var canAdvance: Bool {
-        !card.requiresExploration || progress.isExplored(card.id)
+        // Don't trap assistive-technology users behind an interactive they may
+        // not be able to operate: VoiceOver / Switch Control / Full Keyboard
+        // Access users can always advance, exploration-gated or not.
+        if assistiveTechRunning { return true }
+        return !card.requiresExploration || progress.isExplored(card.id)
+    }
+
+    private var assistiveTechRunning: Bool {
+        UIAccessibility.isVoiceOverRunning || UIAccessibility.isSwitchControlRunning
     }
 
     var body: some View {
         ZStack {
             card.theme.background
                 .ignoresSafeArea()
-                .animation(.easeInOut(duration: 0.4), value: index)
+                .motionAware(.easeInOut(duration: 0.4), value: index)
 
             VStack(spacing: 0) {
                 topChrome
@@ -205,11 +213,12 @@ struct LearningFlowView: View {
                 onClose()
             } label: {
                 Image(systemName: "xmark")
-                    .font(.system(size: 12, weight: .bold))
+                    .scaledFont(size: 12, weight: .bold)
                     .foregroundStyle(card.theme.ink.opacity(0.7))
                     .frame(width: 30, height: 30)
             }
             .buttonStyle(.plain)
+            .accessibilityLabel("Close lesson")
 
             // Segmented progress rail — one segment per card.
             HStack(spacing: 4) {
@@ -219,12 +228,14 @@ struct LearningFlowView: View {
                         .frame(height: 3)
                 }
             }
-            .animation(.easeInOut(duration: 0.3), value: index)
+            .motionAware(.easeInOut(duration: 0.3), value: index)
+            .accessibilityHidden(true)
 
             Text("\(index + 1)/\(lesson.cards.count)")
-                .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                .scaledFont(size: 11, weight: .semibold, design: .monospaced)
                 .foregroundStyle(card.theme.muted)
                 .frame(width: 38)
+                .accessibilityLabel("Card \(index + 1) of \(lesson.cards.count)")
         }
         .padding(.horizontal, 18)
         .padding(.top, 8)
@@ -246,7 +257,7 @@ struct LearningFlowView: View {
                 .combined(with: .opacity),
             removal: .move(edge: goingBack ? .trailing : .leading)
                 .combined(with: .opacity)))
-        .animation(.snappy(duration: 0.34), value: index)
+        .motionAware(.snappy(duration: 0.34), value: index)
         .simultaneousGesture(backSwipe)
     }
 
@@ -254,7 +265,7 @@ struct LearningFlowView: View {
         VStack(spacing: 8) {
             if card.requiresExploration && !canAdvance {
                 Text("Try it above to continue")
-                    .font(.system(size: 12, design: .serif))
+                    .scaledFont(size: 12, design: .serif)
                     .italic()
                     .foregroundStyle(card.theme.muted)
             }
@@ -267,9 +278,10 @@ struct LearningFlowView: View {
             } label: {
                 HStack(spacing: 7) {
                     Text(isLast ? "Finish" : card.advanceLabel)
-                        .font(.system(size: 15, weight: .semibold))
+                        .scaledFont(size: 15, weight: .semibold)
                     Image(systemName: isLast ? "checkmark" : "arrow.right")
-                        .font(.system(size: 12, weight: .bold))
+                        .scaledFont(size: 12, weight: .bold)
+                        .accessibilityHidden(true)
                 }
                 .foregroundStyle(canAdvance ? .white : card.theme.muted)
                 .frame(maxWidth: .infinity, minHeight: 50)
@@ -279,7 +291,7 @@ struct LearningFlowView: View {
             }
             .buttonStyle(.plain)
             .disabled(!canAdvance)
-            .animation(.easeOut(duration: 0.2), value: canAdvance)
+            .motionAware(.easeOut(duration: 0.2), value: canAdvance)
         }
         .padding(.horizontal, 22)
         .padding(.top, 10)

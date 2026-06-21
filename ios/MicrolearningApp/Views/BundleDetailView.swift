@@ -104,8 +104,8 @@ struct BundleDetailView: View {
                     Rectangle()
                         .fill(progressBarColor(scrollProgress))
                         .frame(width: geo.size.width * CGFloat(scrollProgress))
-                        .animation(.linear(duration: 0.06), value: scrollProgress)
-                        .animation(.easeInOut(duration: 0.3), value: progressBarColor(scrollProgress))
+                        .motionAware(.linear(duration: 0.06), value: scrollProgress)
+                        .motionAware(.easeInOut(duration: 0.3), value: progressBarColor(scrollProgress))
                 }
             }
             .frame(height: 3)
@@ -122,14 +122,14 @@ struct BundleDetailView: View {
                 // Badges
                 HStack(spacing: 6) {
                     Text(bundle.level.rawValue)
-                        .font(.system(size: 9, weight: .bold))
+                        .scaledFont(size: 9, weight: .bold)
                         .foregroundStyle(.white.opacity(0.7))
                         .padding(.horizontal, 9).padding(.vertical, 3)
                         .background(.white.opacity(0.12))
                         .clipShape(Capsule())
 
                     Text("\(bundle.count) papers")
-                        .font(.system(size: 9, weight: .bold))
+                        .scaledFont(size: 9, weight: .bold)
                         .foregroundStyle(Color(hex: bundle.accentHex))
                         .padding(.horizontal, 9).padding(.vertical, 3)
                         .background(Color(hex: bundle.accentHex).opacity(0.16))
@@ -147,14 +147,14 @@ struct BundleDetailView: View {
                 .padding(.bottom, 12)
 
                 Text(bundle.title)
-                    .font(.system(size: 22, weight: .bold, design: .serif))
+                    .scaledFont(size: 22, weight: .bold, design: .serif)
                     .foregroundStyle(.white)
                     .fixedSize(horizontal: false, vertical: true)
                     .lineSpacing(2)
                     .padding(.bottom, 6)
 
                 Text(bundle.subtitle)
-                    .font(.system(size: 12))
+                    .scaledFont(size: 12)
                     .foregroundStyle(.white.opacity(0.5))
                     .padding(.bottom, 18)
 
@@ -162,11 +162,11 @@ struct BundleDetailView: View {
                 VStack(spacing: 6) {
                     HStack {
                         Text("Progress")
-                            .font(.system(size: 10))
+                            .scaledFont(size: 10)
                             .foregroundStyle(.white.opacity(0.5))
                         Spacer()
                         Text("\(bundle.progressPercent)% · \(bundle.doneCount)/\(bundle.count) papers")
-                            .font(.system(size: 10, weight: .bold))
+                            .scaledFont(size: 10, weight: .bold)
                             .foregroundStyle(Color(hex: bundle.accentHex))
                     }
                     GeometryReader { geo in
@@ -187,7 +187,7 @@ struct BundleDetailView: View {
                 HStack(spacing: 6) {
                     ForEach(bundle.tags, id: \.self) { tag in
                         Text(tag)
-                            .font(.system(size: 9))
+                            .scaledFont(size: 9)
                             .foregroundStyle(.white.opacity(0.6))
                             .padding(.horizontal, 9).padding(.vertical, 4)
                             .background(.white.opacity(0.1))
@@ -215,7 +215,7 @@ struct BundleDetailView: View {
         HStack(spacing: 10) {
             NavigationLink(destination: destination(forSlug: continueSlug)) {
                 Text(bundle.doneCount > 0 ? "Continue Learning" : "Start Bundle")
-                    .font(.system(size: 14, weight: .bold))
+                    .scaledFont(size: 14, weight: .bold)
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .frame(height: 46)
@@ -228,9 +228,9 @@ struct BundleDetailView: View {
                 Button { showGlossary = true } label: {
                     HStack(spacing: 6) {
                         Image(systemName: "book.closed")
-                            .font(.system(size: 13, weight: .semibold))
+                            .scaledFont(size: 13, weight: .semibold)
                         Text("Glossary")
-                            .font(.system(size: 13, weight: .semibold, design: .serif))
+                            .scaledFont(size: 13, weight: .semibold, design: .serif)
                     }
                     .foregroundStyle(inkColor)
                     .frame(height: 46)
@@ -278,11 +278,11 @@ struct BundleDetailView: View {
 
                         VStack(alignment: .leading, spacing: 3) {
                             Text(paper.title)
-                                .font(.system(size: 12.5, weight: .semibold))
+                                .scaledFont(size: 12.5, weight: .semibold)
                                 .foregroundStyle(inkColor)
                                 .lineLimit(1)
                             Text("\(paper.tag) · \(paper.mins) min")
-                                .font(.system(size: 9.5))
+                                .scaledFont(size: 9.5)
                                 .foregroundStyle(mutedText)
                             if paperProgress > 0.01 && paperProgress < 0.98 {
                                 GeometryReader { geo in
@@ -302,7 +302,7 @@ struct BundleDetailView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
 
                         Image(systemName: "chevron.right")
-                            .font(.system(size: 10, weight: .medium))
+                            .scaledFont(size: 10, weight: .medium)
                             .foregroundStyle(mutedText.opacity(0.5))
                     }
                     .padding(.horizontal, 20).padding(.vertical, 13)
@@ -340,11 +340,11 @@ struct BundleDetailView: View {
 
             if isComplete {
                 Image(systemName: "checkmark")
-                    .font(.system(size: 11, weight: .bold))
+                    .scaledFont(size: 11, weight: .bold)
                     .foregroundStyle(accent)
             } else {
                 Text("\(idx + 1)")
-                    .font(.system(size: 10, weight: .bold))
+                    .scaledFont(size: 10, weight: .bold)
                     .foregroundStyle(inProgress ? accent : mutedText)
             }
         }
@@ -401,7 +401,7 @@ struct RemoteDeckDestination: View {
                             .progressViewStyle(.circular)
                             .tint(tealAccent)
                         Text("Loading paper…")
-                            .font(.system(size: 12, design: .serif))
+                            .scaledFont(size: 12, design: .serif)
                             .foregroundStyle(mutedText)
                     }
                 }

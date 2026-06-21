@@ -88,7 +88,7 @@ struct BERTGlyph: View {
 
     private func chip(_ word: String, isMask: Bool) -> some View {
         Text(isMask ? "[MASK]" : word)
-            .font(.system(size: 12, weight: .semibold, design: .serif))
+            .scaledFont(size: 12, weight: .semibold, design: .serif)
             .foregroundStyle(isMask ? .white : Color(hex: "f4f1ea"))
             .padding(.horizontal, 10).padding(.vertical, 7)
             .background(
@@ -150,12 +150,12 @@ struct ClozeArt: View {
                      y0: geo.size.height * 0.30)
 
                 Text("LEFT CONTEXT")
-                    .font(.system(size: 9, weight: .bold)).tracking(1.4)
+                    .scaledFont(size: 9, weight: .bold).tracking(1.4)
                     .foregroundStyle(tealAccent)
                     .position(x: w * 0.18, y: geo.size.height * 0.18)
 
                 Text("RIGHT CONTEXT")
-                    .font(.system(size: 9, weight: .bold)).tracking(1.4)
+                    .scaledFont(size: 9, weight: .bold).tracking(1.4)
                     .foregroundStyle(amberAccent)
                     .position(x: w * 0.82, y: geo.size.height * 0.18)
             }
@@ -167,7 +167,7 @@ struct ClozeArt: View {
 
     private func chip(_ word: String) -> some View {
         Text(word)
-            .font(.system(size: 12, weight: .semibold, design: .serif))
+            .scaledFont(size: 12, weight: .semibold, design: .serif)
             .foregroundStyle(inkColor.opacity(0.78))
             .padding(.horizontal, 9).padding(.vertical, 6)
             .background(RoundedRectangle(cornerRadius: 8)
@@ -176,7 +176,7 @@ struct ClozeArt: View {
 
     private func blankChip() -> some View {
         Text("?")
-            .font(.system(size: 14, weight: .bold, design: .serif))
+            .scaledFont(size: 14, weight: .bold, design: .serif)
             .foregroundStyle(.white)
             .frame(width: 30, height: 30)
             .background(RoundedRectangle(cornerRadius: 8)
@@ -225,7 +225,7 @@ struct LeftOnlyStrip: View {
     private func row(label: String, leftLit: Bool, rightLit: Bool, accent: Color) -> some View {
         HStack(spacing: 8) {
             Text(label)
-                .font(.system(size: 9, weight: .bold)).tracking(1.4)
+                .scaledFont(size: 9, weight: .bold).tracking(1.4)
                 .foregroundStyle(accent)
                 .frame(width: 92, alignment: .leading)
             tokenCell("the",  lit: leftLit)
@@ -238,7 +238,7 @@ struct LeftOnlyStrip: View {
 
     private func tokenCell(_ word: String, lit: Bool) -> some View {
         Text(word)
-            .font(.system(size: 10, weight: .semibold, design: .serif))
+            .scaledFont(size: 10, weight: .semibold, design: .serif)
             .foregroundStyle(lit ? inkColor : inkColor.opacity(0.28))
             .padding(.horizontal, 7).padding(.vertical, 5)
             .background(RoundedRectangle(cornerRadius: 6)
@@ -247,7 +247,7 @@ struct LeftOnlyStrip: View {
 
     private func maskCell() -> some View {
         Text("?")
-            .font(.system(size: 10, weight: .bold, design: .serif))
+            .scaledFont(size: 10, weight: .bold, design: .serif)
             .foregroundStyle(.white)
             .frame(width: 22, height: 22)
             .background(RoundedRectangle(cornerRadius: 6).fill(amberAccent))
@@ -300,7 +300,7 @@ struct BidirectionalGazeArt: View {
 
     private func chip(_ word: String, isFocus: Bool) -> some View {
         Text(word)
-            .font(.system(size: 11, weight: .semibold, design: .serif))
+            .scaledFont(size: 11, weight: .semibold, design: .serif)
             .foregroundStyle(isFocus ? .white : inkColor.opacity(0.75))
             .padding(.horizontal, 8).padding(.vertical, 5)
             .background(RoundedRectangle(cornerRadius: 7)
@@ -319,11 +319,11 @@ struct PretrainFinetuneArt: View {
         VStack(spacing: 10) {
             HStack(spacing: 10) {
                 Text("WIKIPEDIA + BOOKS")
-                    .font(.system(size: 9, weight: .bold)).tracking(1.2)
+                    .scaledFont(size: 9, weight: .bold).tracking(1.2)
                     .foregroundStyle(mutedText)
                 Rectangle().fill(mutedText.opacity(0.35)).frame(height: 1)
                 Image(systemName: "arrow.right")
-                    .font(.system(size: 11, weight: .bold))
+                    .scaledFont(size: 11, weight: .bold)
                     .foregroundStyle(mutedText)
             }
 
@@ -335,10 +335,10 @@ struct PretrainFinetuneArt: View {
                         .stroke(tealAccent, lineWidth: 1.5))
                 VStack(spacing: 3) {
                     Text("BERT BODY")
-                        .font(.system(size: 11, weight: .bold)).tracking(1.6)
+                        .scaledFont(size: 11, weight: .bold).tracking(1.6)
                         .foregroundStyle(tealAccent)
                     Text("pretrained encoder · frozen or fine-tuned")
-                        .font(.system(size: 10, design: .serif))
+                        .scaledFont(size: 10, design: .serif)
                         .italic()
                         .foregroundStyle(inkColor.opacity(0.6))
                 }
@@ -348,7 +348,7 @@ struct PretrainFinetuneArt: View {
             // Downstream heads.
             HStack(spacing: 8) {
                 Text("ADD ANY HEAD →")
-                    .font(.system(size: 9, weight: .bold)).tracking(1.2)
+                    .scaledFont(size: 9, weight: .bold).tracking(1.2)
                     .foregroundStyle(mutedText)
                 headChip("Q&A", amber: true)
                 headChip("Sentiment", amber: false)
@@ -360,7 +360,7 @@ struct PretrainFinetuneArt: View {
 
     private func headChip(_ label: String, amber: Bool) -> some View {
         Text(label)
-            .font(.system(size: 10, weight: .semibold))
+            .scaledFont(size: 10, weight: .semibold)
             .foregroundStyle(.white)
             .padding(.horizontal, 9).padding(.vertical, 6)
             .background(RoundedRectangle(cornerRadius: 7)
@@ -386,10 +386,10 @@ struct MaskedTokenStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("TAP A WORD TO HIDE IT")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Tap any word. It disappears. BERT reads the rest of the sentence, both sides, and guesses what was there. Try two different words and see how the guesses change.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -409,7 +409,7 @@ struct MaskedTokenStudio: View {
                     selectMask(i)
                 } label: {
                     Text(masked == i ? "[MASK]" : bertSentence[i])
-                        .font(.system(size: 13, weight: .semibold, design: .serif))
+                        .scaledFont(size: 13, weight: .semibold, design: .serif)
                         .foregroundStyle(masked == i ? .white : inkColor)
                         .padding(.horizontal, 10).padding(.vertical, 8)
                         .background(RoundedRectangle(cornerRadius: 8)
@@ -428,15 +428,15 @@ struct MaskedTokenStudio: View {
         return VStack(alignment: .leading, spacing: 9) {
             HStack(spacing: 8) {
                 Image(systemName: "list.bullet.rectangle")
-                    .font(.system(size: 11, weight: .semibold))
+                    .scaledFont(size: 11, weight: .semibold)
                     .foregroundStyle(tealAccent)
                 Text("BERT\u{2019}S BEST GUESSES")
-                    .font(.system(size: 10, weight: .bold)).tracking(1.6)
+                    .scaledFont(size: 10, weight: .bold).tracking(1.6)
                     .foregroundStyle(tealAccent)
                 Spacer()
                 if let scene {
                     Text("hidden word \(scene.maskIdx + 1)")
-                        .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                        .scaledFont(size: 10, weight: .semibold, design: .monospaced)
                         .foregroundStyle(mutedText)
                 }
             }
@@ -446,7 +446,7 @@ struct MaskedTokenStudio: View {
                 }
             } else {
                 Text("Tap any word above to hide it.")
-                    .font(.system(size: 13, design: .serif))
+                    .scaledFont(size: 13, design: .serif)
                     .italic()
                     .foregroundStyle(mutedText)
                     .padding(.vertical, 6)
@@ -458,13 +458,13 @@ struct MaskedTokenStudio: View {
             .fill(Color.white)
             .overlay(RoundedRectangle(cornerRadius: 12)
                 .stroke(borderColor, lineWidth: 1)))
-        .animation(.snappy(duration: 0.3), value: masked)
+        .motionAware(.snappy(duration: 0.3), value: masked)
     }
 
     private func candidateRow(idx: Int, word: String, score: Double, note: String) -> some View {
         HStack(alignment: .top, spacing: 12) {
             Text(word)
-                .font(.system(size: 14, weight: .semibold, design: .serif))
+                .scaledFont(size: 14, weight: .semibold, design: .serif)
                 .foregroundStyle(idx == 0 ? amberAccent : inkColor)
                 .frame(width: 64, alignment: .leading)
             VStack(alignment: .leading, spacing: 4) {
@@ -479,7 +479,7 @@ struct MaskedTokenStudio: View {
                 }
                 .frame(height: 8)
                 Text(note)
-                    .font(.system(size: 11, design: .serif))
+                    .scaledFont(size: 11, design: .serif)
                     .foregroundStyle(inkColor.opacity(0.7))
                     .lineSpacing(3)
                     .fixedSize(horizontal: false, vertical: true)
@@ -494,7 +494,7 @@ struct MaskedTokenStudio: View {
             Text(done
                  ? "Two different words, two different guesses. BERT reads what is left of the sentence each time, both sides, before picking."
                  : "Words hidden so far: \(seen.count) of 2")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -532,10 +532,10 @@ struct BidirectionalGazeStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("PICK A WORD")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Tap a word. Every other word in the sentence will reach out to it. Teal lines come from the left side. Amber lines come from the right.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -577,7 +577,7 @@ struct BidirectionalGazeStudio: View {
 
     private func chip(_ word: String, focus: Bool) -> some View {
         Text(word)
-            .font(.system(size: 12, weight: .semibold, design: .serif))
+            .scaledFont(size: 12, weight: .semibold, design: .serif)
             .foregroundStyle(focus ? .white : inkColor.opacity(0.78))
             .padding(.horizontal, 9).padding(.vertical, 6)
             .background(RoundedRectangle(cornerRadius: 8)
@@ -590,12 +590,12 @@ struct BidirectionalGazeStudio: View {
         HStack(spacing: 16) {
             HStack(spacing: 6) {
                 Capsule().fill(tealAccent).frame(width: 16, height: 3)
-                Text("LEFT").font(.system(size: 10, weight: .bold)).tracking(1.2)
+                Text("LEFT").scaledFont(size: 10, weight: .bold).tracking(1.2)
                     .foregroundStyle(tealAccent)
             }
             HStack(spacing: 6) {
                 Capsule().fill(amberAccent).frame(width: 16, height: 3)
-                Text("RIGHT").font(.system(size: 10, weight: .bold)).tracking(1.2)
+                Text("RIGHT").scaledFont(size: 10, weight: .bold).tracking(1.2)
                     .foregroundStyle(amberAccent)
             }
             Spacer()
@@ -614,9 +614,9 @@ struct BidirectionalGazeStudio: View {
 
     private func countPill(label: String, n: Int, color: Color) -> some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text(label).font(.system(size: 9, weight: .bold)).tracking(1.2)
+            Text(label).scaledFont(size: 9, weight: .bold).tracking(1.2)
                 .foregroundStyle(color)
-            Text("\(n)").font(.system(size: 18, weight: .semibold, design: .serif))
+            Text("\(n)").scaledFont(size: 18, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor)
         }
         .padding(.horizontal, 12).padding(.vertical, 8)
@@ -630,7 +630,7 @@ struct BidirectionalGazeStudio: View {
             Text(done
                  ? "Three different words, three different webs. Every word listens to every other word, both sides, in one go."
                  : "Words you\u{2019}ve picked: \(seen.count) of 3")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -702,10 +702,10 @@ struct PretrainFinetuneStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("ONE BRAIN, MANY JOBS")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("BERT\u{2019}s brain already understands English. To teach it a specific job, you keep the brain and add a small job-shaped piece on top. Tap each job to see what piece sits up there.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -724,7 +724,7 @@ struct PretrainFinetuneStudio: View {
             ForEach(bertTasks) { t in
                 Button { pick(t.id) } label: {
                     Text(t.label)
-                        .font(.system(size: 12, weight: .semibold))
+                        .scaledFont(size: 12, weight: .semibold)
                         .foregroundStyle(picked == t.id ? .white : tealAccent)
                         .padding(.horizontal, 12).padding(.vertical, 8)
                         .background(RoundedRectangle(cornerRadius: 9)
@@ -745,12 +745,12 @@ struct PretrainFinetuneStudio: View {
                         .stroke(amberAccent, lineWidth: 1.5))
                 HStack(spacing: 6) {
                     Text(headBadge)
-                        .font(.system(size: 10, weight: .bold)).tracking(1.4)
+                        .scaledFont(size: 10, weight: .bold).tracking(1.4)
                         .foregroundStyle(amberAccent)
                     Spacer()
                     ForEach(currentTask.outputs, id: \.self) { o in
                         Text(o)
-                            .font(.system(size: 10, weight: .semibold))
+                            .scaledFont(size: 10, weight: .semibold)
                             .foregroundStyle(.white)
                             .padding(.horizontal, 7).padding(.vertical, 4)
                             .background(Capsule().fill(amberAccent))
@@ -759,10 +759,10 @@ struct PretrainFinetuneStudio: View {
                 .padding(.horizontal, 12)
             }
             .frame(height: 38)
-            .animation(.snappy(duration: 0.3), value: picked)
+            .motionAware(.snappy(duration: 0.3), value: picked)
 
             Image(systemName: "arrow.up")
-                .font(.system(size: 11, weight: .bold))
+                .scaledFont(size: 11, weight: .bold)
                 .foregroundStyle(mutedText)
 
             // Body
@@ -773,10 +773,10 @@ struct PretrainFinetuneStudio: View {
                         .stroke(tealAccent, lineWidth: 1.5))
                 VStack(spacing: 2) {
                     Text("BERT\u{2019}S BRAIN")
-                        .font(.system(size: 11, weight: .bold)).tracking(1.6)
+                        .scaledFont(size: 11, weight: .bold).tracking(1.6)
                         .foregroundStyle(tealAccent)
                     Text("Trained for weeks on billions of sentences. Already understands English.")
-                        .font(.system(size: 10, design: .serif))
+                        .scaledFont(size: 10, design: .serif)
                         .italic()
                         .foregroundStyle(inkColor.opacity(0.6))
                         .multilineTextAlignment(.center)
@@ -789,7 +789,7 @@ struct PretrainFinetuneStudio: View {
 
     private var blurb: some View {
         Text(currentTask.blurb)
-            .font(.system(size: 13, design: .serif))
+            .scaledFont(size: 13, design: .serif)
             .foregroundStyle(inkColor.opacity(0.78))
             .lineSpacing(4)
             .fixedSize(horizontal: false, vertical: true)
@@ -806,7 +806,7 @@ struct PretrainFinetuneStudio: View {
             Text(done
                  ? "Same brain, three different jobs. This is the move that made BERT famous: train once, then teach it anything."
                  : "Jobs tried: \(seen.count) of \(bertTasks.count)")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }

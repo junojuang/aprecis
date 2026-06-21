@@ -61,7 +61,7 @@ struct ProfileSetupView: View {
                 goalSection
                 if let msg = errorMessage {
                     Text(msg)
-                        .font(.system(size: 13))
+                        .scaledFont(size: 13)
                         .foregroundStyle(Color.red.opacity(0.85))
                         .multilineTextAlignment(.center)
                         .transition(.opacity)
@@ -86,18 +86,18 @@ struct ProfileSetupView: View {
             HStack(spacing: 6) {
                 Circle().fill(tealAccent).frame(width: 6, height: 6)
                 Text("STEP 01 OF 01")
-                    .font(.system(size: 10, weight: .bold))
+                    .scaledFont(size: 10, weight: .bold)
                     .tracking(1.4)
                     .foregroundStyle(tealAccent)
             }
 
             Text("Set the table.")
-                .font(.system(size: 32, weight: .bold, design: .serif))
+                .scaledFont(size: 32, weight: .bold, design: .serif)
                 .foregroundStyle(inkColor)
                 .multilineTextAlignment(.center)
 
             Text("Two small choices.\nThe feed reshapes around them.")
-                .font(.system(size: 14))
+                .scaledFont(size: 14)
                 .foregroundStyle(mutedText)
                 .multilineTextAlignment(.center)
                 .lineSpacing(4)
@@ -114,7 +114,7 @@ struct ProfileSetupView: View {
             ZStack(alignment: .leading) {
                 if displayName.isEmpty {
                     Text("Your name, a handle, an alias")
-                        .font(.system(size: 17, weight: .regular, design: .serif))
+                        .scaledFont(size: 17, weight: .regular, design: .serif)
                         .italic()
                         .foregroundStyle(mutedText.opacity(0.6))
                         .allowsHitTesting(false)
@@ -123,7 +123,7 @@ struct ProfileSetupView: View {
                     .focused($nameFocused)
                     .textInputAutocapitalization(.words)
                     .autocorrectionDisabled()
-                    .font(.system(size: 22, weight: .semibold, design: .serif))
+                    .scaledFont(size: 22, weight: .semibold, design: .serif)
                     .foregroundStyle(inkColor)
                     .tint(tealAccent)
             }
@@ -132,7 +132,7 @@ struct ProfileSetupView: View {
                 Rectangle()
                     .fill(nameFocused ? tealAccent : inkColor.opacity(0.18))
                     .frame(height: nameFocused ? 2 : 1)
-                    .animation(.easeOut(duration: 0.18), value: nameFocused)
+                    .motionAware(.easeOut(duration: 0.18), value: nameFocused)
             }
         }
     }
@@ -168,17 +168,17 @@ struct ProfileSetupView: View {
                         .fill(isSelected ? tealAccent : tealLight)
                         .frame(width: 52, height: 52)
                     Image(systemName: tier.glyph)
-                        .font(.system(size: 22, weight: .semibold))
+                        .scaledFont(size: 22, weight: .semibold)
                         .foregroundStyle(isSelected ? Color.white : tealAccent)
                         .scaleEffect(isSelected ? 1.06 : 1.0)
                 }
 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(tier.label)
-                        .font(.system(size: 18, weight: .semibold, design: .serif))
+                        .scaledFont(size: 18, weight: .semibold, design: .serif)
                         .foregroundStyle(inkColor)
                     Text(tier.subtitle)
-                        .font(.system(size: 13))
+                        .scaledFont(size: 13)
                         .foregroundStyle(mutedText)
                 }
 
@@ -213,7 +213,7 @@ struct ProfileSetupView: View {
             }
         }
         .frame(width: 56, alignment: .trailing)
-        .animation(.easeOut(duration: 0.22), value: highlighted)
+        .motionAware(.easeOut(duration: 0.22), value: highlighted)
     }
 
     // MARK: - Action stack
@@ -229,11 +229,11 @@ struct ProfileSetupView: View {
                             ProgressView().tint(.white).scaleEffect(0.85)
                         }
                         Text(isSaving ? "Saving" : "Begin reading")
-                            .font(.system(size: 16, weight: .semibold, design: .serif))
+                            .scaledFont(size: 16, weight: .semibold, design: .serif)
                             .foregroundStyle(.white)
                         if !isSaving {
                             Image(systemName: "arrow.right")
-                                .font(.system(size: 14, weight: .semibold))
+                                .scaledFont(size: 14, weight: .semibold)
                                 .foregroundStyle(.white)
                         }
                     }
@@ -250,7 +250,7 @@ struct ProfileSetupView: View {
                 auth.markProfileSetupComplete()
             } label: {
                 Text("Skip, set this up later")
-                    .font(.system(size: 13))
+                    .scaledFont(size: 13)
                     .underline(true, color: mutedText.opacity(0.4))
                     .foregroundStyle(mutedText)
             }
@@ -265,7 +265,7 @@ struct ProfileSetupView: View {
     private func sectionLabel(_ index: String, title: String) -> some View {
         HStack(spacing: 10) {
             Text(index)
-                .font(.system(size: 11, weight: .bold))
+                .scaledFont(size: 11, weight: .bold)
                 .tracking(0.8)
                 .foregroundStyle(tealAccent)
                 .padding(.horizontal, 7)
@@ -274,7 +274,7 @@ struct ProfileSetupView: View {
                     Capsule().fill(tealLight)
                 )
             Text(title)
-                .font(.system(size: 14, weight: .semibold))
+                .scaledFont(size: 14, weight: .semibold)
                 .foregroundStyle(inkColor)
             Spacer(minLength: 0)
         }

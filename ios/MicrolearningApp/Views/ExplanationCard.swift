@@ -64,12 +64,12 @@ struct ExplanationCard: View {
         HStack(spacing: 6) {
             Circle().fill(amberAccent).frame(width: 5, height: 5)
             Text(eyebrow)
-                .font(.system(size: 10, weight: .semibold))
+                .scaledFont(size: 10, weight: .semibold)
                 .tracking(1.6)
                 .foregroundStyle(amberAccent)
             Spacer()
             Text("RECAP")
-                .font(.system(size: 10, weight: .semibold))
+                .scaledFont(size: 10, weight: .semibold)
                 .tracking(1.4)
                 .foregroundStyle(exDim)
         }
@@ -84,7 +84,7 @@ struct ExplanationCard: View {
             }
         }
         return txt
-            .font(.system(size: 26, weight: .regular, design: .serif))
+            .scaledFont(size: 26, weight: .regular, design: .serif)
             .foregroundStyle(exInk)
             .lineSpacing(3)
             .fixedSize(horizontal: false, vertical: true)
@@ -99,7 +99,7 @@ struct ExplanationCard: View {
                 VStack(alignment: .leading, spacing: 6) {
                     if let kicker = p.kicker {
                         Text(kicker)
-                            .font(.system(size: 10, weight: .semibold))
+                            .scaledFont(size: 10, weight: .semibold)
                             .tracking(1.4)
                             .foregroundStyle(tealAccent)
                     }
@@ -122,7 +122,7 @@ struct ExplanationCard: View {
                 .frame(width: 2)
                 .frame(maxHeight: .infinity)
             Text(s)
-                .font(.system(size: 15, weight: .semibold, design: .serif))
+                .scaledFont(size: 15, weight: .semibold, design: .serif)
                 .foregroundStyle(exInk)
                 .lineSpacing(3)
                 .fixedSize(horizontal: false, vertical: true)
@@ -186,7 +186,7 @@ private struct GrokkingMini: View {
                 MiniNode(label: "grok", sub: "val 100%", tint: amberAccent)
             }
             Text("generalisation arrives long after overfitting")
-                .font(.system(size: 9, weight: .semibold)).tracking(0.6)
+                .scaledFont(size: 9, weight: .semibold).tracking(0.6)
                 .foregroundStyle(amberAccent)
         }
     }
@@ -204,7 +204,7 @@ private struct LeastToMostMini: View {
                 MiniNode(label: "solve", sub: "in order", tint: amberAccent)
             }
             Text("break into easy steps, carry each answer up")
-                .font(.system(size: 9, weight: .semibold)).tracking(0.6)
+                .scaledFont(size: 9, weight: .semibold).tracking(0.6)
                 .foregroundStyle(amberAccent)
         }
     }
@@ -222,7 +222,7 @@ private struct ReActMini: View {
                 MiniNode(label: "observe", sub: "then loop", tint: amberAccent)
             }
             Text("reason, act, read the result, repeat")
-                .font(.system(size: 9, weight: .semibold)).tracking(0.6)
+                .scaledFont(size: 9, weight: .semibold).tracking(0.6)
                 .foregroundStyle(amberAccent)
         }
     }
@@ -240,7 +240,7 @@ private struct ToolformerMini: View {
                 MiniNode(label: "keep", sub: "if it helps", tint: amberAccent)
             }
             Text("self-taught: keep calls that aid prediction")
-                .font(.system(size: 9, weight: .semibold)).tracking(0.6)
+                .scaledFont(size: 9, weight: .semibold).tracking(0.6)
                 .foregroundStyle(amberAccent)
         }
     }
@@ -258,7 +258,7 @@ private struct ScratchpadMini: View {
                 MiniNode(label: "ans", sub: "correct", tint: amberAccent)
             }
             Text("write the working, hold up at any length")
-                .font(.system(size: 9, weight: .semibold)).tracking(0.6)
+                .scaledFont(size: 9, weight: .semibold).tracking(0.6)
                 .foregroundStyle(amberAccent)
         }
     }
@@ -276,7 +276,7 @@ private struct SelfConsistencyMini: View {
                 MiniNode(label: "vote", sub: "majority", tint: amberAccent)
             }
             Text("sample many, keep the agreed answer")
-                .font(.system(size: 9, weight: .semibold)).tracking(0.6)
+                .scaledFont(size: 9, weight: .semibold).tracking(0.6)
                 .foregroundStyle(amberAccent)
         }
     }
@@ -294,7 +294,7 @@ private struct TreeOfThoughtsMini: View {
                 MiniNode(label: "goal", sub: "search", tint: amberAccent)
             }
             Text("explore a tree, backtrack from dead ends")
-                .font(.system(size: 9, weight: .semibold)).tracking(0.6)
+                .scaledFont(size: 9, weight: .semibold).tracking(0.6)
                 .foregroundStyle(amberAccent)
         }
     }
@@ -313,7 +313,7 @@ private struct ChainOfThoughtMini: View {
                 MiniNode(label: "A", sub: "correct", tint: amberAccent)
             }
             Text("show the working, get it right")
-                .font(.system(size: 9, weight: .semibold)).tracking(0.8)
+                .scaledFont(size: 9, weight: .semibold).tracking(0.8)
                 .foregroundStyle(amberAccent)
         }
     }
@@ -329,7 +329,7 @@ private struct InstructGPTMini: View {
                 MiniArrow()
                 ZStack {
                     Image(systemName: "person.2.fill")
-                        .font(.system(size: 9))
+                        .scaledFont(size: 9)
                         .foregroundStyle(amberAccent)
                         .offset(x: 0, y: -17)
                     MiniNode(label: "reward", sub: "from ranks")
@@ -338,7 +338,7 @@ private struct InstructGPTMini: View {
                 MiniNode(label: "RLHF", sub: "nudge", tint: amberAccent)
             }
             Text("humans rank, model learns the taste")
-                .font(.system(size: 9, weight: .semibold)).tracking(0.8)
+                .scaledFont(size: 9, weight: .semibold).tracking(0.8)
                 .foregroundStyle(amberAccent)
         }
     }
@@ -354,7 +354,7 @@ private struct DeepSeekR1Mini: View {
                 MiniArrow()
                 ZStack {
                     Image(systemName: "star.fill")
-                        .font(.system(size: 9))
+                        .scaledFont(size: 9)
                         .foregroundStyle(amberAccent)
                         .offset(x: 0, y: -17)
                     MiniNode(label: "RL", sub: "reward")
@@ -365,7 +365,7 @@ private struct DeepSeekR1Mini: View {
                 MiniNode(label: "distill", sub: "→ small", tint: amberAccent)
             }
             Text("reward is the only teacher")
-                .font(.system(size: 9, weight: .semibold)).tracking(0.8)
+                .scaledFont(size: 9, weight: .semibold).tracking(0.8)
                 .foregroundStyle(amberAccent)
         }
     }
@@ -385,11 +385,11 @@ private struct MiniNode: View {
     var body: some View {
         VStack(spacing: 2) {
             Text(label)
-                .font(.system(size: 11, weight: .semibold, design: .serif))
+                .scaledFont(size: 11, weight: .semibold, design: .serif)
                 .foregroundStyle(exInk)
             if let s = sub {
                 Text(s)
-                    .font(.system(size: 9, design: .serif))
+                    .scaledFont(size: 9, design: .serif)
                     .italic()
                     .foregroundStyle(exInkMute)
             }
@@ -486,7 +486,7 @@ private struct BackpropMini: View {
                     .foregroundStyle(amberAccent)
                 MiniArrow(dashed: true, tint: amberAccent)
                 Text("backward")
-                    .font(.system(size: 9, weight: .semibold))
+                    .scaledFont(size: 9, weight: .semibold)
                     .tracking(1.0)
                     .foregroundStyle(amberAccent)
                 Spacer()
@@ -519,7 +519,7 @@ private struct LeNetMini: View {
                 .overlay(RoundedRectangle(cornerRadius: 3).stroke(tealAccent.opacity(0.55), lineWidth: 1))
                 .frame(width: size, height: size)
             Text(label)
-                .font(.system(size: 9, design: .serif))
+                .scaledFont(size: 9, design: .serif)
                 .foregroundStyle(exInkMute)
         }
     }
@@ -538,14 +538,14 @@ private struct AlexNetMini: View {
                 chip("Dual GPU")
                 chip("LRN", tint: amberAccent)
                 Text("→ 16.4% top-5")
-                    .font(.system(size: 10, weight: .semibold, design: .serif))
+                    .scaledFont(size: 10, weight: .semibold, design: .serif)
                     .foregroundStyle(exInk)
             }
         }
     }
     private func chip(_ s: String, tint: Color = tealAccent) -> some View {
         Text(s)
-            .font(.system(size: 10, weight: .semibold))
+            .scaledFont(size: 10, weight: .semibold)
             .tracking(0.4)
             .foregroundStyle(tint)
             .padding(.horizontal, 8).padding(.vertical, 4)
@@ -583,7 +583,7 @@ private struct Word2VecMini: View {
                 Circle().fill(tint.opacity(0.7)).frame(width: 6, height: 6)
                     .position(p)
                 Text(label)
-                    .font(.system(size: bold ? 11 : 10, weight: bold ? .semibold : .regular, design: .serif))
+                    .scaledFont(size: bold ? 11 : 10, weight: bold ? .semibold : .regular, design: .serif)
                     .foregroundStyle(exInk)
                     .position(x: p.x, y: p.y - 12)
             }
@@ -609,7 +609,7 @@ private struct Seq2SeqMini: View {
                 .overlay(RoundedRectangle(cornerRadius: 4).stroke(tint.opacity(0.55), lineWidth: 1))
             if let l = label {
                 Text(l)
-                    .font(.system(size: 10, weight: .semibold, design: .serif))
+                    .scaledFont(size: 10, weight: .semibold, design: .serif)
                     .foregroundStyle(exInk)
             }
         }
@@ -630,10 +630,10 @@ private struct GANsMini: View {
             MiniNode(label: "D", sub: "detector", tint: amberAccent)
             VStack(spacing: 2) {
                 Text("real?")
-                    .font(.system(size: 9, design: .serif))
+                    .scaledFont(size: 9, design: .serif)
                     .foregroundStyle(exInkMute)
                 Text("loss ↺")
-                    .font(.system(size: 9, weight: .semibold))
+                    .scaledFont(size: 9, weight: .semibold)
                     .foregroundStyle(amberAccent)
             }
         }
@@ -665,7 +665,7 @@ private struct ResNetMini: View {
                 }
                 .stroke(amberAccent.opacity(0.85), style: StrokeStyle(lineWidth: 1.4, dash: [3, 2]))
                 Text("skip")
-                    .font(.system(size: 9, weight: .semibold))
+                    .scaledFont(size: 9, weight: .semibold)
                     .tracking(1.0)
                     .foregroundStyle(amberAccent)
                     .position(x: g.size.width * 0.40, y: 4)
@@ -713,7 +713,7 @@ private struct GPT3Mini: View {
     private func row(_ label: String, n: Int, tint: Color = tealAccent) -> some View {
         HStack(spacing: 4) {
             Text(label)
-                .font(.system(size: 9, weight: .semibold))
+                .scaledFont(size: 9, weight: .semibold)
                 .tracking(0.6)
                 .foregroundStyle(tint)
                 .frame(width: 52, alignment: .leading)
@@ -734,7 +734,7 @@ private struct BERTMini: View {
             HStack(spacing: 4) {
                 ForEach(Array(row.enumerated()), id: \.offset) { i, w in
                     Text(w)
-                        .font(.system(size: 9, weight: .semibold, design: .serif))
+                        .scaledFont(size: 9, weight: .semibold, design: .serif)
                         .foregroundStyle(i == 2 ? .white : exInk)
                         .padding(.horizontal, 5).padding(.vertical, 3)
                         .background(RoundedRectangle(cornerRadius: 5)
@@ -746,7 +746,7 @@ private struct BERTMini: View {
             HStack(spacing: 16) {
                 MiniArrow(tint: tealAccent)
                 Text("BOTH SIDES")
-                    .font(.system(size: 9, weight: .bold)).tracking(1.0)
+                    .scaledFont(size: 9, weight: .bold).tracking(1.0)
                     .foregroundStyle(amberAccent)
                 MiniArrow(tint: amberAccent)
             }

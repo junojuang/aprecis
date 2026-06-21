@@ -89,16 +89,16 @@ struct BackpropFlowView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 04 · FORWARD, THEN BACKWARD")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("Run a pass. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(bpInk)
-                + Text("Watch the gradient walk back.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("Run a pass. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(bpInk)
+                + Text("Watch the gradient walk back.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("Activations propagate left to right. Loss is computed. Gradients propagate back, multiplied by each layer's local derivative. Tap any node to read its equation.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -113,7 +113,7 @@ struct BackpropFlowView: View {
                     .padding(.bottom, 14)
 
                 Text(verdictLine)
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(bpInkSubtle)
                     .padding(.bottom, 24)
@@ -172,9 +172,9 @@ struct BackpropFlowView: View {
             Button(action: runPass) {
                 HStack(spacing: 6) {
                     Image(systemName: phase == 0 ? "play.fill" : "arrow.counterclockwise")
-                        .font(.system(size: 11, weight: .bold))
+                        .font(scaledSystemFont(11, weight: .bold))
                     Text(phase == 0 ? "Run pass" : "Reset")
-                        .font(.system(size: 13, weight: .semibold, design: .serif))
+                        .font(scaledSystemFont(13, weight: .semibold, design: .serif))
                 }
                 .padding(.horizontal, 18)
                 .padding(.vertical, 10)
@@ -184,7 +184,7 @@ struct BackpropFlowView: View {
             .buttonStyle(.plain)
             Spacer()
             Text(phaseLabel)
-                .font(.system(size: 9, weight: .bold, design: .monospaced))
+                .font(scaledSystemFont(9, weight: .bold, design: .monospaced))
                 .tracking(1.0)
                 .foregroundStyle(phaseColor)
                 .padding(.horizontal, 10).padding(.vertical, 5)
@@ -251,10 +251,10 @@ struct BackpropFlowView: View {
                 }
 
                 // Captions
-                Text("FORWARD").font(.system(size: 8, weight: .bold)).tracking(1.4)
+                Text("FORWARD").font(scaledSystemFont(8, weight: .bold)).tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                     .position(x: 50, y: cy - 16)
-                Text("BACKWARD").font(.system(size: 8, weight: .bold)).tracking(1.4)
+                Text("BACKWARD").font(scaledSystemFont(8, weight: .bold)).tracking(1.4)
                     .foregroundStyle(amberAccent)
                     .position(x: 60, y: cy + 56)
             }
@@ -293,7 +293,7 @@ struct BackpropFlowView: View {
             tap(n)
         } label: {
             Text(n.label)
-                .font(.system(size: 13, weight: .bold, design: .serif))
+                .font(scaledSystemFont(13, weight: .bold, design: .serif))
                 .foregroundStyle(isA ? .white : bpInk)
                 .frame(width: 36, height: 36)
                 .background(
@@ -309,7 +309,7 @@ struct BackpropFlowView: View {
             HStack(spacing: 6) {
                 Circle().fill(active.color).frame(width: 8, height: 8)
                 Text("NODE \(active.label.uppercased())")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.4)
                     .foregroundStyle(active.color)
                 Spacer()
@@ -330,11 +330,11 @@ struct BackpropFlowView: View {
     private func detailRow(title: String, body: String, color: Color) -> some View {
         VStack(alignment: .leading, spacing: 3) {
             Text(title)
-                .font(.system(size: 8, weight: .bold))
+                .font(scaledSystemFont(8, weight: .bold))
                 .tracking(1.2)
                 .foregroundStyle(color)
             Text(body)
-                .font(.system(size: 12, design: .serif))
+                .font(scaledSystemFont(12, design: .serif))
                 .foregroundStyle(bpInk)
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -362,16 +362,16 @@ struct BackpropChainRuleView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 05 · ONE RULE, COMPOSED")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("Just the chain rule. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(bpInk)
-                + Text("Repeated.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("Just the chain rule. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(bpInk)
+                + Text("Repeated.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("Drag the input slider. Every intermediate value and partial derivative updates live. ∂L/∂w₁ is the product of the local derivatives along the path.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -386,7 +386,7 @@ struct BackpropChainRuleView: View {
                     .padding(.bottom, 14)
 
                 Text(verdict)
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(bpInkSubtle)
                     .padding(.bottom, 24)
@@ -424,12 +424,12 @@ struct BackpropChainRuleView: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text("INPUT x")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                 Spacer()
                 Text(String(format: "%+.2f", x))
-                    .font(.system(size: 13, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(13, weight: .semibold, design: .monospaced))
                     .foregroundStyle(bpInk)
                     .contentTransition(.numericText(value: x))
             }
@@ -442,11 +442,11 @@ struct BackpropChainRuleView: View {
             .accentColor(tealAccent)
             .padding(.horizontal, 4)
             HStack {
-                Text("−2").font(.system(size: 9, design: .monospaced)).foregroundStyle(bpInkSubtle.opacity(0.7))
+                Text("−2").font(scaledSystemFont(9, design: .monospaced)).foregroundStyle(bpInkSubtle.opacity(0.7))
                 Spacer()
-                Text("0").font(.system(size: 9, design: .monospaced)).foregroundStyle(bpInkSubtle.opacity(0.7))
+                Text("0").font(scaledSystemFont(9, design: .monospaced)).foregroundStyle(bpInkSubtle.opacity(0.7))
                 Spacer()
-                Text("+2").font(.system(size: 9, design: .monospaced)).foregroundStyle(bpInkSubtle.opacity(0.7))
+                Text("+2").font(scaledSystemFont(9, design: .monospaced)).foregroundStyle(bpInkSubtle.opacity(0.7))
             }
         }
         .padding(14)
@@ -460,7 +460,7 @@ struct BackpropChainRuleView: View {
     private var forwardPanel: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("FORWARD")
-                .font(.system(size: 9, weight: .bold))
+                .font(scaledSystemFont(9, weight: .bold))
                 .tracking(1.4)
                 .foregroundStyle(tealAccent.opacity(0.85))
             valueRow("z₁ = w₁·x + b₁", value: z1, color: tealAccent)
@@ -479,20 +479,20 @@ struct BackpropChainRuleView: View {
     private var backwardPanel: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("BACKWARD · CHAIN")
-                .font(.system(size: 9, weight: .bold))
+                .font(scaledSystemFont(9, weight: .bold))
                 .tracking(1.4)
                 .foregroundStyle(amberAccent)
             VStack(alignment: .leading, spacing: 6) {
                 Text("∂L/∂w₁  =  ∂L/∂ŷ  ·  ∂ŷ/∂h  ·  ∂h/∂z  ·  ∂z/∂w")
-                    .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(11, weight: .semibold, design: .monospaced))
                     .foregroundStyle(bpInk)
                 HStack(spacing: 8) {
                     factor("ŷ−t",   value: dL_dy, color: Color(hex: "c0573c"))
-                    Text("·").foregroundStyle(bpInkSubtle).font(.system(size: 12, weight: .bold))
+                    Text("·").foregroundStyle(bpInkSubtle).font(scaledSystemFont(12, weight: .bold))
                     factor("w₂",    value: dy_dh, color: Color(hex: "7b4ba4"))
-                    Text("·").foregroundStyle(bpInkSubtle).font(.system(size: 12, weight: .bold))
+                    Text("·").foregroundStyle(bpInkSubtle).font(scaledSystemFont(12, weight: .bold))
                     factor("h(1−h)",value: dh_dz, color: amberAccent)
-                    Text("·").foregroundStyle(bpInkSubtle).font(.system(size: 12, weight: .bold))
+                    Text("·").foregroundStyle(bpInkSubtle).font(scaledSystemFont(12, weight: .bold))
                     factor("x",     value: dz_dw, color: tealAccent)
                 }
             }
@@ -509,11 +509,11 @@ struct BackpropChainRuleView: View {
     private func valueRow(_ label: String, value: Double, color: Color, highlight: Bool = false) -> some View {
         HStack {
             Text(label)
-                .font(.system(size: 11, design: .monospaced))
+                .font(scaledSystemFont(11, design: .monospaced))
                 .foregroundStyle(bpInk)
             Spacer()
             Text(String(format: "%+.3f", value))
-                .font(.system(size: highlight ? 14 : 12, weight: .semibold, design: .monospaced))
+                .font(scaledSystemFont(highlight ? 14 : 12, weight: .semibold, design: .monospaced))
                 .foregroundStyle(color)
                 .contentTransition(.numericText(value: value))
         }
@@ -522,10 +522,10 @@ struct BackpropChainRuleView: View {
     private func factor(_ name: String, value: Double, color: Color) -> some View {
         VStack(spacing: 2) {
             Text(name)
-                .font(.system(size: 8, weight: .bold, design: .monospaced))
+                .font(scaledSystemFont(8, weight: .bold, design: .monospaced))
                 .foregroundStyle(color)
             Text(String(format: "%+.2f", value))
-                .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                .font(scaledSystemFont(11, weight: .semibold, design: .monospaced))
                 .foregroundStyle(bpInk)
                 .contentTransition(.numericText(value: value))
         }
@@ -579,16 +579,16 @@ struct BackpropCreditView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 06 · CREDIT ASSIGNMENT")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("Hidden units, ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(bpInk)
-                + Text("organising themselves.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("Hidden units, ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(bpInk)
+                + Text("organising themselves.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("Slide the epoch dial. With backprop, eight hidden units crystallise into edge, corner, and stroke detectors. Without it, the same units stay random forever.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -603,7 +603,7 @@ struct BackpropCreditView: View {
                     .padding(.bottom, 16)
 
                 Text(verdict)
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(bpInkSubtle)
                     .padding(.bottom, 24)
@@ -641,7 +641,7 @@ struct BackpropCreditView: View {
 
     private func modeChip(label: String, on: Bool) -> some View {
         Text(label)
-            .font(.system(size: 11, weight: on ? .semibold : .regular, design: .serif))
+            .font(scaledSystemFont(11, weight: on ? .semibold : .regular, design: .serif))
             .foregroundStyle(on ? .white : bpInkSubtle)
             .padding(.horizontal, 12).padding(.vertical, 8)
             .background(
@@ -655,12 +655,12 @@ struct BackpropCreditView: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Text("EPOCH")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                 Spacer()
                 Text(String(format: "%d / 200", Int(epoch)))
-                    .font(.system(size: 13, weight: .semibold, design: .monospaced))
+                    .font(scaledSystemFont(13, weight: .semibold, design: .monospaced))
                     .foregroundStyle(bpInk)
             }
             Slider(value: Binding(get: { epoch }, set: {
@@ -715,7 +715,7 @@ struct BackpropCreditView: View {
                 }
             }
             Text(progress > 0.4 ? Self.labels[idx] : "—")
-                .font(.system(size: 8, weight: .bold, design: .monospaced))
+                .font(scaledSystemFont(8, weight: .bold, design: .monospaced))
                 .tracking(0.6)
                 .foregroundStyle(progress > 0.4 ? tealAccent : bpInkSubtle.opacity(0.6))
                 .frame(height: 9)

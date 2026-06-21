@@ -111,11 +111,11 @@ struct PerceptronNeuronPlayground: View {
             Spacer(minLength: 18)
 
             Text("YOU ARE THE NEURON")
-                .font(.system(size: 11, weight: .bold))
+                .scaledFont(size: 11, weight: .bold)
                 .tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("One guest at the door. Decide how much each thing should count, and watch the neuron make the call.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -152,14 +152,14 @@ struct PerceptronNeuronPlayground: View {
     private var verdict: some View {
         HStack(spacing: 10) {
             Image(systemName: fires ? "checkmark.circle.fill" : "hand.raised.fill")
-                .font(.system(size: 18, weight: .bold))
+                .scaledFont(size: 18, weight: .bold)
             VStack(alignment: .leading, spacing: 1) {
                 Text(fires ? "WAVED IN" : "STOPPED AT THE DOOR")
-                    .font(.system(size: 15, weight: .heavy))
+                    .scaledFont(size: 15, weight: .heavy)
                     .tracking(0.5)
                 Text(fires ? "The signal crossed the line. The neuron fires."
                            : "Not enough signal. The neuron stays quiet.")
-                    .font(.system(size: 12, design: .serif))
+                    .scaledFont(size: 12, design: .serif)
                     .italic()
                     .opacity(0.8)
             }
@@ -174,8 +174,8 @@ struct PerceptronNeuronPlayground: View {
                 .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous)
                     .stroke(fires ? .clear : borderColor, lineWidth: 1)))
         .scaleEffect(flash ? 1.04 : 1.0)
-        .animation(.snappy(duration: 0.3), value: fires)
-        .animation(.snappy(duration: 0.25), value: flash)
+        .motionAware(.snappy(duration: 0.3), value: fires)
+        .motionAware(.snappy(duration: 0.25), value: flash)
     }
 
     // MARK: weighted-sum bar
@@ -183,7 +183,7 @@ struct PerceptronNeuronPlayground: View {
     private var sumBar: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text("THE WEIGHTED SUM")
-                .font(.system(size: 10, weight: .bold))
+                .scaledFont(size: 10, weight: .bold)
                 .tracking(1.6)
                 .foregroundStyle(mutedText)
             GeometryReader { geo in
@@ -206,13 +206,13 @@ struct PerceptronNeuronPlayground: View {
                         .frame(width: 2.5)
                         .offset(x: w * threshold / maxSum)
                     Text("fire ▸")
-                        .font(.system(size: 9, weight: .bold))
+                        .scaledFont(size: 9, weight: .bold)
                         .foregroundStyle(amberAccent)
                         .offset(x: w * threshold / maxSum + 5, y: -16)
                 }
             }
             .frame(height: 26)
-            .animation(.snappy(duration: 0.25), value: sum)
+            .motionAware(.snappy(duration: 0.25), value: sum)
         }
     }
 
@@ -228,12 +228,12 @@ struct PerceptronNeuronPlayground: View {
                 HStack(spacing: 7) {
                     Circle().fill(segmentColor(i)).frame(width: 8, height: 8)
                     Text(traits[i].name)
-                        .font(.system(size: 14, weight: .semibold, design: .serif))
+                        .scaledFont(size: 14, weight: .semibold, design: .serif)
                         .foregroundStyle(inkColor)
                 }
                 Spacer()
                 Text("counts \(Int(weights[i] * 100))%")
-                    .font(.system(size: 12, weight: .medium, design: .monospaced))
+                    .scaledFont(size: 12, weight: .medium, design: .monospaced)
                     .foregroundStyle(mutedText)
             }
             WeightSlider(value: $weights[i], tint: segmentColor(i))
@@ -306,35 +306,35 @@ struct SignalFlowArt: View {
                         .frame(width: 15, height: 15)
                         .position(ins[i])
                         .scaleEffect(t ? 1 : 0.7)
-                        .animation(.easeInOut(duration: 0.9).repeatForever()
+                        .motionAware(.easeInOut(duration: 0.9).repeatForever()
                             .delay(Double(i) * 0.2), value: t)
                 }
                 // pulse along the axon
                 Circle().fill(amberAccent).frame(width: 9, height: 9)
                     .position(x: t ? out.x : gate.x, y: h * 0.5)
                     .opacity(t ? 0 : 1)
-                    .animation(.easeIn(duration: 1.0).repeatForever(autoreverses: false), value: t)
+                    .motionAware(.easeIn(duration: 1.0).repeatForever(autoreverses: false), value: t)
 
                 RoundedRectangle(cornerRadius: 10)
                     .fill(inkColor)
                     .frame(width: 48, height: 48)
                     .position(gate)
                 Text("Σ")
-                    .font(.system(size: 21, weight: .bold, design: .serif))
+                    .scaledFont(size: 21, weight: .bold, design: .serif)
                     .foregroundStyle(.white)
                     .position(gate)
 
                 Circle().fill(amberAccent)
                     .frame(width: 22, height: 22)
                     .overlay(Image(systemName: "checkmark")
-                        .font(.system(size: 10, weight: .black)).foregroundStyle(.white))
+                        .scaledFont(size: 10, weight: .black).foregroundStyle(.white))
                     .position(out)
 
                 Text("three signals")
-                    .font(.system(size: 9, weight: .bold)).tracking(1).foregroundStyle(mutedText)
+                    .scaledFont(size: 9, weight: .bold).tracking(1).foregroundStyle(mutedText)
                     .position(x: w * 0.14, y: h * 0.95)
                 Text("one decision")
-                    .font(.system(size: 9, weight: .bold)).tracking(1).foregroundStyle(mutedText)
+                    .scaledFont(size: 9, weight: .bold).tracking(1).foregroundStyle(mutedText)
                     .position(x: w * 0.86, y: h * 0.95)
             }
         }
@@ -392,22 +392,22 @@ struct LinearSeparationDiagram: View {
                     }
 
                     Text("let in")
-                        .font(.system(size: 9, weight: .bold)).tracking(1.4)
+                        .scaledFont(size: 9, weight: .bold).tracking(1.4)
                         .foregroundStyle(tealAccent)
                         .position(x: s * 0.80, y: s * 0.14)
                     Text("turned away")
-                        .font(.system(size: 9, weight: .bold)).tracking(1.4)
+                        .scaledFont(size: 9, weight: .bold).tracking(1.4)
                         .foregroundStyle(Color(hex: "c2557a"))
                         .position(x: s * 0.24, y: s * 0.88)
 
                     // Faint axis labels, hugging the inside of the frame.
                     Text("dressed sharp →")
-                        .font(.system(size: 8, weight: .semibold))
+                        .scaledFont(size: 8, weight: .semibold)
                         .tracking(0.6)
                         .foregroundStyle(mutedText.opacity(0.85))
                         .position(x: s * 0.50, y: s - 8)
                     Text("on the list →")
-                        .font(.system(size: 8, weight: .semibold))
+                        .scaledFont(size: 8, weight: .semibold)
                         .tracking(0.6)
                         .foregroundStyle(mutedText.opacity(0.85))
                         .rotationEffect(.degrees(-90))
@@ -478,7 +478,7 @@ struct XORImpossibilityDiagram: View {
                     }
 
                     Text("2 always wrong")
-                        .font(.system(size: 9, weight: .bold)).tracking(1.4)
+                        .scaledFont(size: 9, weight: .bold).tracking(1.4)
                         .foregroundStyle(amberAccent)
                         .position(x: s / 2, y: s - 12)
                 }
@@ -525,10 +525,10 @@ struct PerceptronBoundaryLearner: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("NOW YOU TRY")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Same map as the last card. Each tap shows the perceptron its worst mistake; watch the line tilt itself toward zero wrongs.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -575,7 +575,7 @@ struct PerceptronBoundaryLearner: View {
         let p1 = CGPoint(x: s, y: (1 - CGFloat(yAt(1))) * s)
         Path { p in p.move(to: p0); p.addLine(to: p1) }
             .stroke(inkColor.opacity(0.8), style: StrokeStyle(lineWidth: 2.5, dash: [6, 4]))
-            .animation(.snappy(duration: 0.45), value: w1 + w2 + b)
+            .motionAware(.snappy(duration: 0.45), value: w1 + w2 + b)
     }
 
     private func dotView(_ d: Dot, s: CGFloat) -> some View {
@@ -588,7 +588,7 @@ struct PerceptronBoundaryLearner: View {
                 Circle().stroke(amberAccent, lineWidth: wrong ? 3 : 0)
                     .frame(width: 26, height: 26))
             .position(pt(d, s))
-            .animation(.snappy(duration: 0.45), value: wrong)
+            .motionAware(.snappy(duration: 0.45), value: wrong)
     }
 
     private var statusRow: some View {
@@ -596,7 +596,7 @@ struct PerceptronBoundaryLearner: View {
             Circle().fill(solved ? tealAccent : amberAccent).frame(width: 9, height: 9)
             Text(solved ? "Zero mistakes. The perceptron found the rule."
                         : "\(wrongCount) on the wrong side (ringed in amber)")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
         }
     }
@@ -614,7 +614,7 @@ struct PerceptronBoundaryLearner: View {
             if wrongCount == 0 || taps >= 6 { progress.markExplored(cardId) }
         } label: {
             Text(solved ? "It learned the rule ✓" : "Show it a mistake")
-                .font(.system(size: 14, weight: .semibold))
+                .scaledFont(size: 14, weight: .semibold)
                 .foregroundStyle(solved ? tealAccent : .white)
                 .frame(maxWidth: .infinity, minHeight: 44)
                 .background(RoundedRectangle(cornerRadius: 12)
@@ -662,10 +662,10 @@ struct XORWall: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("TRY EVERY ANGLE")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(Color(hex: "c2557a"))
             Text("Drag the line to any angle you like. The wrong count never drops below two. The wall, in your hands.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -674,7 +674,7 @@ struct XORWall: View {
             HStack(spacing: 8) {
                 Circle().fill(Color(hex: "c2557a")).frame(width: 9, height: 9)
                 Text("\(wrong) dot\(wrong == 1 ? "" : "s") still on the wrong side. It never hits zero.")
-                    .font(.system(size: 13, weight: .semibold, design: .serif))
+                    .scaledFont(size: 13, weight: .semibold, design: .serif)
                     .foregroundStyle(inkColor.opacity(0.8))
             }
             Spacer(minLength: 6)
@@ -701,7 +701,7 @@ struct XORWall: View {
                             .position(x: CGFloat(dots[i].x) * s, y: (1 - CGFloat(dots[i].y)) * s)
                     }
                     Text("drag to spin")
-                        .font(.system(size: 10, weight: .bold)).tracking(1)
+                        .scaledFont(size: 10, weight: .bold).tracking(1)
                         .foregroundStyle(mutedText)
                         .position(x: s / 2, y: s - 16)
                 }
@@ -815,7 +815,7 @@ struct ThreeNightsStrip: View {
             .frame(width: s, height: s)
 
             Text(n.label)
-                .font(.system(size: 9, weight: .bold))
+                .scaledFont(size: 9, weight: .bold)
                 .tracking(1.3)
                 .foregroundStyle(mutedText)
         }
@@ -874,7 +874,7 @@ struct WallTypographicMoment: View {
 
     private func wordLine(_ s: String, tint: Color) -> some View {
         Text(s)
-            .font(.system(size: 48, weight: .bold, design: .serif))
+            .scaledFont(size: 48, weight: .bold, design: .serif)
             .tracking(-1.5)
             .foregroundStyle(tint)
             .fixedSize(horizontal: false, vertical: true)
@@ -907,7 +907,7 @@ struct PerceptronTimeline: View {
             HStack(spacing: 0) {
                 ForEach(milestones.indices, id: \.self) { i in
                     Text(milestones[i].year)
-                        .font(.system(size: 11, weight: .semibold, design: .serif))
+                        .scaledFont(size: 11, weight: .semibold, design: .serif)
                         .foregroundStyle(inkColor.opacity(0.85))
                         .frame(maxWidth: .infinity)
                 }
@@ -935,7 +935,7 @@ struct PerceptronTimeline: View {
             HStack(spacing: 0) {
                 ForEach(milestones.indices, id: \.self) { i in
                     Text(milestones[i].label)
-                        .font(.system(size: 10, weight: .medium))
+                        .scaledFont(size: 10, weight: .medium)
                         .foregroundStyle(mutedText)
                         .multilineTextAlignment(.center)
                         .frame(maxWidth: .infinity)

@@ -40,7 +40,7 @@ struct ToolformerGlyph: View {
                 }
                 // The API call chip in the middle.
                 Text("[Calc \u{2192} 29%]")
-                    .font(.system(size: 13, weight: .bold, design: .monospaced))
+                    .font(scaledSystemFont(13, weight: .bold, design: .monospaced))
                     .foregroundStyle(.white)
                     .padding(.horizontal, 10).padding(.vertical, 6)
                     .background(RoundedRectangle(cornerRadius: 8).fill(tealAccent.opacity(0.9)))
@@ -53,7 +53,7 @@ struct ToolformerGlyph: View {
                         .position(x: w * (0.74 + Double(i) * 0.1), y: midY)
                 }
                 Text("THE MODEL CALLS ITS OWN TOOLS")
-                    .font(.system(size: 9, weight: .bold)).tracking(1.3)
+                    .font(scaledSystemFont(9, weight: .bold)).tracking(1.3)
                     .foregroundStyle(tealAccent)
                     .position(x: w * 0.5, y: h * 0.78)
             }
@@ -73,23 +73,23 @@ struct WithoutVsWithToolArt: View {
     var body: some View {
         VStack(spacing: 12) {
             VStack(alignment: .leading, spacing: 6) {
-                Text("NO TOOL").font(.system(size: 9, weight: .bold)).tracking(1.3).foregroundStyle(tfRose)
+                Text("NO TOOL").font(scaledSystemFont(9, weight: .bold)).tracking(1.3).foregroundStyle(tfRose)
                 (Text("400 of 1400 passed, about ")
                  + Text("35%").foregroundColor(tfRose).bold()
                  + Text(" of them."))
-                    .font(.system(size: 13, design: .serif)).foregroundStyle(inkColor.opacity(0.85))
-                Text("a confident, wrong guess").font(.system(size: 10, design: .serif)).italic().foregroundStyle(mutedText)
+                    .font(scaledSystemFont(13, design: .serif)).foregroundStyle(inkColor.opacity(0.85))
+                Text("a confident, wrong guess").font(scaledSystemFont(10, design: .serif)).italic().foregroundStyle(mutedText)
             }
             .padding(11).frame(maxWidth: .infinity, alignment: .leading)
             .background(RoundedRectangle(cornerRadius: 10).fill(tfRose.opacity(0.05)))
 
             VStack(alignment: .leading, spacing: 6) {
-                Text("WITH A TOOL").font(.system(size: 9, weight: .bold)).tracking(1.3).foregroundStyle(tealAccent)
+                Text("WITH A TOOL").font(scaledSystemFont(9, weight: .bold)).tracking(1.3).foregroundStyle(tealAccent)
                 (Text("400 of 1400 passed, about ")
-                 + Text("[Calc(400/1400)\u{2192}29%]").font(.system(size: 12, design: .monospaced)).foregroundColor(tealAccent)
+                 + Text("[Calc(400/1400)\u{2192}29%]").font(scaledSystemFont(12, design: .monospaced)).foregroundColor(tealAccent)
                  + Text(" 29% of them."))
-                    .font(.system(size: 13, design: .serif)).foregroundStyle(inkColor.opacity(0.85))
-                Text("the call is run, the result spliced in").font(.system(size: 10, design: .serif)).italic().foregroundStyle(mutedText)
+                    .font(scaledSystemFont(13, design: .serif)).foregroundStyle(inkColor.opacity(0.85))
+                Text("the call is run, the result spliced in").font(scaledSystemFont(10, design: .serif)).italic().foregroundStyle(mutedText)
             }
             .padding(11).frame(maxWidth: .infinity, alignment: .leading)
             .background(RoundedRectangle(cornerRadius: 10).fill(tealAccent.opacity(0.05)))
@@ -114,10 +114,10 @@ struct ToolboxArt: View {
         VStack(alignment: .leading, spacing: 8) {
             ForEach(Array(tools.enumerated()), id: \.offset) { _, t in
                 HStack(spacing: 10) {
-                    Image(systemName: t.0).font(.system(size: 16)).foregroundStyle(tealAccent)
-                    Text(t.1).font(.system(size: 13, weight: .semibold, design: .serif)).foregroundStyle(inkColor.opacity(0.85))
+                    Image(systemName: t.0).font(scaledSystemFont(16)).foregroundStyle(tealAccent)
+                    Text(t.1).font(scaledSystemFont(13, weight: .semibold, design: .serif)).foregroundStyle(inkColor.opacity(0.85))
                         .frame(width: 96, alignment: .leading)
-                    Text(t.2).font(.system(size: 11.5, design: .serif)).italic().foregroundStyle(mutedText)
+                    Text(t.2).font(scaledSystemFont(11.5, design: .serif)).italic().foregroundStyle(mutedText)
                     Spacer(minLength: 0)
                 }
             }
@@ -144,10 +144,10 @@ struct InlineCallStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("SPLICE IN A CALL")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .font(scaledSystemFont(11, weight: .bold)).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("The model is writing a sentence with a number it cannot reliably do in its head. Watch it reach for a calculator mid-sentence, run the call, and drop the result back into the text.")
-                .font(.system(size: 16, design: .serif))
+                .font(scaledSystemFont(16, design: .serif))
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -158,12 +158,12 @@ struct InlineCallStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.32), value: stage)
+        .motionAware(.snappy(duration: 0.32), value: stage)
     }
 
     private var sentenceCard: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("THE MODEL WRITES").font(.system(size: 9, weight: .bold)).tracking(1.2).foregroundStyle(mutedText)
+            Text("THE MODEL WRITES").font(scaledSystemFont(9, weight: .bold)).tracking(1.2).foregroundStyle(mutedText)
             Group {
                 if stage == 0 {
                     (Text("Out of 1400 entrants, 400 passed, which is about ")
@@ -171,24 +171,24 @@ struct InlineCallStudio: View {
                      + Text("."))
                 } else if stage == 1 {
                     (Text("Out of 1400 entrants, 400 passed, which is about ")
-                     + Text("[Calculator(400 / 1400)]").font(.system(size: 14, design: .monospaced)).foregroundColor(amberAccent)
+                     + Text("[Calculator(400 / 1400)]").font(scaledSystemFont(14, design: .monospaced)).foregroundColor(amberAccent)
                      + Text(" ?"))
                 } else {
                     (Text("Out of 1400 entrants, 400 passed, which is about ")
-                     + Text("[Calculator(400 / 1400) \u{2192} 0.29]").font(.system(size: 13, design: .monospaced)).foregroundColor(tealAccent)
+                     + Text("[Calculator(400 / 1400) \u{2192} 0.29]").font(scaledSystemFont(13, design: .monospaced)).foregroundColor(tealAccent)
                      + Text(" ")
                      + Text("29%").foregroundColor(tealAccent).bold()
                      + Text("."))
                 }
             }
-            .font(.system(size: 15, design: .serif)).foregroundStyle(inkColor.opacity(0.88))
+            .font(scaledSystemFont(15, design: .serif)).foregroundStyle(inkColor.opacity(0.88))
             .fixedSize(horizontal: false, vertical: true)
 
             HStack(spacing: 6) {
                 Image(systemName: stage == 2 ? "checkmark.circle.fill" : (stage == 0 ? "xmark.circle.fill" : "hourglass"))
                     .foregroundStyle(stage == 2 ? tealAccent : (stage == 0 ? tfRose : amberAccent))
                 Text(stage == 2 ? "grounded by the tool" : (stage == 0 ? "guessed, and wrong" : "call inserted, not yet run"))
-                    .font(.system(size: 11, design: .serif)).italic().foregroundStyle(mutedText)
+                    .font(scaledSystemFont(11, design: .serif)).italic().foregroundStyle(mutedText)
             }
         }
         .padding(14).frame(maxWidth: .infinity, alignment: .leading)
@@ -207,7 +207,7 @@ struct InlineCallStudio: View {
                 if stage == 2 { progress.markExplored(cardId); UINotificationFeedbackGenerator().notificationOccurred(.success) }
             } label: {
                 Text(stage == 0 ? "Insert an API call" : "Run the call")
-                    .font(.system(size: 14, weight: .semibold)).foregroundStyle(.white)
+                    .font(scaledSystemFont(14, weight: .semibold)).foregroundStyle(.white)
                     .frame(maxWidth: .infinity).padding(.vertical, 12)
                     .background(RoundedRectangle(cornerRadius: 11).fill(stage == 0 ? amberAccent : tealAccent))
             }
@@ -221,7 +221,7 @@ struct InlineCallStudio: View {
             Text(stage == 2
                  ? "The call is just text the model wrote, run by an external tool, with the result pasted back. The model decides where a tool would help and writes the call itself."
                  : "Insert the call, then run it, and watch the wrong guess become a real answer.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .font(scaledSystemFont(13, weight: .semibold, design: .serif))
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -263,10 +263,10 @@ struct SelfFilterStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("KEEP ONLY WHAT HELPS")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .font(scaledSystemFont(11, weight: .bold)).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Nobody labelled where tools should go. The model finds out itself: it tries candidate calls and keeps a call only if its result makes the next words easier to predict. Tap each to see, then keep the useful one.")
-                .font(.system(size: 16, design: .serif))
+                .font(scaledSystemFont(16, design: .serif))
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -277,13 +277,13 @@ struct SelfFilterStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.3), value: tapped)
-        .animation(.snappy(duration: 0.3), value: kept)
+        .motionAware(.snappy(duration: 0.3), value: tapped)
+        .motionAware(.snappy(duration: 0.3), value: kept)
     }
 
     private var contextCard: some View {
         Text("\u{201C}\u{2026} 400 passed, which is about ___ % of them.\u{201D}")
-            .font(.system(size: 14, weight: .semibold, design: .serif)).foregroundStyle(inkColor)
+            .font(scaledSystemFont(14, weight: .semibold, design: .serif)).foregroundStyle(inkColor)
             .fixedSize(horizontal: false, vertical: true)
             .padding(13).frame(maxWidth: .infinity, alignment: .leading)
             .background(RoundedRectangle(cornerRadius: 11).fill(tfBlue.opacity(0.1))
@@ -316,10 +316,10 @@ struct SelfFilterStudio: View {
         } label: {
             VStack(alignment: .leading, spacing: 7) {
                 HStack(spacing: 10) {
-                    Text(c.label).font(.system(size: 13, weight: .semibold, design: .monospaced))
+                    Text(c.label).font(scaledSystemFont(13, weight: .semibold, design: .monospaced))
                         .foregroundStyle(inkColor.opacity(0.85))
                     if shown {
-                        Text("\u{2192} \(c.result)").font(.system(size: 12, design: .monospaced)).foregroundStyle(mutedText)
+                        Text("\u{2192} \(c.result)").font(scaledSystemFont(12, design: .monospaced)).foregroundStyle(mutedText)
                     }
                     Spacer(minLength: 0)
                     if isKept {
@@ -329,7 +329,7 @@ struct SelfFilterStudio: View {
                 }
                 if shown {
                     HStack(spacing: 8) {
-                        Text("HELPS PREDICT").font(.system(size: 8, weight: .bold)).tracking(0.8).foregroundStyle(mutedText)
+                        Text("HELPS PREDICT").font(scaledSystemFont(8, weight: .bold)).tracking(0.8).foregroundStyle(mutedText)
                         GeometryReader { g in
                             ZStack(alignment: .leading) {
                                 Capsule().fill(mutedText.opacity(0.12)).frame(height: 8)
@@ -338,17 +338,17 @@ struct SelfFilterStudio: View {
                             }
                         }
                         .frame(height: 10)
-                        Text("\(c.lossDrop)%").font(.system(size: 10, weight: .bold, design: .monospaced))
+                        Text("\(c.lossDrop)%").font(scaledSystemFont(10, weight: .bold, design: .monospaced))
                             .foregroundStyle(c.keep ? tealAccent : mutedText)
                     }
-                    Text(c.note).font(.system(size: 12, design: .serif)).foregroundStyle(inkColor.opacity(0.75))
+                    Text(c.note).font(scaledSystemFont(12, design: .serif)).foregroundStyle(inkColor.opacity(0.75))
                         .fixedSize(horizontal: false, vertical: true)
                     if kept == nil {
                         Text("tap again to keep this call")
-                            .font(.system(size: 10, weight: .semibold)).foregroundStyle(tealAccent)
+                            .font(scaledSystemFont(10, weight: .semibold)).foregroundStyle(tealAccent)
                     }
                 } else {
-                    Text("tap to run it").font(.system(size: 11, design: .serif)).italic().foregroundStyle(tealAccent)
+                    Text("tap to run it").font(scaledSystemFont(11, design: .serif)).italic().foregroundStyle(tealAccent)
                 }
             }
             .padding(13).frame(maxWidth: .infinity, alignment: .leading)
@@ -367,7 +367,7 @@ struct SelfFilterStudio: View {
             Text(good
                  ? "That is the whole training signal: keep a call only when its result lowers the loss on what comes next. No human ever labelled where tools belong."
                  : "Run the candidates, then keep the call whose result best helps predict the next words.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .font(scaledSystemFont(13, weight: .semibold, design: .serif))
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -409,16 +409,16 @@ struct ToolboxStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("PICK THE RIGHT TOOL")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .font(scaledSystemFont(11, weight: .bold)).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Toolformer learned a small toolbox and when to reach for each one. Read the sentence and choose the tool the model would call to fill the blank.")
-                .font(.system(size: 16, design: .serif))
+                .font(scaledSystemFont(16, design: .serif))
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
 
             Text(m.sentence)
-                .font(.system(size: 15, weight: .semibold, design: .serif)).foregroundStyle(inkColor)
+                .font(scaledSystemFont(15, weight: .semibold, design: .serif)).foregroundStyle(inkColor)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(13).frame(maxWidth: .infinity, alignment: .leading)
                 .background(RoundedRectangle(cornerRadius: 11).fill(tfBlue.opacity(0.1))
@@ -435,8 +435,8 @@ struct ToolboxStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.3), value: picked)
-        .animation(.snappy(duration: 0.3), value: idx)
+        .motionAware(.snappy(duration: 0.3), value: picked)
+        .motionAware(.snappy(duration: 0.3), value: idx)
     }
 
     private func toolButton(i: Int, name: String) -> some View {
@@ -454,7 +454,7 @@ struct ToolboxStudio: View {
                 UINotificationFeedbackGenerator().notificationOccurred(.warning)
             }
         } label: {
-            Text(name).font(.system(size: 12.5, weight: .semibold)).foregroundStyle(isPicked ? .white : inkColor.opacity(0.8))
+            Text(name).font(scaledSystemFont(12.5, weight: .semibold)).foregroundStyle(isPicked ? .white : inkColor.opacity(0.8))
                 .frame(maxWidth: .infinity).padding(.vertical, 12)
                 .background(RoundedRectangle(cornerRadius: 10)
                     .fill(isPicked ? (isRight ? tealAccent : tfRose) : Color.white)
@@ -468,10 +468,10 @@ struct ToolboxStudio: View {
         let right = p == m.correct
         return HStack(alignment: .top, spacing: 10) {
             Image(systemName: right ? "checkmark.seal.fill" : "exclamationmark.triangle.fill")
-                .font(.system(size: 14)).foregroundStyle(right ? tealAccent : amberAccent)
+                .font(scaledSystemFont(14)).foregroundStyle(right ? tealAccent : amberAccent)
             VStack(alignment: .leading, spacing: 6) {
                 Text(right ? m.note : "Not quite. Look at what the blank actually needs.")
-                    .font(.system(size: 13, weight: .semibold, design: .serif)).foregroundStyle(inkColor.opacity(0.82))
+                    .font(scaledSystemFont(13, weight: .semibold, design: .serif)).foregroundStyle(inkColor.opacity(0.82))
                     .fixedSize(horizontal: false, vertical: true)
                 Button {
                     UIImpactFeedbackGenerator(style: .soft).impactOccurred()
@@ -479,7 +479,7 @@ struct ToolboxStudio: View {
                     else { picked = nil }
                 } label: {
                     Text(right ? (idx < tfMatches.count - 1 ? "Next sentence \u{2192}" : "Done") : "Try again")
-                        .font(.system(size: 12, weight: .semibold)).foregroundStyle(tealAccent)
+                        .font(scaledSystemFont(12, weight: .semibold)).foregroundStyle(tealAccent)
                 }
                 .buttonStyle(.plain)
                 .disabled(right && idx >= tfMatches.count - 1)
@@ -496,7 +496,7 @@ struct ToolboxStudio: View {
             Text(done
                  ? "Different blanks need different tools, and the model learned to tell them apart from its own data, then call the right one unprompted."
                  : "Sentences matched: \(solved.count) of \(tfMatches.count)")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .font(scaledSystemFont(13, weight: .semibold, design: .serif))
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }

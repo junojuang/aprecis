@@ -24,7 +24,7 @@ struct LessonCoverCard: View {
     var body: some View {
         VStack(spacing: 0) {
             Text(eyebrow.uppercased())
-                .font(.system(size: 11, weight: .bold))
+                .scaledFont(size: 11, weight: .bold)
                 .tracking(2.4)
                 .foregroundStyle(tealMid)
                 .opacity(appear ? 1 : 0)
@@ -40,7 +40,7 @@ struct LessonCoverCard: View {
             Spacer(minLength: 28)
 
             headlineText
-                .font(.system(size: 40, weight: .semibold, design: .serif))
+                .scaledFont(size: 40, weight: .semibold, design: .serif)
                 .multilineTextAlignment(.center)
                 .lineSpacing(2)
                 .fixedSize(horizontal: false, vertical: true)
@@ -48,7 +48,7 @@ struct LessonCoverCard: View {
                 .offset(y: appear ? 0 : 14)
 
             Text(standfirst)
-                .font(.system(size: 15, design: .serif))
+                .scaledFont(size: 15, design: .serif)
                 .italic()
                 .foregroundStyle(Color(hex: "f4f1ea").opacity(0.6))
                 .multilineTextAlignment(.center)
@@ -197,11 +197,11 @@ struct LessonProseCard: View {
                     .padding(.bottom, 6)
             }
             Text(kicker.uppercased())
-                .font(.system(size: 11, weight: .bold))
+                .scaledFont(size: 11, weight: .bold)
                 .tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text(title)
-                .font(.system(size: 27, weight: .semibold, design: .serif))
+                .scaledFont(size: 27, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor)
                 .fixedSize(horizontal: false, vertical: true)
             ForEach(Array(paragraphs.enumerated()), id: \.offset) { _, line in
@@ -240,17 +240,17 @@ struct LessonIllustratedCard: View {
                             .stroke(borderColor, lineWidth: 1)))
             if let caption {
                 Text(caption)
-                    .font(.system(size: 12, design: .serif))
+                    .scaledFont(size: 12, design: .serif)
                     .italic()
                     .foregroundStyle(mutedText)
             }
             Text(kicker.uppercased())
-                .font(.system(size: 11, weight: .bold))
+                .scaledFont(size: 11, weight: .bold)
                 .tracking(2.0)
                 .foregroundStyle(tealAccent)
                 .padding(.top, 2)
             Text(title)
-                .font(.system(size: 25, weight: .semibold, design: .serif))
+                .scaledFont(size: 25, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor)
                 .fixedSize(horizontal: false, vertical: true)
             ForEach(Array(paragraphs.enumerated()), id: \.offset) { _, line in
@@ -281,15 +281,15 @@ struct LessonGlossaryCard: View {
             Spacer(minLength: 22)
             HStack(spacing: 8) {
                 Image(systemName: "character.book.closed")
-                    .font(.system(size: 13, weight: .semibold))
+                    .scaledFont(size: 13, weight: .semibold)
                     .foregroundStyle(amberAccent)
                 Text("THE WORDS, IN PLAIN ENGLISH")
-                    .font(.system(size: 11, weight: .bold))
+                    .scaledFont(size: 11, weight: .bold)
                     .tracking(1.8)
                     .foregroundStyle(amberAccent)
             }
             Text(intro)
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -309,10 +309,10 @@ struct LessonGlossaryCard: View {
                 .frame(width: 3)
             VStack(alignment: .leading, spacing: 4) {
                 Text(t.term)
-                    .font(.system(size: 16, weight: .bold, design: .serif))
+                    .scaledFont(size: 16, weight: .bold, design: .serif)
                     .foregroundStyle(inkColor)
                 Text(t.definition)
-                    .font(.system(size: 14, design: .serif))
+                    .scaledFont(size: 14, design: .serif)
                     .foregroundStyle(inkColor.opacity(0.74))
                     .lineSpacing(4)
                     .fixedSize(horizontal: false, vertical: true)
@@ -362,16 +362,16 @@ struct LessonCodeCard: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 22)
             Text(kicker.uppercased())
-                .font(.system(size: 11, weight: .bold))
+                .scaledFont(size: 11, weight: .bold)
                 .tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text(title)
-                .font(.system(size: 27, weight: .semibold, design: .serif))
+                .scaledFont(size: 27, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor)
                 .fixedSize(horizontal: false, vertical: true)
             if let intro {
                 Text(intro)
-                    .font(.system(size: 16, design: .serif))
+                    .scaledFont(size: 16, design: .serif)
                     .foregroundStyle(inkColor.opacity(0.78))
                     .lineSpacing(5)
                     .fixedSize(horizontal: false, vertical: true)
@@ -381,7 +381,7 @@ struct LessonCodeCard: View {
 
             if let caption {
                 Text(caption)
-                    .font(.system(size: 13, design: .serif))
+                    .scaledFont(size: 13, design: .serif)
                     .italic()
                     .foregroundStyle(mutedText)
                     .lineSpacing(3)
@@ -399,7 +399,7 @@ struct LessonCodeCard: View {
             VStack(alignment: .trailing, spacing: 6) {
                 ForEach(Array(lines.enumerated()), id: \.offset) { i, _ in
                     Text("\(i + 1)")
-                        .font(.system(size: 10, weight: .medium, design: .monospaced))
+                        .scaledFont(size: 10, weight: .medium, design: .monospaced)
                         .foregroundStyle(Color(hex: "f4f1ea").opacity(0.28))
                         .frame(minWidth: 14, alignment: .trailing)
                 }
@@ -438,7 +438,7 @@ struct LessonCodeCard: View {
         return pieces.reduce(Text("")) { acc, piece in
             let (kind, text) = piece
             return acc + Text(text)
-                .font(.system(size: 13, weight: kind == .keyword ? .semibold : .regular,
+                .font(scaledSystemFont(13, weight: kind == .keyword ? .semibold : .regular,
                               design: .monospaced))
                 .foregroundColor(colorFor(kind))
         }
@@ -495,16 +495,16 @@ struct LessonFormulaCard: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 22)
             Text(kicker.uppercased())
-                .font(.system(size: 11, weight: .bold))
+                .scaledFont(size: 11, weight: .bold)
                 .tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text(title)
-                .font(.system(size: 27, weight: .semibold, design: .serif))
+                .scaledFont(size: 27, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor)
                 .fixedSize(horizontal: false, vertical: true)
             if let intro {
                 Text(intro)
-                    .font(.system(size: 16, design: .serif))
+                    .scaledFont(size: 16, design: .serif)
                     .foregroundStyle(inkColor.opacity(0.8))
                     .lineSpacing(5)
                     .fixedSize(horizontal: false, vertical: true)
@@ -519,7 +519,7 @@ struct LessonFormulaCard: View {
 
             if let caption {
                 Text(caption)
-                    .font(.system(size: 13, design: .serif))
+                    .scaledFont(size: 13, design: .serif)
                     .italic()
                     .foregroundStyle(mutedText)
                     .lineSpacing(3)
@@ -550,7 +550,7 @@ struct LessonFormulaCard: View {
     private var formulaText: some View {
         formula.reduce(Text("")) { acc, part in
             acc + Text(part.text)
-                .font(.system(size: 20, weight: .medium, design: .monospaced))
+                .font(scaledSystemFont(20, weight: .medium, design: .monospaced))
                 .foregroundColor(tintColor(part.tint))
         }
         .multilineTextAlignment(.center)
@@ -572,7 +572,7 @@ struct LessonFormulaCard: View {
     private func annotationRow(_ a: LessonFormulaAnnotation) -> some View {
         HStack(alignment: .top, spacing: 12) {
             Text(a.symbol)
-                .font(.system(size: 13, weight: .semibold, design: .monospaced))
+                .scaledFont(size: 13, weight: .semibold, design: .monospaced)
                 .foregroundStyle(tealAccent)
                 .padding(.horizontal, 9)
                 .padding(.vertical, 6)
@@ -581,7 +581,7 @@ struct LessonFormulaCard: View {
                     RoundedRectangle(cornerRadius: 7, style: .continuous)
                         .fill(tealAccent.opacity(0.1)))
             Text(a.meaning)
-                .font(.system(size: 14, design: .serif))
+                .scaledFont(size: 14, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.78))
                 .lineSpacing(4)
                 .fixedSize(horizontal: false, vertical: true)
@@ -609,13 +609,13 @@ struct LessonPaperLinkCard: View {
             Spacer(minLength: 22)
 
             Text("\u{201C}")
-                .font(.system(size: 86, weight: .regular, design: .serif))
+                .scaledFont(size: 86, weight: .regular, design: .serif)
                 .foregroundStyle(tealAccent.opacity(0.55))
                 .frame(height: 40, alignment: .top)
                 .padding(.leading, -4)
 
             Text("\(quote)\u{201D}")
-                .font(.system(size: 22, weight: .regular, design: .serif))
+                .scaledFont(size: 22, weight: .regular, design: .serif)
                 .italic()
                 .foregroundStyle(inkColor.opacity(0.92))
                 .lineSpacing(6)
@@ -627,7 +627,7 @@ struct LessonPaperLinkCard: View {
                     .fill(tealAccent.opacity(0.55))
                     .frame(width: 18, height: 1)
                 Text(attribution)
-                    .font(.system(size: 12, design: .serif))
+                    .scaledFont(size: 12, design: .serif)
                     .italic()
                     .foregroundStyle(mutedText)
                     .fixedSize(horizontal: false, vertical: true)
@@ -643,18 +643,18 @@ struct LessonPaperLinkCard: View {
                     HStack(spacing: 10) {
                         VStack(alignment: .leading, spacing: 2) {
                             Text("READ THE ORIGINAL")
-                                .font(.system(size: 9, weight: .bold))
+                                .scaledFont(size: 9, weight: .bold)
                                 .tracking(1.6)
                                 .foregroundStyle(tealAccent)
                             Text(linkTitle)
-                                .font(.system(size: 14, weight: .semibold, design: .serif))
+                                .scaledFont(size: 14, weight: .semibold, design: .serif)
                                 .foregroundStyle(inkColor)
                                 .multilineTextAlignment(.leading)
                                 .fixedSize(horizontal: false, vertical: true)
                         }
                         Spacer(minLength: 0)
                         Image(systemName: "arrow.up.right")
-                            .font(.system(size: 12, weight: .bold))
+                            .scaledFont(size: 12, weight: .bold)
                             .foregroundStyle(tealAccent)
                     }
                     .padding(.horizontal, 16)
@@ -700,11 +700,11 @@ struct LessonRecapCard: View {
                 .padding(.bottom, 2)
 
             Text("WHAT YOU NOW KNOW")
-                .font(.system(size: 11, weight: .bold))
+                .scaledFont(size: 11, weight: .bold)
                 .tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text(title)
-                .font(.system(size: 27, weight: .semibold, design: .serif))
+                .scaledFont(size: 27, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor)
                 .fixedSize(horizontal: false, vertical: true)
 
@@ -714,7 +714,7 @@ struct LessonRecapCard: View {
                         numeral(i + 1)
                             .frame(width: 52, alignment: .leading)
                         Text(p)
-                            .font(.system(size: 16, design: .serif))
+                            .scaledFont(size: 16, design: .serif)
                             .foregroundStyle(inkColor.opacity(0.84))
                             .lineSpacing(5)
                             .fixedSize(horizontal: false, vertical: true)
@@ -748,7 +748,7 @@ struct LessonRecapCard: View {
     private func numeral(_ n: Int) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(romanNumeral(n))
-                .font(.system(size: 34, weight: .regular, design: .serif))
+                .scaledFont(size: 34, weight: .regular, design: .serif)
                 .italic()
                 .foregroundStyle(tealAccent)
             Rectangle()

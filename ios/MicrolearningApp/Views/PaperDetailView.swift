@@ -45,7 +45,7 @@ struct PaperDetailView: View {
         ZStack {
             backgroundFor(currentCard)
                 .ignoresSafeArea()
-                .animation(.easeInOut(duration: 0.35), value: cardIndex)
+                .motionAware(.easeInOut(duration: 0.35), value: cardIndex)
 
             VStack(spacing: 0) {
                 topBar
@@ -109,19 +109,22 @@ struct PaperDetailView: View {
                 if cardIndex == 0 { dismiss() } else { back() }
             } label: {
                 Image(systemName: cardIndex == 0 ? "xmark" : "chevron.left")
-                    .font(.system(size: 12, weight: .bold))
+                    .scaledFont(size: 12, weight: .bold)
                     .foregroundStyle(dark ? Color.white : inkColor)
                     .frame(width: 30, height: 30)
                     .background(
                         Circle().fill(dark ? Color.white.opacity(0.12) : Color(hex: "efeae1"))
                     )
             }
+            .accessibilityLabel(cardIndex == 0 ? "Close" : "Previous card")
 
             DeckDots(index: cardIndex, count: cards.count, dark: dark)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Card \(cardIndex + 1) of \(cards.count)")
 
             Button { dismiss() } label: {
                 Image(systemName: "xmark")
-                    .font(.system(size: 11, weight: .bold))
+                    .scaledFont(size: 11, weight: .bold)
                     .foregroundStyle(dark ? Color.white : inkColor)
                     .frame(width: 30, height: 30)
                     .background(
@@ -129,6 +132,8 @@ struct PaperDetailView: View {
                     )
                     .opacity(cardIndex == 0 ? 0 : 1)
             }
+            .accessibilityLabel("Close")
+            .accessibilityHidden(cardIndex == 0)
         }
         .padding(.horizontal, 20)
         .padding(.top, 8)
@@ -174,8 +179,9 @@ struct PaperDetailView: View {
                     HStack(spacing: 8) {
                         Text(nextLabel)
                         Image(systemName: "arrow.right")
+                            .accessibilityHidden(true)
                     }
-                    .font(.system(size: 14, weight: .bold))
+                    .scaledFont(size: 14, weight: .bold)
                     .foregroundStyle(currentCard == .hook ? inkColor : paperBg)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 14)
@@ -202,7 +208,7 @@ struct PaperDetailView: View {
             UIImpactFeedbackGenerator(style: .soft).impactOccurred()
         } label: {
             Image(systemName: saved ? "bookmark.fill" : "bookmark")
-                .font(.system(size: 16, weight: .semibold))
+                .scaledFont(size: 16, weight: .semibold)
                 .foregroundStyle(saved ? tealAccent : inkColor)
                 .frame(width: 46, height: 46)
                 .background(
@@ -444,13 +450,13 @@ private struct DeckHookCard: View {
         ScrollView(showsIndicators: false) {
             VStack(alignment: .leading, spacing: 0) {
                 Text(sourceKicker.uppercased())
-                    .font(.system(size: 10, weight: .bold))
+                    .scaledFont(size: 10, weight: .bold)
                     .tracking(1.8)
                     .foregroundStyle(Color(hex: "5fd4d4"))
                     .padding(.bottom, 14)
 
                 Text(hookHeadline)
-                    .font(.system(size: 28, weight: .semibold, design: .serif))
+                    .scaledFont(size: 28, weight: .semibold, design: .serif)
                     .foregroundStyle(.white)
                     .lineSpacing(2)
                     .fixedSize(horizontal: false, vertical: true)
@@ -458,7 +464,7 @@ private struct DeckHookCard: View {
 
                 if let title = deck.title, deck.hook != nil {
                     Text(title)
-                        .font(.system(size: 12))
+                        .scaledFont(size: 12)
                         .foregroundStyle(Color(hex: "b0b4bc"))
                         .lineSpacing(2)
                         .padding(.bottom, 14)
@@ -466,7 +472,7 @@ private struct DeckHookCard: View {
 
                 if let sub = subText, !sub.isEmpty {
                     Text(sub)
-                        .font(.system(size: 14))
+                        .scaledFont(size: 14)
                         .foregroundStyle(Color(hex: "d1d4dc"))
                         .lineSpacing(3)
                         .fixedSize(horizontal: false, vertical: true)
@@ -536,14 +542,14 @@ private struct DeckConceptCard: View {
                 }
 
                 Text("CONCEPT \(String(format: "%02d", index + 1)) · \(index + 1) OF \(total)")
-                    .font(.system(size: 10, weight: .bold))
+                    .scaledFont(size: 10, weight: .bold)
                     .tracking(1.8)
                     .foregroundStyle(tealAccent)
                     .padding(.horizontal, 20)
                     .padding(.bottom, 8)
 
                 Text(concept.title)
-                    .font(.system(size: 26, weight: .semibold, design: .serif))
+                    .scaledFont(size: 26, weight: .semibold, design: .serif)
                     .foregroundStyle(inkColor)
                     .lineSpacing(2)
                     .fixedSize(horizontal: false, vertical: true)
@@ -552,7 +558,7 @@ private struct DeckConceptCard: View {
 
                 if isRevealed {
                     Text(concept.body)
-                        .font(.system(size: 16, design: .serif))
+                        .scaledFont(size: 16, design: .serif)
                         .foregroundStyle(Color(hex: "2a2d36"))
                         .lineSpacing(5)
                         .fixedSize(horizontal: false, vertical: true)
@@ -578,9 +584,10 @@ private struct DeckConceptCard: View {
                     Button(action: onReveal) {
                         HStack(spacing: 8) {
                             Image(systemName: "hand.tap")
-                                .font(.system(size: 13, weight: .semibold))
+                                .scaledFont(size: 13, weight: .semibold)
+                                .accessibilityHidden(true)
                             Text("Tap to reveal")
-                                .font(.system(size: 13, weight: .semibold))
+                                .scaledFont(size: 13, weight: .semibold)
                                 .tracking(0.3)
                         }
                         .foregroundStyle(tealAccent)
@@ -627,10 +634,11 @@ private struct DeckTakeawayCard: View {
                     .frame(width: 132, height: 132)
                     .padding(.top, 20)
                     .padding(.bottom, 26)
+                    .accessibilityHidden(true)
 
                 // Headline: dynamic, paper-count framing
                 Text("You've read your \(ordinalPhrase(dailyCount)) paper of the day.")
-                    .font(.system(size: 24, weight: .regular, design: .serif))
+                    .scaledFont(size: 24, weight: .regular, design: .serif)
                     .foregroundStyle(inkColor)
                     .multilineTextAlignment(.center)
                     .lineSpacing(3)
@@ -639,7 +647,7 @@ private struct DeckTakeawayCard: View {
                 // Paper title, small, uppercase tracking
                 if let title = deck.title, !title.isEmpty {
                     Text(title)
-                        .font(.system(size: 11, weight: .medium, design: .serif))
+                        .scaledFont(size: 11, weight: .medium, design: .serif)
                         .italic()
                         .foregroundStyle(mutedText)
                         .multilineTextAlignment(.center)
@@ -660,7 +668,7 @@ private struct DeckTakeawayCard: View {
                 HStack(spacing: 10) {
                     Button(action: onRestart) {
                         Image(systemName: "arrow.counterclockwise")
-                            .font(.system(size: 14, weight: .semibold))
+                            .scaledFont(size: 14, weight: .semibold)
                             .foregroundStyle(inkColor)
                             .frame(width: 52, height: 52)
                             .background(
@@ -669,10 +677,11 @@ private struct DeckTakeawayCard: View {
                             )
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Restart paper")
 
                     Button(action: onDone) {
                         Text("Done")
-                            .font(.system(size: 15, weight: .semibold, design: .serif))
+                            .scaledFont(size: 15, weight: .semibold, design: .serif)
                             .foregroundStyle(paperBg)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 16)
@@ -685,7 +694,7 @@ private struct DeckTakeawayCard: View {
                         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
                     } label: {
                         Image(systemName: savedStore.isSaved(deck.paperId) ? "bookmark.fill" : "bookmark")
-                            .font(.system(size: 16, weight: .semibold))
+                            .scaledFont(size: 16, weight: .semibold)
                             .foregroundStyle(savedStore.isSaved(deck.paperId) ? tealAccent : inkColor)
                             .frame(width: 46, height: 46)
                             .background(
@@ -739,12 +748,12 @@ struct QuoteBlock: View {
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
             Text("\u{201C}")
-                .font(.system(size: 38, weight: .regular, design: .serif))
+                .scaledFont(size: 38, weight: .regular, design: .serif)
                 .foregroundStyle(tealAccent.opacity(0.55))
                 .baselineOffset(-12)
 
             Text(text)
-                .font(.system(size: 15, design: .serif))
+                .scaledFont(size: 15, design: .serif)
                 .italic()
                 .foregroundStyle(inkColor.opacity(0.78))
                 .multilineTextAlignment(.center)
@@ -752,7 +761,7 @@ struct QuoteBlock: View {
                 .fixedSize(horizontal: false, vertical: true)
 
             Text("\u{201D}")
-                .font(.system(size: 38, weight: .regular, design: .serif))
+                .scaledFont(size: 38, weight: .regular, design: .serif)
                 .foregroundStyle(tealAccent.opacity(0.55))
                 .baselineOffset(-12)
         }
@@ -788,14 +797,14 @@ struct EndingSeal: View {
 
             // Italic serif numeral
             Text("\(max(1, ordinal))")
-                .font(.system(size: 56, weight: .regular, design: .serif))
+                .scaledFont(size: 56, weight: .regular, design: .serif)
                 .italic()
                 .foregroundStyle(inkColor)
 
             // Tiny teal eyebrow above numeral
             VStack {
                 Text("PAPER")
-                    .font(.system(size: 7, weight: .bold))
+                    .scaledFont(size: 7, weight: .bold)
                     .tracking(2.4)
                     .foregroundStyle(tealAccent)
                     .padding(.top, 22)

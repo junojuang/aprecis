@@ -50,11 +50,11 @@ struct LeastToMostGlyph: View {
                         .opacity(t > Double(i) * 0.3 ? 1 : 0.2)
                 }
                 Image(systemName: "checkmark.circle.fill")
-                    .font(.system(size: 22)).foregroundStyle(tealAccent)
+                    .scaledFont(size: 22).foregroundStyle(tealAccent)
                     .position(x: w * 0.84, y: h * 0.86)
                     .opacity(t > 0.85 ? 1 : 0.2)
                 Text("EASIEST STEP FIRST")
-                    .font(.system(size: 9, weight: .bold)).tracking(1.8)
+                    .scaledFont(size: 9, weight: .bold).tracking(1.8)
                     .foregroundStyle(tealAccent)
                     .position(x: w * 0.5, y: h * 0.96)
             }
@@ -74,11 +74,11 @@ struct DecomposeVsChainArt: View {
     var body: some View {
         VStack(spacing: 12) {
             VStack(alignment: .leading, spacing: 6) {
-                Text("CHAIN OF THOUGHT").font(.system(size: 9, weight: .bold)).tracking(1.3)
+                Text("CHAIN OF THOUGHT").scaledFont(size: 9, weight: .bold).tracking(1.3)
                     .foregroundStyle(mutedText)
                 HStack(spacing: 6) {
                     block("hard problem", tint: mutedText, wide: true)
-                    Image(systemName: "arrow.right").font(.system(size: 9, weight: .bold)).foregroundStyle(mutedText)
+                    Image(systemName: "arrow.right").scaledFont(size: 9, weight: .bold).foregroundStyle(mutedText)
                     block("answer in one go", tint: mutedText, wide: true)
                 }
             }
@@ -86,11 +86,11 @@ struct DecomposeVsChainArt: View {
             .background(RoundedRectangle(cornerRadius: 10).fill(mutedText.opacity(0.05)))
 
             VStack(alignment: .leading, spacing: 6) {
-                Text("LEAST TO MOST").font(.system(size: 9, weight: .bold)).tracking(1.3)
+                Text("LEAST TO MOST").scaledFont(size: 9, weight: .bold).tracking(1.3)
                     .foregroundStyle(tealAccent)
                 HStack(spacing: 6) {
                     block("hard problem", tint: tealAccent, wide: true)
-                    Image(systemName: "arrow.right").font(.system(size: 9, weight: .bold)).foregroundStyle(tealAccent)
+                    Image(systemName: "arrow.right").scaledFont(size: 9, weight: .bold).foregroundStyle(tealAccent)
                     VStack(alignment: .leading, spacing: 4) {
                         block("sub 1", tint: tealAccent, wide: false)
                         block("sub 2", tint: tealAccent, wide: false)
@@ -98,7 +98,7 @@ struct DecomposeVsChainArt: View {
                     }
                 }
                 Text("decompose first, then solve in order")
-                    .font(.system(size: 10, design: .serif)).italic().foregroundStyle(mutedText)
+                    .scaledFont(size: 10, design: .serif).italic().foregroundStyle(mutedText)
             }
             .padding(11).frame(maxWidth: .infinity, alignment: .leading)
             .background(RoundedRectangle(cornerRadius: 10).fill(tealAccent.opacity(0.05)))
@@ -106,7 +106,7 @@ struct DecomposeVsChainArt: View {
         .padding(.vertical, 4)
     }
     private func block(_ s: String, tint: Color, wide: Bool) -> some View {
-        Text(s).font(.system(size: 10.5, weight: .semibold, design: .serif))
+        Text(s).scaledFont(size: 10.5, weight: .semibold, design: .serif)
             .foregroundStyle(inkColor.opacity(0.8))
             .padding(.horizontal, 9).padding(.vertical, 6)
             .frame(maxWidth: wide ? .infinity : nil, alignment: .leading)
@@ -124,10 +124,10 @@ struct SubstitutionArt: View {
         VStack(alignment: .leading, spacing: 8) {
             rung(q: "Q1: marbles in the bags?", a: "12", solved: true)
             HStack(spacing: 6) {
-                Image(systemName: "arrow.turn.down.right").font(.system(size: 11, weight: .bold))
+                Image(systemName: "arrow.turn.down.right").scaledFont(size: 11, weight: .bold)
                     .foregroundStyle(amberAccent)
                 Text("the 12 slots into the next question")
-                    .font(.system(size: 10, design: .serif)).italic().foregroundStyle(mutedText)
+                    .scaledFont(size: 10, design: .serif).italic().foregroundStyle(mutedText)
             }
             .padding(.leading, 12)
             rung(q: "Q2: 5 + 12 = ?", a: "17", solved: true)
@@ -138,10 +138,10 @@ struct SubstitutionArt: View {
     }
     private func rung(q: String, a: String, solved: Bool) -> some View {
         HStack(spacing: 10) {
-            Text(q).font(.system(size: 12, weight: .semibold, design: .serif))
+            Text(q).scaledFont(size: 12, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
             Spacer(minLength: 0)
-            Text(a).font(.system(size: 13, weight: .bold, design: .monospaced)).foregroundStyle(.white)
+            Text(a).scaledFont(size: 13, weight: .bold, design: .monospaced).foregroundStyle(.white)
                 .frame(width: 34, height: 28)
                 .background(RoundedRectangle(cornerRadius: 7).fill(tealAccent))
         }
@@ -180,10 +180,10 @@ struct DecomposeStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("BREAK IT DOWN FIRST")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Before solving anything, least-to-most plans. Tap to break this problem into a list of smaller questions, ordered easiest first. Notice there are no answers yet, just the plan.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -195,14 +195,14 @@ struct DecomposeStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.3), value: revealed)
+        .motionAware(.snappy(duration: 0.3), value: revealed)
     }
 
     private var problemCard: some View {
         HStack(spacing: 10) {
-            Image(systemName: "questionmark.circle.fill").font(.system(size: 16)).foregroundStyle(amberAccent)
+            Image(systemName: "questionmark.circle.fill").scaledFont(size: 16).foregroundStyle(amberAccent)
             Text("Amy has 5 marbles. She buys 3 bags with 4 marbles each, then gives 6 away. How many does she have now?")
-                .font(.system(size: 15, weight: .semibold, design: .serif)).foregroundStyle(inkColor)
+                .scaledFont(size: 15, weight: .semibold, design: .serif).foregroundStyle(inkColor)
                 .fixedSize(horizontal: false, vertical: true)
             Spacer(minLength: 0)
         }
@@ -216,10 +216,10 @@ struct DecomposeStudio: View {
             ForEach(0..<l2mSubs.count, id: \.self) { i in
                 if i < revealed {
                     HStack(alignment: .top, spacing: 10) {
-                        Text("\(i + 1)").font(.system(size: 12, weight: .bold, design: .serif)).foregroundStyle(.white)
+                        Text("\(i + 1)").scaledFont(size: 12, weight: .bold, design: .serif).foregroundStyle(.white)
                             .frame(width: 24, height: 24).background(Circle().fill(tealAccent))
                         Text(l2mSubs[i].question)
-                            .font(.system(size: 14, design: .serif)).foregroundStyle(inkColor.opacity(0.85))
+                            .scaledFont(size: 14, design: .serif).foregroundStyle(inkColor.opacity(0.85))
                             .fixedSize(horizontal: false, vertical: true)
                         Spacer(minLength: 0)
                     }
@@ -240,7 +240,7 @@ struct DecomposeStudio: View {
                 if done { progress.markExplored(cardId); UINotificationFeedbackGenerator().notificationOccurred(.success) }
             } label: {
                 Text(revealed == 0 ? "Find the first subquestion" : "Find the next subquestion")
-                    .font(.system(size: 14, weight: .semibold)).foregroundStyle(.white)
+                    .scaledFont(size: 14, weight: .semibold).foregroundStyle(.white)
                     .frame(maxWidth: .infinity).padding(.vertical, 12)
                     .background(RoundedRectangle(cornerRadius: 11).fill(tealAccent))
             }
@@ -254,7 +254,7 @@ struct DecomposeStudio: View {
             Text(done
                  ? "That is the decomposition stage. The model wrote a plan of simpler questions before answering a single one, each one a small step toward the goal."
                  : "Peel off each subquestion to build the plan.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -278,10 +278,10 @@ struct SolveLadderStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("CLIMB THE LADDER")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Now solve the subquestions in order. Each answer is carried into the next question before you solve it, so the model only ever faces one small step at a time.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -292,7 +292,7 @@ struct SolveLadderStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.32), value: solved)
+        .motionAware(.snappy(duration: 0.32), value: solved)
     }
 
     private var ladder: some View {
@@ -303,7 +303,7 @@ struct SolveLadderStudio: View {
             if done {
                 HStack(spacing: 6) {
                     Image(systemName: "checkmark.seal.fill").foregroundStyle(tealAccent)
-                    Text("Final answer: 11 marbles").font(.system(size: 14, weight: .bold, design: .serif))
+                    Text("Final answer: 11 marbles").scaledFont(size: 14, weight: .bold, design: .serif)
                         .foregroundStyle(inkColor)
                 }
                 .padding(.top, 2)
@@ -316,24 +316,24 @@ struct SolveLadderStudio: View {
         let isCurrent = i == solved
         return VStack(alignment: .leading, spacing: 4) {
             HStack(alignment: .top, spacing: 10) {
-                Text("\(i + 1)").font(.system(size: 12, weight: .bold, design: .serif))
+                Text("\(i + 1)").scaledFont(size: 12, weight: .bold, design: .serif)
                     .foregroundStyle(isSolved || isCurrent ? .white : mutedText)
                     .frame(width: 24, height: 24)
                     .background(Circle().fill(isSolved ? tealAccent : (isCurrent ? amberAccent : mutedText.opacity(0.15))))
                 Text(l2mSubs[i].question)
-                    .font(.system(size: 13.5, design: .serif))
+                    .scaledFont(size: 13.5, design: .serif)
                     .foregroundStyle(isSolved || isCurrent ? inkColor.opacity(0.85) : mutedText.opacity(0.5))
                     .fixedSize(horizontal: false, vertical: true)
                 Spacer(minLength: 0)
                 if isSolved {
-                    Text(l2mSubs[i].answer).font(.system(size: 13, weight: .bold, design: .monospaced))
+                    Text(l2mSubs[i].answer).scaledFont(size: 13, weight: .bold, design: .monospaced)
                         .foregroundStyle(.white).frame(width: 34, height: 26)
                         .background(RoundedRectangle(cornerRadius: 7).fill(tealAccent))
                 }
             }
             if isSolved {
                 Text(l2mSubs[i].work)
-                    .font(.system(size: 11.5, design: .monospaced)).foregroundStyle(tealAccent)
+                    .scaledFont(size: 11.5, design: .monospaced).foregroundStyle(tealAccent)
                     .padding(.leading, 34)
             }
         }
@@ -352,7 +352,7 @@ struct SolveLadderStudio: View {
                 if done { progress.markExplored(cardId); UINotificationFeedbackGenerator().notificationOccurred(.success) }
             } label: {
                 Text("Solve subquestion \(solved + 1)")
-                    .font(.system(size: 14, weight: .semibold)).foregroundStyle(.white)
+                    .scaledFont(size: 14, weight: .semibold).foregroundStyle(.white)
                     .frame(maxWidth: .infinity).padding(.vertical, 12)
                     .background(RoundedRectangle(cornerRadius: 11).fill(tealAccent))
             }
@@ -366,7 +366,7 @@ struct SolveLadderStudio: View {
             Text(done
                  ? "Each rung used the answer below it: 12 fed into 5 + 12 = 17, which fed into 17 - 6 = 11. The hard problem dissolved into three easy ones."
                  : "Solve each rung; its answer carries up into the next.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -412,10 +412,10 @@ struct DepthStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("GO DEEPER THAN THE EXAMPLES")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("The examples in the prompt were only two steps deep. Drag the test problem deeper. A plain chain tends to copy the depth it saw, while least-to-most just keeps decomposing.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -427,7 +427,7 @@ struct DepthStudio: View {
             Spacer(minLength: 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .animation(.snappy(duration: 0.32), value: idx)
+        .motionAware(.snappy(duration: 0.32), value: idx)
     }
 
     private var depthPicker: some View {
@@ -435,7 +435,7 @@ struct DepthStudio: View {
             HStack {
                 ForEach(Array(l2mDepths.enumerated()), id: \.offset) { i, p in
                     Text("\(p.steps) steps")
-                        .font(.system(size: 11, weight: i == idx ? .bold : .regular, design: .monospaced))
+                        .scaledFont(size: 11, weight: i == idx ? .bold : .regular, design: .monospaced)
                         .foregroundStyle(i == idx ? tealAccent : mutedText)
                         .frame(maxWidth: .infinity)
                 }
@@ -463,7 +463,7 @@ struct DepthStudio: View {
 
     private func bar(label: String, value: Int, tint: Color) -> some View {
         VStack(spacing: 6) {
-            Text("\(value)%").font(.system(size: 13, weight: .bold, design: .monospaced))
+            Text("\(value)%").scaledFont(size: 13, weight: .bold, design: .monospaced)
                 .foregroundStyle(tint).contentTransition(.numericText())
             GeometryReader { g in
                 VStack { Spacer(minLength: 0)
@@ -472,18 +472,18 @@ struct DepthStudio: View {
                 }
             }
             .frame(width: 64)
-            Text(label).font(.system(size: 10, weight: .semibold, design: .serif))
+            Text(label).scaledFont(size: 10, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.7)).multilineTextAlignment(.center).frame(width: 84)
         }
     }
 
     private var noteCard: some View {
         HStack(alignment: .top, spacing: 10) {
-            Text("\(d.steps) STEPS").font(.system(size: 9, weight: .bold)).tracking(1.0)
+            Text("\(d.steps) STEPS").scaledFont(size: 9, weight: .bold).tracking(1.0)
                 .foregroundStyle(tealAccent)
                 .padding(.horizontal, 7).padding(.vertical, 3)
                 .background(Capsule().fill(tealAccent.opacity(0.12)))
-            Text(d.note).font(.system(size: 13, design: .serif)).foregroundStyle(inkColor.opacity(0.78))
+            Text(d.note).scaledFont(size: 13, design: .serif).foregroundStyle(inkColor.opacity(0.78))
                 .fixedSize(horizontal: false, vertical: true)
         }
         .padding(12).frame(maxWidth: .infinity, alignment: .leading)
@@ -497,7 +497,7 @@ struct DepthStudio: View {
             Text(reachedDeep
                  ? "This is compositional generalisation: by reducing any problem to a chain of one-step subproblems, least-to-most solves cases far deeper than the examples it was shown."
                  : "Drag to the deepest problem to see the gap open.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }

@@ -70,16 +70,16 @@ struct PerceptronBoundaryView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 04 · A LINE THAT LEARNS")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("Tap STEP. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(pcInk)
-                + Text("Watch the line find the gap.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("Tap STEP. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(pcInk)
+                + Text("Watch the line find the gap.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("The perceptron picks one misclassified point per step and nudges its weights: w ← w + η(y − ŷ)x. Six steps is enough on this dataset.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -100,7 +100,7 @@ struct PerceptronBoundaryView: View {
                     .padding(.bottom, 14)
 
                 Text(verdictLine)
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(pcInkSubtle)
                     .padding(.bottom, 24)
@@ -208,13 +208,13 @@ struct PerceptronBoundaryView: View {
                         )
                         .scaleEffect(p.id == lastTouched ? 1.35 : 1.0)
                         .position(pos)
-                        .animation(.spring(response: 0.4, dampingFraction: 0.7), value: lastTouched)
+                        .motionAware(.spring(response: 0.4, dampingFraction: 0.7), value: lastTouched)
                 }
 
                 // Axis labels
-                Text("x₁").font(.system(size: 9, design: .monospaced)).foregroundStyle(pcInkSubtle.opacity(0.7))
+                Text("x₁").font(scaledSystemFont(9, design: .monospaced)).foregroundStyle(pcInkSubtle.opacity(0.7))
                     .position(x: cx + size/2 - 8, y: cy + 12)
-                Text("x₂").font(.system(size: 9, design: .monospaced)).foregroundStyle(pcInkSubtle.opacity(0.7))
+                Text("x₂").font(scaledSystemFont(9, design: .monospaced)).foregroundStyle(pcInkSubtle.opacity(0.7))
                     .position(x: cx + 12, y: cy - size/2 + 8)
             }
             // Clip any over-eager strokes (gradient boundary line, halfplane
@@ -277,9 +277,9 @@ struct PerceptronBoundaryView: View {
         HStack(spacing: 10) {
             Button(action: runOneStep) {
                 HStack(spacing: 6) {
-                    Image(systemName: converged ? "checkmark" : "play.fill").font(.system(size: 11, weight: .bold))
+                    Image(systemName: converged ? "checkmark" : "play.fill").font(scaledSystemFont(11, weight: .bold))
                     Text(converged ? "Converged" : "Step")
-                        .font(.system(size: 13, weight: .semibold, design: .serif))
+                        .font(scaledSystemFont(13, weight: .semibold, design: .serif))
                 }
                 .padding(.horizontal, 18)
                 .padding(.vertical, 10)
@@ -291,8 +291,8 @@ struct PerceptronBoundaryView: View {
 
             Button(action: reset) {
                 HStack(spacing: 6) {
-                    Image(systemName: "arrow.counterclockwise").font(.system(size: 11, weight: .bold))
-                    Text("Reset").font(.system(size: 13, weight: .semibold, design: .serif))
+                    Image(systemName: "arrow.counterclockwise").font(scaledSystemFont(11, weight: .bold))
+                    Text("Reset").font(scaledSystemFont(13, weight: .semibold, design: .serif))
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 10)
@@ -307,7 +307,7 @@ struct PerceptronBoundaryView: View {
             Spacer()
 
             Text("STEP \(step) / \(maxSteps)")
-                .font(.system(size: 9, weight: .bold, design: .monospaced))
+                .font(scaledSystemFont(9, weight: .bold, design: .monospaced))
                 .tracking(1.0)
                 .foregroundStyle(pcInkSubtle.opacity(0.7))
         }
@@ -324,11 +324,11 @@ struct PerceptronBoundaryView: View {
     private func weightChip(_ label: String, value: Double, color: Color) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(label)
-                .font(.system(size: 9, weight: .bold, design: .monospaced))
+                .font(scaledSystemFont(9, weight: .bold, design: .monospaced))
                 .tracking(1.0)
                 .foregroundStyle(pcInkSubtle.opacity(0.7))
             Text(String(format: "%+.2f", value))
-                .font(.system(size: 16, weight: .semibold, design: .serif))
+                .font(scaledSystemFont(16, weight: .semibold, design: .serif))
                 .foregroundStyle(color)
                 .contentTransition(.numericText(value: value))
         }
@@ -389,16 +389,16 @@ struct PerceptronXORView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 05 · THE WALL")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("Two it can do. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(pcInk)
-                + Text("One it cannot.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("Two it can do. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(pcInk)
+                + Text("One it cannot.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("Toggle AND, OR, XOR. The first two finish in a handful of epochs. XOR oscillates forever, no straight line cuts off the diagonal pair.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -413,7 +413,7 @@ struct PerceptronXORView: View {
                     .padding(.bottom, 14)
 
                 Text(problem.verdict)
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(pcInkSubtle)
                     .padding(.bottom, 24)
@@ -442,7 +442,7 @@ struct PerceptronXORView: View {
                     UIImpactFeedbackGenerator(style: .soft).impactOccurred()
                 } label: {
                     Text(p.name)
-                        .font(.system(size: 12, weight: problem == p ? .semibold : .regular, design: .serif))
+                        .font(scaledSystemFont(12, weight: problem == p ? .semibold : .regular, design: .serif))
                         .foregroundStyle(problem == p ? .white : pcInkSubtle)
                         .padding(.horizontal, 14)
                         .padding(.vertical, 8)
@@ -471,9 +471,9 @@ struct PerceptronXORView: View {
 
                 // Axes labels at corners
                 Group {
-                    Text("0,0").font(.system(size: 9, design: .monospaced)).foregroundStyle(pcInkSubtle.opacity(0.55))
+                    Text("0,0").font(scaledSystemFont(9, design: .monospaced)).foregroundStyle(pcInkSubtle.opacity(0.55))
                         .position(x: cx - half - 10, y: cy + half + 10)
-                    Text("1,1").font(.system(size: 9, design: .monospaced)).foregroundStyle(pcInkSubtle.opacity(0.55))
+                    Text("1,1").font(scaledSystemFont(9, design: .monospaced)).foregroundStyle(pcInkSubtle.opacity(0.55))
                         .position(x: cx + half + 10, y: cy - half - 10)
                 }
 
@@ -552,17 +552,17 @@ struct PerceptronXORView: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text("LOSS PER EPOCH")
-                    .font(.system(size: 9, weight: .semibold))
+                    .font(scaledSystemFont(9, weight: .semibold))
                     .tracking(1.4)
                     .foregroundStyle(tealAccent.opacity(0.85))
                 Spacer()
                 if let e = problem.convergeEpoch {
                     Text("converged @ epoch \(e)")
-                        .font(.system(size: 9, weight: .bold, design: .monospaced))
+                        .font(scaledSystemFont(9, weight: .bold, design: .monospaced))
                         .foregroundStyle(Color(hex: "4a9c4a"))
                 } else {
                     Text("does not converge")
-                        .font(.system(size: 9, weight: .bold, design: .monospaced))
+                        .font(scaledSystemFont(9, weight: .bold, design: .monospaced))
                         .foregroundStyle(Color(hex: "c0573c"))
                 }
             }
@@ -671,16 +671,16 @@ struct PerceptronAnatomyView: View {
             VStack(alignment: .leading, spacing: 0) {
 
                 Text("CARD 06 · ONE NEURON")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(scaledSystemFont(9, weight: .bold))
                     .tracking(1.6)
                     .foregroundStyle(tealAccent)
                     .padding(.bottom, 8)
 
-                Text("Five parts. ").font(.system(size: 24, weight: .regular, design: .serif)).foregroundStyle(pcInk)
-                + Text("One vote.").font(.system(size: 24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
+                Text("Five parts. ").font(scaledSystemFont(24, weight: .regular, design: .serif)).foregroundStyle(pcInk)
+                + Text("One vote.").font(scaledSystemFont(24, weight: .regular, design: .serif)).italic().foregroundStyle(tealAccent)
 
                 Text("Tap each piece. Inputs come in, get weighted, sum, cross a threshold. The neuron answers yes or no. Repeat that everywhere and you have a brain.")
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .foregroundStyle(mutedText)
                     .padding(.top, 8)
                     .padding(.bottom, 18)
@@ -689,7 +689,7 @@ struct PerceptronAnatomyView: View {
                     .padding(.bottom, 18)
 
                 Text(active.role)
-                    .font(.system(size: 13, design: .serif))
+                    .font(scaledSystemFont(13, design: .serif))
                     .foregroundStyle(pcInk)
                     .lineSpacing(4)
                     .padding(14)
@@ -705,7 +705,7 @@ struct PerceptronAnatomyView: View {
                     .padding(.bottom, 14)
 
                 Text(footerLine)
-                    .font(.system(size: 12, design: .serif))
+                    .font(scaledSystemFont(12, design: .serif))
                     .italic()
                     .foregroundStyle(pcInkSubtle)
                     .padding(.bottom, 24)
@@ -814,7 +814,7 @@ struct PerceptronAnatomyView: View {
             UIImpactFeedbackGenerator(style: .soft).impactOccurred()
         } label: {
             Text(label)
-                .font(.system(size: big ? 14 : 11, weight: .bold, design: .serif))
+                .font(scaledSystemFont(big ? 14 : 11, weight: .bold, design: .serif))
                 .foregroundStyle(isA ? .white : pcInk)
                 .frame(width: size, height: size)
                 .background(
@@ -836,7 +836,7 @@ struct PerceptronAnatomyView: View {
             }
             Spacer()
             Text("\(visited.count) / \(PCPart.allCases.count)")
-                .font(.system(size: 9, weight: .bold, design: .monospaced))
+                .font(scaledSystemFont(9, weight: .bold, design: .monospaced))
                 .tracking(1.0)
                 .foregroundStyle(pcInkSubtle.opacity(0.7))
         }

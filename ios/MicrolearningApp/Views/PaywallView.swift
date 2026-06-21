@@ -50,7 +50,7 @@ struct PaywallView: View {
 
             if let contextLine {
                 Text(contextLine.uppercased())
-                    .font(.system(size: 10, weight: .bold))
+                    .scaledFont(size: 10, weight: .bold)
                     .tracking(1.8)
                     .foregroundStyle(mutedText)
                     .multilineTextAlignment(.center)
@@ -59,21 +59,22 @@ struct PaywallView: View {
 
             EditorialMark()
                 .frame(width: 64, height: 64)
+                .accessibilityHidden(true)
 
             VStack(spacing: 8) {
                 Text("Aprecis Plus")
-                    .font(.system(size: 11, weight: .bold))
+                    .scaledFont(size: 11, weight: .bold)
                     .tracking(2.4)
                     .foregroundStyle(tealAccent)
 
                 Text("Every paper, every day.")
-                    .font(.system(size: 30, weight: .regular, design: .serif))
+                    .scaledFont(size: 30, weight: .regular, design: .serif)
                     .foregroundStyle(inkColor)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 28)
 
                 Text("Make Aprecis your daily research tool.")
-                    .font(.system(size: 15, design: .serif))
+                    .scaledFont(size: 15, design: .serif)
                     .italic()
                     .foregroundStyle(mutedText)
                     .multilineTextAlignment(.center)
@@ -119,23 +120,25 @@ struct PaywallView: View {
     private func benefitRow(numeral: String, title: String, detail: String) -> some View {
         HStack(alignment: .firstTextBaseline, spacing: 16) {
             Text(numeral)
-                .font(.system(size: 11, weight: .bold, design: .monospaced))
+                .scaledFont(size: 11, weight: .bold, design: .monospaced)
                 .tracking(1.2)
                 .foregroundStyle(tealAccent)
                 .frame(width: 22, alignment: .leading)
+                .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
-                    .font(.system(size: 16, weight: .semibold, design: .serif))
+                    .scaledFont(size: 16, weight: .semibold, design: .serif)
                     .foregroundStyle(inkColor)
                 Text(detail)
-                    .font(.system(size: 13, design: .serif))
+                    .scaledFont(size: 13, design: .serif)
                     .foregroundStyle(mutedText)
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 14)
+        .accessibilityElement(children: .combine)
     }
 
     private var editorialDivider: some View {
@@ -163,7 +166,7 @@ private struct EditorialMark: View {
                 .padding(6)
 
             Text("A")
-                .font(.system(size: 28, weight: .regular, design: .serif))
+                .scaledFont(size: 28, weight: .regular, design: .serif)
                 .italic()
                 .foregroundStyle(tealAccent)
                 .offset(y: 1)

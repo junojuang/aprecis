@@ -114,7 +114,7 @@ struct WordSpaceArt: View {
                         Circle().fill(tints[words[i].cluster])
                             .frame(width: 8, height: 8)
                         Text(words[i].text)
-                            .font(.system(size: 12, weight: .semibold, design: .serif))
+                            .scaledFont(size: 12, weight: .semibold, design: .serif)
                             .foregroundStyle(inkColor.opacity(0.82))
                     }
                     .position(x: ox + p.x, y: p.y)
@@ -138,7 +138,7 @@ struct OneHotArt: View {
             ForEach(words.indices, id: \.self) { i in
                 HStack(spacing: 8) {
                     Text(words[i])
-                        .font(.system(size: 12, weight: .semibold, design: .serif))
+                        .scaledFont(size: 12, weight: .semibold, design: .serif)
                         .foregroundStyle(inkColor.opacity(0.8))
                         .frame(width: 64, alignment: .leading)
                     HStack(spacing: 4) {
@@ -151,7 +151,7 @@ struct OneHotArt: View {
                 }
             }
             Text("every word equally far from every other")
-                .font(.system(size: 10, weight: .semibold))
+                .scaledFont(size: 10, weight: .semibold)
                 .foregroundStyle(mutedText)
                 .padding(.top, 2)
         }
@@ -170,19 +170,19 @@ struct ContextBlankArt: View {
         VStack(spacing: 16) {
             HStack(spacing: 5) {
                 Text("Pour the")
-                    .font(.system(size: 14, weight: .medium, design: .serif))
+                    .scaledFont(size: 14, weight: .medium, design: .serif)
                     .foregroundStyle(inkColor)
                 RoundedRectangle(cornerRadius: 5, style: .continuous)
                     .stroke(tealAccent, style: StrokeStyle(lineWidth: 1.5, dash: [3, 2]))
                     .frame(width: 44, height: 24)
                 Text("into a cup")
-                    .font(.system(size: 14, weight: .medium, design: .serif))
+                    .scaledFont(size: 14, weight: .medium, design: .serif)
                     .foregroundStyle(inkColor)
             }
             HStack(spacing: 10) {
                 ForEach(fits.indices, id: \.self) { i in
                     Text(fits[i])
-                        .font(.system(size: 13, weight: .semibold, design: .serif))
+                        .scaledFont(size: 13, weight: .semibold, design: .serif)
                         .foregroundStyle(tealAccent)
                         .padding(.horizontal, 12)
                         .padding(.vertical, 7)
@@ -194,7 +194,7 @@ struct ContextBlankArt: View {
                 }
             }
             Text("same blank, so word2vec places them close")
-                .font(.system(size: 10, weight: .semibold))
+                .scaledFont(size: 10, weight: .semibold)
                 .foregroundStyle(mutedText)
         }
     }
@@ -227,7 +227,7 @@ struct AnalogyParallelArt: View {
                 wordDot("woman", pt(woman), tint: inkColor.opacity(0.7))
                 wordDot("queen", pt(queen), tint: tealAccent)
                 Text("+ royalty")
-                    .font(.system(size: 9, weight: .bold))
+                    .scaledFont(size: 9, weight: .bold)
                     .tracking(0.6)
                     .foregroundStyle(amberAccent)
                     .position(x: ox + s * 0.52, y: s * 0.22)
@@ -253,7 +253,7 @@ struct AnalogyParallelArt: View {
         VStack(spacing: 3) {
             Circle().fill(tint).frame(width: 11, height: 11)
             Text(text)
-                .font(.system(size: 11, weight: .semibold, design: .serif))
+                .scaledFont(size: 11, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
         }
         .position(x: at.x, y: at.y + 6)
@@ -298,14 +298,14 @@ struct SkipGramWindowArt: View {
                 }
                 ForEach(0..<n, id: \.self) { i in
                     Text(words[i])
-                        .font(.system(size: 12,
+                        .scaledFont(size: 12,
                                       weight: i == center ? .bold : .regular,
-                                      design: .serif))
+                                      design: .serif)
                         .foregroundStyle(i == center ? tealAccent : inkColor.opacity(0.7))
                         .position(x: cx(i), y: y)
                 }
                 Text("predict the neighbours from the centre word")
-                    .font(.system(size: 9, weight: .bold))
+                    .scaledFont(size: 9, weight: .bold)
                     .tracking(0.6)
                     .foregroundStyle(mutedText)
                     .position(x: w / 2, y: h * 0.95)
@@ -330,7 +330,7 @@ struct Word2VecLineage: View {
             HStack(spacing: 0) {
                 ForEach(milestones.indices, id: \.self) { i in
                     Text(milestones[i].year)
-                        .font(.system(size: 11, weight: .semibold, design: .serif))
+                        .scaledFont(size: 11, weight: .semibold, design: .serif)
                         .foregroundStyle(inkColor.opacity(0.85))
                         .frame(maxWidth: .infinity)
                 }
@@ -352,7 +352,7 @@ struct Word2VecLineage: View {
             HStack(spacing: 0) {
                 ForEach(milestones.indices, id: \.self) { i in
                     Text(milestones[i].label)
-                        .font(.system(size: 10, weight: .medium))
+                        .scaledFont(size: 10, weight: .medium)
                         .foregroundStyle(mutedText)
                         .frame(maxWidth: .infinity)
                 }
@@ -402,11 +402,11 @@ struct WordMapPlayground: View {
             Spacer(minLength: 14)
 
             Text("TAP A WORD")
-                .font(.system(size: 11, weight: .bold))
+                .scaledFont(size: 11, weight: .bold)
                 .tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Every word sits at a point. Tap one to see its nearest neighbours, the words word2vec judged most alike.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -457,7 +457,7 @@ struct WordMapPlayground: View {
         let near = selected.map { neighbors(of: $0).contains(i) } ?? false
         let dim = selected != nil && !isSel && !near
         return Text(words[i].text)
-            .font(.system(size: 12, weight: .semibold, design: .serif))
+            .scaledFont(size: 12, weight: .semibold, design: .serif)
             .foregroundStyle(isSel ? .white : inkColor.opacity(dim ? 0.32 : 0.85))
             .padding(.horizontal, 9)
             .padding(.vertical, 6)
@@ -468,7 +468,7 @@ struct WordMapPlayground: View {
                         .stroke(near ? tealAccent : borderColor,
                                 lineWidth: near ? 1.6 : 1)))
             .opacity(dim ? 0.7 : 1)
-            .animation(.snappy(duration: 0.3), value: selected)
+            .motionAware(.snappy(duration: 0.3), value: selected)
     }
 
     private var caption: some View {
@@ -477,7 +477,7 @@ struct WordMapPlayground: View {
                 .fill(selected == nil ? amberAccent : tealAccent)
                 .frame(width: 9, height: 9)
             Text(captionText)
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -545,11 +545,11 @@ struct AnalogyPlayground: View {
             Spacer(minLength: 14)
 
             Text("THE ANALOGY MACHINE")
-                .font(.system(size: 11, weight: .bold))
+                .scaledFont(size: 11, weight: .bold)
                 .tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Tap any word in the sum to change it. Word2vec subtracts and adds the vectors, then reads off the closest word.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -572,7 +572,7 @@ struct AnalogyPlayground: View {
             slot(cIdx) { cIdx = (cIdx + 1) % words.count; bumped() }
             op("=")
             Text(words[nearestIdx].text)
-                .font(.system(size: 14, weight: .bold, design: .serif))
+                .scaledFont(size: 14, weight: .bold, design: .serif)
                 .foregroundStyle(.white)
                 .padding(.horizontal, 11)
                 .padding(.vertical, 9)
@@ -584,7 +584,7 @@ struct AnalogyPlayground: View {
 
     private func slot(_ idx: Int, _ tap: @escaping () -> Void) -> some View {
         Text(words[idx].text)
-            .font(.system(size: 13, weight: .semibold, design: .serif))
+            .scaledFont(size: 13, weight: .semibold, design: .serif)
             .foregroundStyle(tealAccent)
             .padding(.horizontal, 9)
             .padding(.vertical, 9)
@@ -598,7 +598,7 @@ struct AnalogyPlayground: View {
 
     private func op(_ s: String) -> some View {
         Text(s)
-            .font(.system(size: 14, weight: .bold, design: .monospaced))
+            .scaledFont(size: 14, weight: .bold, design: .monospaced)
             .foregroundStyle(mutedText)
     }
 
@@ -633,16 +633,16 @@ struct AnalogyPlayground: View {
                 ForEach(words.indices, id: \.self) { i in
                     let active = i == aIdx || i == bIdx || i == cIdx
                     Text(words[i].text)
-                        .font(.system(size: 11,
+                        .scaledFont(size: 11,
                                       weight: active ? .bold : .regular,
-                                      design: .serif))
+                                      design: .serif)
                         .foregroundStyle(active ? inkColor : inkColor.opacity(0.4))
                         .position(pt((words[i].x, words[i].y)))
                 }
             }
             .frame(width: s, height: s)
             .frame(maxWidth: .infinity)
-            .animation(.snappy(duration: 0.3), value: aIdx + bIdx * 10 + cIdx * 100)
+            .motionAware(.snappy(duration: 0.3), value: aIdx + bIdx * 10 + cIdx * 100)
         }
         .frame(height: 230)
     }
@@ -656,7 +656,7 @@ struct AnalogyPlayground: View {
         HStack(spacing: 8) {
             Circle().fill(tealAccent).frame(width: 9, height: 9)
             Text("The teal arrow and the amber arrow are the same step. That is why the sum lands on \u{201C}\(words[nearestIdx].text)\u{201D}.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -694,11 +694,11 @@ struct SkipGramPlayground: View {
             Spacer(minLength: 14)
 
             Text("SLIDE THE WINDOW")
-                .font(.system(size: 11, weight: .bold))
+                .scaledFont(size: 11, weight: .bold)
                 .tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Tap any word to make it the centre. Word2vec\u{2019}s only job is to predict the words inside the window from that centre.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -719,7 +719,7 @@ struct SkipGramPlayground: View {
             wordLine(0..<4)
             wordLine(4..<8)
         }
-        .animation(.snappy(duration: 0.25), value: center)
+        .motionAware(.snappy(duration: 0.25), value: center)
     }
 
     private func wordLine(_ range: Range<Int>) -> some View {
@@ -732,9 +732,9 @@ struct SkipGramPlayground: View {
         let inWindow = contextIdx.contains(i)
         let isCenter = i == center
         return Text(tokens[i])
-            .font(.system(size: 13,
+            .scaledFont(size: 13,
                           weight: isCenter ? .bold : .medium,
-                          design: .serif))
+                          design: .serif)
             .foregroundStyle(isCenter ? .white
                              : (inWindow ? tealAccent : inkColor.opacity(0.55)))
             .fixedSize()
@@ -750,19 +750,19 @@ struct SkipGramPlayground: View {
     private var pairsPanel: some View {
         VStack(alignment: .leading, spacing: 7) {
             Text("TRAINING PAIRS FROM THIS CENTRE")
-                .font(.system(size: 9, weight: .bold))
+                .scaledFont(size: 9, weight: .bold)
                 .tracking(1.2)
                 .foregroundStyle(mutedText)
             ForEach(contextIdx, id: \.self) { j in
                 HStack(spacing: 7) {
                     Text(tokens[center])
-                        .font(.system(size: 12, weight: .bold, design: .monospaced))
+                        .scaledFont(size: 12, weight: .bold, design: .monospaced)
                         .foregroundStyle(tealAccent)
                     Image(systemName: "arrow.right")
-                        .font(.system(size: 9, weight: .bold))
+                        .scaledFont(size: 9, weight: .bold)
                         .foregroundStyle(mutedText)
                     Text(tokens[j])
-                        .font(.system(size: 12, weight: .medium, design: .monospaced))
+                        .scaledFont(size: 12, weight: .medium, design: .monospaced)
                         .foregroundStyle(inkColor.opacity(0.75))
                     Spacer()
                 }
@@ -781,7 +781,7 @@ struct SkipGramPlayground: View {
         HStack(spacing: 8) {
             Circle().fill(tealAccent).frame(width: 9, height: 9)
             Text("Each pair nudges the centre\u{2019}s vector toward its neighbour\u{2019}s. Do this billions of times and meaning settles in.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }

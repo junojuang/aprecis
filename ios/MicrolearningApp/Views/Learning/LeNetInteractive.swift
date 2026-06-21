@@ -223,7 +223,7 @@ struct WeightShareArt: View {
                     .fill(amberAccent)
                     .frame(width: 38, height: 38)
                     .overlay(Image(systemName: "square.grid.3x3.fill")
-                        .font(.system(size: 16, weight: .bold))
+                        .scaledFont(size: 16, weight: .bold)
                         .foregroundStyle(.white))
                     .position(src)
             }
@@ -261,10 +261,10 @@ struct ConvSlideStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("SLIDE THE FILTER")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("The window is a tiny 3x3 detector. Step it across the digit. At each stop it scores how much ink it covers, and that score drops into the feature map below. One detector, every position.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -295,7 +295,7 @@ struct ConvSlideStudio: View {
                         .fill((done ? tealAccent : amberAccent).opacity(0.14)))
                     .frame(width: cell * 3, height: cell * 3)
                     .offset(x: cell * CGFloat(fc), y: cell * CGFloat(fr))
-                    .animation(.snappy(duration: 0.22), value: pos)
+                    .motionAware(.snappy(duration: 0.22), value: pos)
             }
             .frame(width: side, height: side)
         }
@@ -306,7 +306,7 @@ struct ConvSlideStudio: View {
 
     private var arrowDown: some View {
         Image(systemName: "arrow.down")
-            .font(.system(size: 13, weight: .bold))
+            .scaledFont(size: 13, weight: .bold)
             .foregroundStyle(mutedText)
             .frame(maxWidth: .infinity)
     }
@@ -318,10 +318,10 @@ struct ConvSlideStudio: View {
         if pos == 0 && !running {
             HStack(spacing: 5) {
                 Text("Scroll for the controls")
-                    .font(.system(size: 10, weight: .semibold))
+                    .scaledFont(size: 10, weight: .semibold)
                     .tracking(0.6)
                 Image(systemName: "chevron.down")
-                    .font(.system(size: 9, weight: .bold))
+                    .scaledFont(size: 9, weight: .bold)
             }
             .foregroundStyle(mutedText.opacity(0.55))
             .frame(maxWidth: .infinity)
@@ -337,7 +337,7 @@ struct ConvSlideStudio: View {
     private var featureMap: some View {
         VStack(spacing: 6) {
             Text("FEATURE MAP")
-                .font(.system(size: 10, weight: .bold)).tracking(1.6)
+                .scaledFont(size: 10, weight: .bold).tracking(1.6)
                 .foregroundStyle(mutedText)
             LeNetPixelGrid(rows: maps, cols: maps, color: { r, c in
                 let v = feature[r][c]
@@ -356,7 +356,7 @@ struct ConvSlideStudio: View {
             Text(done
                  ? "One filter covered all 25 positions. That whole map came from a single 3x3 detector."
                  : "Position \(pos + 1) of \(steps)")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -366,7 +366,7 @@ struct ConvSlideStudio: View {
         HStack(spacing: 10) {
             Button { step() } label: {
                 Text("Slide one step")
-                    .font(.system(size: 14, weight: .semibold))
+                    .scaledFont(size: 14, weight: .semibold)
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity, minHeight: 44)
                     .background(RoundedRectangle(cornerRadius: 12).fill(inkColor))
@@ -376,7 +376,7 @@ struct ConvSlideStudio: View {
 
             Button { autoRun() } label: {
                 Text(done ? "Done \u{2713}" : "Auto run")
-                    .font(.system(size: 14, weight: .semibold))
+                    .scaledFont(size: 14, weight: .semibold)
                     .foregroundStyle(done ? tealAccent : tealAccent)
                     .frame(maxWidth: .infinity, minHeight: 44)
                     .background(RoundedRectangle(cornerRadius: 12)
@@ -460,10 +460,10 @@ struct PoolShiftStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("NUDGE THE DIGIT")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Move the digit around its frame. The raw pixels shift a lot. The pooled summary underneath, each cell the busiest corner of a 2x2 block, hardly changes. Pooling teaches the network to stop caring about a small wobble.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -471,7 +471,7 @@ struct PoolShiftStudio: View {
             HStack(alignment: .center, spacing: 14) {
                 gridBlock(title: "RAW 8x8", n: frame, cells: raw, max: 230)
                 Image(systemName: "arrow.right")
-                    .font(.system(size: 13, weight: .bold))
+                    .scaledFont(size: 13, weight: .bold)
                     .foregroundStyle(mutedText)
                 gridBlock(title: "POOLED 4x4", n: 4, cells: pooled, max: 130)
             }
@@ -489,7 +489,7 @@ struct PoolShiftStudio: View {
                            max: CGFloat) -> some View {
         VStack(spacing: 6) {
             Text(title)
-                .font(.system(size: 9, weight: .bold)).tracking(1.4)
+                .scaledFont(size: 9, weight: .bold).tracking(1.4)
                 .foregroundStyle(mutedText)
             LeNetPixelGrid(rows: n, cols: n, color: { r, c in
                 cells(r, c) ? (title.hasPrefix("POOLED") ? tealAccent : inkColor.opacity(0.9))
@@ -511,7 +511,7 @@ struct PoolShiftStudio: View {
             Spacer()
             Button { dx = 1; dy = 1 } label: {
                 Text("Reset")
-                    .font(.system(size: 13, weight: .semibold))
+                    .scaledFont(size: 13, weight: .semibold)
                     .foregroundStyle(mutedText)
             }
             .buttonStyle(.plain)
@@ -522,7 +522,7 @@ struct PoolShiftStudio: View {
     private func arrowButton(_ icon: String, _ act: @escaping () -> Void) -> some View {
         Button(action: act) {
             Image(systemName: icon)
-                .font(.system(size: 14, weight: .bold))
+                .scaledFont(size: 14, weight: .bold)
                 .foregroundStyle(.white)
                 .frame(width: 44, height: 38)
                 .background(RoundedRectangle(cornerRadius: 10).fill(inkColor))
@@ -537,7 +537,7 @@ struct PoolShiftStudio: View {
             Text(nudges >= 4
                  ? "Notice how steady the pooled summary stayed. A shifted digit is still the same digit to the layer above."
                  : "Nudge it a few more times and watch the pooled grid.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -608,10 +608,10 @@ struct DigitVoteStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("DRAW A DIGIT")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Tap cells to ink a digit. Three detectors, each tuned to one shape, score what you drew. The bars are their votes. This is a whole convolutional net in miniature: detectors whose weights backprop would have learned.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -649,7 +649,7 @@ struct DigitVoteStudio: View {
         let win = bestIdx == i
         return HStack(spacing: 10) {
             Text(templates[i].name)
-                .font(.system(size: 16, weight: .bold, design: .serif))
+                .scaledFont(size: 16, weight: .bold, design: .serif)
                 .foregroundStyle(win ? tealAccent : inkColor.opacity(0.7))
                 .frame(width: 20)
             GeometryReader { g in
@@ -661,9 +661,9 @@ struct DigitVoteStudio: View {
                 }
             }
             .frame(height: 18)
-            .animation(.snappy(duration: 0.3), value: s)
+            .motionAware(.snappy(duration: 0.3), value: s)
             Text("\(Int(min(1, s) * 100))%")
-                .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                .scaledFont(size: 11, weight: .semibold, design: .monospaced)
                 .foregroundStyle(mutedText)
                 .frame(width: 38, alignment: .trailing)
         }
@@ -674,13 +674,13 @@ struct DigitVoteStudio: View {
             Circle().fill(bestIdx != nil ? tealAccent : amberAccent)
                 .frame(width: 9, height: 9)
             Text(verdict)
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
             Spacer(minLength: 0)
             Button { ink = []; } label: {
                 Text("Clear")
-                    .font(.system(size: 13, weight: .semibold))
+                    .scaledFont(size: 13, weight: .semibold)
                     .foregroundStyle(mutedText)
             }
             .buttonStyle(.plain)

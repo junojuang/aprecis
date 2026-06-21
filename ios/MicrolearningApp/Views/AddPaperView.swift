@@ -52,7 +52,7 @@ struct AddPaperView: View {
 
                     if let err = errorMessage {
                         Text(err)
-                            .font(.system(size: 12))
+                            .scaledFont(size: 12)
                             .foregroundStyle(Color.red.opacity(0.8))
                             .padding(.horizontal, 20)
                             .padding(.bottom, 8)
@@ -74,7 +74,7 @@ struct AddPaperView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("Add Paper")
-                    .font(.system(size: 16, weight: .bold))
+                    .scaledFont(size: 16, weight: .bold)
                     .foregroundStyle(inkColor)
             }
         }
@@ -91,7 +91,7 @@ struct AddPaperView: View {
     private var urlInputRow: some View {
         HStack(spacing: 10) {
             Text("🔗")
-                .font(.system(size: 16))
+                .scaledFont(size: 16)
             TextField("arxiv.org/abs/... or 2301.07041", text: $urlText)
                 .font(.system(size: 12).monospaced())
                 .foregroundStyle(inkColor)
@@ -99,7 +99,7 @@ struct AddPaperView: View {
                 .textInputAutocapitalization(.never)
                 .onSubmit { submitURL() }
             Button("Distil") { submitURL() }
-                .font(.system(size: 12, weight: .semibold))
+                .scaledFont(size: 12, weight: .semibold)
                 .foregroundStyle(.white)
                 .padding(.horizontal, 14).padding(.vertical, 8)
                 .background(urlText.trimmingCharacters(in: .whitespaces).isEmpty ? tealAccent.opacity(0.4) : tealAccent)
@@ -128,11 +128,11 @@ struct AddPaperView: View {
                 .padding(.top, 8)
 
             Text("Distilling paper...")
-                .font(.system(size: 15, weight: .semibold))
+                .scaledFont(size: 15, weight: .semibold)
                 .foregroundStyle(inkColor)
 
             Text("AI is reading, understanding, and creating visual concepts for you.")
-                .font(.system(size: 12))
+                .scaledFont(size: 12)
                 .foregroundStyle(mutedText)
                 .multilineTextAlignment(.center)
                 .lineSpacing(3)
@@ -143,7 +143,7 @@ struct AddPaperView: View {
                         Group {
                             if i < processingStep {
                                 Image(systemName: "checkmark")
-                                    .font(.system(size: 10, weight: .bold))
+                                    .scaledFont(size: 10, weight: .bold)
                                     .foregroundStyle(tealAccent)
                             } else if i == processingStep {
                                 ProgressView()
@@ -157,7 +157,7 @@ struct AddPaperView: View {
                         }
                         .frame(width: 16, alignment: .center)
                         Text(processingSteps[i])
-                            .font(.system(size: 12))
+                            .scaledFont(size: 12)
                             .foregroundStyle(i < processingStep ? tealAccent : (i == processingStep ? inkColor : mutedText))
                     }
                 }
@@ -249,9 +249,9 @@ struct ArxivSearchSheet: View {
                     HStack(spacing: 10) {
                         Image(systemName: "magnifyingglass")
                             .foregroundStyle(mutedText)
-                            .font(.system(size: 14))
+                            .scaledFont(size: 14)
                         TextField("Search arXiv by title or topic", text: $query)
-                            .font(.system(size: 14))
+                            .scaledFont(size: 14)
                             .foregroundStyle(inkColor)
                             .autocorrectionDisabled()
                             .textInputAutocapitalization(.never)
@@ -264,7 +264,7 @@ struct ArxivSearchSheet: View {
                             Button(action: { query = ""; results = [] }) {
                                 Image(systemName: "xmark.circle.fill")
                                     .foregroundStyle(mutedText)
-                                    .font(.system(size: 14))
+                                    .scaledFont(size: 14)
                             }
                         }
                     }
@@ -279,7 +279,7 @@ struct ArxivSearchSheet: View {
 
                     if let err = searchError {
                         Text(err)
-                            .font(.system(size: 12))
+                            .scaledFont(size: 12)
                             .foregroundStyle(.red.opacity(0.8))
                             .padding(.horizontal, 20)
                             .padding(.bottom, 8)
@@ -308,7 +308,7 @@ struct ArxivSearchSheet: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Search") { Task { await search() } }
-                        .font(.system(size: 14, weight: .semibold))
+                        .scaledFont(size: 14, weight: .semibold)
                         .foregroundStyle(query.isEmpty ? mutedText : tealAccent)
                         .disabled(query.isEmpty)
                 }
@@ -319,15 +319,15 @@ struct ArxivSearchSheet: View {
     private var emptyState: some View {
         VStack(spacing: 12) {
             Image(systemName: "doc.text.magnifyingglass")
-                .font(.system(size: 40))
+                .scaledFont(size: 40)
                 .foregroundStyle(tealLight)
             Text(query.isEmpty ? "Search arXiv" : "No results found")
-                .font(.system(size: 16, weight: .semibold, design: .serif))
+                .scaledFont(size: 16, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor)
             Text(query.isEmpty
                  ? "Type a paper title, author, or topic"
                  : "Try different keywords")
-                .font(.system(size: 13))
+                .scaledFont(size: 13)
                 .foregroundStyle(mutedText)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -359,7 +359,7 @@ private struct ArxivResultRow: View {
         Button(action: onTap) {
             VStack(alignment: .leading, spacing: 6) {
                 Text(paper.title)
-                    .font(.system(size: 13, weight: .semibold))
+                    .scaledFont(size: 13, weight: .semibold)
                     .foregroundStyle(inkColor)
                     .lineLimit(2)
                     .fixedSize(horizontal: false, vertical: true)
@@ -373,7 +373,7 @@ private struct ArxivResultRow: View {
 
                 HStack(spacing: 8) {
                     Text("arXiv")
-                        .font(.system(size: 10, weight: .semibold))
+                        .scaledFont(size: 10, weight: .semibold)
                         .foregroundStyle(tealAccent)
                         .padding(.horizontal, 8).padding(.vertical, 2)
                         .background(tealLight)
@@ -383,7 +383,7 @@ private struct ArxivResultRow: View {
                         .foregroundStyle(mutedText)
                     Spacer()
                     Text(dateLabel)
-                        .font(.system(size: 10))
+                        .scaledFont(size: 10)
                         .foregroundStyle(mutedText)
                 }
             }

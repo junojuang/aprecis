@@ -59,7 +59,7 @@ struct GANGlyph: View {
             .fill(tint.opacity(0.9))
             .frame(width: 64, height: 64)
             .overlay(Text(label)
-                .font(.system(size: 26, weight: .bold, design: .serif))
+                .scaledFont(size: 26, weight: .bold, design: .serif)
                 .foregroundStyle(.white))
             .position(p)
     }
@@ -97,14 +97,14 @@ struct ForgeryLadderArt: View {
             }
             HStack(spacing: 4) {
                 Image(systemName: fooled ? "checkmark" : "xmark")
-                    .font(.system(size: 9, weight: .bold))
+                    .scaledFont(size: 9, weight: .bold)
                 Text(fooled ? "fooled" : "caught")
-                    .font(.system(size: 10, weight: .bold, design: .serif))
+                    .scaledFont(size: 10, weight: .bold, design: .serif)
             }
             .foregroundStyle(fooled ? tealAccent : Color(hex: "c2557a"))
         }
         .scaleEffect(active ? 1.06 : 1)
-        .animation(.snappy(duration: 0.3), value: active)
+        .motionAware(.snappy(duration: 0.3), value: active)
     }
 
     // The forged portrait, gaining detail each round: blob, then eyes,
@@ -165,10 +165,10 @@ struct SpotFakeStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("YOU ARE THE JUDGE")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("Each round shows one sample. Some are real, some are forged by the generator. Call each one. The generator learns as you go, so the forgeries get harder.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -209,7 +209,7 @@ struct SpotFakeStudio: View {
     private func judgeButton(_ label: String, real: Bool) -> some View {
         Button { judge(callReal: real) } label: {
             Text(label)
-                .font(.system(size: 14, weight: .semibold))
+                .scaledFont(size: 14, weight: .semibold)
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity, minHeight: 46)
                 .background(RoundedRectangle(cornerRadius: 12)
@@ -221,10 +221,10 @@ struct SpotFakeStudio: View {
     private var resultCard: some View {
         VStack(spacing: 8) {
             Text("\(score) / \(totalRounds)")
-                .font(.system(size: 40, weight: .bold, design: .serif))
+                .scaledFont(size: 40, weight: .bold, design: .serif)
                 .foregroundStyle(tealAccent)
             Text("The early forgeries were crude. The last ones were nearly perfect, because the generator improved every round. That escalation is the whole game.")
-                .font(.system(size: 14, design: .serif))
+                .scaledFont(size: 14, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .multilineTextAlignment(.center)
                 .lineSpacing(4)
@@ -240,7 +240,7 @@ struct SpotFakeStudio: View {
             Circle().fill(done ? tealAccent : amberAccent).frame(width: 9, height: 9)
             Text(feedback ?? (done ? "The contest is over."
                                    : "Round \(round + 1) of \(totalRounds)"))
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -288,10 +288,10 @@ struct ConvergeStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("CHASE THE REAL DATA")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("The teal curve is the real data. The amber curve is what the generator produces. Each training round, the generator adjusts to look more real.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -331,7 +331,7 @@ struct ConvergeStudio: View {
                     .stroke(tealAccent, lineWidth: 2)
                 curve(genMean, genStd, amberAccent)
                     .stroke(amberAccent, lineWidth: 2.5)
-                    .animation(.snappy(duration: 0.4), value: genMean)
+                    .motionAware(.snappy(duration: 0.4), value: genMean)
             }
         }
         .frame(height: 160)
@@ -341,11 +341,11 @@ struct ConvergeStudio: View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
                 Text("DISTRIBUTION MATCH")
-                    .font(.system(size: 10, weight: .bold)).tracking(1.6)
+                    .scaledFont(size: 10, weight: .bold).tracking(1.6)
                     .foregroundStyle(mutedText)
                 Spacer()
                 Text("\(Int(overlap * 100))%")
-                    .font(.system(size: 12, weight: .bold, design: .monospaced))
+                    .scaledFont(size: 12, weight: .bold, design: .monospaced)
                     .foregroundStyle(overlap > 0.85 ? tealAccent : inkColor.opacity(0.7))
             }
             GeometryReader { g in
@@ -357,7 +357,7 @@ struct ConvergeStudio: View {
                 }
             }
             .frame(height: 20)
-            .animation(.snappy(duration: 0.4), value: overlap)
+            .motionAware(.snappy(duration: 0.4), value: overlap)
         }
     }
 
@@ -367,7 +367,7 @@ struct ConvergeStudio: View {
             Text(overlap > 0.85
                  ? "The two curves sit on top of each other. The forgeries are now indistinguishable from real data."
                  : "Round \(rounds) \u{00B7} the generator is still off")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -376,7 +376,7 @@ struct ConvergeStudio: View {
     private var button: some View {
         Button { train() } label: {
             Text(overlap > 0.85 ? "Matched \u{2713}" : "Train one round")
-                .font(.system(size: 14, weight: .semibold))
+                .scaledFont(size: 14, weight: .semibold)
                 .foregroundStyle(overlap > 0.85 ? tealAccent : .white)
                 .frame(maxWidth: .infinity, minHeight: 46)
                 .background(RoundedRectangle(cornerRadius: 12)
@@ -418,10 +418,10 @@ struct LatentStudio: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer(minLength: 14)
             Text("DRIVE THE FORGER")
-                .font(.system(size: 11, weight: .bold)).tracking(2.0)
+                .scaledFont(size: 11, weight: .bold).tracking(2.0)
                 .foregroundStyle(tealAccent)
             Text("A generator turns random noise into a sample. The two dials are that noise. Move them and the output morphs, every setting a different forgery.")
-                .font(.system(size: 16, design: .serif))
+                .scaledFont(size: 16, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(5)
                 .fixedSize(horizontal: false, vertical: true)
@@ -457,14 +457,14 @@ struct LatentStudio: View {
         .aspectRatio(1, contentMode: .fit)
         .frame(maxWidth: 220)
         .frame(maxWidth: .infinity)
-        .animation(.snappy(duration: 0.25), value: z1)
-        .animation(.snappy(duration: 0.25), value: z2)
+        .motionAware(.snappy(duration: 0.25), value: z1)
+        .motionAware(.snappy(duration: 0.25), value: z2)
     }
 
     private func dial(_ label: String, value: Binding<Double>, tag: Int) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("\(label)  =  \(String(format: "%+.2f", value.wrappedValue))")
-                .font(.system(size: 10, weight: .bold, design: .monospaced))
+                .scaledFont(size: 10, weight: .bold, design: .monospaced)
                 .foregroundStyle(mutedText)
             Slider(value: value, in: -1...1) { editing in
                 if !editing { moved.insert(tag); check() }
@@ -479,7 +479,7 @@ struct LatentStudio: View {
             Text(moved.count == 2
                  ? "Every dial setting is a different sample, all from one trained generator. That is the prize: novel data on demand."
                  : "Move both noise dials and watch the output change.")
-                .font(.system(size: 13, weight: .semibold, design: .serif))
+                .scaledFont(size: 13, weight: .semibold, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }

@@ -257,7 +257,7 @@ struct BookshelfView: View {
                                     BookSpine(deck: deck)
                                         .scaleEffect(deck.id == focusedId ? 1.06 : 0.94, anchor: .bottom)
                                         .opacity(deck.id == focusedId ? 1.0 : 0.78)
-                                        .animation(.snappy(duration: 0.18, extraBounce: 0.18), value: focusedId)
+                                        .motionAware(.snappy(duration: 0.18, extraBounce: 0.18), value: focusedId)
                                         .background(
                                             GeometryReader { proxy in
                                                 Color.clear.preference(
@@ -277,6 +277,17 @@ struct BookshelfView: View {
                                                 .shadow(color: inkColor.opacity(0.3), radius: 12, x: 0, y: 8)
                                         }
                                         .onTapGesture { pendingNavId = deck.id }
+                                        // VoiceOver / Switch Control / Voice Control: the spine is a
+                                        // button that opens the paper, plus a custom action to remove
+                                        // it (the drag-to-trash gesture is unreachable for these users).
+                                        .accessibilityElement(children: .ignore)
+                                        .accessibilityLabel(deck.title ?? deck.hook ?? "Saved paper")
+                                        .accessibilityValue(spineProgressDescription(for: deck))
+                                        .accessibilityHint("Opens this paper")
+                                        .accessibilityAddTraits(.isButton)
+                                        .accessibilityAction(named: "Remove from shelf") {
+                                            unsaveDroppedPaper(deck.paperId)
+                                        }
                                 }
                             }
                             .padding(.horizontal, sidePad)
@@ -313,20 +324,29 @@ struct BookshelfView: View {
                 if showTrashDock {
                     shelfTrashDock
                         .frame(height: trashDockHeight)
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                        .transition(motionAwareTransition(.move(edge: .bottom).combined(with: .opacity)))
                 }
             }
             .coordinateSpace(name: "shelfRoot")
         }
         .frame(height: shelfHeight + 14 + (showTrashDock ? trashDockHeight : 0))
-        .animation(.spring(response: 0.36, dampingFraction: 0.86), value: showTrashDock)
+        .motionAware(.spring(response: 0.36, dampingFraction: 0.86), value: showTrashDock)
+    }
+
+    /// Spoken reading-state for a spine, so VoiceOver conveys progress that the
+    /// printed ribbon shows only visually.
+    private func spineProgressDescription(for deck: CardDeck) -> String {
+        let p = ReadingProgressStore.shared.progress(for: deck.paperId)
+        if p >= 0.98 { return "Finished" }
+        if p > 0.04 { return "\(Int((p * 100).rounded())) percent read" }
+        return "Not started"
     }
 
     private var shelfTrashDock: some View {
         VStack(spacing: 10) {
             Image(systemName: "trash")
                 .symbolRenderingMode(.hierarchical)
-                .font(.system(size: 20, weight: .semibold))
+                .scaledFont(size: 20, weight: .semibold)
                 .foregroundStyle(pointerOverTrash ? Color.white : inkColor.opacity(0.92))
                 .frame(width: 52, height: 52)
                 .background(
@@ -341,7 +361,7 @@ struct BookshelfView: View {
                 .scaleEffect(pointerOverTrash ? 1.08 : 1.0)
 
             Text("Release to unsave")
-                .font(.system(size: 10, weight: .bold))
+                .scaledFont(size: 10, weight: .bold)
                 .tracking(1.1)
                 .foregroundStyle(mutedText.opacity(0.95))
         }
@@ -374,7 +394,7 @@ struct BookshelfView: View {
         let active = decks.first(where: { $0.id == focusedId }) ?? decks.first
         return VStack(spacing: 6) {
             Text(active?.title ?? active?.hook ?? "")
-                .font(.system(size: 17, weight: .regular, design: .serif))
+                .scaledFont(size: 17, weight: .regular, design: .serif)
                 .foregroundStyle(inkColor)
                 .multilineTextAlignment(.center)
                 .lineLimit(2, reservesSpace: true)
@@ -383,7 +403,7 @@ struct BookshelfView: View {
                 .id("title-\(active?.id ?? "")")
                 .transition(.opacity)
             Text(metaLine(for: active))
-                .font(.system(size: 10, weight: .semibold))
+                .scaledFont(size: 10, weight: .semibold)
                 .tracking(1.4)
                 .foregroundStyle(mutedText)
                 .lineLimit(2)
@@ -404,7 +424,7 @@ struct BookshelfView: View {
                 removeDockRevealed = false
             }
         )
-        .animation(.snappy(duration: 0.14, extraBounce: 0.12), value: focusedId)
+        .motionAware(.snappy(duration: 0.14, extraBounce: 0.12), value: focusedId)
     }
 
     private func metaLine(for deck: CardDeck?) -> String {
@@ -536,7 +556,7 @@ struct BookSpine: View {
                 .fill(palette.accent.opacity(0.75))
                 .frame(width: width * 0.45, height: 0.5)
             Image(systemName: SpineEmblem.pick(for: deck.paperId))
-                .font(.system(size: 13, weight: .regular))
+                .scaledFont(size: 13, weight: .regular)
                 .foregroundStyle(palette.accent)
                 .padding(.vertical, 2)
             Rectangle()
@@ -559,7 +579,7 @@ struct BookSpine: View {
                         .fill(palette.accent)
                         .frame(width: geometry.width - 8, height: 9)
                     Image(systemName: "checkmark")
-                        .font(.system(size: 6, weight: .heavy))
+                        .scaledFont(size: 6, weight: .heavy)
                         .foregroundStyle(palette.coverDeep)
                         .offset(y: -1)
                 }
@@ -666,12 +686,12 @@ struct OpenBook: View {
     private var leftPageBody: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text("SUMMARY")
-                .font(.system(size: 7, weight: .bold))
+                .scaledFont(size: 7, weight: .bold)
                 .tracking(1.6)
                 .foregroundStyle(mutedText)
             Rectangle().fill(inkColor.opacity(0.12)).frame(height: 0.5)
             Text(deck.hook ?? deck.title ?? "")
-                .font(.system(size: 9, design: .serif))
+                .scaledFont(size: 9, design: .serif)
                 .foregroundStyle(inkColor.opacity(0.82))
                 .lineSpacing(2)
                 .lineLimit(10)
@@ -687,12 +707,12 @@ struct OpenBook: View {
             HStack(spacing: 5) {
                 Circle().fill(topic.color).frame(width: 3, height: 3)
                 Text(topic.label.uppercased())
-                    .font(.system(size: 7, weight: .bold))
+                    .scaledFont(size: 7, weight: .bold)
                     .tracking(1.4)
                     .foregroundStyle(mutedText)
             }
             Text(deck.title ?? deck.hook ?? "Untitled")
-                .font(.system(size: 11, weight: .regular, design: .serif))
+                .scaledFont(size: 11, weight: .regular, design: .serif)
                 .foregroundStyle(inkColor)
                 .lineSpacing(1)
                 .lineLimit(5)
@@ -700,7 +720,7 @@ struct OpenBook: View {
             Rectangle().fill(palette.cover.opacity(0.6)).frame(width: 22, height: 0.6)
             if let year = yearLabel {
                 Text(year)
-                    .font(.system(size: 8, design: .serif))
+                    .scaledFont(size: 8, design: .serif)
                     .italic()
                     .foregroundStyle(mutedText)
             }
@@ -708,7 +728,7 @@ struct OpenBook: View {
             HStack {
                 Spacer()
                 Text("OPEN →")
-                    .font(.system(size: 7, weight: .bold))
+                    .scaledFont(size: 7, weight: .bold)
                     .tracking(1.4)
                     .foregroundStyle(palette.cover)
             }
@@ -857,7 +877,7 @@ struct LibraryCard: View {
                     libraryEyebrow
 
                     Text(deck.hook ?? deck.title ?? "Untitled")
-                        .font(.system(size: 15, weight: .semibold, design: .serif))
+                        .scaledFont(size: 15, weight: .semibold, design: .serif)
                         .foregroundStyle(inkColor)
                         .lineLimit(2)
                         .multilineTextAlignment(.leading)
@@ -865,7 +885,7 @@ struct LibraryCard: View {
 
                     if deck.hook != nil, let title = deck.title {
                         Text(title)
-                            .font(.system(size: 11))
+                            .scaledFont(size: 11)
                             .foregroundStyle(mutedText)
                             .lineLimit(1)
                             .truncationMode(.tail)
@@ -874,10 +894,10 @@ struct LibraryCard: View {
                     if progress > 0.01 {
                         HStack(spacing: 6) {
                             Image(systemName: progress >= 0.98 ? "checkmark.circle.fill" : "book.fill")
-                                .font(.system(size: 10, weight: .semibold))
+                                .scaledFont(size: 10, weight: .semibold)
                                 .foregroundStyle(tealAccent)
                             Text(progress >= 0.98 ? "Read" : "\(Int(progress * 100))% read")
-                                .font(.system(size: 10, weight: .bold))
+                                .scaledFont(size: 10, weight: .bold)
                                 .tracking(0.6)
                                 .foregroundStyle(tealAccent)
                         }
@@ -888,7 +908,7 @@ struct LibraryCard: View {
                 Spacer(minLength: 0)
 
                 Image(systemName: "chevron.right")
-                    .font(.system(size: 11, weight: .semibold))
+                    .scaledFont(size: 11, weight: .semibold)
                     .foregroundStyle(mutedText.opacity(0.55))
                     .padding(.top, 4)
             }
@@ -920,7 +940,7 @@ struct LibraryCard: View {
         return HStack(spacing: 6) {
             Circle().fill(c.color).frame(width: 5, height: 5)
             Text(libraryEyebrowCaption)
-                .font(.system(size: 9, weight: .bold))
+                .scaledFont(size: 9, weight: .bold)
                 .tracking(1.4)
                 .foregroundStyle(c.color)
         }
@@ -971,10 +991,10 @@ struct HomeGreeting: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(personalisedGreeting)
-                .font(.system(size: 26, weight: .regular, design: .serif))
+                .scaledFont(size: 26, weight: .regular, design: .serif)
                 .foregroundStyle(inkColor)
             Text("Swipe through new research hits.")
-                .font(.system(size: 14, design: .serif))
+                .scaledFont(size: 14, design: .serif)
                 .italic()
                 .foregroundStyle(mutedText)
         }
@@ -1097,7 +1117,7 @@ struct TodaysPaperDeck: View {
                 Circle().fill(mutedText.opacity(0.4)).frame(width: 3, height: 3)
                 Text("Swipe right to save")
             }
-            .font(.system(size: 12, weight: .semibold, design: .serif))
+            .scaledFont(size: 12, weight: .semibold, design: .serif)
             .italic()
             .foregroundStyle(mutedText)
             .frame(maxWidth: .infinity)
@@ -1208,7 +1228,7 @@ struct TodaysPaperDeck: View {
                 .scaleEffect(dragOffset.width < -12 ? 1.04 : 1.0)
             Spacer(minLength: 10)
             Text(paperCount > 0 ? "Card \(currentIndex + 1)" : "Loading")
-                .font(.system(size: 11, weight: .heavy, design: .serif))
+                .scaledFont(size: 11, weight: .heavy, design: .serif)
                 .tracking(1.8)
                 .foregroundStyle(mutedText)
             Spacer(minLength: 10)
@@ -1216,7 +1236,7 @@ struct TodaysPaperDeck: View {
                 .opacity(dragOffset.width > 12 ? 1 : 0.72)
                 .scaleEffect(dragOffset.width > 12 ? 1.04 : 1.0)
         }
-        .animation(.snappy(duration: 0.18, extraBounce: 0.16), value: dragOffset.width)
+        .motionAware(.snappy(duration: 0.18, extraBounce: 0.16), value: dragOffset.width)
     }
 
     // Shared shell. Paper-feel comes from a soft top-down lightness
@@ -1284,7 +1304,7 @@ struct TodaysPaperDeck: View {
                 // you, right now" signal every time they open the app.
                 HStack(spacing: 8) {
                     Text(todayLabel.uppercased())
-                        .font(.system(size: 9, weight: .heavy, design: .serif))
+                        .scaledFont(size: 9, weight: .heavy, design: .serif)
                         .tracking(2.0)
                         .foregroundStyle(mutedText)
                     if isFresh {
@@ -1294,10 +1314,10 @@ struct TodaysPaperDeck: View {
                                 .frame(width: 5, height: 5)
                                 .shadow(color: amberAccent.opacity(0.65), radius: freshPulse ? 4 : 1)
                                 .scaleEffect(freshPulse ? 1.25 : 1.0)
-                                .animation(.easeInOut(duration: 1.1).repeatForever(autoreverses: true),
+                                .motionAware(.easeInOut(duration: 1.1).repeatForever(autoreverses: true),
                                            value: freshPulse)
                             Text("NEW")
-                                .font(.system(size: 9, weight: .heavy, design: .serif))
+                                .scaledFont(size: 9, weight: .heavy, design: .serif)
                                 .tracking(1.6)
                                 .foregroundStyle(amberAccent)
                         }
@@ -1309,13 +1329,13 @@ struct TodaysPaperDeck: View {
                 // Masthead.
                 HStack(alignment: .firstTextBaseline) {
                     Text(editionLabel(for: index))
-                        .font(.system(size: 10, weight: .semibold, design: .serif))
+                        .scaledFont(size: 10, weight: .semibold, design: .serif)
                         .italic()
                         .tracking(1.2)
                         .foregroundStyle(tealAccent)
                     Spacer()
                     Text("\(content.estimatedMinutes) min read")
-                        .font(.system(size: 10, design: .serif))
+                        .scaledFont(size: 10, design: .serif)
                         .italic()
                         .foregroundStyle(mutedText)
                 }
@@ -1328,10 +1348,10 @@ struct TodaysPaperDeck: View {
                 // Headline with raised initial cap.
                 (
                     Text(head)
-                        .font(.system(size: 42, weight: .regular, design: .serif))
+                        .font(scaledSystemFont(42, weight: .regular, design: .serif))
                         .foregroundStyle(inkColor)
                   + Text(tail)
-                        .font(.system(size: 24, weight: .regular, design: .serif))
+                        .font(scaledSystemFont(24, weight: .regular, design: .serif))
                         .foregroundStyle(inkColor)
                 )
                 .lineLimit(3)
@@ -1343,7 +1363,7 @@ struct TodaysPaperDeck: View {
                 // Paper title in italic serif.
                 if let sub = content.paperTitle, !sub.isEmpty, sub != title {
                     Text(sub)
-                        .font(.system(size: 12, design: .serif))
+                        .scaledFont(size: 12, design: .serif)
                         .italic()
                         .foregroundStyle(mutedText)
                         .lineLimit(2)
@@ -1355,7 +1375,7 @@ struct TodaysPaperDeck: View {
                 // Provenance: authors + year, journal-citation style.
                 if !prov.isEmpty {
                     Text(prov)
-                        .font(.system(size: 10, design: .serif))
+                        .scaledFont(size: 10, design: .serif)
                         .italic()
                         .foregroundStyle(mutedText.opacity(0.7))
                         .lineLimit(1)
@@ -1365,7 +1385,7 @@ struct TodaysPaperDeck: View {
                 // Soft "In this issue" label + trailing hairline.
                 HStack(spacing: 8) {
                     Text("In this issue")
-                        .font(.system(size: 10, design: .serif))
+                        .scaledFont(size: 10, design: .serif)
                         .italic()
                         .foregroundStyle(mutedText)
                     Rectangle()
@@ -1379,12 +1399,12 @@ struct TodaysPaperDeck: View {
                     ForEach(Array(content.coreIdeaItems.prefix(3).enumerated()), id: \.offset) { _, item in
                         HStack(alignment: .firstTextBaseline, spacing: 10) {
                             Text(item.roman)
-                                .font(.system(size: 11, design: .serif))
+                                .scaledFont(size: 11, design: .serif)
                                 .italic()
                                 .foregroundStyle(tealAccent)
                                 .frame(width: 16, alignment: .trailing)
                             Text(item.title)
-                                .font(.system(size: 13, design: .serif))
+                                .scaledFont(size: 13, design: .serif)
                                 .foregroundStyle(inkColor.opacity(0.82))
                                 .lineLimit(1)
                                 .truncationMode(.tail)
@@ -1399,9 +1419,9 @@ struct TodaysPaperDeck: View {
                 // exactly where to tap.
                 HStack(spacing: 8) {
                     Text("Begin reading")
-                        .font(.system(size: 15, weight: .semibold, design: .serif))
+                        .scaledFont(size: 15, weight: .semibold, design: .serif)
                     Image(systemName: "arrow.right")
-                        .font(.system(size: 13, weight: .bold))
+                        .scaledFont(size: 13, weight: .bold)
                 }
                 .foregroundStyle(Color.white)
                 .frame(maxWidth: .infinity)
@@ -1417,18 +1437,18 @@ struct TodaysPaperDeck: View {
                 )
                 .shadow(color: tealAccent.opacity(isFresh && ctaGlow ? 0.45 : 0.22),
                         radius: isFresh && ctaGlow ? 12 : 6, x: 0, y: 3)
-                .animation(.easeInOut(duration: 1.4).repeatForever(autoreverses: true),
+                .motionAware(.easeInOut(duration: 1.4).repeatForever(autoreverses: true),
                            value: ctaGlow)
 
                 // Footer hint: position in today's edition + swipe nudge.
                 HStack {
                     Text("drop \(index + 1)")
-                        .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                        .scaledFont(size: 10, weight: .semibold, design: .monospaced)
                         .foregroundStyle(mutedText)
                     Spacer()
                     if paperCount > 1 {
                         Text(savedStore.isSaved(content.paperId ?? "") ? "saved" : "more waiting")
-                            .font(.system(size: 10, design: .serif))
+                            .scaledFont(size: 10, design: .serif)
                             .italic()
                             .foregroundStyle(savedStore.isSaved(content.paperId ?? "") ? tealAccent : mutedText.opacity(0.75))
                     }
@@ -1451,19 +1471,19 @@ struct TodaysPaperDeck: View {
                         .frame(width: 5, height: 5)
                         .opacity(freshPulse ? 1 : 0.35)
                     Text("BUILDING YOUR STACK")
-                        .font(.system(size: 10, weight: .heavy, design: .serif))
+                        .scaledFont(size: 10, weight: .heavy, design: .serif)
                         .tracking(1.8)
                         .foregroundStyle(tealAccent)
                 }
                 .padding(.bottom, 16)
 
                 Text("Fresh papers are coming in.")
-                    .font(.system(size: 30, weight: .regular, design: .serif))
+                    .scaledFont(size: 30, weight: .regular, design: .serif)
                     .foregroundStyle(inkColor)
                     .padding(.bottom, 10)
 
                 Text("Hold tight. The next research hit should appear in a moment.")
-                    .font(.system(size: 14, design: .serif))
+                    .scaledFont(size: 14, design: .serif)
                     .italic()
                     .lineSpacing(4)
                     .foregroundStyle(mutedText)
@@ -1490,13 +1510,13 @@ struct TodaysPaperDeck: View {
             VStack(alignment: .leading, spacing: 0) {
                 HStack(alignment: .firstTextBaseline) {
                     Text("END OF EDITION")
-                        .font(.system(size: 10, weight: .semibold, design: .serif))
+                        .scaledFont(size: 10, weight: .semibold, design: .serif)
                         .italic()
                         .tracking(1.2)
                         .foregroundStyle(amberAccent)
                     Spacer()
                     Text("caught up")
-                        .font(.system(size: 10, design: .serif))
+                        .scaledFont(size: 10, design: .serif)
                         .italic()
                         .foregroundStyle(mutedText)
                 }
@@ -1507,13 +1527,13 @@ struct TodaysPaperDeck: View {
                     .padding(.bottom, 18)
 
                 Text("You're all caught up.")
-                    .font(.system(size: 26, weight: .regular, design: .serif))
+                    .scaledFont(size: 26, weight: .regular, design: .serif)
                     .foregroundStyle(inkColor)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.bottom, 10)
 
                 Text("Fresh papers land every morning. Until then, take a breath, or revisit one from your shelf.")
-                    .font(.system(size: 13, design: .serif))
+                    .scaledFont(size: 13, design: .serif)
                     .italic()
                     .foregroundStyle(mutedText)
                     .lineSpacing(3)
@@ -1524,7 +1544,7 @@ struct TodaysPaperDeck: View {
                 HStack {
                     Spacer()
                     Text("· · ·")
-                        .font(.system(size: 14, design: .serif))
+                        .scaledFont(size: 14, design: .serif)
                         .tracking(6)
                         .foregroundStyle(amberAccent.opacity(0.5))
                     Spacer()
@@ -1533,9 +1553,9 @@ struct TodaysPaperDeck: View {
 
                 HStack(spacing: 8) {
                     Image(systemName: "arrow.counterclockwise")
-                        .font(.system(size: 13, weight: .bold))
+                        .scaledFont(size: 13, weight: .bold)
                     Text("Restart the deck")
-                        .font(.system(size: 15, weight: .semibold, design: .serif))
+                        .scaledFont(size: 15, weight: .semibold, design: .serif)
                 }
                 .foregroundStyle(Color.white)
                 .frame(maxWidth: .infinity)
@@ -1622,7 +1642,7 @@ private struct StackedCardModifier: ViewModifier {
             .rotationEffect(.degrees(rotation), anchor: .bottom)
             .offset(x: xOff, y: yShift)
             .opacity(opacity)
-            .animation(.interactiveSpring(response: 0.28, dampingFraction: 0.85, blendDuration: 0.1), value: drag)
+            .motionAware(.interactiveSpring(response: 0.28, dampingFraction: 0.85, blendDuration: 0.1), value: drag)
     }
 }
 
@@ -1634,9 +1654,9 @@ private struct ActionRailPill: View {
     var body: some View {
         HStack(spacing: 6) {
             Image(systemName: icon)
-                .font(.system(size: 10, weight: .heavy))
+                .scaledFont(size: 10, weight: .heavy)
             Text(title)
-                .font(.system(size: 10, weight: .heavy, design: .serif))
+                .scaledFont(size: 10, weight: .heavy, design: .serif)
                 .tracking(1.5)
         }
         .foregroundStyle(tint)
@@ -1666,9 +1686,9 @@ private struct SwipeCueOverlay: View {
         if progress > 0.08 {
             HStack(spacing: 7) {
                 Image(systemName: isSave ? "bookmark.fill" : "arrow.forward")
-                    .font(.system(size: 13, weight: .heavy))
+                    .scaledFont(size: 13, weight: .heavy)
                 Text(isSave ? "SAVE" : "NEXT")
-                    .font(.system(size: 13, weight: .heavy, design: .serif))
+                    .scaledFont(size: 13, weight: .heavy, design: .serif)
                     .tracking(2)
             }
             .foregroundStyle(isSave ? tealAccent : amberAccent)
@@ -1701,7 +1721,7 @@ private struct HeroPressStyle: ButtonStyle {
         configuration.label
             .scaleEffect(configuration.isPressed ? 0.985 : 1.0)
             .brightness(configuration.isPressed ? -0.02 : 0)
-            .animation(.spring(response: 0.32, dampingFraction: 0.82),
+            .motionAware(.spring(response: 0.32, dampingFraction: 0.82),
                        value: configuration.isPressed)
     }
 }
@@ -1723,7 +1743,7 @@ struct AprecisMark: View {
             RoundedRectangle(cornerRadius: size * 0.24, style: .continuous)
                 .fill(Color(hex: "0e3434"))
             Text("a")
-                .font(.system(size: size * 0.62, weight: .semibold, design: .serif))
+                .scaledFont(size: size * 0.62, weight: .semibold, design: .serif)
                 .italic()
                 .foregroundStyle(Color(hex: "6fb3a8"))
                 .offset(y: -size * 0.02)
@@ -1740,10 +1760,10 @@ struct AprecisLogo: View {
             AprecisMark(22)
             HStack(spacing: 0) {
                 Text("aprecis")
-                    .font(.system(size: 18, weight: .semibold, design: .serif))
+                    .scaledFont(size: 18, weight: .semibold, design: .serif)
                     .foregroundStyle(tealAccent)
                 Text(".")
-                    .font(.system(size: 18, weight: .semibold, design: .serif))
+                    .scaledFont(size: 18, weight: .semibold, design: .serif)
                     .italic()
                     .foregroundStyle(inkColor)
             }
@@ -1760,7 +1780,7 @@ struct SectionLabel: View {
 
     var body: some View {
         Text(text.uppercased())
-            .font(.system(size: 11, weight: .semibold))
+            .scaledFont(size: 11, weight: .semibold)
             .tracking(1.2)
             .foregroundStyle(mutedText)
             .padding(.horizontal, 20)
@@ -1784,7 +1804,7 @@ struct FeaturedPaperCard: View {
             HStack(spacing: 5) {
                 Circle().fill(tealAccent).frame(width: 5, height: 5)
                 Text(categoryLabel)
-                    .font(.system(size: 10, weight: .semibold))
+                    .scaledFont(size: 10, weight: .semibold)
                     .tracking(0.8)
                     .foregroundStyle(tealAccent)
             }
@@ -1795,7 +1815,7 @@ struct FeaturedPaperCard: View {
 
             // Hook (catchy headline)
             Text(deck.hook ?? deck.title ?? "Untitled")
-                .font(.system(size: 16, weight: .bold, design: .serif))
+                .scaledFont(size: 16, weight: .bold, design: .serif)
                 .foregroundStyle(inkColor)
                 .lineLimit(3)
                 .fixedSize(horizontal: false, vertical: true)
@@ -1804,7 +1824,7 @@ struct FeaturedPaperCard: View {
             // Paper title (if hook exists, show actual title underneath)
             if deck.hook != nil, let paperTitle = deck.title {
                 Text(paperTitle)
-                    .font(.system(size: 11))
+                    .scaledFont(size: 11)
                     .foregroundStyle(mutedText)
                     .lineLimit(2)
                     .padding(.bottom, 4)
@@ -1830,7 +1850,7 @@ struct FeaturedPaperCard: View {
 
             HStack(spacing: 5) {
                 Image(systemName: "clock")
-                    .font(.system(size: 10, weight: .semibold))
+                    .scaledFont(size: 10, weight: .semibold)
                     .foregroundStyle(tealAccent)
                 Text("\(max(1, deck.concepts.count * 2)) min read")
                     .font(.system(size: 11, weight: .semibold).monospacedDigit())
@@ -1893,7 +1913,7 @@ struct FeaturedLoopCard: View {
             // Faint italic 'a' watermark, same brand cue as the main hero,
             // smaller offset since this card is itself smaller.
             Text("a")
-                .font(.system(size: 180, weight: .regular, design: .serif))
+                .scaledFont(size: 180, weight: .regular, design: .serif)
                 .italic()
                 .foregroundStyle(tealAccent.opacity(0.06))
                 .offset(x: 28, y: -42)
@@ -1905,21 +1925,21 @@ struct FeaturedLoopCard: View {
                         .fill(tealAccent)
                         .frame(width: 5, height: 5)
                     Text(content.heroEyebrow)
-                        .font(.system(size: 9, weight: .semibold))
+                        .scaledFont(size: 9, weight: .semibold)
                         .tracking(1.4)
                         .foregroundStyle(tealAccent)
                 }
                 .padding(.bottom, 12)
 
                 loopTitle
-                    .font(.system(size: 17, weight: .regular, design: .serif))
+                    .scaledFont(size: 17, weight: .regular, design: .serif)
                     .foregroundStyle(inkColor)
                     .lineSpacing(2)
                     .padding(.bottom, 8)
                     .fixedSize(horizontal: false, vertical: true)
 
                 Text(content.heroBody)
-                    .font(.system(size: 11, design: .serif))
+                    .scaledFont(size: 11, design: .serif)
                     .foregroundStyle(warm_dim)
                     .lineSpacing(3)
                     .lineLimit(4)
@@ -1937,9 +1957,9 @@ struct FeaturedLoopCard: View {
                     Text("Start learning")
                         .tracking(1.2)
                     Image(systemName: "arrow.right")
-                        .font(.system(size: 10, weight: .bold))
+                        .scaledFont(size: 10, weight: .bold)
                 }
-                .font(.system(size: 11, weight: .bold))
+                .scaledFont(size: 11, weight: .bold)
                 .foregroundStyle(paperBg)
                 .textCase(.uppercase)
                 .frame(maxWidth: .infinity)
@@ -1995,11 +2015,11 @@ struct ProgressRing: View {
                 .rotationEffect(.degrees(-90))
             if progress >= 0.98 {
                 Image(systemName: "checkmark")
-                    .font(.system(size: 10, weight: .bold))
+                    .scaledFont(size: 10, weight: .bold)
                     .foregroundStyle(tealAccent)
             } else {
                 Text("\(Int(progress * 100))")
-                    .font(.system(size: 9, weight: .bold))
+                    .scaledFont(size: 9, weight: .bold)
                     .foregroundStyle(tealAccent)
             }
         }
@@ -2063,7 +2083,7 @@ struct ConceptPreviewCanvas: View {
                            with: i == 1 ? GraphicsContext.Shading.color(Color(hex: "2db8b8")) : shading,
                            style: stroke)
                 ctx.draw(
-                    Text(labels[i]).font(.system(size: 7, weight: .medium)).foregroundStyle(primary),
+                    Text(labels[i]).font(scaledSystemFont(7, weight: .medium)).foregroundStyle(primary),
                     at: CGPoint(x: x + bw / 2, y: size.height / 2)
                 )
                 if i < xs.count - 1 {
@@ -2131,25 +2151,25 @@ struct PaperRowView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                 VStack(alignment: .leading, spacing: 2) {
                     Text(deck.hook ?? deck.title ?? "Untitled")
-                        .font(.system(size: 13, weight: .semibold))
+                        .scaledFont(size: 13, weight: .semibold)
                         .foregroundStyle(inkColor)
                         .lineLimit(2)
                     if deck.hook != nil, let paperTitle = deck.title {
                         Text(paperTitle)
-                            .font(.system(size: 10))
+                            .scaledFont(size: 10)
                             .foregroundStyle(mutedText)
                             .lineLimit(1)
                     }
                     HStack(spacing: 6) {
                         Text(subtitle)
-                            .font(.system(size: 11))
+                            .scaledFont(size: 11)
                             .foregroundStyle(mutedText)
                         if progress > 0.01 {
                             Text("·")
-                                .font(.system(size: 11))
+                                .scaledFont(size: 11)
                                 .foregroundStyle(mutedText)
                             Text(progress >= 0.98 ? "Read" : "\(Int(progress * 100))%")
-                                .font(.system(size: 11, weight: .semibold))
+                                .scaledFont(size: 11, weight: .semibold)
                                 .foregroundStyle(tealAccent)
                         }
                     }
@@ -2209,12 +2229,12 @@ struct ContinueCard: View {
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(deck.hook ?? deck.title ?? "Untitled")
-                    .font(.system(size: 13, weight: .semibold, design: .serif))
+                    .scaledFont(size: 13, weight: .semibold, design: .serif)
                     .foregroundStyle(inkColor)
                     .lineLimit(2)
                     .multilineTextAlignment(.leading)
                 Text("\(Int(progress * 100))% read")
-                    .font(.system(size: 10, weight: .semibold))
+                    .scaledFont(size: 10, weight: .semibold)
                     .tracking(0.4)
                     .foregroundStyle(tealAccent)
             }
@@ -2254,7 +2274,7 @@ private struct FeaturedCardSkeleton: View {
         .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
         .shadow(color: inkColor.opacity(0.05), radius: 8)
         .opacity(pulse ? 0.55 : 1.0)
-        .animation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: pulse)
+        .motionAware(.easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: pulse)
         .onAppear { pulse = true }
     }
 }
@@ -2273,7 +2293,7 @@ private struct PaperRowSkeleton: View {
         }
         .padding(.horizontal, 20).padding(.vertical, 14)
         .opacity(pulse ? 0.55 : 1.0)
-        .animation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: pulse)
+        .motionAware(.easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: pulse)
         .onAppear { pulse = true }
     }
 }
