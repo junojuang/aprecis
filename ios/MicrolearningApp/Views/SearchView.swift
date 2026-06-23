@@ -957,10 +957,6 @@ private struct FeaturedTopicCard: View {
                 }
                 .padding(20)
 
-                if count > 0 {
-                    TopicCountChip(count: count, accent: topic.accent)
-                        .padding(18)
-                }
             }
             .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
             .overlay(
@@ -1001,12 +997,6 @@ private struct CompactTopicCard: View {
                         .padding(.vertical, 10)
                 }
                 .frame(height: 118)
-                .overlay(alignment: .topLeading) {
-                    if count > 0 {
-                        TopicCountChip(count: count, accent: topic.accent)
-                            .padding(12)
-                    }
-                }
                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                 .overlay(
                     RoundedRectangle(cornerRadius: 16, style: .continuous)
@@ -1032,24 +1022,6 @@ private struct CompactTopicCard: View {
         .accessibilityValue(count > 0 ? "\(count) \(count == 1 ? "paper" : "papers")" : "")
         .accessibilityHint("Browse this topic")
         .accessibilityAddTraits(.isButton)
-    }
-}
-
-// Small "N papers" pill that sits over the artwork plate.
-private struct TopicCountChip: View {
-    let count: Int
-    let accent: Color
-    var body: some View {
-        Text("\(count) \(count == 1 ? "paper" : "papers")")
-            .scaledFont(size: 10, weight: .bold)
-            .tracking(0.4)
-            .foregroundStyle(accent)
-            .padding(.horizontal, 9)
-            .padding(.vertical, 4)
-            .background(
-                Capsule().fill(Color.white.opacity(0.92))
-                    .overlay(Capsule().stroke(accent.opacity(0.32), lineWidth: 1))
-            )
     }
 }
 

@@ -123,6 +123,26 @@ private struct WebLessonRepresentable: UIViewRepresentable {
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true
         let ucc = config.userContentController
+        // Bundles authored for standalone Safari may not reserve space for the
+        // home indicator or Dynamic Island when hosted in WKWebView. Inject
+        // safe-area padding so the bottom Start/Continue button stays visible.
+        let safeAreaScript = """
+        (function(){
+          var meta=document.querySelector('meta[name=viewport]');
+          if(!meta){meta=document.createElement('meta');meta.name='viewport';document.head.appendChild(meta);}
+          meta.content='width=device-width, initial-scale=1, viewport-fit=cover';
+          if(!document.getElementById('aprecis-safe-area')){
+            var s=document.createElement('style');
+            s.id='aprecis-safe-area';
+            s.textContent='html,body{min-height:100dvh;height:100%;}'
+              + '.advance{padding-bottom:calc(26px + env(safe-area-inset-bottom,0px))!important;}'
+              + '.chrome{padding-top:calc(8px + env(safe-area-inset-top,0px))!important;}';
+            document.head.appendChild(s);
+          }
+        })();
+        """
+        ucc.addUserScript(WKUserScript(source: safeAreaScript, injectionTime: .atDocumentEnd,
+                                       forMainFrameOnly: true))
         for name in ["haptic", "markDone", "finish", "close", "openOriginal"] {
             ucc.add(WeakLessonMessageProxy(coordinator: context.coordinator), name: name)
         }

@@ -22,6 +22,7 @@ struct ExploreFocusView: View {
 
     @State private var trail: [String] = []
     @State private var presentedPaper: PresentedPaper? = nil
+    @State private var presentedReadPaper: PresentedReadPaper? = nil
     @State private var savedFlash: Bool = false
     @State private var previewId: String? = nil
     @State private var infoRailLabel: String? = nil
@@ -38,14 +39,16 @@ struct ExploreFocusView: View {
 
     private enum PresentedPaper: Identifiable, Hashable {
         case exploreHub(paperId: String)
-        case readDeck(paperId: String)
 
         var id: String {
             switch self {
             case .exploreHub(let paperId): return "explore-hub:\(paperId)"
-            case .readDeck(let paperId):  return "read-deck:\(paperId)"
             }
         }
+    }
+
+    private struct PresentedReadPaper: Identifiable, Hashable {
+        let id: String
     }
 
     /// One of the three relationship rails the user can switch between
@@ -174,13 +177,10 @@ struct ExploreFocusView: View {
                 )
                 .presentationDragIndicator(.visible)
                 .presentationDetents([.large])
-
-            case .readDeck(let paperId):
-                Group {
-                    readDeckDestination(paperId: paperId)
-                }
-                .presentationDragIndicator(.visible)
             }
+        }
+        .fullScreenCover(item: $presentedReadPaper) { item in
+            readDeckDestination(paperId: item.id, hidesHostChrome: false)
         }
         .onChange(of: query) { _, new in
             applySearch(new)
@@ -664,7 +664,7 @@ struct ExploreFocusView: View {
     private var bottomActions: some View {
         HStack(spacing: 10) {
             Button {
-                presentedPaper = .readDeck(paperId: focusedId)
+                presentedReadPaper = PresentedReadPaper(id: focusedId)
                 UIImpactFeedbackGenerator(style: .medium).impactOccurred()
             } label: {
                 HStack(spacing: 6) {
@@ -772,7 +772,7 @@ struct ExploreFocusView: View {
                         // overlay's opacity transition completes, so
                         // we don't fight two simultaneous animations.
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.18) {
-                            presentedPaper = .readDeck(paperId: target)
+                            presentedReadPaper = PresentedReadPaper(id: target)
                         }
                     } label: {
                         Text("Open")
@@ -938,11 +938,17 @@ struct ExploreFocusView: View {
 
     /// Reading flow deck (loops + API cards) launched from Open / preview.
     @ViewBuilder
-    private func readDeckDestination(paperId: String) -> some View {
+    private func readDeckDestination(
+        paperId: String,
+        hidesHostChrome: Bool = true
+    ) -> some View {
         if let deck = deckById[paperId] {
-            DeckDestination(deck: deck)
+            DeckDestination(deck: deck, hidesHostChrome: hidesHostChrome)
         } else if let loop = DailyLoopContent.byPaperId(paperId) {
-            DeckDestination(deck: CardDeck.fromLoop(paperId: paperId, content: loop))
+            DeckDestination(
+                deck: CardDeck.fromLoop(paperId: paperId, content: loop),
+                hidesHostChrome: hidesHostChrome
+            )
         } else {
             VStack(spacing: 14) {
                 Text("Couldn't open this paper")

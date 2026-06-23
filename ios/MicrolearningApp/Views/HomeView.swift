@@ -129,13 +129,19 @@ struct ShelfTrashTapAwayArmedKey: PreferenceKey {
 
 struct BookshelfView: View {
     let decks: [CardDeck]
+    let onOpen: ((CardDeck) -> Void)?
     /// Parent increments this to collapse the pinned trash dock (tap-away outside the shelf).
     @Binding private var trayDismissNonce: Int
 
     @ObservedObject private var savedStore = SavedPapersStore.shared
 
-    init(decks: [CardDeck], trayDismissNonce: Binding<Int> = .constant(0)) {
+    init(
+        decks: [CardDeck],
+        trayDismissNonce: Binding<Int> = .constant(0),
+        onOpen: ((CardDeck) -> Void)? = nil
+    ) {
         self.decks = decks
+        self.onOpen = onOpen
         self._trayDismissNonce = trayDismissNonce
     }
 
@@ -180,6 +186,14 @@ struct BookshelfView: View {
             if let deck = decks.first(where: { $0.id == id }) {
                 DeckDestination(deck: deck)
             }
+        }
+    }
+
+    private func open(_ deck: CardDeck) {
+        if let onOpen {
+            onOpen(deck)
+        } else {
+            pendingNavId = deck.id
         }
     }
 
@@ -276,7 +290,7 @@ struct BookshelfView: View {
                                             BookSpine(deck: deck)
                                                 .shadow(color: inkColor.opacity(0.3), radius: 12, x: 0, y: 8)
                                         }
-                                        .onTapGesture { pendingNavId = deck.id }
+                                        .onTapGesture { open(deck) }
                                         // VoiceOver / Switch Control / Voice Control: the spine is a
                                         // button that opens the paper, plus a custom action to remove
                                         // it (the drag-to-trash gesture is unreachable for these users).
@@ -960,11 +974,26 @@ struct LibraryCard: View {
 // Routes decks via `PaperReadingExperience`—curator catalog, blueprint, or legacy concepts.
 struct DeckDestination: View {
     let deck: CardDeck
+    var hidesHostChrome: Bool = true
     @Environment(\.dismiss) private var dismiss
 
     private var resolved: PaperReadingExperience { PaperReadingExperience.resolve(deck) }
 
     var body: some View {
+        Group {
+            if hidesHostChrome {
+                reader
+                    .toolbar(.hidden, for: .tabBar)
+                    .toolbar(.hidden, for: .navigationBar)
+                    .navigationBarBackButtonHidden(true)
+            } else {
+                reader
+            }
+        }
+        .onAppear { RecentlyViewedStore.shared.record(deck.paperId) }
+    }
+
+    private var reader: some View {
         Group {
             // A server-driven web-bundle lesson wins over every native reader,
             // so a paper can be upgraded to a premium web lesson with no app update.
@@ -985,7 +1014,7 @@ struct DeckDestination: View {
                 }
             }
         }
-        .onAppear { RecentlyViewedStore.shared.record(deck.paperId) }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
@@ -2303,5 +2332,3 @@ private struct PaperRowSkeleton: View {
         .onAppear { pulse = true }
     }
 }
-
-

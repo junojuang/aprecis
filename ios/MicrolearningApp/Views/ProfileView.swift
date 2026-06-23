@@ -39,6 +39,7 @@ private struct SignedInView: View {
     @State private var showGoalSheet           = false
     @State private var showSettings            = false
     @State private var showClearDataConfirm    = false
+    @State private var presentedDeck: CardDeck?
 
     @State private var shelfTrashTrayArmedForDismiss = false
     @State private var shelfTrashTrayDismissNonce = 0
@@ -81,6 +82,9 @@ private struct SignedInView: View {
         }
         .sheet(isPresented: $showGoalSheet) {
             DailyGoalSheet(goal: $dailyGoal)
+        }
+        .fullScreenCover(item: $presentedDeck) { deck in
+            DeckDestination(deck: deck, hidesHostChrome: false)
         }
     }
 
@@ -188,7 +192,9 @@ private struct SignedInView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 10) {
                         ForEach(recents.prefix(8), id: \.deck.id) { item in
-                            NavigationLink(destination: DeckDestination(deck: item.deck)) {
+                            Button {
+                                presentedDeck = item.deck
+                            } label: {
                                 recentChip(deck: item.deck, openedAt: item.openedAt)
                             }
                             .buttonStyle(.plain)
@@ -305,7 +311,11 @@ private struct SignedInView: View {
         if libraryDecks.isEmpty {
             librarySavedEmpty
         } else {
-            BookshelfView(decks: libraryDecks, trayDismissNonce: $shelfTrashTrayDismissNonce)
+            BookshelfView(
+                decks: libraryDecks,
+                trayDismissNonce: $shelfTrashTrayDismissNonce,
+                onOpen: { presentedDeck = $0 }
+            )
         }
     }
 
@@ -792,6 +802,7 @@ struct SavedPapersListView: View {
     @ObservedObject var viewModel: FeedViewModel
     @ObservedObject private var savedStore = SavedPapersStore.shared
     @Environment(\.dismiss) private var dismiss
+    @State private var presentedDeck: CardDeck?
 
     private var saved: [CardDeck] {
         savedStore.savedIds.compactMap { id -> CardDeck? in
@@ -842,7 +853,9 @@ struct SavedPapersListView: View {
                     } else {
                         LazyVStack(spacing: 0) {
                             ForEach(Array(saved.enumerated()), id: \.element.id) { idx, deck in
-                                NavigationLink(destination: DeckDestination(deck: deck)) {
+                                Button {
+                                    presentedDeck = deck
+                                } label: {
                                     TrendingRowView(deck: deck, slot: idx)
                                 }
                                 .buttonStyle(.plain)
@@ -864,5 +877,8 @@ struct SavedPapersListView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+        .fullScreenCover(item: $presentedDeck) { deck in
+            DeckDestination(deck: deck, hidesHostChrome: false)
+        }
     }
 }
