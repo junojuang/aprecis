@@ -212,6 +212,12 @@ enum SimilarityGraph {
                   concepts: ["reasoning", "chain of thought", "reinforcement learning",
                              "language model", "reward", "distillation", "emergence"],
                   influence: 1.00, trending: 1.00),
+        PaperMeta(id: "loop:systems:flashattention",
+                  cluster: .language,
+                  concepts: ["attention", "transformer", "sequence", "scaling",
+                             "gpu", "memory", "kernel", "softmax", "long context",
+                             "systems"],
+                  influence: 0.96, trending: 0.95),
     ]
 
     static let metaById: [String: PaperMeta] = Dictionary(uniqueKeysWithValues:

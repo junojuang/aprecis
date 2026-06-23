@@ -48,6 +48,7 @@ enum RelatedPapers {
         "loop:foundational:toolformer": "arxiv:2302.04761",
         "loop:foundational:grokking": "arxiv:2201.02177",
         "loop:foundational:deepseek-r1": "arxiv:2501.12948",
+        "loop:systems:flashattention": "arxiv:2205.14135",
     ]
 
     private static let curatedBackendToLoop: [String: String] =

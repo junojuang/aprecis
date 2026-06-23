@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>FlashAttention</title>
+<style>
+  :root{
+    --paper:#f7f4ef; --inkdark:#0f1117; --teal:#1a8a8a; --teal-lt:#e8f5f5;
+    --teal-mid:#2db8b8; --amber:#e8a020; --muted:#6b7078; --cover-ink:#f4f1ea;
+    --red:#d46a6a; --blue:#6a8caf; --border:rgba(15,17,23,.1);
+    --serif:ui-serif,"New York",Georgia,"Times New Roman",serif;
+    --sans:-apple-system,system-ui,"SF Pro Text",sans-serif;
+    --mono:ui-monospace,Menlo,monospace;
+    --ink:#0f1117; --themed-muted:#6b7078;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;min-height:100dvh;height:100%;}
+  body{font-family:var(--sans);display:flex;flex-direction:column;
+       max-width:430px;margin:0 auto;background:var(--paper);overflow:hidden;
+       -webkit-font-smoothing:antialiased;}
+  #bg{position:fixed;inset:0;z-index:-1;transition:background .4s ease;}
+  #bg.paper{background:var(--paper);}
+  #bg.focus{background:linear-gradient(to bottom, rgba(232,245,245,.5), rgba(232,245,245,0) 55%), var(--paper);}
+  #bg.cover{background:
+     radial-gradient(circle at 50% 34%, rgba(26,138,138,.28), transparent 60%), #10131a;}
+  @media (prefers-reduced-motion:reduce){#bg{transition:none;}}
+
+  .chrome{display:flex;align-items:center;gap:10px;padding:calc(8px + env(safe-area-inset-top,0px)) 18px 14px;}
+  .xmark{width:30px;height:30px;border:0;background:none;color:var(--ink);opacity:.7;
+         font-size:15px;display:flex;align-items:center;justify-content:center;}
+  .rail{flex:1;display:flex;gap:4px;}
+  .seg{flex:1;height:3px;border-radius:2px;background:color-mix(in srgb,var(--ink) 18%,transparent);transition:background .3s;}
+  .seg.on{background:color-mix(in srgb,var(--ink) 90%,transparent);}
+  .count{font:600 11px var(--sans);font-family:var(--mono);color:var(--themed-muted);width:38px;text-align:center;}
+
+  .stage{flex:1;position:relative;overflow:hidden;}
+  .card{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;
+        padding:0 22px 24px;opacity:0;transform:translateX(20px);pointer-events:none;
+        transition:opacity .34s ease,transform .34s ease;}
+  .card.active{opacity:1;transform:none;pointer-events:auto;}
+  .card.back{transform:translateX(-20px);}
+  @media (prefers-reduced-motion:reduce){.card{transition:opacity .2s;transform:none;}.card.back{transform:none;}}
+  .advance{padding:10px 22px calc(26px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:8px;align-items:stretch;}
+  .tryhint{font:italic 12px var(--serif);color:var(--themed-muted);text-align:center;min-height:16px;}
+  .next{display:flex;align-items:center;justify-content:center;gap:7px;border:0;min-height:50px;border-radius:14px;background:var(--teal);color:#fff;font:600 15px var(--sans);transition:background .2s;}
+  .next:disabled{background:color-mix(in srgb,var(--ink) 12%,transparent);color:var(--themed-muted);}
+
+  .kicker{font:700 11px var(--sans);letter-spacing:2px;text-transform:uppercase;color:var(--teal);}
+  h1.title{font:600 27px/1.22 var(--serif);color:var(--inkdark);margin:0;}
+  .prose{font:16px/1.5 var(--serif);color:rgba(15,17,23,.82);margin:0;letter-spacing:.1px;}
+  .prose .term{color:var(--teal);font-weight:600;}
+  .prose .hl{background:rgba(232,160,32,.28);}
+  .prose .b{font-weight:600;color:var(--inkdark);}
+  .stack{display:flex;flex-direction:column;align-items:flex-start;gap:16px;}
+  .sp{height:24px;flex:none;} .sp.sm{height:14px;}
+  .illus{background:#fff;border:1px solid var(--border);border-radius:18px;padding:14px 20px;width:100%;}
+  .caption{font:italic 12px var(--serif);color:var(--muted);}
+
+  .cover{display:flex;flex-direction:column;align-items:center;text-align:center;min-height:100%;}
+  .cover .eyebrow{font:700 11px var(--sans);letter-spacing:2.4px;text-transform:uppercase;color:var(--teal-mid);padding-top:18px;}
+  .cover .hero{height:220px;width:100%;display:flex;align-items:center;justify-content:center;}
+  .cover h1{font:600 40px/1.05 var(--serif);color:var(--cover-ink);margin:0;}
+  .cover h1 .amber{color:var(--amber);}
+  .cover .standfirst{font:italic 15px/1.5 var(--serif);color:rgba(244,241,234,.6);padding:14px 6px 0;}
+  .grow{flex:1 1 auto;min-height:18px;}
+  .appear{opacity:0;transform:scale(.92);transition:opacity .7s ease,transform .7s ease;}
+  .appear.in{opacity:1;transform:none;}
+
+  .rule{display:flex;align-items:center;gap:8px;}
+  .rule .l{height:1px;background:rgba(26,138,138,.55);}
+  .rule .dot{width:4px;height:4px;border-radius:50%;background:rgba(26,138,138,.7);}
+  .numeral{font:italic 34px var(--serif);color:var(--teal);}
+  .numeral .u{display:block;width:26px;height:1px;background:rgba(26,138,138,.55);margin-top:4px;}
+  .recap-row{display:flex;gap:18px;align-items:flex-start;}
+  .recap-row .pt{font:16px/1.45 var(--serif);color:rgba(15,17,23,.84);padding-top:10px;}
+  .quote{font:86px var(--serif);color:rgba(26,138,138,.55);height:40px;line-height:1;}
+  .pquote{font:italic 22px/1.45 var(--serif);color:rgba(15,17,23,.92);}
+  .attrib{display:flex;align-items:center;gap:8px;font:italic 12px var(--serif);color:var(--muted);}
+  .attrib .l{width:18px;height:1px;background:rgba(26,138,138,.55);}
+  .srcbtn{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:#fff;border:1px solid rgba(26,138,138,.35);border-radius:14px;padding:14px 16px;}
+  .srcbtn .ro{font:700 9px var(--sans);letter-spacing:1.6px;color:var(--teal);}
+  .srcbtn .lt{font:600 14px var(--serif);color:var(--inkdark);}
+  .srcbtn .ar{margin-left:auto;color:var(--teal);font-weight:700;}
+
+  .chipbox{width:100%;height:160px;border-radius:18px;background:#111821;position:relative;overflow:hidden;border:1px solid rgba(26,138,138,.22);}
+  .chipbox:before{content:"";position:absolute;inset:18px;border:1px dashed rgba(45,184,184,.25);border-radius:14px;}
+  .dram{position:absolute;left:22px;top:24px;width:92px;height:112px;border-radius:12px;background:rgba(232,160,32,.12);border:1px solid rgba(232,160,32,.45);}
+  .sram{position:absolute;right:24px;top:48px;width:92px;height:62px;border-radius:12px;background:rgba(26,138,138,.16);border:1px solid rgba(45,184,184,.55);}
+  .dram:after{content:"HBM";position:absolute;left:0;right:0;bottom:10px;text-align:center;color:var(--amber);font:700 10px var(--mono);letter-spacing:1px;}
+  .sram:after{content:"SRAM";position:absolute;left:0;right:0;bottom:10px;text-align:center;color:var(--teal-mid);font:700 10px var(--mono);letter-spacing:1px;}
+  .path{position:absolute;height:4px;border-radius:4px;background:var(--amber);left:116px;top:78px;width:84px;box-shadow:0 0 12px rgba(232,160,32,.6);}
+  .spark{position:absolute;width:9px;height:9px;border-radius:50%;background:var(--teal-mid);left:198px;top:76px;box-shadow:0 0 16px rgba(45,184,184,.8);}
+  .matrix{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;width:100%;background:#10131a;border-radius:14px;padding:12px;border:1px solid rgba(26,138,138,.22);}
+  .cell{aspect-ratio:1;border-radius:4px;background:rgba(45,184,184,.12);border:1px solid rgba(45,184,184,.10);transition:background .22s ease,transform .22s ease;}
+  .cell.hot{background:var(--amber);transform:scale(.9);box-shadow:0 0 10px rgba(232,160,32,.45);}
+  .cell.done{background:rgba(26,138,138,.70);}
+  .studio-intro{font:16px/1.5 var(--serif);color:rgba(15,17,23,.82);}
+  .toggle{display:flex;align-items:center;justify-content:space-between;width:100%;gap:10px;}
+  .sw{flex:1;border:1px solid var(--border);border-radius:12px;background:#fff;padding:11px 8px;font:700 10px var(--sans);letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
+  .sw.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+  .meterrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;}
+  .meter{background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px;}
+  .meter .h{font:700 9px var(--sans);letter-spacing:1.1px;color:var(--muted);text-transform:uppercase;}
+  .meter .v{font:700 24px var(--mono);color:var(--inkdark);padding-top:5px;}
+  .meter.flash .v{color:var(--teal);}
+  .status{display:flex;gap:8px;align-items:flex-start;}
+  .status .d{width:9px;height:9px;border-radius:50%;flex:none;margin-top:5px;background:var(--amber);}
+  .status .d.ok{background:var(--teal);}
+  .status .t{font:600 13px/1.4 var(--serif);color:rgba(15,17,23,.8);}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;border-radius:2px;background:rgba(26,138,138,.25);outline:none;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--teal);box-shadow:0 1px 4px rgba(0,0,0,.2);cursor:pointer;}
+  .smallbtn{border:0;border-radius:12px;background:var(--teal);color:white;font:700 12px var(--sans);padding:11px 14px;}
+  .softrow{display:grid;grid-template-columns:36px 1fr 42px;gap:9px;align-items:center;width:100%;}
+  .softrow .lab{font:700 10px var(--mono);color:var(--muted);}
+  .bar{height:15px;border-radius:999px;background:rgba(107,112,120,.12);overflow:hidden;}
+  .bar i{display:block;height:100%;border-radius:999px;background:var(--teal);width:0;transition:width .25s ease;}
+  .softrow .num{font:700 11px var(--mono);color:var(--inkdark);text-align:right;}
+  .receipt{width:100%;border-radius:14px;background:#111821;color:#f7f4ef;padding:14px 16px;font-family:var(--mono);}
+  .receipt div{display:flex;justify-content:space-between;gap:16px;border-bottom:1px dashed rgba(247,244,239,.18);padding:9px 0;font-size:11px;}
+  .receipt div:last-child{border-bottom:0;}
+  .receipt b{color:var(--amber);}
+</style>
+</head>
+<body>
+<div id="bg" class="cover"></div>
+<div class="chrome">
+  <button class="xmark" id="close" aria-label="Close lesson">x</button>
+  <div class="rail" id="rail" aria-hidden="true"></div>
+  <div class="count" id="count">1/13</div>
+</div>
+<div class="stage" id="stage"></div>
+<div class="advance">
+  <div class="tryhint" id="tryhint"></div>
+  <button class="next" id="next">Start <span class="ar">→</span></button>
+</div>
+<script>
+const Aprecis={_s(n,b){const h=window.webkit&&window.webkit.messageHandlers&&window.webkit.messageHandlers[n];h?h.postMessage(b||{}):console.log("[Aprecis]",n,b||"");},
+  haptic(s){this._s("haptic",{style:s||"soft"});},select(){this._s("haptic",{style:"select"});},
+  success(){this._s("haptic",{style:"success"});},markDone(){this._s("markDone");},finish(){this._s("finish");},
+  close(){this._s("close");},openOriginal(u){this._s("openOriginal",{url:u});}};
+function escapeHTML(s){return String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+const P=(...parts)=>`<p class="prose">${parts.join("")}</p>`;
+const pl=s=>escapeHTML(s), b=s=>`<span class="b">${escapeHTML(s)}</span>`, hl=s=>`<span class="hl">${escapeHTML(s)}</span>`, tm=s=>`<span class="term">${escapeHTML(s)}</span>`;
+
+function chipGlyph(){
+  return `<div class="chipbox"><div class="dram"></div><div class="path"></div><div class="spark"></div><div class="sram"></div></div>`;
+}
+function trafficArt(){
+  return `<svg viewBox="0 0 300 130" width="100%" height="130" role="img" aria-label="Slow memory feeding fast memory">
+    <rect x="18" y="22" width="88" height="86" rx="14" fill="rgba(232,160,32,.12)" stroke="rgba(232,160,32,.45)"/>
+    <rect x="194" y="40" width="82" height="50" rx="12" fill="rgba(26,138,138,.14)" stroke="rgba(26,138,138,.45)"/>
+    <path d="M108 65 C142 32 166 32 192 58" fill="none" stroke="#e8a020" stroke-width="5" stroke-linecap="round"/>
+    <path d="M108 80 C146 112 170 108 192 82" fill="none" stroke="#e8a020" stroke-width="5" stroke-linecap="round" opacity=".45"/>
+    <text x="62" y="72" text-anchor="middle" font-family="ui-monospace,Menlo,monospace" font-size="11" font-weight="700" fill="#e8a020">HBM</text>
+    <text x="235" y="70" text-anchor="middle" font-family="ui-monospace,Menlo,monospace" font-size="11" font-weight="700" fill="#1a8a8a">SRAM</text>
+  </svg>`;
+}
+function tileArt(){
+  let cells="";
+  for(let i=0;i<36;i++){const on=[0,1,6,7,14,15,20,21,28,29,34,35].includes(i);cells+=`<rect x="${(i%6)*18+8}" y="${Math.floor(i/6)*18+8}" width="14" height="14" rx="3" fill="${on?"#e8a020":"rgba(26,138,138,.16)"}"/>`;}
+  return `<svg viewBox="0 0 124 124" width="100%" height="124" role="img" aria-label="Attention matrix visited in tiles"><rect x="1" y="1" width="122" height="122" rx="16" fill="#10131a"/>${cells}</svg>`;
+}
+function coverCard(){
+  const html=`<div class="cover"><div class="eyebrow">Aprecis · Systems</div>
+    <div class="hero appear">${chipGlyph()}</div>
+    <div class="kicker appear">FlashAttention</div>
+    <div class="grow"></div>
+    <h1 class="appear">The speedup was <span class="amber">in the pantry.</span></h1>
+    <div class="standfirst appear">2022. Exact attention, rewritten around where a GPU keeps its memory.</div>
+    <div class="grow"></div></div>`;
+  function init(el){requestAnimationFrame(()=>el.querySelectorAll(".appear").forEach((a,i)=>setTimeout(()=>a.classList.add("in"),70+i*70)));}
+  return {theme:"cover",label:"Start",html,init};
+}
+function proseCard(kicker,title,paras,heroHTML){
+  const hero=heroHTML?`<div style="width:100%">${heroHTML}</div>`:"";
+  const html=`<div class="stack"><div class="sp${heroHTML?" sm":""}"></div>${hero}
+    <div class="kicker">${kicker}</div><h1 class="title">${title}</h1>${paras.join("")}<div class="sp sm"></div></div>`;
+  return {theme:"paper",label:"Continue",html};
+}
+function illustratedCard(kicker,title,paras,caption,illusHTML){
+  const html=`<div class="stack"><div class="sp sm"></div><div class="illus">${illusHTML}</div>
+    ${caption?`<div class="caption">${caption}</div>`:""}<div class="kicker">${kicker}</div>
+    <h1 class="title" style="font-size:25px">${title}</h1>${paras.join("")}<div class="sp sm"></div></div>`;
+  return {theme:"paper",label:"Continue",html};
+}
+function trafficStudio(){
+  const html=`<div class="stack"><div class="sp sm"></div>
+    <div class="kicker">Try it</div><h1 class="title">Which version spends the day walking?</h1>
+    <p class="studio-intro">Tap the two routes. Both compute attention. One keeps writing huge intermediate tables back to slow memory.</p>
+    <div class="toggle"><button class="sw on" id="standard">Standard</button><button class="sw" id="flash">Flash</button></div>
+    ${chipGlyph()}<div class="meterrow"><div class="meter"><div class="h">Memory trips</div><div class="v" id="trips">High</div></div>
+    <div class="meter flash"><div class="h">Answer</div><div class="v">Exact</div></div></div>
+    <div class="status"><span class="d" id="dot"></span><div class="t" id="note">Standard attention writes scores, reads them back, writes probabilities, then reads those too.</div></div>
+    <div class="sp sm"></div></div>`;
+  function init(el,i){const a=el.querySelector("#standard"),f=el.querySelector("#flash"),trips=el.querySelector("#trips"),note=el.querySelector("#note"),dot=el.querySelector("#dot");
+    function set(flash){a.classList.toggle("on",!flash);f.classList.toggle("on",flash);trips.textContent=flash?"Low":"High";dot.classList.toggle("ok",flash);
+      note.textContent=flash?"FlashAttention keeps one tile in fast memory, updates the answer, then moves on. Same result, fewer trips.":"Standard attention writes scores, reads them back, writes probabilities, then reads those too.";
+      if(flash){explored.add(i);refresh();Aprecis.success();}else Aprecis.select();}
+    a.onclick=()=>set(false);f.onclick=()=>set(true);
+  }
+  return {theme:"focus",label:"Continue",gated:true,html,init};
+}
+function tileStudio(){
+  const html=`<div class="stack"><div class="sp sm"></div>
+    <div class="kicker">Try it</div><h1 class="title">Sweep the map in tiles.</h1>
+    <p class="studio-intro">The full attention map is too big to treat casually. Run the sweep to visit it block by block.</p>
+    <div class="matrix" id="matrix"></div>
+    <div class="toggle"><button class="smallbtn" id="run">Run sweep</button><input id="size" type="range" min="1" max="3" value="2"></div>
+    <div class="status"><span class="d" id="tileDot"></span><div class="t" id="tileNote">Tile size 2. Smaller tiles fit more easily in SRAM; bigger tiles make fewer visits.</div></div>
+    <div class="sp sm"></div></div>`;
+  function init(el,i){const matrix=el.querySelector("#matrix"),run=el.querySelector("#run"),size=el.querySelector("#size"),note=el.querySelector("#tileNote"),dot=el.querySelector("#tileDot");matrix.innerHTML=Array.from({length:36},()=>`<div class="cell"></div>`).join("");const cells=[...matrix.children];
+    size.oninput=()=>{note.textContent=`Tile size ${size.value}. ${Number(size.value)===1?"Tiny workbench, many visits.":Number(size.value)===2?"Balanced workbench, steady visits.":"Big workbench, fewer visits."}`;Aprecis.haptic("light");};
+    run.onclick=()=>{cells.forEach(c=>c.className="cell");run.disabled=true;let step=Number(size.value),blocks=[];for(let r=0;r<6;r+=step){for(let c=0;c<6;c+=step)blocks.push([r,c]);}let k=0;function paint(){if(k>0){const [pr,pc]=blocks[k-1];for(let r=pr;r<Math.min(6,pr+step);r++)for(let c=pc;c<Math.min(6,pc+step);c++)cells[r*6+c].className="cell done";}if(k>=blocks.length){run.disabled=false;dot.classList.add("ok");note.textContent="Every block was visited, but the whole matrix never had to live in slow memory at once.";explored.add(i);refresh();Aprecis.success();return;}const [rr,cc]=blocks[k++];for(let r=rr;r<Math.min(6,rr+step);r++)for(let c=cc;c<Math.min(6,cc+step);c++)cells[r*6+c].className="cell hot";setTimeout(paint,130);}paint();Aprecis.haptic("medium");};
+  }
+  return {theme:"focus",label:"Continue",gated:true,html,init};
+}
+function softmaxStudio(){
+  const html=`<div class="stack"><div class="sp sm"></div>
+    <div class="kicker">Try it</div><h1 class="title">Make softmax survive chunks.</h1>
+    <p class="studio-intro">A row arrives one piece at a time. Move through the chunks, then check the final probabilities.</p>
+    <div id="soft" style="display:flex;flex-direction:column;gap:10px;width:100%"></div>
+    <input id="chunk" type="range" min="1" max="4" value="1">
+    <button class="smallbtn" id="check">Check against normal softmax</button>
+    <div class="status"><span class="d" id="softDot"></span><div class="t" id="softNote">Chunk 1 of 4. Keep a running max so the numbers stay stable.</div></div>
+    <div class="sp sm"></div></div>`;
+  function init(el,i){const vals=[1.1,2.4,.4,3.2],soft=el.querySelector("#soft"),chunk=el.querySelector("#chunk"),check=el.querySelector("#check"),note=el.querySelector("#softNote"),dot=el.querySelector("#softDot");
+    soft.innerHTML=vals.map((_,j)=>`<div class="softrow"><div class="lab">K${j+1}</div><div class="bar"><i></i></div><div class="num"></div></div>`).join("");const rows=[...soft.children];
+    function probs(a){let m=Math.max(...a),e=a.map(x=>Math.exp(x-m)),s=e.reduce((p,c)=>p+c,0);return e.map(x=>x/s);}
+    function render(k,exact=false){const p=exact?probs(vals):probs(vals.slice(0,k));rows.forEach((r,j)=>{let v=exact?p[j]:(j<k?p[j]:0);r.querySelector("i").style.width=(v*100).toFixed(0)+"%";r.querySelector(".num").textContent=v?v.toFixed(2):"";});}
+    chunk.oninput=()=>{let k=Number(chunk.value);render(k);note.textContent=k<4?`Chunk ${k} of 4. The old partial answer is rescaled when a larger score appears.`:"All chunks are in. Now compare with normal softmax.";Aprecis.haptic("light");};
+    check.onclick=()=>{render(4,true);dot.classList.add("ok");note.textContent="Same final probabilities. The trick changed memory movement, not the answer.";explored.add(i);refresh();Aprecis.success();};render(1);
+  }
+  return {theme:"focus",label:"Continue",gated:true,html,init};
+}
+function receiptStudio(){
+  const html=`<div class="stack"><div class="sp sm"></div>
+    <div class="kicker">The payoff</div><h1 class="title">Long context makes the receipt explode.</h1>
+    <p class="studio-intro">Slide the sequence length. The stored attention map grows with the square of the length. In training, FlashAttention saves small summaries and recomputes tiles later instead of saving the giant map.</p>
+    <input id="seq" type="range" min="1" max="4" value="2">
+    <div class="receipt"><div><span>Sequence</span><b id="seqv">4K</b></div><div><span>Standard score map</span><b id="mem">32 MB per head</b></div><div><span>Flash habit</span><b>stream tiles</b></div></div>
+    <p class="caption">Teaching sketch for FP16 scores per head, not a benchmark table.</p><div class="sp sm"></div></div>`;
+  function init(el){const seq=el.querySelector("#seq"),seqv=el.querySelector("#seqv"),mem=el.querySelector("#mem"),data=[["1K","2 MB per head"],["4K","32 MB per head"],["16K","512 MB per head"],["64K","8 GB per head"]];function r(){let d=data[Number(seq.value)-1];seqv.textContent=d[0];mem.textContent=d[1];Aprecis.haptic("light");}seq.oninput=r;r();}
+  return {theme:"focus",label:"Continue",html,init};
+}
+function recapCard(title,points){
+  const rn=["I","II","III","IV"];const rows=points.map((p,i)=>`<div class="recap-row"><div class="numeral">${rn[i]}<span class="u"></span></div><div class="pt">${escapeHTML(p)}</div></div>`).join("");
+  const html=`<div class="stack"><div class="sp sm"></div><div class="rule"><span class="l" style="width:40px"></span><span class="dot"></span><span class="l" style="width:18px"></span></div>
+    <div class="kicker">WHAT YOU NOW KNOW</div><h1 class="title">${title}</h1><div style="display:flex;flex-direction:column;gap:20px;width:100%">${rows}</div><div class="sp sm"></div></div>`;
+  return {theme:"focus",label:"Continue",html};
+}
+function paperLinkCard(){
+  const html=`<div class="stack"><div class="sp sm"></div><div class="quote">&ldquo;</div>
+    <div class="pquote">Attention got faster because the algorithm started respecting the memory hierarchy.&rdquo;</div>
+    <div class="attrib"><span class="l"></span>Dao et al. · 2022</div><div class="sp"></div>
+    <button class="srcbtn" id="srcbtn"><div><div class="ro">READ THE ORIGINAL</div><div class="lt">FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness</div></div><span class="ar">↗</span></button>
+    <div class="sp sm"></div></div>`;
+  function init(el){el.querySelector("#srcbtn").addEventListener("click",()=>{Aprecis.haptic();Aprecis.openOriginal("https://arxiv.org/abs/2205.14135");});}
+  return {theme:"paper",label:"Finish",html,init};
+}
+
+const CARDS=[
+  coverCard(),
+  proseCard("Start here","The chef keeps leaving the kitchen",[
+    P(pl("Imagine trying to cook with a tiny counter and a giant pantry down the hall.")),
+    P(pl("If every step sends you back to the pantry, dinner is slow even if your knife is sharp.")),
+    P(pl("FlashAttention makes this point about GPUs: attention was wasting time "),hl("moving data"),pl(", not only doing math."))]),
+  illustratedCard("The idea","Fast memory is tiny. Slow memory is huge.",[
+    P(pl("A GPU has huge memory called "),tm("HBM"),pl(" and tiny fast memory called "),tm("SRAM"),pl(".")),
+    P(pl("Standard attention keeps creating big tables and carrying them between the two. FlashAttention asks: what if we never carry the giant table at all?"))],
+    "The pantry is huge. The counter is fast. The trick is to cook while the ingredients are already on the counter.",trafficArt()),
+  trafficStudio(),
+  proseCard("A name for it","IO-aware means count the walking",[
+    P(pl("Computer scientists call those memory trips "),tm("IO"),pl(": input and output between levels of memory.")),
+    P(pl("A normal speed estimate counts multiplications. FlashAttention counts a second thing: how often data has to travel.")),
+    P(pl("The paper's claim is simple: for attention, the travel bill is big enough to redesign the algorithm around it."))]),
+  illustratedCard("The move","Visit the attention map in tiles",[
+    P(pl("Attention compares tokens with tokens, so the score map is a square grid.")),
+    P(pl("FlashAttention does not store that whole grid. It visits one "),tm("tile"),pl(" at a time, uses it, then moves on."))],
+    "The map is still fully visited. It just never becomes one giant object in slow memory.",tileArt()),
+  tileStudio(),
+  proseCard("A puzzle first","But softmax wants the whole row",[
+    P(pl("After scores are made, attention uses "),tm("softmax"),pl(" to turn them into probabilities.")),
+    P(pl("That sounds like bad news for tiling, because each probability depends on the whole row.")),
+    P(pl("So before the tiled version can be exact, it needs a way to update softmax piece by piece."))]),
+  softmaxStudio(),
+  receiptStudio(),
+  proseCard("Why it matters","Longer context became less ridiculous",[
+    P(pl("The paper reports faster attention and lower memory use, especially where sequences get long.")),
+    P(pl("The deeper lesson is bigger than one kernel: modern AI is not just model design. It is also "),hl("where the bytes live"),pl("."))]),
+  recapCard("FlashAttention, in four lines",[
+    "Standard attention writes giant score and probability tables to slow memory.",
+    "The bottleneck is often memory traffic, not only multiplication.",
+    "FlashAttention tiles Q, K, and V, then updates softmax online.",
+    "The answer stays exact, while memory use and runtime drop."
+  ]),
+  paperLinkCard()
+];
+
+const stage=document.getElementById("stage"),rail=document.getElementById("rail"),countEl=document.getElementById("count"),nextBtn=document.getElementById("next"),tryhint=document.getElementById("tryhint"),bg=document.getElementById("bg");
+const explored=new Set();let cur=0;
+const THEME={cover:{ink:"#f4f1ea",muted:"rgba(244,241,234,.62)"},paper:{ink:"#0f1117",muted:"#6b7078"},focus:{ink:"#0f1117",muted:"#6b7078"}};
+CARDS.forEach((c,i)=>{rail.insertAdjacentHTML("beforeend",'<div class="seg"></div>');const sec=document.createElement("section");sec.className="card";sec.dataset.idx=i;sec.innerHTML=c.html;stage.appendChild(sec);if(c.init)c.init(sec,i);});
+const sections=[...stage.children],segs=[...rail.children];
+function canAdvance(){return !CARDS[cur].gated||explored.has(cur);}
+function applyTheme(t){bg.className=t;document.documentElement.style.setProperty("--ink",THEME[t].ink);document.documentElement.style.setProperty("--themed-muted",THEME[t].muted);}
+function refresh(){const ok=canAdvance();tryhint.textContent=ok?"":"Try it above to continue";nextBtn.disabled=!ok;nextBtn.innerHTML=(cur===0?"Start":cur===CARDS.length-1?"Finish":CARDS[cur].label)+' <span class="ar">→</span>';segs.forEach((s,i)=>s.classList.toggle("on",i<=cur));countEl.textContent=(cur+1)+"/"+CARDS.length;}
+function show(n){sections[cur].classList.remove("active");sections[cur].classList.add("back");cur=n;sections.forEach((s,i)=>{s.classList.toggle("active",i===cur);s.classList.toggle("back",i<cur);});sections[cur].scrollTop=0;applyTheme(CARDS[cur].theme);refresh();}
+function next(){if(!canAdvance())return;if(cur===CARDS.length-1){Aprecis.markDone();Aprecis.finish();return;}show(cur+1);Aprecis.haptic();}
+function previous(){if(cur<=0)return;show(cur-1);Aprecis.haptic();}
+document.getElementById("close").onclick=()=>Aprecis.close();
+nextBtn.onclick=next;
+let sx=0,sy=0,st=null;
+function interactiveTarget(t){return !!(t&&t.closest&&t.closest("button,input,select,textarea,a,.sw,.smallbtn,.srcbtn"));}
+stage.addEventListener("touchstart",e=>{const t=e.touches[0];sx=t.clientX;sy=t.clientY;st=e.target;},{passive:true});
+stage.addEventListener("touchend",e=>{
+  if(interactiveTarget(st))return;
+  const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;
+  if(dx>86&&Math.abs(dy)<64&&cur>0)previous();
+},{passive:true});
+applyTheme(CARDS[0].theme);sections[0].classList.add("active");refresh();
+</script>
+</body>
+</html>

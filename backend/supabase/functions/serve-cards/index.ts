@@ -52,11 +52,12 @@ serve(async (req) => {
     if (req.method === "GET" && url.pathname.endsWith("/related")) {
       const paperId = url.searchParams.get("paperId") ?? url.searchParams.get("paper_id");
       if (!paperId) return json({ error: "Missing paperId" }, 400);
+      const graphPaperId = await resolveGraphPaperId(supabase, paperId);
 
       // Citation edges. buildsOn = outgoing cites; ledTo = incoming cites.
       const [outgoing, incoming] = await Promise.all([
-        supabase.from("paper_edges").select("to_id").eq("from_id", paperId).eq("kind", "cites"),
-        supabase.from("paper_edges").select("from_id").eq("to_id", paperId).eq("kind", "cites"),
+        supabase.from("paper_edges").select("to_id").eq("from_id", graphPaperId).eq("kind", "cites"),
+        supabase.from("paper_edges").select("from_id").eq("to_id", graphPaperId).eq("kind", "cites"),
       ]);
       if (outgoing.error) throw outgoing.error;
       if (incoming.error) throw incoming.error;
@@ -66,9 +67,9 @@ serve(async (req) => {
 
       // Adjacent: pgvector kNN, excluding self + the citation lineage so each
       // rail surfaces distinct papers.
-      const lineage = Array.from(new Set([paperId, ...buildsOn, ...ledTo]));
+      const lineage = Array.from(new Set([graphPaperId, ...buildsOn, ...ledTo]));
       const { data: matches, error: matchErr } = await supabase.rpc("match_papers", {
-        query_id: paperId,
+        query_id: graphPaperId,
         exclude_ids: lineage,
         match_count: 14,
       });
@@ -82,7 +83,7 @@ serve(async (req) => {
       const { data: focal } = await supabase
         .from("papers")
         .select("arxiv_category")
-        .eq("paper_id", paperId)
+        .eq("paper_id", graphPaperId)
         .maybeSingle();
       const focalCategory = (focal as any)?.arxiv_category ?? null;
       const adjacentSet = new Set(adjacent);
@@ -94,7 +95,7 @@ serve(async (req) => {
             !adjacentSet.has(m.paper_id),
         )?.paper_id ?? null;
 
-      return json({ paperId, buildsOn, ledTo, adjacent, surprise });
+      return json({ paperId, graphPaperId, buildsOn, ledTo, adjacent, surprise });
     }
 
     // GET /serve-cards/web-lessons
@@ -140,7 +141,11 @@ serve(async (req) => {
           .maybeSingle();
 
         if (error) throw error;
-        if (!data) return json({ error: "Not found" }, 404);
+        if (!data) {
+          const catalogDeck = await webCatalogDeck(supabase, paperIdParam);
+          if (catalogDeck) return json(catalogDeck);
+          return json({ error: "Not found" }, 404);
+        }
 
         const { papers, cards, blueprint, ...rest } = data as any;
         return json({
@@ -190,7 +195,7 @@ serve(async (req) => {
       if (error) throw error;
 
       // Flatten score, published_at, summary and concepts to the top level
-      const decks = (rawDecks ?? []).map((deck: any) => {
+      let decks = (rawDecks ?? []).map((deck: any) => {
         const { papers, cards, blueprint, ...rest } = deck;
         return {
           ...rest,
@@ -203,6 +208,26 @@ serve(async (req) => {
           blueprint:    blueprint            ?? null,
         };
       });
+
+      // Web-bundle-only papers may live in `paper_catalog` before they have a
+      // full LLM-generated `cards` row. Surface them as lightweight decks on
+      // the first page so existing app binaries can discover them in Search,
+      // then render via `web_lesson_url` with no App Store update.
+      if (page === 0) {
+        const existingIds = new Set(decks.map((deck: any) => deck.paper_id));
+        const { data: webRows, error: webErr } = await supabase
+          .from("paper_catalog")
+          .select("paper_id, title, source, topic, url, arxiv_id, published_at, year, web_lesson_url")
+          .not("web_lesson_url", "is", null)
+          .order("published_at", { ascending: false, nullsFirst: false })
+          .order("year", { ascending: false, nullsFirst: false });
+        if (webErr) throw webErr;
+
+        const webDecks = (webRows ?? [])
+          .filter((row: any) => !existingIds.has(row.paper_id))
+          .map(catalogRowToDeck);
+        decks = [...webDecks, ...decks];
+      }
 
       return json({
         decks,
@@ -219,6 +244,101 @@ serve(async (req) => {
     return json({ error: msg, code }, 500);
   }
 });
+
+async function webCatalogDeck(supabase: any, paperId: string) {
+  const { data, error } = await supabase
+    .from("paper_catalog")
+    .select("paper_id, title, source, topic, url, arxiv_id, published_at, year, web_lesson_url")
+    .eq("paper_id", paperId)
+    .not("web_lesson_url", "is", null)
+    .maybeSingle();
+  if (error) throw error;
+  return data ? catalogRowToDeck(data) : null;
+}
+
+async function resolveGraphPaperId(supabase: any, paperId: string): Promise<string> {
+  const { data: direct, error: directErr } = await supabase
+    .from("papers")
+    .select("paper_id")
+    .eq("paper_id", paperId)
+    .maybeSingle();
+  if (directErr) throw directErr;
+  if (direct?.paper_id) return direct.paper_id;
+
+  // Web-bundle lessons use app-facing `loop:` ids in paper_catalog, while the
+  // graph corpus is usually keyed by the paper's canonical arXiv id. Resolve
+  // that alias server-side so existing App Store binaries can ask for
+  // /related?paperId=loop:... and still receive graph rails.
+  const { data: catalog, error: catalogErr } = await supabase
+    .from("paper_catalog")
+    .select("canonical_key, arxiv_id")
+    .eq("paper_id", paperId)
+    .maybeSingle();
+  if (catalogErr) throw catalogErr;
+
+  const candidates = [
+    catalog?.arxiv_id ? `arxiv:${String(catalog.arxiv_id).replace(/^arxiv:/, "")}` : null,
+    typeof catalog?.canonical_key === "string" && catalog.canonical_key.startsWith("arxiv:")
+      ? catalog.canonical_key
+      : null,
+  ].filter(Boolean) as string[];
+
+  for (const candidate of candidates) {
+    const { data, error } = await supabase
+      .from("papers")
+      .select("paper_id")
+      .eq("paper_id", candidate)
+      .maybeSingle();
+    if (error) throw error;
+    if (data?.paper_id) return data.paper_id;
+  }
+
+  return paperId;
+}
+
+function catalogRowToDeck(row: any) {
+  const year = row.year ?? (row.published_at ? new Date(row.published_at).getUTCFullYear() : null);
+  const topic = row.topic ? String(row.topic) : null;
+  const editorial = WEB_LESSON_COPY[row.paper_id] ?? null;
+  // Editorial title wins over the catalog row so a web lesson can carry the
+  // full paper title without re-running the publish script / DB migration.
+  const title = editorial?.title ?? row.title ?? row.paper_id;
+  const hookParts = [
+    year ? String(year) : null,
+    topic ? `${topic} web lesson` : "Interactive web lesson",
+  ].filter(Boolean);
+
+  return {
+    paper_id: row.paper_id,
+    title,
+    source: row.source ?? "web_lesson",
+    url: row.url ?? (row.arxiv_id ? `https://arxiv.org/abs/${row.arxiv_id}` : null),
+    cards: null,
+    blueprint: null,
+    web_lesson_url: row.web_lesson_url,
+    created_at: null,
+    score: null,
+    published_at: row.published_at ?? (year ? `${year}-01-01T00:00:00Z` : null),
+    arxiv_category: null,
+    hook: editorial?.hook ?? (hookParts.length > 0 ? hookParts.join(". ") + "." : "Interactive web lesson."),
+    summary: editorial?.summary ?? (topic
+      ? `A bespoke interactive lesson about ${title}, served as a web bundle.`
+      : `A bespoke interactive lesson about ${title}.`),
+    concepts: [],
+  };
+}
+
+const WEB_LESSON_COPY: Record<string, { title?: string; hook: string; summary: string }> = {
+  "loop:systems:flashattention": {
+    hook: "Same attention, fewer memory trips. The trick that made long context feel less ridiculous.",
+    summary: "FlashAttention keeps small tiles in fast GPU memory and updates softmax online, so Transformers get the exact same answer while moving far fewer bytes.",
+  },
+  "loop:foundational:grokking": {
+    title: "Grokking: Generalization Beyond Overfitting on Small Algorithmic Datasets",
+    hook: "It memorised the data, looked hopelessly overfit, then woke up and understood the rule.",
+    summary: "On tiny algorithmic tasks like modular arithmetic, a network hits 100% training accuracy fast while validation sits at chance, looking textbook overfit. Keep training tens of thousands of steps past that and validation suddenly snaps to near perfect: the model switched from a memorised lookup table to the underlying rule. Weight decay, a gentle pressure toward simpler weights, is what drives this delayed leap from memorising to generalising.",
+  },
+};
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {

@@ -32,6 +32,7 @@ enum PrerequisiteMap {
         "loop:foundational:toolformer":   ["loop:foundational:react"],
         "loop:foundational:grokking":     ["loop:foundational:backprop"],
         "loop:foundational:deepseek-r1":  ["loop:foundational:instructgpt", "loop:foundational:chain-of-thought", "loop:foundational:tot"],
+        "loop:systems:flashattention":    ["loop:foundational:attention"],
     ]
 
     /// All paper IDs that participate in the DAG.

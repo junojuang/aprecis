@@ -143,7 +143,15 @@ private struct WebLessonRepresentable: UIViewRepresentable {
         """
         ucc.addUserScript(WKUserScript(source: safeAreaScript, injectionTime: .atDocumentEnd,
                                        forMainFrameOnly: true))
-        for name in ["haptic", "markDone", "finish", "close", "openOriginal"] {
+        // Bundles report card position only at completion (markDone), so the
+        // "Recently opened" progress bar stayed empty until finish, then jumped
+        // to 100%. Watch each bundle's standard card counter (`#count` reads
+        // "N/total") and segmented rail, and post a 0...1 fraction back as the
+        // reader advances. Injecting app-side means existing deployed bundles
+        // (grokking, flashattention) gain live progress with no re-upload.
+        ucc.addUserScript(WKUserScript(source: Self.progressScript, injectionTime: .atDocumentEnd,
+                                       forMainFrameOnly: true))
+        for name in ["haptic", "markDone", "finish", "close", "openOriginal", "progress"] {
             ucc.add(WeakLessonMessageProxy(coordinator: context.coordinator), name: name)
         }
 
@@ -171,10 +179,46 @@ private struct WebLessonRepresentable: UIViewRepresentable {
 
     static func dismantleUIView(_ webView: WKWebView, coordinator: Coordinator) {
         let ucc = webView.configuration.userContentController
-        for name in ["haptic", "markDone", "finish", "close", "openOriginal"] {
+        for name in ["haptic", "markDone", "finish", "close", "openOriginal", "progress"] {
             ucc.removeScriptMessageHandler(forName: name)
         }
     }
+
+    /// Watches a bundle's standard card chrome and reports reading progress as
+    /// a 0...1 fraction. Prefers the explicit `#count` element ("N/total");
+    /// falls back to counting lit segments on the progress rail. Mirrors the
+    /// native readers, where progress is `index / (total - 1)`, so card one
+    /// reads 0 and the final card reads 1.
+    static let progressScript = """
+    (function(){
+      function report(){
+        try{
+          var frac=null;
+          var count=document.getElementById('count');
+          if(count){
+            var m=count.textContent.match(/(\\d+)\\s*\\/\\s*(\\d+)/);
+            if(m){var n=+m[1],total=+m[2];frac=total>1?(n-1)/(total-1):(n>=1?1:0);}
+          }
+          if(frac===null){
+            var all=document.querySelectorAll('.rail .seg, .progress .dot');
+            if(all.length>1){
+              var on=document.querySelectorAll('.rail .seg.on, .progress .dot.on').length;
+              frac=(on-1)/(all.length-1);
+            }
+          }
+          if(frac===null)return;
+          frac=Math.max(0,Math.min(1,frac));
+          var h=window.webkit&&window.webkit.messageHandlers&&window.webkit.messageHandlers.progress;
+          if(h)h.postMessage({progress:frac});
+        }catch(e){}
+      }
+      var count=document.getElementById('count');
+      if(count)new MutationObserver(report).observe(count,{childList:true,characterData:true,subtree:true});
+      var rail=document.querySelector('.rail')||document.querySelector('.progress');
+      if(rail)new MutationObserver(report).observe(rail,{attributes:true,subtree:true,attributeFilter:['class']});
+      report();
+    })();
+    """
 
     @MainActor
     final class Coordinator: NSObject, WKNavigationDelegate {
@@ -227,8 +271,22 @@ private struct WebLessonRepresentable: UIViewRepresentable {
                 if let s = (body as? [String: Any])?["url"] as? String, let u = URL(string: s) {
                     parent.onOpenOriginal(u)
                 }
+            case "progress":
+                reportProgress(body)
             default:
                 break
+            }
+        }
+
+        /// Records reading progress for the open lesson. Monotonic: a report
+        /// never lowers stored progress, so reopening a finished lesson (whose
+        /// counter resets to card one) cannot wipe its completion.
+        private func reportProgress(_ body: Any) {
+            guard let id = parent.paperId,
+                  let fraction = (body as? [String: Any])?["progress"] as? Double else { return }
+            let store = ReadingProgressStore.shared
+            if fraction > store.progress(for: id) {
+                store.setProgress(fraction, for: id)
             }
         }
 
