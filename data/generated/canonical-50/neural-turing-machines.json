@@ -1,0 +1,221 @@
+{
+  "paper_id": "neural-turing-machines",
+  "short_name": "Neural Memory Networks",
+  "title": "Neural Turing Machines",
+  "authors": "Alex Graves, Greg Wayne, Ivo Danihelka",
+  "year": 2014,
+  "topic": "Memory",
+  "difficulty": "Advanced",
+  "url": "https://arxiv.org/abs/1410.5401",
+  "arxiv_id": "1410.5401",
+  "hook": "A neural network learns to read and write from its own external memory.",
+  "promise": "You will understand how neural networks can learn to use memory like a computer.",
+  "prerequisite_note": "You only need a sense for how neural networks process data step by step.",
+  "glossary": [
+    {
+      "term": "External Memory",
+      "plain": "A storage matrix that sits outside the neural network, which the network can access and modify."
+    },
+    {
+      "term": "Read Head",
+      "plain": "A component that learns how to extract information from the external memory."
+    },
+    {
+      "term": "Write Head",
+      "plain": "A component that learns how to store or change information in the external memory."
+    },
+    {
+      "term": "Differentiable",
+      "plain": "A property that allows the whole system to be trained with gradient descent, since every operation is smooth and tunable."
+    },
+    {
+      "term": "Attention Mechanism",
+      "plain": "A process that lets the network focus on specific parts of memory, rather than all at once."
+    },
+    {
+      "term": "Content-based Addressing",
+      "plain": "A way to access memory by matching patterns, not just by fixed location."
+    }
+  ],
+  "related_slugs": [
+    "memory-networks",
+    "transformer-attention",
+    "dnc",
+    "lstm",
+    "gpt-architecture"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Memory",
+      "title": "When networks learn to remember",
+      "body": [
+        "Discover how a neural network can learn to use its own memory like a computer."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "How could a network learn like a computer?",
+      "body": [
+        "Imagine if a neural network could write notes to itself, then read them back later to solve harder problems.",
+        "This is the leap Neural Turing Machines make: adding a flexible, trainable memory that the network can control."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "A network meets a memory bank",
+      "body": [
+        "A neural network receives input and decides what to store or retrieve from an external memory matrix.",
+        "It uses special heads that learn to read and write, guided by attention over memory slots.",
+        "This lets the system learn algorithms like copying, sorting, or recalling associations from examples."
+      ],
+      "left": "Neural network input",
+      "middle": "Read and write to memory",
+      "right": "Task output using stored info",
+      "caption": "The network learns to control memory access, enabling algorithmic reasoning."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "How does memory change learning?",
+      "body": [
+        "Toggle to see how a plain network compares to one with an external memory bank."
+      ],
+      "offLabel": "Standard RNN",
+      "onLabel": "Neural Turing Machine",
+      "offNote": "Struggles to remember long sequences or learn complex tasks.",
+      "onNote": "Can learn to store, retrieve, and manipulate information over many steps."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "A neural network with a memory tape",
+      "body": [
+        "The key move is to give a neural network a memory matrix, plus the ability to learn how to use it.",
+        "By making memory access differentiable, the whole system can be trained end-to-end with gradient descent, just like any neural net."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much memory access is needed?",
+      "body": [
+        "Use the slider to see what happens as the network's memory size increases."
+      ],
+      "lowLabel": "Tiny memory",
+      "highLabel": "Large memory",
+      "low": "Network can only solve very simple problems.",
+      "mid": "Network can copy or sort short sequences.",
+      "high": "Network can learn more complex algorithms and remember longer sequences."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What goes into a Neural Turing Machine?",
+      "body": [
+        "Pick the six main ingredients that make this memory-augmented network work."
+      ],
+      "choices": [
+        {
+          "label": "Controller Network",
+          "note": "Decides how to read and write memory."
+        },
+        {
+          "label": "External Memory Matrix",
+          "note": "Stores information outside the controller."
+        },
+        {
+          "label": "Read Head",
+          "note": "Extracts data from chosen memory locations."
+        },
+        {
+          "label": "Write Head",
+          "note": "Modifies or adds to the memory matrix."
+        },
+        {
+          "label": "Attention Mechanism",
+          "note": "Focuses the heads on specific memory slots."
+        },
+        {
+          "label": "Differentiable Addressing",
+          "note": "Makes read and write operations trainable with gradients."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "Learning algorithms from examples",
+      "body": [
+        "NTMs could learn to copy sequences, sort data, and perform associative recall just from input-output pairs.",
+        "Compared to standard recurrent networks, they handled longer sequences and more complex tasks with fewer failures."
+      ],
+      "bars": [
+        {
+          "label": "Copy task accuracy",
+          "note": "NTM nearly perfect, RNN much lower",
+          "value": 98
+        },
+        {
+          "label": "Sorting task",
+          "note": "NTM sorts longer lists",
+          "value": 90
+        },
+        {
+          "label": "Associative recall",
+          "note": "NTM retrieves correct items more often",
+          "value": 85
+        },
+        {
+          "label": "Generalization to longer inputs",
+          "note": "NTM adapts, RNN fails",
+          "value": 80
+        }
+      ],
+      "caption": "The NTM solved tasks that standard RNNs could not, especially as sequence length increased."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why this paper changed the field",
+      "body": [
+        "Neural Turing Machines showed that neural networks can learn algorithmic tasks if given the right memory tools.",
+        "This idea inspired new architectures and made neural networks feel more like programmable computers, not just pattern matchers."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "Neural Turing Machines in four lines",
+      "body": [],
+      "recap": [
+        {
+          "label": "Attach",
+          "note": "Connect a memory bank to a neural network"
+        },
+        {
+          "label": "Control",
+          "note": "Let the network learn to read and write memory"
+        },
+        {
+          "label": "Train",
+          "note": "Use differentiable operations so gradient descent works"
+        },
+        {
+          "label": "Solve",
+          "note": "Learn algorithms like copying and sorting from examples"
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Neural Turing Machines",
+      "body": [
+        "Read the original paper for full details and experiments on learning with memory."
+      ]
+    }
+  ]
+}

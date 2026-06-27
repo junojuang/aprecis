@@ -11,7 +11,7 @@ import SwiftUI
 extension LearningLesson {
 
     static let leastToMost = LearningLesson(
-        paperId: "loop:foundational:least-to-most",
+        paperId: "least-to-most",
         cards: [
 
             // 1 - Cover.

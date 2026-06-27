@@ -1,0 +1,219 @@
+{
+  "paper_id": "alphazero",
+  "short_name": "AlphaZero",
+  "title": "Mastering Chess and Shogi by Self-Play with a General Reinforcement Learning Algorithm",
+  "authors": "David Silver, Thomas Hubert, Julian Schrittwieser, Ioannis Antonoglou et al.",
+  "year": 2017,
+  "topic": "Reinforcement Learning",
+  "difficulty": "Advanced",
+  "url": "https://arxiv.org/abs/1712.01815",
+  "arxiv_id": "1712.01815",
+  "hook": "AlphaZero mastered chess, shogi, and Go from scratch by playing itself.",
+  "promise": "You will understand how AlphaZero learned superhuman board play using only self-play and search.",
+  "prerequisite_note": "Bring an open mind about how computers can learn complex games without expert input.",
+  "glossary": [
+    {
+      "term": "Self-play",
+      "plain": "A method where an AI learns by playing games against itself, improving over time."
+    },
+    {
+      "term": "Monte Carlo Tree Search (MCTS)",
+      "plain": "A search algorithm that explores possible moves by simulating random play and building a tree of outcomes."
+    },
+    {
+      "term": "Policy Network",
+      "plain": "A neural network that suggests the best moves to play in a given position."
+    },
+    {
+      "term": "Value Network",
+      "plain": "A neural network that predicts the likely outcome of the game from a position."
+    },
+    {
+      "term": "Tabula Rasa Learning",
+      "plain": "Learning from scratch without any prior human knowledge or examples."
+    },
+    {
+      "term": "General Algorithm",
+      "plain": "An approach that works across different games or domains without hand-tuned tricks."
+    }
+  ],
+  "related_slugs": [
+    "alphago-zero",
+    "deepmind-mcts",
+    "reinforcement-learning-dqn",
+    "muzero"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Reinforcement Learning",
+      "title": "AI Masters Games Alone",
+      "body": [
+        "Learn how AlphaZero taught itself chess, shogi, and Go from scratch using only self-play."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "How can a machine learn to outplay humans?",
+      "body": [
+        "Imagine a computer that starts knowing only the rules of chess, shogi, or Go, and nothing else.",
+        "Instead of learning from human games, it plays against itself, gradually discovering strategies that even grandmasters respect."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "From blank slate to board mastery",
+      "body": [
+        "AlphaZero begins with random moves and no knowledge, then improves by repeatedly playing itself.",
+        "It uses deep neural networks and search to evaluate positions, learning which moves lead to victory."
+      ],
+      "left": "Starts from zero",
+      "middle": "Self-play plus search",
+      "right": "Superhuman skill",
+      "caption": "AlphaZero learns entirely from its own experience, not from human examples."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Human-crafted vs. self-taught",
+      "body": [
+        "Toggle to see the difference between classic chess engines and AlphaZero."
+      ],
+      "offLabel": "Handcrafted engines",
+      "onLabel": "AlphaZero",
+      "offNote": "Relies on human-designed rules and evaluation functions, requiring decades of expert tuning.",
+      "onNote": "Learns strategies and evaluations entirely by playing itself, with no human input beyond the rules."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "Learning by playing yourself",
+      "body": [
+        "AlphaZero's central trick is to blend deep learning with search and self-play, creating a feedback loop of improvement.",
+        "Each iteration, it updates its neural networks based on self-play outcomes, steadily refining its sense for good moves and positions."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much search is enough?",
+      "body": [
+        "Adjust the slider to see how search depth affects learning and performance."
+      ],
+      "lowLabel": "Shallow search",
+      "highLabel": "Deep search",
+      "low": "Learns quickly but overlooks subtle strategies and deeper tactics.",
+      "mid": "Balances speed and depth, finding strong but not perfect moves.",
+      "high": "Finds nuanced strategies and rare tactics but requires much more computation."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What does AlphaZero need?",
+      "body": [
+        "Select the essential ingredients that let AlphaZero master board games."
+      ],
+      "choices": [
+        {
+          "label": "Self-play",
+          "note": "Enables learning from its own experiences."
+        },
+        {
+          "label": "Monte Carlo Tree Search",
+          "note": "Guides exploration of promising moves."
+        },
+        {
+          "label": "Policy Network",
+          "note": "Suggests which moves to consider in each position."
+        },
+        {
+          "label": "Value Network",
+          "note": "Estimates the likelihood of winning from any board state."
+        },
+        {
+          "label": "Tabula Rasa Start",
+          "note": "Begins with zero knowledge except for the rules."
+        },
+        {
+          "label": "General Algorithm",
+          "note": "Applies the same method to chess, shogi, and Go."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "AlphaZero's astonishing results",
+      "body": [
+        "Within 24 hours, AlphaZero surpassed champion programs in chess, shogi, and Go, all using the same approach.",
+        "Its play style was creative, aggressive, and sometimes surprising even to top human players."
+      ],
+      "bars": [
+        {
+          "label": "Chess Elo vs Stockfish",
+          "note": "AlphaZero beats Stockfish",
+          "value": 95
+        },
+        {
+          "label": "Shogi Elo vs Elmo",
+          "note": "AlphaZero beats Elmo",
+          "value": 90
+        },
+        {
+          "label": "Go Elo vs AlphaGo Lee",
+          "note": "AlphaZero beats AlphaGo Lee",
+          "value": 100
+        },
+        {
+          "label": "Training time (hours)",
+          "note": "Superhuman in less than one day",
+          "value": 24
+        }
+      ],
+      "caption": "AlphaZero achieved dominance in three games with a single, unified algorithm."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why AlphaZero changed AI history",
+      "body": [
+        "AlphaZero showed that an AI could reach superhuman skill in complex domains without any human playbooks.",
+        "Its general approach inspires new ways to tackle problems beyond board games, using learning and search together."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "AlphaZero in four moves",
+      "body": [],
+      "recap": [
+        {
+          "label": "Start",
+          "note": "Knows only the rules, no human strategies."
+        },
+        {
+          "label": "Play",
+          "note": "Learns by repeatedly playing itself."
+        },
+        {
+          "label": "Search",
+          "note": "Combines neural networks with tree search."
+        },
+        {
+          "label": "Master",
+          "note": "Reaches superhuman performance in days."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Mastering Chess and Shogi by Self-Play with a General Reinforcement Learning Algorithm",
+      "body": [
+        "Read the original AlphaZero paper for all the technical details and experimental results."
+      ]
+    }
+  ]
+}

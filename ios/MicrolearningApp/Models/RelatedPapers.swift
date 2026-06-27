@@ -27,27 +27,40 @@ enum RelatedPapers {
     // stay in sync with backend/scripts/seed-curated-papers.ts.
 
     private static let curatedLoopToBackend: [String: String] = [
-        "loop:foundational:perceptron": "rosenblatt:1958",
-        "loop:foundational:backprop":   "rumelhart:1986",
-        "loop:foundational:lenet":      "lecun:1998",
-        "loop:foundational:alexnet":    "krizhevsky:2012",
-        "loop:foundational:word2vec":   "arxiv:1301.3781",
-        "loop:foundational:seq2seq":    "arxiv:1409.3215",
-        "loop:foundational:gans":       "arxiv:1406.2661",
-        "loop:foundational:resnet":     "arxiv:1512.03385",
-        "loop:foundational:attention":  "arxiv:1706.03762",
-        "loop:foundational:gpt3":       "arxiv:2005.14165",
-        "loop:foundational:bert":       "arxiv:1810.04805",
-        "loop:foundational:instructgpt": "arxiv:2203.02155",
-        "loop:foundational:chain-of-thought": "arxiv:2201.11903",
-        "loop:foundational:scratchpad": "arxiv:2112.00114",
-        "loop:foundational:self-consistency": "arxiv:2203.11171",
-        "loop:foundational:tot": "arxiv:2305.10601",
-        "loop:foundational:least-to-most": "arxiv:2205.10625",
-        "loop:foundational:react": "arxiv:2210.03629",
-        "loop:foundational:toolformer": "arxiv:2302.04761",
-        "loop:foundational:grokking": "arxiv:2201.02177",
-        "loop:foundational:deepseek-r1": "arxiv:2501.12948",
+        "perceptron": "perceptron",
+        "backprop":   "backprop",
+        "lenet":      "lenet",
+        "alexnet":    "alexnet",
+        "word2vec":   "arxiv:1301.3781",
+        "seq2seq":    "arxiv:1409.3215",
+        "gans":       "arxiv:1406.2661",
+        "resnet":     "arxiv:1512.03385",
+        "attention":  "arxiv:1706.03762",
+        "gpt3":       "arxiv:2005.14165",
+        "bert":       "arxiv:1810.04805",
+        "instructgpt": "arxiv:2203.02155",
+        "chain-of-thought": "arxiv:2201.11903",
+        "scratchpad": "arxiv:2112.00114",
+        "self-consistency": "arxiv:2203.11171",
+        "tree-of-thoughts": "arxiv:2305.10601",
+        "least-to-most": "arxiv:2205.10625",
+        "react": "arxiv:2210.03629",
+        "toolformer": "arxiv:2302.04761",
+        "grokking": "arxiv:2201.02177",
+        "deepseek-r1": "arxiv:2501.12948",
+        "vit": "arxiv:2010.11929",
+        "ddpm": "arxiv:2006.11239",
+        "clip": "arxiv:2103.00020",
+        "stable-diffusion": "arxiv:2112.10752",
+        "controlnet": "arxiv:2302.05543",
+        "sam": "arxiv:2304.02643",
+        "t5": "arxiv:1910.10683",
+        "chinchilla": "arxiv:2203.15556",
+        "palm": "arxiv:2204.02311",
+        "llama": "arxiv:2302.13971",
+        "mixtral": "arxiv:2401.04088",
+        "reflexion": "arxiv:2303.11366",
+        "flashattention": "arxiv:2205.14135",
     ]
 
     private static let curatedBackendToLoop: [String: String] =
@@ -61,7 +74,7 @@ enum RelatedPapers {
 
     /// Canonical backend `paper_id` for a curated `loop:` id, or `nil` if `id`
     /// is not one of the 11 canon papers. `BraceIdentity` uses this so a loop
-    /// deck and its backend deck (e.g. `loop:foundational:attention` and
+    /// deck and its backend deck (e.g. `attention` and
     /// `arxiv:1706.03762`) collapse to a single brace instead of showing twice.
     static func canonicalBackendId(forLoopId id: String) -> String? {
         curatedLoopToBackend[id]
@@ -169,7 +182,7 @@ enum RelatedPapers {
     }
 
     /// Recommended starter paper when the user opens Explore cold.
-    static var starter: String { "loop:foundational:gpt3" }
+    static var starter: String { "gpt3" }
 
     /// Lightweight feed used by browse entry chips.
     enum Entry: String, CaseIterable, Identifiable {
@@ -202,13 +215,13 @@ enum RelatedPapers {
         func seedId() -> String {
             switch self {
             case .foundational:
-                return "loop:foundational:perceptron"
+                return "perceptron"
             case .trending:
                 return SimilarityGraph.papers
                     .max(by: { $0.trending < $1.trending })?.id
                     ?? RelatedPapers.starter
             case .frontier:
-                return "loop:foundational:gpt3"
+                return "gpt3"
             case .random:
                 return SimilarityGraph.papers.randomElement()?.id
                     ?? RelatedPapers.starter

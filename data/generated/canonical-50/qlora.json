@@ -1,0 +1,221 @@
+{
+  "paper_id": "qlora",
+  "short_name": "QLoRA Fine-Tuning",
+  "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+  "authors": "",
+  "year": 2023,
+  "topic": "Adaptation",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/2305.14314",
+  "arxiv_id": "2305.14314",
+  "hook": "Fine-tune giant language models on a single GPU without losing accuracy.",
+  "promise": "You will understand how QLoRA enables affordable, high-quality fine-tuning of large language models.",
+  "prerequisite_note": "Bring a sense for how neural networks use numbers to represent knowledge and how models are usually tuned.",
+  "glossary": [
+    {
+      "term": "Quantization",
+      "plain": "Turning precise numbers into rougher, smaller ones to save memory and speed up computation."
+    },
+    {
+      "term": "Low-Rank Adaptation (LoRA)",
+      "plain": "A method that fine-tunes only a small part of a model, leaving most weights unchanged."
+    },
+    {
+      "term": "4-bit Quantization",
+      "plain": "Storing weights using just 4 bits instead of the usual 16 or 32, drastically reducing memory use."
+    },
+    {
+      "term": "Double Quantization",
+      "plain": "Compressing already quantized data even further, squeezing out more memory savings."
+    },
+    {
+      "term": "Adapter Layers",
+      "plain": "Small network parts added for fine-tuning, so the main model stays almost untouched."
+    },
+    {
+      "term": "Memory Footprint",
+      "plain": "The amount of computer memory a model needs to run or train."
+    }
+  ],
+  "related_slugs": [
+    "lora",
+    "bitfit",
+    "adapter-tuning",
+    "quantization",
+    "alpaca",
+    "llama"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Adaptation",
+      "title": "Fine-tune Giant Models, Tiny Hardware",
+      "body": [
+        "See how QLoRA lets you adapt huge language models on a single GPU without losing performance."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Why is fine-tuning so hard?",
+      "body": [
+        "Imagine wanting to teach a giant language model a new skill, but your computer cannot even hold it in memory.",
+        "Before QLoRA, fine-tuning required expensive, specialized hardware. This locked out most people from adapting large models."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "How QLoRA unlocks fine-tuning",
+      "body": [
+        "First, QLoRA shrinks the model size by quantizing its weights to just 4 bits. Then, it adds lightweight adapters for learning new tasks.",
+        "This combination means you can fine-tune the model efficiently, using far less memory, and still get strong results."
+      ],
+      "left": "Quantize weights",
+      "middle": "Add LoRA adapters",
+      "right": "Efficient fine-tuning",
+      "caption": "QLoRA's flow: compress, adapt, and fine-tune, all on regular hardware."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "How does QLoRA compare to classic fine-tuning?",
+      "body": [
+        "Toggle to see how memory and accessibility change when you use QLoRA instead of the traditional approach."
+      ],
+      "offLabel": "Classic fine-tuning",
+      "onLabel": "QLoRA fine-tuning",
+      "offNote": "Needs huge GPUs, high costs, and often cannot fit the model.",
+      "onNote": "Fits on a single GPU, costs much less, and keeps accuracy nearly the same."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "The trick: quantize, then adapt",
+      "body": [
+        "QLoRA's key insight is to aggressively compress the model using 4-bit quantization, then fine-tune only tiny adapter layers.",
+        "This keeps most of the model frozen and tiny, while still letting it learn new skills accurately with minimal hardware."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How does quantization affect performance?",
+      "body": [
+        "Slide to see how dropping bits changes memory use and quality."
+      ],
+      "lowLabel": "32-bit",
+      "highLabel": "4-bit",
+      "low": "Huge memory use, perfect accuracy, impossible on most hardware.",
+      "mid": "8-bit: Moderate memory, small accuracy drop, possible on good GPUs.",
+      "high": "Tiny memory, nearly the same accuracy, runs on a single consumer GPU."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What goes into QLoRA?",
+      "body": [
+        "Pick the ingredients that make QLoRA efficient and effective."
+      ],
+      "choices": [
+        {
+          "label": "4-bit quantization",
+          "note": "Shrinks the model so it fits in memory."
+        },
+        {
+          "label": "Double quantization",
+          "note": "Compresses quantized weights even further."
+        },
+        {
+          "label": "LoRA adapters",
+          "note": "Adds small layers for efficient fine-tuning."
+        },
+        {
+          "label": "Frozen base model",
+          "note": "Keeps most model weights unchanged during tuning."
+        },
+        {
+          "label": "Paged optimizers",
+          "note": "Handles memory efficiently during training."
+        },
+        {
+          "label": "Single GPU training",
+          "note": "Enables affordable, accessible fine-tuning for more users."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "QLoRA’s impact in numbers",
+      "body": [
+        "QLoRA matches or beats full-precision fine-tuning on many benchmarks, while using a fraction of the resources.",
+        "It makes adapting large models practical for researchers and startups without massive budgets."
+      ],
+      "bars": [
+        {
+          "label": "Memory Savings",
+          "note": "Up to 80% less memory needed",
+          "value": 80
+        },
+        {
+          "label": "Accuracy Loss",
+          "note": "Less than 1% drop on many tasks",
+          "value": 99
+        },
+        {
+          "label": "Cost Reduction",
+          "note": "Fine-tuning cost slashed by up to 75%",
+          "value": 75
+        },
+        {
+          "label": "Benchmark Score",
+          "note": "Matches or exceeds full-precision on common tests",
+          "value": 98
+        }
+      ],
+      "caption": "QLoRA delivers huge savings with almost no loss in quality."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why QLoRA changed the game",
+      "body": [
+        "QLoRA democratized fine-tuning, letting more people adapt large language models to new domains or languages.",
+        "Its approach inspired a wave of efficient adaptation techniques, making advanced AI more accessible and affordable."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "Four steps to QLoRA",
+      "body": [],
+      "recap": [
+        {
+          "label": "Quantize",
+          "note": "Compress model weights to 4 bits."
+        },
+        {
+          "label": "Freeze",
+          "note": "Lock most weights in place."
+        },
+        {
+          "label": "Adapt",
+          "note": "Add and tune small LoRA adapters."
+        },
+        {
+          "label": "Fine-tune",
+          "note": "Train efficiently on new tasks with tiny hardware."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+      "body": [
+        "Explore the original paper for technical details and more benchmarks."
+      ]
+    }
+  ]
+}

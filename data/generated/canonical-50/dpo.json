@@ -1,0 +1,221 @@
+{
+  "paper_id": "dpo",
+  "short_name": "Direct Preference Optimization",
+  "title": "Direct Preference Optimization: Your Language Model is Secretly a Reward Model",
+  "authors": "",
+  "year": 2023,
+  "topic": "Alignment",
+  "difficulty": "Advanced",
+  "url": "https://arxiv.org/abs/2305.18290",
+  "arxiv_id": "2305.18290",
+  "hook": "What if you could align a language model without any separate reward model?",
+  "promise": "You will understand how DPO lets language models learn human preferences directly, skipping a separate reward model.",
+  "prerequisite_note": "You only need to know that language models can be tuned to prefer certain responses over others.",
+  "glossary": [
+    {
+      "term": "Preference Optimization",
+      "plain": "The process of training models to prefer outputs that humans like more."
+    },
+    {
+      "term": "Reward Model",
+      "plain": "A model that assigns scores to outputs, reflecting how much humans might prefer them."
+    },
+    {
+      "term": "Direct Preference Optimization (DPO)",
+      "plain": "A method that lets the language model itself learn preferences, without needing a separate reward model."
+    },
+    {
+      "term": "KL Divergence",
+      "plain": "A measure of how different two probability distributions are from each other."
+    },
+    {
+      "term": "Pairwise Comparison",
+      "plain": "A training setup where the model is shown two outputs and must learn which one is better."
+    },
+    {
+      "term": "RLHF (Reinforcement Learning from Human Feedback)",
+      "plain": "A method where models are improved using human feedback and reinforcement learning."
+    }
+  ],
+  "related_slugs": [
+    "rlhf",
+    "instructgpt",
+    "reward-modeling",
+    "alignment",
+    "chatgpt"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Alignment",
+      "title": "Train Preferences Directly",
+      "body": [
+        "Discover how DPO lets language models learn human preferences without a reward model."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Why does aligning models matter?",
+      "body": [
+        "Imagine you want your AI assistant to answer kindly and helpfully, not just correctly. How do you teach it what people actually prefer?",
+        "Previous approaches used a separate reward model to score answers, but this extra step made training slow and complex. DPO asks: can we remove this step entirely?"
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "From Preferences to Model Updates",
+      "body": [
+        "DPO starts with pairs of outputs, where one is preferred over the other by humans. The model observes these choices directly.",
+        "Instead of learning a reward model, DPO updates the language model so it assigns higher probability to preferred answers. It uses math to ensure the model shifts just enough.",
+        "The outcome is a language model that acts as its own reward model, learning to generate preferred responses without extra machinery."
+      ],
+      "left": "Human-labeled preferred pairs",
+      "middle": "Directly update language model",
+      "right": "Model prefers human choices",
+      "caption": "DPO cuts out the reward model, letting the language model learn preferences in one step."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Reward Model or Direct Preference?",
+      "body": [
+        "Toggle to see how training changes with or without a separate reward model."
+      ],
+      "offLabel": "Reward Model",
+      "onLabel": "DPO",
+      "offNote": "Needs to train a reward model, then use RL to tune the language model. Slow and complex.",
+      "onNote": "No reward model needed. The language model learns preferences directly, making training simpler and faster."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "The DPO Trick",
+      "body": [
+        "DPO realizes that the language model can be trained to prefer one response over another by adjusting its probabilities directly, using only which answer humans liked.",
+        "It uses a clever mathematical formula to nudge the model toward preferred answers, without ever building a separate reward scoring system."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much should the model shift?",
+      "body": [
+        "Move the slider to see how aggressively the model can be tuned toward preferred responses."
+      ],
+      "lowLabel": "Very little shift",
+      "highLabel": "Aggressive shift",
+      "low": "Model barely changes, stays close to its original behavior.",
+      "mid": "Model leans toward preferences but remains cautious.",
+      "high": "Model strongly favors preferred responses, risking overfitting to preferences."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What does DPO actually need?",
+      "body": [
+        "Select the ingredients needed for DPO training."
+      ],
+      "choices": [
+        {
+          "label": "Language Model",
+          "note": "The main model being trained."
+        },
+        {
+          "label": "Human Preference Pairs",
+          "note": "Pairs of outputs, one preferred by humans."
+        },
+        {
+          "label": "Pairwise Loss Function",
+          "note": "Mathematical rule to compare preferred and non-preferred outputs."
+        },
+        {
+          "label": "KL Regularization",
+          "note": "Keeps the model from drifting too far from its original self."
+        },
+        {
+          "label": "Optimizer",
+          "note": "Adjusts the model's parameters to improve preference alignment."
+        },
+        {
+          "label": "Scaling Factor",
+          "note": "Controls how strongly to push the model toward preferences."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "DPO: Simpler, Faster, Better?",
+      "body": [
+        "DPO matched or beat previous methods like RLHF on preference alignment tasks, with less engineering and training time.",
+        "It produced models that humans preferred, while using fewer resources and avoiding the instability of reinforcement learning."
+      ],
+      "bars": [
+        {
+          "label": "Preference Win Rate",
+          "note": "How often DPO's outputs are preferred",
+          "value": 92
+        },
+        {
+          "label": "Training Simplicity",
+          "note": "Fewer moving parts vs RLHF",
+          "value": 95
+        },
+        {
+          "label": "Resource Use",
+          "note": "Lower compute and memory needs",
+          "value": 80
+        },
+        {
+          "label": "Stability",
+          "note": "Less risk of divergence",
+          "value": 88
+        }
+      ],
+      "caption": "DPO achieved strong results with a simpler and more stable approach."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "A Canonical Shift in Alignment",
+      "body": [
+        "DPO changed how we think about aligning language models, showing that the model itself can learn preferences without a separate reward step.",
+        "This simplification could make future models easier to align, opening the door to safer and more efficient AI."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "Four steps to DPO",
+      "body": [],
+      "recap": [
+        {
+          "label": "Collect",
+          "note": "Gather preference pairs from humans."
+        },
+        {
+          "label": "Compare",
+          "note": "Use pairs to see which outputs are preferred."
+        },
+        {
+          "label": "Update",
+          "note": "Adjust model probabilities toward preferred outputs."
+        },
+        {
+          "label": "Align",
+          "note": "Model generates responses that match human preferences."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Direct Preference Optimization: Your Language Model is Secretly a Reward Model",
+      "body": [
+        "Read the original paper for the technical details and mathematical proofs behind DPO."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,225 @@
+{
+  "paper_id": "generative-agents",
+  "short_name": "Generative Agents",
+  "title": "Generative Agents: Interactive Simulacra of Human Behavior",
+  "authors": "",
+  "year": 2023,
+  "topic": "Agents",
+  "difficulty": "Beginner",
+  "url": "https://arxiv.org/abs/2304.03442",
+  "arxiv_id": "2304.03442",
+  "hook": "Watch AI-powered characters live, remember, and grow in a simulated town.",
+  "promise": "You will understand how generative agents create believable, evolving human-like behaviors using memory and reflection.",
+  "prerequisite_note": "You only need a sense for how computers can simulate simple rules and behaviors.",
+  "glossary": [
+    {
+      "term": "Generative Agent",
+      "plain": "A simulated character that acts, thinks, and remembers like a person."
+    },
+    {
+      "term": "Memory Stream",
+      "plain": "A timeline of experiences and information the agent uses to make decisions."
+    },
+    {
+      "term": "Reflection",
+      "plain": "The process where an agent thinks back on memories to adapt or plan."
+    },
+    {
+      "term": "Planning",
+      "plain": "How an agent sets goals and organizes steps to achieve them."
+    },
+    {
+      "term": "Simulacra",
+      "plain": "A realistic imitation or copy, here of human behavior."
+    },
+    {
+      "term": "Emergent Behavior",
+      "plain": "Unexpected, complex actions that arise from simple rules and interactions."
+    },
+    {
+      "term": "Large Language Model",
+      "plain": "A machine learning system trained to generate and understand human-like text."
+    }
+  ],
+  "related_slugs": [
+    "react-paper",
+    "babyagi",
+    "llm-agents",
+    "autogpt",
+    "socratic-models",
+    "llm-memory"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Agents",
+      "title": "Simulated People, Real Behaviors",
+      "body": [
+        "You will learn how AI agents can remember, reflect, and plan to act more human."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "What if AI characters acted like real people?",
+      "body": [
+        "Imagine a digital town filled with AI characters who wake up, make friends, and even host parties, all without scripts.",
+        "Generative Agents are AI-powered characters that learn from experience, reflect on their actions, and plan their days, making them surprisingly lifelike."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "How simulated lives unfold",
+      "body": [
+        "Each agent gathers memories from their daily experiences, storing details about events and people.",
+        "They periodically reflect on these memories, drawing insights that shape their future plans and actions."
+      ],
+      "left": "Experience and observe",
+      "middle": "Store and reflect on memories",
+      "right": "Act with new plans",
+      "caption": "The cycle of experience, memory, and reflection drives believable agent behavior."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Scripted NPCs vs. Generative Agents",
+      "body": [
+        "Toggle to see how traditional game characters compare to memory-driven generative agents."
+      ],
+      "offLabel": "Scripted NPCs",
+      "onLabel": "Generative Agents",
+      "offNote": "Characters repeat fixed routines and cannot adapt to new events.",
+      "onNote": "Agents adapt, remember past events, and change their plans in response."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "Memory and reflection fuel believable agents",
+      "body": [
+        "Generative Agents do not just react; they build up a stream of memories as they go about their day.",
+        "By reflecting on these memories, agents develop new goals and even change their personalities or social circles over time."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much memory shapes behavior",
+      "body": [
+        "Slide to see how the depth of memory affects agent realism and unpredictability."
+      ],
+      "lowLabel": "Shallow memory",
+      "highLabel": "Deep memory",
+      "low": "Agents forget quickly, act repetitively, and seem robotic.",
+      "mid": "Agents recall recent events, show some adaptation, and act more believably.",
+      "high": "Agents remember distant events, form rich relationships, and surprise you with complex behaviors."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What makes an agent feel real?",
+      "body": [
+        "Pick the six ingredients that together create lifelike generative agents."
+      ],
+      "choices": [
+        {
+          "label": "Memory Stream",
+          "note": "Stores everything the agent experiences."
+        },
+        {
+          "label": "Reflection",
+          "note": "Lets the agent learn from the past and adapt."
+        },
+        {
+          "label": "Planning",
+          "note": "Sets goals and organizes actions."
+        },
+        {
+          "label": "Large Language Model",
+          "note": "Generates natural dialogue and reasoning."
+        },
+        {
+          "label": "Social Interactions",
+          "note": "Enables agents to build and change relationships."
+        },
+        {
+          "label": "Simulated Environment",
+          "note": "Provides a world for agents to act in."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "Emergent social lives, unscripted",
+      "body": [
+        "Generative Agents hosted parties, formed friendships, and even spread rumors, all without direct programming or scripts.",
+        "Observers reported that these agents felt unexpectedly believable and interesting, sometimes even more so than traditional game characters."
+      ],
+      "bars": [
+        {
+          "label": "Believability",
+          "note": "How real agents seemed to humans",
+          "value": 92
+        },
+        {
+          "label": "Adaptability",
+          "note": "Ability to change plans or behaviors",
+          "value": 85
+        },
+        {
+          "label": "Emergent Events",
+          "note": "Unscripted social gatherings or rumors",
+          "value": 78
+        },
+        {
+          "label": "Scripted NPCs",
+          "note": "Traditional game characters, baseline",
+          "value": 30
+        }
+      ],
+      "caption": "Generative agents produced more believable and dynamic behaviors than scripted NPCs."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why Generative Agents changed the field",
+      "body": [
+        "This paper showed that AI agents can go far beyond simple scripts to create social worlds that surprise even their creators.",
+        "By combining memory, reflection, and planning, generative agents point toward richer, more human-like simulations in games, research, and beyond."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "How generative agents work",
+      "body": [],
+      "recap": [
+        {
+          "label": "Observe",
+          "note": "Experience events and interactions in the environment."
+        },
+        {
+          "label": "Remember",
+          "note": "Store memories of what happened and with whom."
+        },
+        {
+          "label": "Reflect",
+          "note": "Think back, draw insights, and learn from the past."
+        },
+        {
+          "label": "Plan",
+          "note": "Set new goals and take actions based on reflection."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Generative Agents: Interactive Simulacra of Human Behavior",
+      "body": [
+        "Read the full paper for deeper details and technical implementation."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,220 @@
+{
+  "paper_id": "voyager",
+  "short_name": "Voyager Agent",
+  "title": "Voyager: An Open-Ended Embodied Agent with Large Language Models",
+  "authors": "",
+  "year": 2023,
+  "topic": "Agents",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/2305.16291",
+  "arxiv_id": "2305.16291",
+  "hook": "Voyager lets an agent invent, remember, and reuse skills as it survives in Minecraft.",
+  "promise": "You will see how Voyager enables agents to autonomously learn and reuse skills in complex worlds.",
+  "prerequisite_note": "Bring a sense for how agents can take actions and learn from feedback in a virtual world.",
+  "glossary": [
+    {
+      "term": "Embodied Agent",
+      "plain": "A virtual or physical entity that acts in the world and senses the results."
+    },
+    {
+      "term": "Large Language Model (LLM)",
+      "plain": "A neural network trained on lots of text, able to generate and reason about language."
+    },
+    {
+      "term": "Skill Library",
+      "plain": "A collection of reusable code snippets or routines learned by the agent to solve tasks."
+    },
+    {
+      "term": "Open-Ended Learning",
+      "plain": "A process where agents continually discover new abilities without a fixed end goal."
+    },
+    {
+      "term": "Curriculum Generation",
+      "plain": "Automatically creating a sequence of challenges that gradually increase in difficulty."
+    },
+    {
+      "term": "Self-Invented Skills",
+      "plain": "Abilities or routines created autonomously by the agent, not hand-coded by humans."
+    }
+  ],
+  "related_slugs": [
+    "alphago",
+    "gato",
+    "mineagent",
+    "autonomous-agents",
+    "babyagi"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Agents",
+      "title": "An Agent That Writes Its Own Playbook",
+      "body": [
+        "Voyager creates and reuses its own skills to solve new problems in Minecraft."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Can an agent learn like a person?",
+      "body": [
+        "Imagine playing Minecraft for the first time. You learn to punch trees, craft tools, and build shelter, inventing useful tricks as you go.",
+        "Voyager tries to give AI agents this kind of open-ended learning: not just following instructions, but inventing and remembering skills to tackle new situations."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "How Voyager discovers and reuses skills",
+      "body": [
+        "Voyager starts as a blank slate, facing the vast world of Minecraft with no built-in skills.",
+        "Each time Voyager solves a problem, it writes new code for that skill and saves it in a growing library, so it can reuse and combine skills later."
+      ],
+      "left": "Agent faces new challenge",
+      "middle": "Invents and saves a skill",
+      "right": "Reuses skills for harder tasks",
+      "caption": "Voyager builds up a toolbox of its own skills, unlocking harder challenges."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Handcrafted skills vs. Voyager's skill discovery",
+      "body": [
+        "Toggle to compare agents with fixed skills against Voyager's self-invented approach."
+      ],
+      "offLabel": "Handcrafted skills",
+      "onLabel": "Voyager's skills",
+      "offNote": "Agent relies on a fixed set of human-coded actions and cannot adapt to new tasks.",
+      "onNote": "Agent invents new skills as needed and reuses them for unexpected challenges."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "Let the agent write its own code",
+      "body": [
+        "Instead of giving the agent a limited set of actions, Voyager lets it write Python code to invent new skills when it encounters a novel task.",
+        "These skills are stored in a library, so Voyager can string them together or adapt them for bigger problems, just like building with Lego bricks."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much skill reuse is enough?",
+      "body": [
+        "Move the slider to see what happens as the agent saves and reuses more or fewer skills."
+      ],
+      "lowLabel": "No skill reuse",
+      "highLabel": "Extensive skill reuse",
+      "low": "Agent must solve each problem from scratch, learning is slow.",
+      "mid": "Agent reuses some skills, moderate learning speed and flexibility.",
+      "high": "Agent reuses many skills, learns rapidly and tackles harder challenges."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What ingredients make Voyager work?",
+      "body": [
+        "Select the core ingredients that enable Voyager to invent and reuse skills in Minecraft."
+      ],
+      "choices": [
+        {
+          "label": "Large Language Model",
+          "note": "Generates and revises Python code for new skills."
+        },
+        {
+          "label": "Skill Library",
+          "note": "Stores reusable code snippets for future use."
+        },
+        {
+          "label": "Automatic Evaluation",
+          "note": "Checks if a new skill works as intended in the game."
+        },
+        {
+          "label": "Curriculum Generation",
+          "note": "Creates a sequence of challenges that guide skill discovery."
+        },
+        {
+          "label": "Embodied Minecraft Agent",
+          "note": "Acts in the world and observes results, like a player."
+        },
+        {
+          "label": "Self-Reflection Loop",
+          "note": "Agent reviews past actions to improve or invent new skills."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "Voyager outpaces other agents in Minecraft",
+      "body": [
+        "Voyager solved more unique tasks and survived longer than previous agents, showing the power of open-ended skill creation.",
+        "Its skill library grew over time, allowing it to tackle increasingly complex challenges that other agents could not handle."
+      ],
+      "bars": [
+        {
+          "label": "Unique Skills Learned",
+          "note": "Voyager invents and remembers more skills",
+          "value": 95
+        },
+        {
+          "label": "Survival Time",
+          "note": "Agent survives longer in the game",
+          "value": 88
+        },
+        {
+          "label": "Task Completion",
+          "note": "Finishes more distinct in-game objectives",
+          "value": 90
+        },
+        {
+          "label": "Skill Reuse Rate",
+          "note": "Reuses learned skills often",
+          "value": 84
+        }
+      ],
+      "caption": "Voyager's self-invented skills give it a clear edge in open-ended environments."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why Voyager matters for AI",
+      "body": [
+        "Voyager shows that agents can go beyond human-coded routines, inventing and reusing their own skills to thrive in complex worlds.",
+        "This approach hints at a future where AI can autonomously grow its abilities, adapting to new tasks without step-by-step programming."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "four-line mental model",
+      "body": [],
+      "recap": [
+        {
+          "label": "Observe",
+          "note": "Agent faces a new problem in Minecraft."
+        },
+        {
+          "label": "Invent",
+          "note": "Writes code for a new skill using a language model."
+        },
+        {
+          "label": "Store",
+          "note": "Saves useful skills in a growing library."
+        },
+        {
+          "label": "Reuse",
+          "note": "Applies old skills to solve harder tasks."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Voyager: An Open-Ended Embodied Agent with Large Language Models",
+      "body": [
+        "Explore the full paper for technical details, experiments, and more insights into Voyager's design."
+      ]
+    }
+  ]
+}

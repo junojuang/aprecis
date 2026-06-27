@@ -1,0 +1,221 @@
+{
+  "paper_id": "llama-2",
+  "short_name": "Llama 2 Models",
+  "title": "Llama 2: Open Foundation and Fine-Tuned Chat Models",
+  "authors": "",
+  "year": 2023,
+  "topic": "Language",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/2307.09288",
+  "arxiv_id": "2307.09288",
+  "hook": "Llama 2 gave everyone powerful language models and a recipe for safer AI chats.",
+  "promise": "You will understand how Llama 2 made open, safe, and capable language models available to all.",
+  "prerequisite_note": "Familiarity with how AI learns from examples helps, but curiosity about language tools is enough.",
+  "glossary": [
+    {
+      "term": "Foundation Model",
+      "plain": "A large AI model trained on broad data, ready for many tasks."
+    },
+    {
+      "term": "Fine-Tuning",
+      "plain": "Adjusting a pre-trained model on specific data to specialize it."
+    },
+    {
+      "term": "Reinforcement Learning from Human Feedback (RLHF)",
+      "plain": "A training method where humans guide the model’s responses."
+    },
+    {
+      "term": "Safety Tuning",
+      "plain": "Extra training steps to reduce harmful or biased outputs."
+    },
+    {
+      "term": "Open Weights",
+      "plain": "Making the model’s parameters available for anyone to use or study."
+    },
+    {
+      "term": "Chat Model",
+      "plain": "A model adjusted to handle conversational tasks, like chatbots."
+    }
+  ],
+  "related_slugs": [
+    "gpt-3",
+    "llama-1",
+    "alpaca",
+    "chatgpt",
+    "palm",
+    "falcon"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Language",
+      "title": "Open, Safer Language Models",
+      "body": [
+        "Discover how Llama 2 opened up powerful language models and made chatbots safer for everyone."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "How AI Models Became More Open",
+      "body": [
+        "Imagine if anyone could use a top-tier language model, not just big companies. Llama 2 made this possible for researchers and developers everywhere.",
+        "But simply releasing a model is not enough. Llama 2 also shared how to make these models safer for real-world conversations."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "From Foundation to Safer Chatbots",
+      "body": [
+        "Llama 2 starts as a foundation model, trained on vast data. It is then fine-tuned with specific techniques to become a safe, conversational AI.",
+        "The process flows from collecting data, training a general model, then fine-tuning it for chat and safety using feedback and special datasets."
+      ],
+      "left": "Large-scale data training",
+      "middle": "Fine-tuning and safety alignment",
+      "right": "Open, safer chat models",
+      "caption": "The journey: train a broad model, refine it for chat, ensure safety, and open it to all."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "What Changes When Models Are Open and Tuned for Safety?",
+      "body": [
+        "See how language models differ when they are closed and generic versus open and safety-tuned."
+      ],
+      "offLabel": "Closed, generic models",
+      "onLabel": "Llama 2's open, safety-tuned models",
+      "offNote": "Few can use them, and harmful outputs are more likely.",
+      "onNote": "Many can access them, and they are trained to avoid unsafe responses."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "A Recipe for Open and Responsible AI",
+      "body": [
+        "Llama 2’s central idea is to release both the models and the detailed steps for making them safe to use in chat.",
+        "By combining open access with transparent safety tuning, Llama 2 lets the world build on strong language technology while reducing risks."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How Does Safety Tuning Affect Model Usefulness?",
+      "body": [
+        "Adjust the slider to see how more or less safety tuning changes the chatbot's behavior."
+      ],
+      "lowLabel": "No safety tuning",
+      "highLabel": "Heavy safety tuning",
+      "low": "Model may give risky or harmful responses, but answers are unfiltered.",
+      "mid": "Model avoids most unsafe outputs, but still gives helpful answers.",
+      "high": "Model is very cautious, but may refuse some valid requests."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What Goes Into an Open, Safe Chat Model?",
+      "body": [
+        "Pick the ingredients that Llama 2 used to build safer, open chatbots."
+      ],
+      "choices": [
+        {
+          "label": "Large-scale text data",
+          "note": "Provides broad knowledge and language skills."
+        },
+        {
+          "label": "Supervised fine-tuning",
+          "note": "Helps the model learn to follow instructions."
+        },
+        {
+          "label": "Human feedback (RLHF)",
+          "note": "Guides the model toward preferred answers."
+        },
+        {
+          "label": "Safety-specific data",
+          "note": "Teaches the model to avoid unsafe outputs."
+        },
+        {
+          "label": "Open model weights",
+          "note": "Lets anyone use or improve the model."
+        },
+        {
+          "label": "Transparency in training",
+          "note": "Shares the process so others can replicate or audit it."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "Llama 2's Impact: Access, Safety, and Performance",
+      "body": [
+        "Llama 2 models matched or outperformed many closed models on chat benchmarks, while being much more widely available.",
+        "Its safety-tuning process led to fewer harmful outputs and set a new standard for openness in language AI."
+      ],
+      "bars": [
+        {
+          "label": "Access to model",
+          "note": "Anyone can download and use",
+          "value": 100
+        },
+        {
+          "label": "Chat performance",
+          "note": "Strong results on benchmarks",
+          "value": 85
+        },
+        {
+          "label": "Safety (harmful output reduction)",
+          "note": "Fewer unsafe responses",
+          "value": 80
+        },
+        {
+          "label": "Transparency",
+          "note": "Training and safety methods are public",
+          "value": 95
+        }
+      ],
+      "caption": "Llama 2 raised the bar for open, safe, and strong language models."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why Llama 2 Changed the Game",
+      "body": [
+        "Before Llama 2, only a few had access to advanced language models, and safety recipes were rarely shared.",
+        "Llama 2 showed that powerful AI can be open and responsible, inspiring a wave of innovation and transparency."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "How Llama 2 Works in Four Moves",
+      "body": [],
+      "recap": [
+        {
+          "label": "Train",
+          "note": "Learn from huge, diverse text data."
+        },
+        {
+          "label": "Fine-tune",
+          "note": "Adjust for chat and specific tasks."
+        },
+        {
+          "label": "Safety-tune",
+          "note": "Reduce harmful or biased answers."
+        },
+        {
+          "label": "Release",
+          "note": "Share both the models and the recipe openly."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Llama 2: Open Foundation and Fine-Tuned Chat Models",
+      "body": [
+        "Read the full details and methodology in the original Llama 2 paper."
+      ]
+    }
+  ]
+}

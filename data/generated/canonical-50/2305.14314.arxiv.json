@@ -1,0 +1,8 @@
+{
+  "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+  "abstract": "QLoRA: Efficient Finetuning of Quantized LLMs. QLoRA made high-quality LLM fine-tuning possible on much smaller hardware.",
+  "authors": [],
+  "year": 2023,
+  "published_at": "2023-01-01T00:00:00Z",
+  "url": "https://arxiv.org/abs/2305.14314"
+}

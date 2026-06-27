@@ -1,0 +1,220 @@
+{
+  "paper_id": "instructpix2pix",
+  "short_name": "Instructional Image Editing",
+  "title": "InstructPix2Pix: Learning to Follow Image Editing Instructions",
+  "authors": "",
+  "year": 2022,
+  "topic": "Diffusion",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/2211.09800",
+  "arxiv_id": "2211.09800",
+  "hook": "Type a request and watch an AI edit your photo just as you asked.",
+  "promise": "You will see how InstructPix2Pix makes AI image editing follow your written instructions.",
+  "prerequisite_note": "You only need a basic sense of how images can be changed and what makes instructions clear.",
+  "glossary": [
+    {
+      "term": "Diffusion Model",
+      "plain": "A type of AI that creates or edits images by gradually adding and removing noise."
+    },
+    {
+      "term": "Instruction-Conditioned",
+      "plain": "Means the AI is guided by a written command or prompt."
+    },
+    {
+      "term": "Paired Data",
+      "plain": "Sets of examples where each image is matched with its edited version and the instruction used."
+    },
+    {
+      "term": "Noising Process",
+      "plain": "The step-by-step way random noise is added to an image in a diffusion model."
+    },
+    {
+      "term": "Denoising",
+      "plain": "The process of removing noise to reveal a new or edited image."
+    },
+    {
+      "term": "Edit Direction",
+      "plain": "The specific change described by the instruction, like make it rainy or add glasses."
+    }
+  ],
+  "related_slugs": [
+    "stable-diffusion",
+    "imagen",
+    "dalle-2",
+    "controlnet",
+    "blip"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Diffusion",
+      "title": "Edit Images with Words",
+      "body": [
+        "Discover how AI can change images by simply following your written instructions."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Imagine asking for any photo edit",
+      "body": [
+        "What if you could just tell a computer, 'Make this cat orange,' and it would paint your wish into reality?",
+        "InstructPix2Pix turns this dream into a working tool by teaching AI to understand and follow natural language instructions for editing images."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "How instructions guide the edit",
+      "body": [
+        "The system starts with an original image and a written edit instruction, like 'add sunglasses.'",
+        "A diffusion model combines the image and instruction, applying noise and then removing it in a way that creates the desired edit."
+      ],
+      "left": "Original image and instruction",
+      "middle": "Diffusion model applies and removes noise guided by the instruction",
+      "right": "Edited image matching the request",
+      "caption": "The instruction steers the AI's editing process at every step."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Old manual edits vs. AI instruction edits",
+      "body": [
+        "Imagine changing a photo yourself versus just telling AI what to do."
+      ],
+      "offLabel": "Manual editing",
+      "onLabel": "InstructPix2Pix",
+      "offNote": "You need editing skills and time for each change.",
+      "onNote": "Type your request and the AI handles the edit in seconds."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "Training AI to listen and edit",
+      "body": [
+        "InstructPix2Pix learns from pairs of images and instructions, so it knows exactly how to change an image when told.",
+        "It uses a diffusion model conditioned on the instruction, ensuring that edits match the user's request and look natural."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much should the edit follow the instruction?",
+      "body": [
+        "The AI can make subtle or dramatic changes depending on how strongly it follows your command."
+      ],
+      "lowLabel": "Barely follows",
+      "highLabel": "Follows exactly",
+      "low": "The edit is hard to notice, sometimes missing the instruction.",
+      "mid": "The edit is visible and reasonably close to the request.",
+      "high": "The edit fully matches the instruction, sometimes at the cost of image realism."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What makes InstructPix2Pix work?",
+      "body": [
+        "Select the ingredients that let AI edit images based on instructions."
+      ],
+      "choices": [
+        {
+          "label": "Paired image-instruction data",
+          "note": "Shows the AI what edits look like for each request."
+        },
+        {
+          "label": "Diffusion model",
+          "note": "The engine that generates or edits images."
+        },
+        {
+          "label": "Text encoder",
+          "note": "Turns instructions into something the AI can use."
+        },
+        {
+          "label": "Conditional denoising",
+          "note": "Lets the AI use the instruction while cleaning up noise."
+        },
+        {
+          "label": "Edit direction learning",
+          "note": "Trains the AI to know what changes to make."
+        },
+        {
+          "label": "Noise scheduling",
+          "note": "Controls how much randomness is added or removed in each step."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "How well does InstructPix2Pix follow instructions?",
+      "body": [
+        "InstructPix2Pix produces edits that are both visually convincing and closely match the user's requests.",
+        "It outperforms previous methods in user satisfaction, instruction accuracy, and edit quality."
+      ],
+      "bars": [
+        {
+          "label": "Instruction following",
+          "note": "AI matches user requests",
+          "value": 92
+        },
+        {
+          "label": "User preference",
+          "note": "Users prefer these edits",
+          "value": 88
+        },
+        {
+          "label": "Realism",
+          "note": "Edits look natural",
+          "value": 85
+        },
+        {
+          "label": "Edit diversity",
+          "note": "Many types of changes possible",
+          "value": 80
+        }
+      ],
+      "caption": "The model excels at making edits that people actually want."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why this paper matters",
+      "body": [
+        "InstructPix2Pix made image editing accessible to anyone who can type a sentence, not just artists or experts.",
+        "It set a new standard for interactive AI tools and inspired further research in controllable image generation."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "four-line mental model",
+      "body": [],
+      "recap": [
+        {
+          "label": "Describe",
+          "note": "User gives an edit instruction in plain language."
+        },
+        {
+          "label": "Guide",
+          "note": "AI pairs the instruction with the original image."
+        },
+        {
+          "label": "Edit",
+          "note": "Diffusion model makes changes step by step."
+        },
+        {
+          "label": "Reveal",
+          "note": "Output is an image that matches the request."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "InstructPix2Pix: Learning to Follow Image Editing Instructions",
+      "body": [
+        "Read the original paper for technical details and more examples of instruction-based image editing."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,220 @@
+{
+  "paper_id": "elmo",
+  "short_name": "ELMo embeddings",
+  "title": "Deep contextualized word representations",
+  "authors": "Matthew E. Peters, Mark Neumann, Mohit Iyyer, Matt Gardner et al.",
+  "year": 2018,
+  "topic": "Language",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/1802.05365",
+  "arxiv_id": "1802.05365",
+  "hook": "ELMo lets computers sense that bank means money in one sentence and river in another.",
+  "promise": "You will understand how ELMo gives words context-sensitive meaning using deep language models.",
+  "prerequisite_note": "It helps to know that words can have different meanings depending on the sentence.",
+  "glossary": [
+    {
+      "term": "Contextualized word representation",
+      "plain": "A way to represent words so their meaning changes with surrounding words."
+    },
+    {
+      "term": "biLM (bidirectional language model)",
+      "plain": "A neural network that reads sentences both forwards and backwards to understand context."
+    },
+    {
+      "term": "Polysemy",
+      "plain": "When a single word has multiple meanings, like 'bat' as an animal or a baseball tool."
+    },
+    {
+      "term": "Pre-trained model",
+      "plain": "A model first trained on lots of text before being used for a specific task."
+    },
+    {
+      "term": "Internal states",
+      "plain": "Hidden layers inside a neural network that capture complex features about the data."
+    },
+    {
+      "term": "Downstream task",
+      "plain": "A language problem like question answering that uses learned word representations."
+    }
+  ],
+  "related_slugs": [
+    "bert",
+    "word2vec",
+    "gpt",
+    "glove",
+    "ulmfit"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Language",
+      "title": "Words That Change With Context",
+      "body": [
+        "Discover how ELMo lets computers read words as flexibly as humans do."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Why bank means money or river",
+      "body": [
+        "Imagine reading the word bank in two sentences: 'She deposited cash at the bank' and 'He sat by the river bank.'",
+        "Humans easily sense which bank is meant, but computers once struggled. ELMo changed that by making word meaning depend on context."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "How ELMo brings words to life",
+      "body": [
+        "First, ELMo reads huge amounts of text and learns to predict words in both directions.",
+        "Then, it captures the inner workings of its neural network to create word representations that shift with context."
+      ],
+      "left": "Read text both ways",
+      "middle": "Extract deep internal states",
+      "right": "Contextual word meaning",
+      "caption": "ELMo's process lets word meaning adapt to each sentence's context."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "See how context changes meaning",
+      "body": [
+        "Compare how older models and ELMo handle the word 'plant' in two different sentences."
+      ],
+      "offLabel": "Old way",
+      "onLabel": "ELMo's way",
+      "offNote": "Always gives 'plant' the same vector, missing factory versus flowerpot.",
+      "onNote": "Gives 'plant' a different vector for 'factory' and 'flower' sentences."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "How ELMo learns context",
+      "body": [
+        "ELMo uses a deep bi-directional language model that reads each sentence both forwards and backwards.",
+        "It then combines signals from different layers of this network, so each word's representation changes based on the words around it."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much context do you want?",
+      "body": [
+        "Slide to see how word meaning changes as you give ELMo more or less context."
+      ],
+      "lowLabel": "No context",
+      "highLabel": "Full sentence context",
+      "low": "Words get a single, fixed meaning, regardless of surroundings.",
+      "mid": "Meaning shifts a bit, but not enough for tricky words.",
+      "high": "Meaning fully adapts to each sentence, capturing subtle differences."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "Choose what makes ELMo work",
+      "body": [
+        "Select the six key ingredients that let ELMo create context-aware word representations."
+      ],
+      "choices": [
+        {
+          "label": "Bidirectional language model",
+          "note": "Reads text both forward and backward."
+        },
+        {
+          "label": "Pre-training on large corpus",
+          "note": "Learns general language patterns before fine-tuning."
+        },
+        {
+          "label": "Layer mixing",
+          "note": "Combines information from several neural network layers."
+        },
+        {
+          "label": "Context-dependent embeddings",
+          "note": "Gives each word a meaning that adapts to its sentence."
+        },
+        {
+          "label": "Character-level inputs",
+          "note": "Handles new or rare words by looking at characters."
+        },
+        {
+          "label": "Plug-and-play for tasks",
+          "note": "Easily adds to existing NLP models."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "ELMo's leap in NLP benchmarks",
+      "body": [
+        "ELMo quickly pushed benchmark-leading results across several language tasks, showing huge improvements over older word embeddings.",
+        "It proved that deep context helps models understand language more like humans do."
+      ],
+      "bars": [
+        {
+          "label": "Question Answering",
+          "note": "Big jump in accuracy",
+          "value": 88
+        },
+        {
+          "label": "Sentiment Analysis",
+          "note": "Substantial improvement",
+          "value": 82
+        },
+        {
+          "label": "Textual Entailment",
+          "note": "Clear gains",
+          "value": 80
+        },
+        {
+          "label": "Named Entity Recognition",
+          "note": "Noticeable boost",
+          "value": 75
+        }
+      ],
+      "caption": "ELMo set new records on multiple NLP tasks by using deep context."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why ELMo is a milestone",
+      "body": [
+        "ELMo marked the first time machines could sense word meaning in context, not just in isolation.",
+        "This opened the door for even more powerful models like BERT and GPT that now dominate language AI."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "How ELMo changes word meaning",
+      "body": [],
+      "recap": [
+        {
+          "label": "Read",
+          "note": "Scans text both forwards and backwards."
+        },
+        {
+          "label": "Capture",
+          "note": "Takes deep signals from multiple neural layers."
+        },
+        {
+          "label": "Adapt",
+          "note": "Shifts each word's meaning based on its sentence."
+        },
+        {
+          "label": "Boost",
+          "note": "Improves performance on many NLP tasks."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Deep contextualized word representations",
+      "body": [
+        "Explore the paper to see how ELMo shaped the future of language models."
+      ]
+    }
+  ]
+}

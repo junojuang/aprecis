@@ -1,0 +1,222 @@
+{
+  "paper_id": "lora",
+  "short_name": "Low-Rank Fine-Tuning",
+  "title": "LoRA: Low-Rank Adaptation of Large Language Models",
+  "authors": "Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu et al.",
+  "year": 2021,
+  "topic": "Adaptation",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/2106.09685",
+  "arxiv_id": "2106.09685",
+  "hook": "Fine-tune giant language models using just a tiny fraction of their weights.",
+  "promise": "You will understand how LoRA makes adapting large models cheaper without sacrificing performance.",
+  "prerequisite_note": "If you know why neural networks have millions of weights, you have enough background.",
+  "glossary": [
+    {
+      "term": "Fine-tuning",
+      "plain": "Tweaking a pre-trained model’s weights to fit a new task or domain."
+    },
+    {
+      "term": "Low-rank",
+      "plain": "A way to describe a matrix that can be expressed using fewer numbers than its size suggests."
+    },
+    {
+      "term": "Adapter",
+      "plain": "A small, extra module added to a model for task adaptation, usually increasing inference cost."
+    },
+    {
+      "term": "Transformer",
+      "plain": "A neural network architecture used for language models like GPT and BERT."
+    },
+    {
+      "term": "Rank decomposition",
+      "plain": "Breaking a large matrix into the product of two smaller ones, capturing its essential patterns."
+    },
+    {
+      "term": "Trainable parameters",
+      "plain": "The weights in a model that can be updated during training."
+    }
+  ],
+  "related_slugs": [
+    "adapters",
+    "gpt3",
+    "p-tuning",
+    "bitfit",
+    "efficient-tuning",
+    "roberta"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Adaptation",
+      "title": "Fine-tuning, Shrunk",
+      "body": [
+        "Discover how LoRA slashes the cost of adapting giant language models by learning only what's necessary."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Why fine-tuning big models is a headache",
+      "body": [
+        "Modern language models are huge, with billions of weights. Adapting them to new tasks usually means updating all those weights.",
+        "But retraining every single parameter is expensive and slow. What if you could adapt a model using only a tiny, focused update?"
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "From full fine-tuning to LoRA's shortcut",
+      "body": [
+        "Full fine-tuning changes every weight in a giant model, using lots of memory and compute.",
+        "LoRA keeps the original model frozen and learns a small, low-rank change for each layer instead.",
+        "This means you get a model adapted to your task, but with far fewer parameters changed or stored."
+      ],
+      "left": "All weights trainable",
+      "middle": "Inject low-rank matrices",
+      "right": "Tiny, efficient adaptation",
+      "caption": "LoRA swaps expensive full-model updates for small, targeted changes."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Fine-tuning: all weights or just a few?",
+      "body": [
+        "Imagine adapting a giant language model for a specific task."
+      ],
+      "offLabel": "Full fine-tuning",
+      "onLabel": "LoRA adaptation",
+      "offNote": "All weights are updated, using massive memory and storage.",
+      "onNote": "Only small low-rank matrices are trained, saving resources."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "The low-rank trick",
+      "body": [
+        "LoRA asks: which parts of a huge model really need to change for a new task? Often, the required changes are much simpler than the full weight matrices.",
+        "Instead of updating the whole matrix, LoRA adds a shortcut: it learns two small matrices whose product approximates the needed update. This keeps most of the model frozen."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much of the model do you update?",
+      "body": [
+        "Slide to see what happens as you adjust the rank of LoRA's update."
+      ],
+      "lowLabel": "Rank 1 (tiny)",
+      "highLabel": "Full rank (huge)",
+      "low": "Almost no memory used, but adaptation may be weak.",
+      "mid": "Good balance: strong adaptation, low cost.",
+      "high": "Like full fine-tuning: great adaptation, but very expensive."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What goes into LoRA?",
+      "body": [
+        "Pick the six essential pieces that make LoRA work."
+      ],
+      "choices": [
+        {
+          "label": "Frozen pre-trained weights",
+          "note": "Keeps most of the model unchanged."
+        },
+        {
+          "label": "Low-rank matrices",
+          "note": "Small, trainable updates injected into each layer."
+        },
+        {
+          "label": "Transformer layers",
+          "note": "Where LoRA applies its changes."
+        },
+        {
+          "label": "Linear projections",
+          "note": "The parts of the model LoRA modifies."
+        },
+        {
+          "label": "Task-specific data",
+          "note": "Guides the adaptation process."
+        },
+        {
+          "label": "PyTorch integration",
+          "note": "Lets you use LoRA easily in real models."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "LoRA's impact: less memory, same results",
+      "body": [
+        "LoRA lets you adapt huge models like GPT-3 using only a fraction of the resources. It matches or beats full fine-tuning on many tasks.",
+        "Because LoRA keeps the original model frozen, you can store many different adaptations without needing a copy of the whole model each time."
+      ],
+      "bars": [
+        {
+          "label": "Trainable parameters",
+          "note": "LoRA uses 0.01 percent as many",
+          "value": 10
+        },
+        {
+          "label": "GPU memory required",
+          "note": "LoRA needs 3x less",
+          "value": 33
+        },
+        {
+          "label": "Performance (accuracy)",
+          "note": "Same or better than full fine-tuning",
+          "value": 100
+        },
+        {
+          "label": "Inference speed",
+          "note": "No extra latency",
+          "value": 100
+        }
+      ],
+      "caption": "LoRA keeps adaptation efficient without harming accuracy."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why LoRA is a milestone",
+      "body": [
+        "LoRA made it practical to fine-tune massive models for many users and tasks, without duplicating the entire model each time.",
+        "Its low-rank approach inspired a wave of efficient adaptation methods, reshaping how researchers and companies deploy large language models."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "four-line mental model",
+      "body": [],
+      "recap": [
+        {
+          "label": "Freeze",
+          "note": "Keep the original model's weights unchanged."
+        },
+        {
+          "label": "Inject",
+          "note": "Add small low-rank matrices into certain layers."
+        },
+        {
+          "label": "Adapt",
+          "note": "Train only the new, efficient parameters."
+        },
+        {
+          "label": "Deploy",
+          "note": "Use the same base model for many tasks, saving resources."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "LoRA: Low-Rank Adaptation of Large Language Models",
+      "body": [
+        "Read the original paper to see the full details, results, and PyTorch code."
+      ]
+    }
+  ]
+}

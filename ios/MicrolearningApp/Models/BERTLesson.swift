@@ -13,7 +13,7 @@ import SwiftUI
 extension LearningLesson {
 
     static let bert = LearningLesson(
-        paperId: "loop:foundational:bert",
+        paperId: "bert",
         cards: [
 
             // 1 — Editorial cover.

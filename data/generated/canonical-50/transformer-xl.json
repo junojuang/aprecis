@@ -1,0 +1,220 @@
+{
+  "paper_id": "transformer-xl",
+  "short_name": "Transformer-XL",
+  "title": "Transformer-XL: Attentive Language Models Beyond a Fixed-Length Context",
+  "authors": "Zihang Dai, Zhilin Yang, Yiming Yang, Jaime Carbonell et al.",
+  "year": 2019,
+  "topic": "Language",
+  "difficulty": "Advanced",
+  "url": "https://arxiv.org/abs/1901.02860",
+  "arxiv_id": "1901.02860",
+  "hook": "Imagine a language model that remembers what happened many sentences ago.",
+  "promise": "You will understand how Transformer-XL enables language models to remember and reason beyond fixed-length context windows.",
+  "prerequisite_note": "Bring an open mind about how computers process sequences, especially in language.",
+  "glossary": [
+    {
+      "term": "Context Window",
+      "plain": "The chunk of input a model can see at once when making predictions."
+    },
+    {
+      "term": "Recurrence",
+      "plain": "A mechanism that allows models to reuse information from previous segments."
+    },
+    {
+      "term": "Positional Encoding",
+      "plain": "Signals that help a model know the order of words in a sequence."
+    },
+    {
+      "term": "Context Fragmentation",
+      "plain": "When a long sequence is split into pieces, breaking connections between them."
+    },
+    {
+      "term": "BPC (Bits per Character)",
+      "plain": "A measure of how well a model compresses or predicts text."
+    },
+    {
+      "term": "Segment-level Recurrence",
+      "plain": "Passing hidden states from one chunk of data to the next, not just within the chunk."
+    }
+  ],
+  "related_slugs": [
+    "transformer",
+    "gpt-2",
+    "bert",
+    "gpt-3",
+    "longformer"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Language",
+      "title": "Let language models remember",
+      "body": [
+        "Discover how Transformer-XL breaks the memory barrier and unlocks longer-range understanding in language models."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "How far can you remember?",
+      "body": [
+        "Imagine trying to write a story, but you can only see the last paragraph, everything before is gone. That's how most language models work.",
+        "Transformer-XL was created to help models remember much further, so they can make sense of stories, articles, or code that stretch across many pages."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "From short-term to long-term memory",
+      "body": [
+        "Traditional Transformers only see a fixed chunk of text, making it hard to connect ideas that are far apart.",
+        "Transformer-XL introduces a way to reuse information from previous chunks, letting the model build up memory over time."
+      ],
+      "left": "Fixed context chunk",
+      "middle": "Segment-level recurrence and new positional encoding",
+      "right": "Longer-range attention and coherence",
+      "caption": "The paper's key move is linking chunks together so attention can span much further."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "How does context length change?",
+      "body": [
+        "Toggle to see how models handle long documents with and without Transformer-XL's recurrence."
+      ],
+      "offLabel": "Vanilla Transformer",
+      "onLabel": "Transformer-XL",
+      "offNote": "Can only attend within a chunk. Loses track of earlier content. Context fragmentation splits up meaning.",
+      "onNote": "Remembers previous segments. Connects distant ideas. Reduces fragmentation and improves coherence."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "The recurrence trick",
+      "body": [
+        "Transformer-XL passes hidden states from one segment to the next, almost like handing memory notes across time.",
+        "It also introduces a new positional encoding so that reused memories still make sense in their new context, keeping the sequence order unbroken."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much memory does your model have?",
+      "body": [
+        "Slide to see what happens as you increase the context length a model can use."
+      ],
+      "lowLabel": "Short context",
+      "highLabel": "Long context",
+      "low": "The model quickly forgets earlier information and struggles with long-range dependencies.",
+      "mid": "Some memory is carried over, so the model can link nearby ideas but may miss distant ones.",
+      "high": "The model connects events and ideas across very long stretches, generating more coherent and meaningful text."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "Which parts make Transformer-XL work?",
+      "body": [
+        "Pick the ingredients that let Transformer-XL break the context barrier."
+      ],
+      "choices": [
+        {
+          "label": "Segment-level recurrence",
+          "note": "Lets the model reuse hidden states from earlier segments."
+        },
+        {
+          "label": "Relative positional encoding",
+          "note": "Adapts positional signals so memory from previous segments fits smoothly."
+        },
+        {
+          "label": "Efficient evaluation",
+          "note": "Speeds up inference by reusing computations across segments."
+        },
+        {
+          "label": "Longer effective context",
+          "note": "Allows the model to attend over much longer text spans."
+        },
+        {
+          "label": "Context fragmentation solution",
+          "note": "Prevents meaning from being lost at segment boundaries."
+        },
+        {
+          "label": "Standard attention layers",
+          "note": "Still forms the backbone, but now enhanced by recurrence."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "How much better did Transformer-XL perform?",
+      "body": [
+        "Transformer-XL smashed previous records for language modeling, handling much longer dependencies than RNNs or vanilla Transformers.",
+        "It achieved benchmark-leading results on several benchmarks and was dramatically faster at evaluation, making large-scale text modeling practical."
+      ],
+      "bars": [
+        {
+          "label": "Context length vs RNN",
+          "note": "80 percent longer dependencies",
+          "value": 80
+        },
+        {
+          "label": "Context length vs Transformer",
+          "note": "450 percent longer dependencies",
+          "value": 100
+        },
+        {
+          "label": "Evaluation speedup",
+          "note": "Up to 1800 times faster",
+          "value": 100
+        },
+        {
+          "label": "BPC on enwiki8",
+          "note": "Best compression achieved",
+          "value": 95
+        }
+      ],
+      "caption": "Transformer-XL set new records for both performance and efficiency in language modeling."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why Transformer-XL changed the game",
+      "body": [
+        "By letting attention span across segments, Transformer-XL made it possible for models to understand and generate much longer, more coherent text.",
+        "Its innovations inspired later models that handle even bigger documents and more complex dependencies, shaping the future of language AI."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "four-line mental model",
+      "body": [],
+      "recap": [
+        {
+          "label": "Divide",
+          "note": "Split long text into manageable segments."
+        },
+        {
+          "label": "Remember",
+          "note": "Pass hidden states across segments for memory."
+        },
+        {
+          "label": "Align",
+          "note": "Use new positional encoding to keep order intact."
+        },
+        {
+          "label": "Connect",
+          "note": "Attend over longer context for richer understanding."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Transformer-XL: Attentive Language Models Beyond a Fixed-Length Context",
+      "body": [
+        "For the full technical details and results, see the original paper on arXiv."
+      ]
+    }
+  ]
+}

@@ -12,7 +12,7 @@ import SwiftUI
 extension LearningLesson {
 
     static let backprop = LearningLesson(
-        paperId: "loop:foundational:backprop",
+        paperId: "backprop",
         cards: [
 
             // 1 — Editorial cover.

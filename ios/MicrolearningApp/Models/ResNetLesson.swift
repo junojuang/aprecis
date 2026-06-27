@@ -10,7 +10,7 @@ import SwiftUI
 extension LearningLesson {
 
     static let resnet = LearningLesson(
-        paperId: "loop:foundational:resnet",
+        paperId: "resnet",
         cards: [
 
             .cover(

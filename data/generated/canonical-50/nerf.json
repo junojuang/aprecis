@@ -1,0 +1,220 @@
+{
+  "paper_id": "nerf",
+  "short_name": "Neural Radiance Fields",
+  "title": "NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis",
+  "authors": "Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Jonathan T. Barron et al.",
+  "year": 2020,
+  "topic": "Vision",
+  "difficulty": "Advanced",
+  "url": "https://arxiv.org/abs/2003.08934",
+  "arxiv_id": "2003.08934",
+  "hook": "NeRF lets you peer around corners in a photo-realistic 3D world from just a few snapshots.",
+  "promise": "You will understand how NeRF uses neural networks to reconstruct and render new views of 3D scenes.",
+  "prerequisite_note": "You only need a sense for how computers represent images and how neural networks can learn patterns from data.",
+  "glossary": [
+    {
+      "term": "Radiance Field",
+      "plain": "A function that tells you the color and brightness coming from any point in a scene, in any direction."
+    },
+    {
+      "term": "Volume Rendering",
+      "plain": "A way to create images by simulating how light travels through a 3D space filled with stuff."
+    },
+    {
+      "term": "5D Coordinate",
+      "plain": "A point in space (x, y, z) plus a viewing direction (theta, phi) used as input to the network."
+    },
+    {
+      "term": "Density",
+      "plain": "A value that describes how much matter is at a given spot in the scene."
+    },
+    {
+      "term": "View Synthesis",
+      "plain": "Creating new images of a scene from viewpoints the camera never actually saw."
+    },
+    {
+      "term": "Ray Marching",
+      "plain": "Tracing a line through the scene, sampling points along it to collect color and density information."
+    }
+  ],
+  "related_slugs": [
+    "instant-ngp",
+    "nerf-acceleration",
+    "dreamfusion",
+    "mip-nerf",
+    "gaussian-splatting"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Vision",
+      "title": "See 3D from a Few Photos",
+      "body": [
+        "Learn how NeRF builds a full 3D scene inside a neural network and renders new views."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "How can a neural network learn a 3D world?",
+      "body": [
+        "Imagine holding a few photos of a room and wanting to see what is behind the chair or around the corner. You only have those photos, but you want to create new images from any angle.",
+        "This is the challenge NeRF tackles. It uses a neural network to build a virtual 3D world from sparse pictures, letting you move the camera as if you were there."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "From coordinates to images: NeRF's flow",
+      "body": [
+        "NeRF takes in a set of camera images with known positions. For each pixel you want to render, it traces a ray through the scene and samples many points along that line.",
+        "At each point, NeRF's neural network predicts how much stuff is there and what color light it emits in the viewing direction. All these samples are blended together to create the final pixel."
+      ],
+      "left": "Input images and camera poses",
+      "middle": "Neural network learns scene as a radiance field",
+      "right": "Render new images from any viewpoint",
+      "caption": "The network learns to answer: what color and density are at any point, from any angle?"
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Classic 3D vs. NeRF: How do we reconstruct a scene?",
+      "body": [
+        "Traditional methods build explicit 3D meshes or point clouds, while NeRF encodes the scene as a neural function. Slide to compare approaches."
+      ],
+      "offLabel": "Explicit 3D Models",
+      "onLabel": "NeRF's Neural Field",
+      "offNote": "Requires detailed modeling, struggles with complex or fuzzy surfaces, and is hard to optimize for photorealism.",
+      "onNote": "Learns the scene's color and density everywhere, handles fine detail, and smoothly renders new views."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "A neural network as a 3D scene",
+      "body": [
+        "NeRF's key insight is to let a neural network represent the entire 3D scene. Instead of storing geometry or textures, the network learns a continuous function mapping any 3D point and direction to color and density.",
+        "To generate a new image, NeRF traces rays from the virtual camera through space, querying the network at many points along each ray. It blends these outputs using volume rendering to produce realistic images from unseen angles."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How does the number of input views affect NeRF's results?",
+      "body": [
+        "Drag to see how using fewer or more input photos changes the quality and realism of NeRF's synthesized views."
+      ],
+      "lowLabel": "Few Input Views",
+      "highLabel": "Many Input Views",
+      "low": "NeRF struggles with missing regions, blurry or incorrect details, and more artifacts.",
+      "mid": "NeRF fills in most regions but may miss fine details or subtle lighting.",
+      "high": "NeRF produces crisp, photorealistic results with accurate geometry and lighting from all angles."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "Which ingredients make NeRF work?",
+      "body": [
+        "Pick the six core ingredients that let NeRF synthesize new 3D views from sparse images."
+      ],
+      "choices": [
+        {
+          "label": "Fully connected neural network",
+          "note": "Learns the continuous scene function."
+        },
+        {
+          "label": "5D coordinates (position and direction)",
+          "note": "Allows the network to answer for any point and angle."
+        },
+        {
+          "label": "Volume rendering equation",
+          "note": "Blends sampled colors and densities into a pixel."
+        },
+        {
+          "label": "Ray marching",
+          "note": "Samples points along each camera ray."
+        },
+        {
+          "label": "Known camera poses",
+          "note": "Lets NeRF relate input images to 3D space."
+        },
+        {
+          "label": "Photometric loss (pixel-wise error)",
+          "note": "Trains the network to match rendered images to real photos."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "NeRF's leap in view synthesis quality",
+      "body": [
+        "NeRF set a new standard for photorealistic view synthesis, outperforming previous methods on detail, smoothness, and realism. It could render convincing images from viewpoints never seen before.",
+        "Its results inspired a wave of research into neural scene representations, leading to faster, more flexible, and more scalable approaches in 3D vision."
+      ],
+      "bars": [
+        {
+          "label": "Photorealism",
+          "note": "How real the output looks",
+          "value": 95
+        },
+        {
+          "label": "Detail preservation",
+          "note": "Captures fine textures and edges",
+          "value": 92
+        },
+        {
+          "label": "Generalization to new views",
+          "note": "Synthesizes unseen angles well",
+          "value": 90
+        },
+        {
+          "label": "Computation time",
+          "note": "Slow to train and render",
+          "value": 25
+        }
+      ],
+      "caption": "NeRF excelled in quality and detail, but early versions were slow to render."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why NeRF is a landmark in AI vision",
+      "body": [
+        "NeRF introduced a new way to capture and render 3D scenes using neural networks, without explicit geometry or hand-crafted models.",
+        "Its approach unlocked a wave of research and practical applications in graphics, virtual reality, and robotics, forever changing how we think about scene representation."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "NeRF in four moves",
+      "body": [],
+      "recap": [
+        {
+          "label": "Sample",
+          "note": "Take sparse images and camera poses"
+        },
+        {
+          "label": "Learn",
+          "note": "Train a neural network to map 5D coordinates to color and density"
+        },
+        {
+          "label": "Render",
+          "note": "Trace rays and blend outputs using volume rendering"
+        },
+        {
+          "label": "Synthesize",
+          "note": "Generate new views from any camera position"
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis",
+      "body": [
+        "Read the paper for technical details and see the original results and supplementary video."
+      ]
+    }
+  ]
+}

@@ -84,7 +84,7 @@ struct MicrolearningApp: App {
                      "word2vec", "seq2seq", "gans", "resnet", "attention"]
         let store = ReadingProgressStore.shared
         for slug in slugs {
-            store.setProgress(0.0, for: "loop:foundational:\(slug)")
+            store.setProgress(0.0, for: slug)
         }
         UserDefaults.standard.removeObject(forKey: staleFlag)
     }

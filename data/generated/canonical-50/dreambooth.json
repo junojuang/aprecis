@@ -1,0 +1,221 @@
+{
+  "paper_id": "dreambooth",
+  "short_name": "Personalized Diffusion",
+  "title": "DreamBooth: Fine Tuning Text-to-Image Diffusion Models for Subject-Driven Generation",
+  "authors": "",
+  "year": 2022,
+  "topic": "Diffusion",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/2208.12242",
+  "arxiv_id": "2208.12242",
+  "hook": "Imagine a dog in any style, from just a few photos of your own pet.",
+  "promise": "You will understand how DreamBooth personalizes text-to-image models using just a handful of subject images.",
+  "prerequisite_note": "You only need to grasp that diffusion models generate images by gradually refining noise into pictures.",
+  "glossary": [
+    {
+      "term": "Diffusion Model",
+      "plain": "A type of AI that creates images by turning random noise into realistic pictures through stepwise refinement."
+    },
+    {
+      "term": "Fine-Tuning",
+      "plain": "Adjusting a pre-trained model on new, specific data to specialize it further."
+    },
+    {
+      "term": "Subject-Driven Generation",
+      "plain": "Making images that consistently feature a particular object, person, or pet."
+    },
+    {
+      "term": "Identifier Token",
+      "plain": "A unique word added to prompts that tells the model to use your specific subject."
+    },
+    {
+      "term": "Overfitting",
+      "plain": "When a model memorizes the training images and loses its ability to generalize."
+    },
+    {
+      "term": "Prompt Engineering",
+      "plain": "Crafting the input text to guide what the model generates."
+    }
+  ],
+  "related_slugs": [
+    "stable-diffusion",
+    "imagen",
+    "dalle2",
+    "textual-inversion",
+    "controlnet"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Diffusion",
+      "title": "Your dog in Van Gogh",
+      "body": [
+        "Learn how DreamBooth lets AI models generate images of your chosen subject in any style."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Can AI remember your dog?",
+      "body": [
+        "Imagine you want a painting of your own dog wearing a crown, in the style of Van Gogh. Most AI image generators struggle to recreate your specific pet from just a few photos.",
+        "DreamBooth solves this by teaching the AI to recognize your subject, so you can create endless variations featuring your own dog, toy, or even a special object."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "From photos to personalized art",
+      "body": [
+        "First, you collect a handful of photos of your subject, like your dog.",
+        "Next, DreamBooth fine-tunes a pre-trained diffusion model using these images, teaching it a new identifier token that represents your subject.",
+        "Finally, you can use prompts with this token to generate images of your dog in any setting or style you imagine."
+      ],
+      "left": "Subject photos",
+      "middle": "Fine-tune with identifier token",
+      "right": "Personalized image generation",
+      "caption": "DreamBooth connects your real subject to the creative power of AI art."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "How does DreamBooth compare to generic models?",
+      "body": [
+        "Suppose you ask for a painting of your dog in a fantasy castle."
+      ],
+      "offLabel": "Generic model",
+      "onLabel": "DreamBooth",
+      "offNote": "Produces a random dog that looks nothing like yours.",
+      "onNote": "Generates your actual dog, recognized and placed in the fantasy scene."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "The trick: teaching the model a new word",
+      "body": [
+        "DreamBooth introduces a unique identifier token, like 'sks dog,' into the model's vocabulary. This token is linked to your specific subject during fine-tuning.",
+        "Whenever you use this token in a prompt, the model recalls the visual details of your subject and blends them into any scene or style you describe."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much should the model specialize?",
+      "body": [
+        "Adjust how closely the model sticks to your subject's features versus generating creative variations."
+      ],
+      "lowLabel": "Loose fit",
+      "highLabel": "Exact fit",
+      "low": "Subject looks generic and may lose identity.",
+      "mid": "Subject is recognizable but allows some creative changes.",
+      "high": "Subject is almost identical to your photos, but less variety in outputs."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What does DreamBooth need?",
+      "body": [
+        "Pick the core ingredients that let DreamBooth personalize image generation."
+      ],
+      "choices": [
+        {
+          "label": "Pre-trained diffusion model",
+          "note": "The starting point for image generation."
+        },
+        {
+          "label": "Subject photos",
+          "note": "A small set of images of your unique subject."
+        },
+        {
+          "label": "Identifier token",
+          "note": "A new word that represents your subject in prompts."
+        },
+        {
+          "label": "Fine-tuning process",
+          "note": "Adjusts the model to learn your subject."
+        },
+        {
+          "label": "Prompt with identifier",
+          "note": "Guides the model to use your subject."
+        },
+        {
+          "label": "Regularization",
+          "note": "Prevents the model from forgetting how to generate other images."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "DreamBooth’s personal touch",
+      "body": [
+        "DreamBooth set a new standard for personalized image generation, producing faithful, creative images from as few as 3 to 5 photos.",
+        "It also inspired a wave of research into model customization and creative uses of diffusion models for individuals."
+      ],
+      "bars": [
+        {
+          "label": "Subject fidelity",
+          "note": "Captures your subject's details",
+          "value": 92
+        },
+        {
+          "label": "Prompt flexibility",
+          "note": "Works with varied styles and scenes",
+          "value": 85
+        },
+        {
+          "label": "Few-shot learning",
+          "note": "Needs only a handful of images",
+          "value": 90
+        },
+        {
+          "label": "Generalization",
+          "note": "Avoids overfitting to just your images",
+          "value": 70
+        }
+      ],
+      "caption": "DreamBooth balances faithfulness to your subject with creative flexibility."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why DreamBooth matters",
+      "body": [
+        "DreamBooth opened the door to truly personal AI art, putting your own memories, pets, or objects into any scene you imagine.",
+        "Its approach to fine-tuning became a foundation for further research in personalized generative models and creative expression."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "DreamBooth in four moves",
+      "body": [],
+      "recap": [
+        {
+          "label": "Collect",
+          "note": "Gather a few photos of your unique subject."
+        },
+        {
+          "label": "Tokenize",
+          "note": "Assign a special identifier token to your subject."
+        },
+        {
+          "label": "Fine-tune",
+          "note": "Train the model to link the token to your subject's features."
+        },
+        {
+          "label": "Generate",
+          "note": "Create images of your subject in any prompt or style."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "DreamBooth: Fine Tuning Text-to-Image Diffusion Models for Subject-Driven Generation",
+      "body": [
+        "Read the paper to explore the full details and see more creative results."
+      ]
+    }
+  ]
+}

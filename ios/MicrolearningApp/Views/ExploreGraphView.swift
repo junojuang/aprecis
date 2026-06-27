@@ -496,7 +496,13 @@ struct GraphCanvas: View {
     }
 
     private func loopFallbackTitle(id: String) -> String {
-        id.replacingOccurrences(of: "loop:foundational:", with: "")
+        if id.hasPrefix("arxiv:") {
+            return "Paper"
+        }
+        if id.hasPrefix("doi:") || id.hasPrefix("10.") {
+            return "Paper"
+        }
+        return id.replacingOccurrences(of: "loop:foundational:", with: "")
           .replacingOccurrences(of: "loop:", with: "")
           .replacingOccurrences(of: "-", with: " ")
           .capitalized

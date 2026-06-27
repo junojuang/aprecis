@@ -5,7 +5,7 @@ import Foundation
 // Resolves `CardDeck` → `DailyLoopContent` (shown in DailyLoopView) or legacy PaperDetailView.
 //
 // Order of precedence:
-// 1. Curator `loop:` id → [`CuratedPaperCatalog`](CuratedPaperCatalog)
+// 1. Curator paper id -> [`CuratedPaperCatalog`](CuratedPaperCatalog)
 // 2. Chain-of-thought arXiv / title heuristic (matches canonical CoT interactive loop)
 // 3. `deck.blueprint` → fused `DailyLoopContent(deck:blueprint:)`
 // 4. Legacy concept cards (`PaperDetailView`)
@@ -21,8 +21,7 @@ enum PaperReadingExperience {
         if let webURL = WebLessonRegistry.url(for: deck) {
             return .webLesson(webURL)
         }
-        if deck.paperId.hasPrefix("loop:"),
-           let base = CuratedPaperCatalog.content(forPaperId: deck.paperId) {
+        if let base = CuratedPaperCatalog.content(forPaperId: deck.paperId) {
             return .dailyLoop(base.withPaperId(deck.paperId))
         }
         if isChainOfThoughtBridge(deck) {

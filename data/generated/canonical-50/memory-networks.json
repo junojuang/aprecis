@@ -1,0 +1,216 @@
+{
+  "paper_id": "memory-networks",
+  "short_name": "Memory Networks",
+  "title": "Memory Networks",
+  "authors": "Jason Weston, Sumit Chopra, Antoine Bordes",
+  "year": 2014,
+  "topic": "Memory",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/1410.3916",
+  "arxiv_id": "1410.3916",
+  "hook": "Imagine a neural network that can look up facts before answering your question.",
+  "promise": "You will understand how memory networks let AI retrieve and reason over stored knowledge for question answering.",
+  "prerequisite_note": "Bring an intuition for how neural networks process information and why memory might help them reason.",
+  "glossary": [
+    {
+      "term": "Memory Component",
+      "plain": "A part of the model where information can be stored, updated, and retrieved when needed."
+    },
+    {
+      "term": "Inference Component",
+      "plain": "The reasoning part that decides which facts from memory are relevant to answer a question."
+    },
+    {
+      "term": "Question Answering (QA)",
+      "plain": "A task where a system receives a question and must generate or select the correct answer."
+    },
+    {
+      "term": "Chaining",
+      "plain": "The process of connecting multiple pieces of information to reach a conclusion."
+    },
+    {
+      "term": "Dynamic Knowledge Base",
+      "plain": "A flexible, updatable set of facts the model can use, rather than a fixed database."
+    }
+  ],
+  "related_slugs": [
+    "transformer-attention",
+    "retrieval-augmented-generation",
+    "babi-tasks",
+    "neural-turing-machines",
+    "end-to-end-memory-networks"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Memory",
+      "title": "Let AI Remember",
+      "body": [
+        "Discover how giving neural networks memory lets them answer questions by retrieving and reasoning over facts."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Why can't neural nets remember?",
+      "body": [
+        "Standard neural networks are great at pattern recognition but struggle to recall specific facts or details from past inputs.",
+        "Imagine asking a chatbot about your last vacation. Without memory, it cannot connect your question to any stored details, so its answers are generic."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "How memory networks work",
+      "body": [
+        "First, the model stores sentences or facts in a dedicated memory component, like writing notes on a whiteboard.",
+        "When a question arrives, the inference component decides which stored facts are relevant, retrieves them, and reasons over the results to produce an answer."
+      ],
+      "left": "Store facts in memory",
+      "middle": "Retrieve and reason over relevant facts",
+      "right": "Produce an informed answer",
+      "caption": "Memory networks separate storage and reasoning, allowing questions to trigger targeted retrieval from memory."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "How does memory change QA?",
+      "body": [
+        "Switch between answering questions without memory and with memory networks to see the difference."
+      ],
+      "offLabel": "No memory",
+      "onLabel": "Memory network",
+      "offNote": "Answers are vague or miss key details, since the model cannot recall specific facts.",
+      "onNote": "Model retrieves and chains relevant facts, giving more precise and context-aware answers."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "A neural net with a notebook",
+      "body": [
+        "Memory networks treat knowledge as something the model can read and write, not just compress into weights.",
+        "This lets the model chain together multiple facts, retrieving just what it needs to answer complex questions."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much memory is enough?",
+      "body": [
+        "Slide to see how the size of memory affects the model's ability to answer questions."
+      ],
+      "lowLabel": "Tiny memory",
+      "highLabel": "Large memory",
+      "low": "Model quickly forgets details and cannot answer multi-step questions.",
+      "mid": "Model remembers enough to answer simple questions but struggles with deeper reasoning.",
+      "high": "Model can chain many facts and reason through complex scenarios, but retrieval is slower."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What goes into a memory network?",
+      "body": [
+        "Pick the components needed to construct a functioning memory network model."
+      ],
+      "choices": [
+        {
+          "label": "Memory slots",
+          "note": "Hold the facts or sentences to be stored."
+        },
+        {
+          "label": "Inference module",
+          "note": "Selects which memories are relevant to a question."
+        },
+        {
+          "label": "Input feature map",
+          "note": "Encodes the incoming question and facts into a usable form."
+        },
+        {
+          "label": "Output feature map",
+          "note": "Converts the combined result back into an answer."
+        },
+        {
+          "label": "Memory update rule",
+          "note": "Decides how new information is added or old facts are changed."
+        },
+        {
+          "label": "Supervision signal",
+          "note": "Guides the network during training so it learns to retrieve the right facts."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "How memory networks performed",
+      "body": [
+        "Memory networks were tested on large-scale QA and toy reasoning tasks, showing big gains over previous models.",
+        "They excelled at chaining facts together, especially for questions that require multi-step reasoning or context."
+      ],
+      "bars": [
+        {
+          "label": "QA accuracy (large scale)",
+          "note": "Outperformed traditional neural nets",
+          "value": 75
+        },
+        {
+          "label": "QA accuracy (toy tasks)",
+          "note": "Solved complex chaining questions",
+          "value": 92
+        },
+        {
+          "label": "Chaining ability",
+          "note": "Handled multi-step reasoning",
+          "value": 88
+        },
+        {
+          "label": "Generalization",
+          "note": "Adapted to new facts",
+          "value": 70
+        }
+      ],
+      "caption": "Memory networks set new benchmarks for QA tasks that require reasoning over stored information."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why Memory Networks changed AI",
+      "body": [
+        "This paper showed that separating memory from reasoning lets neural networks answer questions more like humans do.",
+        "It opened up new ways for AI to use external knowledge, influencing later work like transformers and retrieval-augmented models."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "How memory networks answer questions",
+      "body": [],
+      "recap": [
+        {
+          "label": "Store",
+          "note": "Save facts in external memory slots."
+        },
+        {
+          "label": "Retrieve",
+          "note": "Find relevant facts for each question."
+        },
+        {
+          "label": "Chain",
+          "note": "Combine multiple facts to reason through complex queries."
+        },
+        {
+          "label": "Answer",
+          "note": "Produce an informed response using retrieved information."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Memory Networks",
+      "body": [
+        "Read the original paper to explore the details behind this influential model."
+      ]
+    }
+  ]
+}

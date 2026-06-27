@@ -1,0 +1,222 @@
+{
+  "paper_id": "scaling-laws",
+  "short_name": "Scaling Laws",
+  "title": "Scaling Laws for Neural Language Models",
+  "authors": "Jared Kaplan, Sam McCandlish, Tom Henighan, Tom B. Brown et al.",
+  "year": 2020,
+  "topic": "Scaling",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/2001.08361",
+  "arxiv_id": "2001.08361",
+  "hook": "Model performance becomes surprisingly predictable as you scale up size, data, and compute.",
+  "promise": "You will understand how model performance can be forecasted using simple scaling laws.",
+  "prerequisite_note": "If you know that neural networks get better with more data or compute, you are ready.",
+  "glossary": [
+    {
+      "term": "Scaling law",
+      "plain": "A mathematical rule showing how performance changes as you increase model size, data, or compute."
+    },
+    {
+      "term": "Cross-entropy loss",
+      "plain": "A measure of how well a model predicts the correct output, lower means better predictions."
+    },
+    {
+      "term": "Power law",
+      "plain": "A relationship where one quantity changes as a fixed power of another."
+    },
+    {
+      "term": "Overfitting",
+      "plain": "When a model learns the training data too well and performs poorly on new data."
+    },
+    {
+      "term": "Sample efficiency",
+      "plain": "How effectively a model learns from each data point."
+    },
+    {
+      "term": "Compute budget",
+      "plain": "The total amount of computational resources available for training a model."
+    }
+  ],
+  "related_slugs": [
+    "gpt-3",
+    "chinchilla",
+    "efficientnet",
+    "moore-law-ai",
+    "gpt-neo",
+    "paLM"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Scaling",
+      "title": "How big is enough?",
+      "body": [
+        "Learn how simple rules predict language model performance as you scale up."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Why did scaling become a science?",
+      "body": [
+        "For years, training bigger neural networks felt like guesswork. Sometimes adding data or compute helped, sometimes it barely mattered.",
+        "This paper revealed that performance follows a predictable curve as you scale up model size, data, and compute, making progress feel almost mathematical."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "How scaling predicts performance",
+      "body": [
+        "Start with a small language model and a modest dataset. Measure its performance using cross-entropy loss.",
+        "Increase the model size, the dataset, or the compute, and watch the loss drop in a smooth, predictable way following a power law.",
+        "This lets you forecast how much bigger or better you need to go for the next performance jump."
+      ],
+      "left": "Small model and dataset",
+      "middle": "Scale up size, data, and compute",
+      "right": "Predictable improvement in loss",
+      "caption": "Scaling up resources leads to steady, forecastable gains in model performance."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Guessing vs. forecasting model success",
+      "body": [
+        "Before scaling laws, researchers had to experiment blindly to find the best model size."
+      ],
+      "offLabel": "Trial and error",
+      "onLabel": "Scaling law forecast",
+      "offNote": "Wasted resources and unpredictable results",
+      "onNote": "Simple math predicts how much to scale for better performance"
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "The central trick: power laws everywhere",
+      "body": [
+        "The authors found that as you increase model size, dataset size, or compute, the loss decreases smoothly, following a power law.",
+        "This means you can use a simple formula to estimate how much improvement to expect from more resources, making scaling a science instead of a gamble."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How does model size affect data needs?",
+      "body": [
+        "Slide to see how changing model size changes how much data you need before overfitting."
+      ],
+      "lowLabel": "Small model",
+      "highLabel": "Huge model",
+      "low": "Needs less data, but quickly hits a performance wall.",
+      "mid": "Balanced size, uses data efficiently before overfitting.",
+      "high": "Needs much more data, but gains more from each sample before overfitting."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "Pick your scaling recipe",
+      "body": [
+        "Choose which ingredients matter most to improve a language model's performance."
+      ],
+      "choices": [
+        {
+          "label": "Model size",
+          "note": "Bigger models can learn more patterns."
+        },
+        {
+          "label": "Dataset size",
+          "note": "More data helps models generalize."
+        },
+        {
+          "label": "Compute budget",
+          "note": "More compute allows longer or bigger training."
+        },
+        {
+          "label": "Training duration",
+          "note": "Stopping at the right time avoids overfitting."
+        },
+        {
+          "label": "Network width",
+          "note": "Wider networks matter less than total size."
+        },
+        {
+          "label": "Network depth",
+          "note": "Deeper networks matter less than total size."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "Scaling laws change the game",
+      "body": [
+        "Before this paper, model improvement felt like trial and error, with no clear path forward.",
+        "Now, teams can plan model growth and resource allocation with confidence, accelerating advances in language models and AI."
+      ],
+      "bars": [
+        {
+          "label": "Predictability",
+          "note": "Forecasting future gains",
+          "value": 95
+        },
+        {
+          "label": "Sample efficiency",
+          "note": "Larger models learn more per sample",
+          "value": 85
+        },
+        {
+          "label": "Compute efficiency",
+          "note": "Optimal use of resources",
+          "value": 80
+        },
+        {
+          "label": "Architectural tweaks",
+          "note": "Minor effect compared to scaling",
+          "value": 25
+        }
+      ],
+      "caption": "Scaling laws made performance gains more predictable and efficient than ever before."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why scaling laws are essential",
+      "body": [
+        "Scaling laws transformed AI development from intuition and luck to a more predictable engineering discipline.",
+        "By showing that bigger models and datasets yield steady, forecastable improvements, this paper laid the groundwork for today's AI breakthroughs."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "four-line mental model",
+      "body": [],
+      "recap": [
+        {
+          "label": "Observe",
+          "note": "Notice smooth performance gains as you scale up."
+        },
+        {
+          "label": "Measure",
+          "note": "Use cross-entropy loss to track improvements."
+        },
+        {
+          "label": "Forecast",
+          "note": "Apply power laws to predict future gains."
+        },
+        {
+          "label": "Allocate",
+          "note": "Plan resources for optimal model training."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Scaling Laws for Neural Language Models",
+      "body": [
+        "Read the original paper to see the equations and evidence behind these scaling laws."
+      ]
+    }
+  ]
+}

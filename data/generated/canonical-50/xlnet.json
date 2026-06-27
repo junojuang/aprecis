@@ -1,0 +1,216 @@
+{
+  "paper_id": "xlnet",
+  "short_name": "XLNet Pretraining",
+  "title": "XLNet: Generalized Autoregressive Pretraining for Language Understanding",
+  "authors": "Zhilin Yang, Zihang Dai, Yiming Yang, Jaime Carbonell et al.",
+  "year": 2019,
+  "topic": "Language",
+  "difficulty": "Advanced",
+  "url": "https://arxiv.org/abs/1906.08237",
+  "arxiv_id": "1906.08237",
+  "hook": "XLNet reads language both ways, learning from all possible word orders at once.",
+  "promise": "You will understand how XLNet unifies bidirectional context with autoregressive training to outperform BERT.",
+  "prerequisite_note": "You only need a sense of how language models guess missing words from surrounding context.",
+  "glossary": [
+    {
+      "term": "Autoregressive",
+      "plain": "A way of predicting the next word in a sequence, using only previous words."
+    },
+    {
+      "term": "Bidirectional context",
+      "plain": "Using both left and right context around a word to understand its meaning."
+    },
+    {
+      "term": "Permutation language modeling",
+      "plain": "Training by randomly changing the order in which words are predicted, so the model learns from all positions."
+    },
+    {
+      "term": "Masking mismatch",
+      "plain": "The problem where a model is trained with artificial masks but tested without them, causing a gap between training and real use."
+    },
+    {
+      "term": "Transformer-XL",
+      "plain": "A neural network that can remember longer sequences in language tasks, used as a base for XLNet."
+    }
+  ],
+  "related_slugs": [
+    "bert",
+    "gpt-2",
+    "transformer-xl",
+    "attention-is-all-you-need"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Language",
+      "title": "Learn from all sides",
+      "body": [
+        "Discover how XLNet combines the strengths of BERT and autoregressive models for deeper language understanding."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Why just one direction?",
+      "body": [
+        "Imagine trying to guess a missing word in a sentence. You would want to look at both the words before and after it.",
+        "Early language models only looked forward or backward, missing out on richer context. XLNet set out to break this limit."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "How XLNet learns from every angle",
+      "body": [
+        "First, XLNet takes a sentence and considers every possible order in which the words could be predicted.",
+        "Then, it learns to predict each word, always using all available context, sometimes from the left, sometimes from the right.",
+        "In the end, XLNet becomes skilled at capturing dependencies from any direction, not just one."
+      ],
+      "left": "Permutation of word orders",
+      "middle": "Predict words using all context",
+      "right": "Stronger language model",
+      "caption": "XLNet maximizes learning by treating every prediction order as a training opportunity."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Masking versus permutation",
+      "body": [
+        "See how predicting words differs when you mask them out or change prediction order."
+      ],
+      "offLabel": "BERT's masking",
+      "onLabel": "XLNet's permutation",
+      "offNote": "Masks break the flow, so dependencies between masked words are lost.",
+      "onNote": "Permutations let the model learn all dependencies, no matter the word position."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "The permutation trick",
+      "body": [
+        "XLNet avoids masking words. Instead, it shuffles the order in which it predicts them, letting the model see every possible context.",
+        "This generalizes the autoregressive idea, training on all possible word orders, so the model never misses a connection between words."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much context does the model use?",
+      "body": [
+        "Slide to see how the amount of context available changes model power."
+      ],
+      "lowLabel": "Left-only context",
+      "highLabel": "Full context",
+      "low": "Model sees only previous words, missing future context.",
+      "mid": "Model sees some left and right context, but not all dependencies.",
+      "high": "Model uses all possible context, capturing every dependency."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "Pick XLNet's key ingredients",
+      "body": [
+        "Choose which elements make XLNet unique compared to older models."
+      ],
+      "choices": [
+        {
+          "label": "Permutation language modeling",
+          "note": "Lets the model learn from every word order."
+        },
+        {
+          "label": "No input masking",
+          "note": "Removes the train-test mismatch found in BERT."
+        },
+        {
+          "label": "Autoregressive prediction",
+          "note": "Predicts one word at a time, using context."
+        },
+        {
+          "label": "Bidirectional context",
+          "note": "Uses both left and right context for each prediction."
+        },
+        {
+          "label": "Transformer-XL memory",
+          "note": "Remembers longer sequences for better predictions."
+        },
+        {
+          "label": "Expected likelihood objective",
+          "note": "Maximizes the chance of predicting all possible permutations."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "XLNet's impact on benchmarks",
+      "body": [
+        "When tested on 20 language tasks, XLNet outperformed BERT in nearly every case, often by a large margin.",
+        "Tasks like question answering, sentiment analysis, and document ranking all saw clear gains with XLNet."
+      ],
+      "bars": [
+        {
+          "label": "SQuAD 2.0",
+          "note": "Question answering",
+          "value": 90
+        },
+        {
+          "label": "GLUE average",
+          "note": "General language understanding",
+          "value": 87
+        },
+        {
+          "label": "RACE",
+          "note": "Reading comprehension",
+          "value": 83
+        },
+        {
+          "label": "Document ranking",
+          "note": "Retrieval performance",
+          "value": 80
+        }
+      ],
+      "caption": "XLNet set new records on many standard language benchmarks."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "A new standard for context",
+      "body": [
+        "XLNet proved that you do not need to mask words to learn from all directions, breaking a core limitation of BERT.",
+        "Its permutation-based approach inspired later models and set a new bar for what language understanding models could achieve."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "XLNet in four moves",
+      "body": [],
+      "recap": [
+        {
+          "label": "Shuffle",
+          "note": "Permute the order of word predictions."
+        },
+        {
+          "label": "Predict",
+          "note": "Guess each word using all context."
+        },
+        {
+          "label": "Remember",
+          "note": "Use Transformer-XL memory for longer sequences."
+        },
+        {
+          "label": "Outperform",
+          "note": "Beat previous models on language benchmarks."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "XLNet: Generalized Autoregressive Pretraining for Language Understanding",
+      "body": [
+        "Explore the original paper for technical details and experimental results."
+      ]
+    }
+  ]
+}

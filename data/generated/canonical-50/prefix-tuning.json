@@ -1,0 +1,221 @@
+{
+  "paper_id": "prefix-tuning",
+  "short_name": "Prefix Tuning",
+  "title": "Prefix-Tuning: Optimizing Continuous Prompts for Generation",
+  "authors": "Xiang Lisa Li, Percy Liang",
+  "year": 2021,
+  "topic": "Adaptation",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/2101.00190",
+  "arxiv_id": "2101.00190",
+  "hook": "What if you could adapt huge language models by tuning just a tiny sliver?",
+  "promise": "You will understand how prefix-tuning lets you steer language models with minimal extra parameters.",
+  "prerequisite_note": "Bring an intuition for how language models use prompts to guide text generation.",
+  "glossary": [
+    {
+      "term": "Prefix-tuning",
+      "plain": "A method that adapts language models by learning small trainable vectors prepended to the input."
+    },
+    {
+      "term": "Fine-tuning",
+      "plain": "Updating all parameters of a pretrained model for a new task."
+    },
+    {
+      "term": "Prompting",
+      "plain": "Supplying a model with a task description or example to guide its output."
+    },
+    {
+      "term": "Virtual tokens",
+      "plain": "Learned vectors that act like extra input tokens but are not actual words."
+    },
+    {
+      "term": "Frozen parameters",
+      "plain": "Model weights that do not change during adaptation or training."
+    },
+    {
+      "term": "Low-data regime",
+      "plain": "A setting where only a small amount of training data is available."
+    }
+  ],
+  "related_slugs": [
+    "lora",
+    "adapter-tuning",
+    "prompt-tuning",
+    "gpt-3",
+    "bart",
+    "parameter-efficient-tuning"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Adaptation",
+      "title": "Adapt Big Models with Small Tweaks",
+      "body": [
+        "Learn how prefix-tuning adapts massive language models using only a sliver of new parameters."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "How can we teach a giant model something new?",
+      "body": [
+        "Imagine you have a huge language model, but you want it to master a new task without retraining everything.",
+        "Fine-tuning the full model is powerful, but storing a separate copy for each task is wasteful and slow. Is there a lighter way?"
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "From prompts to prefixes to new skills",
+      "body": [
+        "Traditional prompting guides a model with text, while fine-tuning rewrites all its knowledge.",
+        "Prefix-tuning finds a middle path: it learns a compact, task-specific prefix vector that steers the model, with almost everything else left untouched."
+      ],
+      "left": "Full model",
+      "middle": "Prefix-tuning adds a learned prefix",
+      "right": "Task-specific generation",
+      "caption": "Prefix-tuning attaches a small prompt-like vector, letting the model adapt without changing its core."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Fine-tuning vs. Prefix-tuning: What changes?",
+      "body": [
+        "Imagine you want GPT-2 to summarize news articles for different domains."
+      ],
+      "offLabel": "Fine-tuning",
+      "onLabel": "Prefix-tuning",
+      "offNote": "You update and store all model weights for each new task, using lots of space.",
+      "onNote": "You only learn and store a tiny prefix vector, keeping the main model frozen."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "Tiny prefixes, big effects",
+      "body": [
+        "Instead of retraining the entire model, prefix-tuning learns a short, continuous vector that acts like a prompt.",
+        "This vector is prepended to every input, letting the model focus on the new task while keeping its original abilities."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much do you need to tune?",
+      "body": [
+        "Adjust how much of the model you change for each new task."
+      ],
+      "lowLabel": "No tuning",
+      "highLabel": "Full fine-tuning",
+      "low": "Only use prompts, no learning, so limited control over the model.",
+      "mid": "Prefix-tuning: learn a small prefix vector, balancing efficiency and control.",
+      "high": "Fine-tune all parameters, giving full control but at high storage and compute cost."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What goes into prefix-tuning?",
+      "body": [
+        "Pick the ingredients that make prefix-tuning work for adapting language models."
+      ],
+      "choices": [
+        {
+          "label": "Frozen pretrained model",
+          "note": "Keeps the main model unchanged during adaptation."
+        },
+        {
+          "label": "Learned prefix vectors",
+          "note": "Small trainable vectors that guide the model."
+        },
+        {
+          "label": "Attention mechanism",
+          "note": "Lets the model attend to both prefix and input tokens."
+        },
+        {
+          "label": "Task-specific prefix",
+          "note": "Each new task gets its own unique prefix."
+        },
+        {
+          "label": "Virtual tokens",
+          "note": "Prefix vectors act as extra, non-word tokens."
+        },
+        {
+          "label": "Minimal storage overhead",
+          "note": "Only the prefix needs to be stored per task."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "Tiny prefixes, strong results",
+      "body": [
+        "Prefix-tuning matched or beat full fine-tuning on table-to-text and summarization tasks, even with just 0.1 percent as many parameters.",
+        "It excelled when training data was scarce and also generalized better to new, unseen topics."
+      ],
+      "bars": [
+        {
+          "label": "Full data performance",
+          "note": "Nearly matches fine-tuning",
+          "value": 93
+        },
+        {
+          "label": "Low-data performance",
+          "note": "Outperforms fine-tuning",
+          "value": 98
+        },
+        {
+          "label": "Parameter savings",
+          "note": "Only 0.1 percent updated",
+          "value": 99
+        },
+        {
+          "label": "Generalization to new topics",
+          "note": "Stronger than fine-tuning",
+          "value": 90
+        }
+      ],
+      "caption": "Prefix-tuning achieves strong results with minimal parameter updates, especially when data is limited."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "A new path for efficient adaptation",
+      "body": [
+        "Prefix-tuning showed that you can steer giant models with just a few trainable vectors, saving space and effort.",
+        "This approach opened the door to adapting one model to many tasks without the burden of storing many full copies."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "Prefix-tuning in four moves",
+      "body": [],
+      "recap": [
+        {
+          "label": "Freeze",
+          "note": "Keep the main model unchanged."
+        },
+        {
+          "label": "Learn",
+          "note": "Train a small, task-specific prefix vector."
+        },
+        {
+          "label": "Prepend",
+          "note": "Attach the prefix to every input."
+        },
+        {
+          "label": "Guide",
+          "note": "Let the prefix steer generation for new tasks."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Prefix-Tuning: Optimizing Continuous Prompts for Generation",
+      "body": [
+        "Read the original paper for full details and experimental results."
+      ]
+    }
+  ]
+}

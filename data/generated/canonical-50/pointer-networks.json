@@ -1,0 +1,220 @@
+{
+  "paper_id": "pointer-networks",
+  "short_name": "Pointer Networks",
+  "title": "Pointer Networks",
+  "authors": "Oriol Vinyals, Meire Fortunato, Navdeep Jaitly",
+  "year": 2015,
+  "topic": "Architecture",
+  "difficulty": "Advanced",
+  "url": "https://arxiv.org/abs/1506.03134",
+  "arxiv_id": "1506.03134",
+  "hook": "Pointer networks let neural models select positions as outputs, not just fixed tokens.",
+  "promise": "You will understand how pointer networks enable neural nets to solve problems with variable output sizes.",
+  "prerequisite_note": "You only need a sense for how sequence models usually output from a fixed set of tokens.",
+  "glossary": [
+    {
+      "term": "Pointer Network",
+      "plain": "A neural network that outputs positions from the input sequence, not predefined tokens."
+    },
+    {
+      "term": "Attention Mechanism",
+      "plain": "A method that lets the model focus on specific parts of the input when deciding outputs."
+    },
+    {
+      "term": "Variable Output Dictionary",
+      "plain": "A situation where the number of possible outputs changes depending on the input size."
+    },
+    {
+      "term": "Sequence-to-Sequence Model",
+      "plain": "A neural model that turns one sequence into another, usually outputting from a fixed vocabulary."
+    },
+    {
+      "term": "Combinatorial Optimization",
+      "plain": "Finding the best solution from a large set of discrete possibilities, like the shortest route in a graph."
+    },
+    {
+      "term": "Convex Hull",
+      "plain": "The smallest convex shape that contains all points in a set."
+    }
+  ],
+  "related_slugs": [
+    "attention-is-all-you-need",
+    "neural-turing-machines",
+    "seq2seq",
+    "transformer",
+    "neural-combinatorial-optimization"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Architecture",
+      "title": "Pick Positions, Not Tokens",
+      "body": [
+        "See how pointer networks let neural models output positions from the input, not just fixed vocabulary tokens."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Why fixed vocabularies limit neural models",
+      "body": [
+        "Imagine you want a neural network to sort a list, or pick the shortest route through cities. Each answer is a list of positions, not words.",
+        "Traditional sequence models can only pick from a set vocabulary. But if your input changes size, you need a way to point directly to any input element."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "From tokens to pointers",
+      "body": [
+        "First, the model reads the input sequence, encoding each element into a vector. Then, at every output step, it uses attention to select one input position.",
+        "Instead of picking a word from a dictionary, the model points to a location in the input. This lets it handle tasks where output size matches input size, like sorting."
+      ],
+      "left": "Encode input sequence",
+      "middle": "Attend and point to an input position",
+      "right": "Output is a sequence of input positions",
+      "caption": "Pointer networks use attention as a pointer, not just a way to blend information."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "How do outputs change?",
+      "body": [
+        "Suppose you want to sort a list of numbers of different lengths."
+      ],
+      "offLabel": "Fixed vocabulary",
+      "onLabel": "Pointer network",
+      "offNote": "Model can only output from a set list of tokens, so variable output is hard.",
+      "onNote": "Model can select any input position at each step, so output adapts to input size."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "Turning attention into a pointer",
+      "body": [
+        "Pointer networks use attention differently. Instead of blending input information, attention acts as a pointer, letting the model select a specific input element as output.",
+        "This is crucial for problems where the output must reference parts of the input directly, like finding a convex hull or solving the traveling salesman problem."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "What happens as input size grows?",
+      "body": [
+        "Adjust the input length and see how output flexibility and complexity change."
+      ],
+      "lowLabel": "Small input",
+      "highLabel": "Large input",
+      "low": "Few input positions, output is simple and fixed.",
+      "mid": "More positions, model must keep track of more possibilities.",
+      "high": "Many positions, model can point to any but must manage complex combinatorial choices."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What makes a pointer network?",
+      "body": [
+        "Choose the key components needed to build a pointer network."
+      ],
+      "choices": [
+        {
+          "label": "Sequence encoder",
+          "note": "Transforms input elements into vectors."
+        },
+        {
+          "label": "Attention mechanism",
+          "note": "Lets the model focus on specific input positions."
+        },
+        {
+          "label": "Pointer output layer",
+          "note": "Selects input positions as outputs."
+        },
+        {
+          "label": "Variable input size support",
+          "note": "Handles sequences of different lengths."
+        },
+        {
+          "label": "Recurrent decoder",
+          "note": "Produces output sequence step by step."
+        },
+        {
+          "label": "Training with examples",
+          "note": "Learns to point by seeing input-output pairs."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "Pointer networks solve hard geometric problems",
+      "body": [
+        "Pointer networks were tested on computing convex hulls, Delaunay triangulations, and traveling salesman tours. They could generalize to longer sequences than they saw during training.",
+        "Compared to standard sequence-to-sequence models, pointer networks achieved much higher accuracy on tasks where outputs must reference input positions directly."
+      ],
+      "bars": [
+        {
+          "label": "Convex Hull Accuracy",
+          "note": "Much higher than seq2seq",
+          "value": 92
+        },
+        {
+          "label": "Delaunay Triangulation",
+          "note": "Handles variable input sizes",
+          "value": 85
+        },
+        {
+          "label": "TSP Solution Quality",
+          "note": "Competitive with specialized solvers",
+          "value": 78
+        },
+        {
+          "label": "Generalization to longer inputs",
+          "note": "Works beyond training sizes",
+          "value": 70
+        }
+      ],
+      "caption": "Pointer networks enable neural models to tackle combinatorial problems with variable-sized outputs."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "A new way to output sequences",
+      "body": [
+        "Pointer networks broke a barrier by letting neural models point to any input position, not just emit preset tokens.",
+        "This innovation opened neural networks to a new class of problems, like sorting and routing, where outputs must directly reference parts of the input."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "Pointer networks in four moves",
+      "body": [],
+      "recap": [
+        {
+          "label": "Encode",
+          "note": "Turn input elements into vector representations."
+        },
+        {
+          "label": "Attend",
+          "note": "Focus on one input position at each step."
+        },
+        {
+          "label": "Point",
+          "note": "Select that position as the output for the step."
+        },
+        {
+          "label": "Repeat",
+          "note": "Continue until the output sequence is complete."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Pointer Networks",
+      "body": [
+        "Read the original paper for technical details and experimental results."
+      ]
+    }
+  ]
+}

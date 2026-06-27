@@ -12,7 +12,7 @@ import SwiftUI
 extension LearningLesson {
 
     static let toolformer = LearningLesson(
-        paperId: "loop:foundational:toolformer",
+        paperId: "toolformer",
         cards: [
 
             // 1 - Cover.

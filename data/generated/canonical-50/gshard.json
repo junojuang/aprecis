@@ -1,0 +1,217 @@
+{
+  "paper_id": "gshard",
+  "short_name": "GShard Scaling",
+  "title": "GShard: Scaling Giant Models with Conditional Computation and Automatic Sharding",
+  "authors": "Dmitry Lepikhin, HyoukJoong Lee, Yuanzhong Xu, Dehao Chen et al.",
+  "year": 2020,
+  "topic": "Systems",
+  "difficulty": "Advanced",
+  "url": "https://arxiv.org/abs/2006.16668",
+  "arxiv_id": "2006.16668",
+  "hook": "GShard trains a 600-billion parameter model by assigning work only where needed.",
+  "promise": "You will understand how GShard uses conditional computation and sharding to train enormous sparse models efficiently.",
+  "prerequisite_note": "You only need a sense for how neural networks use lots of matrix math and benefit from splitting work.",
+  "glossary": [
+    {
+      "term": "Conditional Computation",
+      "plain": "Only some parts of the model are activated for each input, saving effort."
+    },
+    {
+      "term": "Mixture-of-Experts (MoE)",
+      "plain": "A setup where many expert sub-models exist, but only a few are used per example."
+    },
+    {
+      "term": "Sharding",
+      "plain": "Splitting a large model or data across multiple machines for parallel processing."
+    },
+    {
+      "term": "XLA Compiler",
+      "plain": "A compiler for linear algebra that helps optimize and distribute computations on accelerators."
+    },
+    {
+      "term": "TPU",
+      "plain": "Tensor Processing Unit, a specialized chip designed to accelerate machine learning tasks."
+    }
+  ],
+  "related_slugs": [
+    "switch-transformer",
+    "mixture-of-experts",
+    "t5",
+    "transformer",
+    "megatron-lm"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Systems",
+      "title": "How to Scale AI Giants",
+      "body": [
+        "Discover how GShard trains huge models by splitting work and using only what is needed."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Why do only some neurons work?",
+      "body": [
+        "Imagine a team of experts, but only a few are called for each question. This is how GShard thinks about massive neural networks.",
+        "Instead of using every part of a huge model for every input, GShard activates only the most relevant experts. This saves time, memory, and energy."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "From dense models to sparse, expert-driven giants",
+      "body": [
+        "Classical neural networks process every input through the entire model, which is costly at scale.",
+        "GShard introduces a way to split the model into many 'experts' and only use some for each input. This is conditional computation.",
+        "Automatic sharding then spreads these experts across many machines, letting the system train models far larger than before."
+      ],
+      "left": "Dense model",
+      "middle": "Conditional expert selection",
+      "right": "Efficient, giant sparse model",
+      "caption": "Conditional computation and sharding make massive models practical to train."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Dense vs. Sparse: What changes?",
+      "body": [
+        "Toggle to see how using all neurons compares to activating only a few experts."
+      ],
+      "offLabel": "Dense Transformer",
+      "onLabel": "GShard Sparse MoE",
+      "offNote": "Every neuron runs for every input, making training slow and memory-hungry.",
+      "onNote": "Only a few experts run, saving resources and enabling much larger models."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "Conditional computation plus smart splitting",
+      "body": [
+        "The core trick is to use a Mixture-of-Experts layer, where a router picks which experts to activate for each input.",
+        "GShard's annotation API lets researchers mark which parts to shard, and the XLA extension automatically splits the model across many TPUs."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How many experts should you activate?",
+      "body": [
+        "Slide to see the impact of activating more or fewer experts per input."
+      ],
+      "lowLabel": "1 expert",
+      "highLabel": "All experts",
+      "low": "Lowest computation, may miss important patterns.",
+      "mid": "Balanced: enough experts for quality, but still efficient.",
+      "high": "Maximum computation, best quality but expensive and slow."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What does GShard need?",
+      "body": [
+        "Pick the ingredients required to scale up a giant sparse model like GShard."
+      ],
+      "choices": [
+        {
+          "label": "Mixture-of-Experts layer",
+          "note": "Creates many sub-models (experts) to choose from."
+        },
+        {
+          "label": "Conditional routing",
+          "note": "Selects which experts should handle each input."
+        },
+        {
+          "label": "Sharding API",
+          "note": "Lets you specify how to split the model."
+        },
+        {
+          "label": "XLA compiler extension",
+          "note": "Automates the process of distributing computation."
+        },
+        {
+          "label": "TPU cluster",
+          "note": "Provides the hardware muscle for training at scale."
+        },
+        {
+          "label": "Multilingual data",
+          "note": "Gives the model a rich, diverse training set to learn from."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "GShard's giant leap: What changed?",
+      "body": [
+        "GShard trained a multilingual translation model with over 600 billion parameters, much larger than previous systems.",
+        "It achieved better translation quality across 100 languages and trained in just four days using 2048 TPUs."
+      ],
+      "bars": [
+        {
+          "label": "Model size",
+          "note": "600B parameters vs. 6B before",
+          "value": 100
+        },
+        {
+          "label": "Training time",
+          "note": "4 days for a giant model",
+          "value": 90
+        },
+        {
+          "label": "Translation quality",
+          "note": "clear gain",
+          "value": 85
+        },
+        {
+          "label": "Hardware efficiency",
+          "note": "Much better resource use",
+          "value": 80
+        }
+      ],
+      "caption": "GShard made it possible to train much larger models faster and with better results."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why GShard changed the game",
+      "body": [
+        "GShard proved that huge models can be trained efficiently by combining conditional computation and automatic sharding.",
+        "This opened the door for even larger and more capable language models, changing how researchers think about scaling."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "four-line mental model",
+      "body": [],
+      "recap": [
+        {
+          "label": "Split",
+          "note": "Divide the model into many experts."
+        },
+        {
+          "label": "Route",
+          "note": "Send each input to just a few relevant experts."
+        },
+        {
+          "label": "Shard",
+          "note": "Distribute the model automatically across many machines."
+        },
+        {
+          "label": "Scale",
+          "note": "Train models hundreds of times larger, efficiently."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "GShard: Scaling Giant Models with Conditional Computation and Automatic Sharding",
+      "body": [
+        "Read the original paper to see how GShard made massive sparse models practical."
+      ]
+    }
+  ]
+}

@@ -2226,7 +2226,7 @@ private struct CompleteCard: View {
             .padding(.top, 12)
         }
         .onAppear {
-            // Prefer the routable paperId (e.g. `loop:foundational:perceptron`)
+            // Prefer the routable paperId (e.g. `perceptron`)
             // so bundle-step gating sees the completion. Falls back to the
             // sourceLine for legacy loops that never had a paperId stamped.
             let pid = content.paperId ?? content.sourceLine

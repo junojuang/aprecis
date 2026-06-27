@@ -1,0 +1,221 @@
+{
+  "paper_id": "unet",
+  "short_name": "U-Net Segmentation",
+  "title": "U-Net: Convolutional Networks for Biomedical Image Segmentation",
+  "authors": "Olaf Ronneberger, Philipp Fischer, Thomas Brox",
+  "year": 2015,
+  "topic": "Vision",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/1505.04597",
+  "arxiv_id": "1505.04597",
+  "hook": "U-Net lets computers draw precise outlines in images, even with few labels.",
+  "promise": "You will understand how U-Net segments images so accurately with a unique architecture and minimal data.",
+  "prerequisite_note": "Bring curiosity about how computers can find and outline objects within complex images.",
+  "glossary": [
+    {
+      "term": "Segmentation",
+      "plain": "Dividing an image into regions, each representing a different object or structure."
+    },
+    {
+      "term": "Skip connection",
+      "plain": "A shortcut that passes information from earlier network layers to later ones, helping preserve details."
+    },
+    {
+      "term": "Contracting path",
+      "plain": "Part of the network that reduces image size to capture big-picture context."
+    },
+    {
+      "term": "Expanding path",
+      "plain": "Part of the network that increases image size to recover details and make pixel-level predictions."
+    },
+    {
+      "term": "Data augmentation",
+      "plain": "Creating new training images by slightly altering existing ones, boosting limited datasets."
+    },
+    {
+      "term": "End-to-end training",
+      "plain": "Training all steps of a model together, from input to output, in one unified process."
+    }
+  ],
+  "related_slugs": [
+    "fcn",
+    "mask-rcnn",
+    "deeplab",
+    "resnet",
+    "transformer",
+    "attention-is-all-you-need"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Vision",
+      "title": "How U-Net draws boundaries",
+      "body": [
+        "You will understand how U-Net segments images so accurately with a unique architecture and minimal data."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "How can machines find shapes in images?",
+      "body": [
+        "Imagine needing a computer to outline every cell in a microscope photo, but you only have a few labeled examples to teach it.",
+        "Before U-Net, even powerful neural networks required thousands of examples and still struggled with precise outlines. Biomedical imaging needed something better."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "The U-shaped journey from image to outline",
+      "body": [
+        "U-Net processes images in two stages: it first compresses the picture to understand context, then expands it back while recovering fine details.",
+        "This U-shaped architecture lets U-Net combine big-picture context with sharp, local information, producing detailed segmentations."
+      ],
+      "left": "Image shrinks to capture context",
+      "middle": "Skip connections bridge details",
+      "right": "Image expands to precise segmentation",
+      "caption": "U-Net shrinks and then expands images, using skip connections to preserve fine details."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "How does U-Net beat the sliding window?",
+      "body": [
+        "Toggle between the classic sliding-window approach and U-Net's end-to-end architecture for segmenting a cell."
+      ],
+      "offLabel": "Sliding window",
+      "onLabel": "U-Net",
+      "offNote": "Misses context, slow, and struggles with precise boundaries.",
+      "onNote": "Processes the whole image at once, uses context, and outlines shapes cleanly."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "U-Net's central trick: skip connections",
+      "body": [
+        "U-Net copies features from the shrinking side and fuses them into the expanding side, letting the network recover lost details.",
+        "These skip connections act like bridges, carrying fine-grained information directly to where it is needed for sharp outlines."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much data does U-Net need?",
+      "body": [
+        "Slide to see how U-Net performs with different amounts of labeled training data."
+      ],
+      "lowLabel": "Very few labels",
+      "highLabel": "Many labels",
+      "low": "U-Net still finds outlines, but some details are missed.",
+      "mid": "With moderate labels, U-Net draws most boundaries accurately.",
+      "high": "With plenty of labels, segmentations are crisp and nearly perfect."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What makes U-Net work?",
+      "body": [
+        "Pick the ingredients that make U-Net excel at segmentation with limited data."
+      ],
+      "choices": [
+        {
+          "label": "Skip connections",
+          "note": "Fuse fine details from early layers into later predictions."
+        },
+        {
+          "label": "Symmetric architecture",
+          "note": "Matches shrinking and expanding paths for balanced processing."
+        },
+        {
+          "label": "Data augmentation",
+          "note": "Generates more examples from few labeled images."
+        },
+        {
+          "label": "End-to-end training",
+          "note": "Optimizes all steps together for best performance."
+        },
+        {
+          "label": "Pixel-wise prediction",
+          "note": "Makes a label decision for every pixel in the image."
+        },
+        {
+          "label": "Convolutional layers",
+          "note": "Extracts features at multiple scales for context and detail."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "U-Net's impact on biomedical imaging",
+      "body": [
+        "U-Net set a new standard for image segmentation, especially in medical and scientific images where labels are scarce.",
+        "It not only won major competitions but also made accurate segmentation practical in real labs and clinics."
+      ],
+      "bars": [
+        {
+          "label": "ISBI Challenge Score",
+          "note": "Outperformed previous methods",
+          "value": 95
+        },
+        {
+          "label": "Label Efficiency",
+          "note": "Needed far fewer labeled images",
+          "value": 90
+        },
+        {
+          "label": "Segmentation Accuracy",
+          "note": "Sharper outlines than sliding window",
+          "value": 92
+        },
+        {
+          "label": "Speed (512x512 image)",
+          "note": "Processes in under a second",
+          "value": 88
+        }
+      ],
+      "caption": "U-Net achieved high accuracy and efficiency, transforming biomedical image analysis."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why U-Net is a classic",
+      "body": [
+        "U-Net showed that clever architecture can make deep learning work even when data is scarce, a common scenario in science and medicine.",
+        "Its design inspired countless later models and remains a foundation for benchmark-leading segmentation tasks today."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "Four steps to U-Net mastery",
+      "body": [],
+      "recap": [
+        {
+          "label": "Compress",
+          "note": "Shrink the image to capture context."
+        },
+        {
+          "label": "Bridge",
+          "note": "Use skip connections to save details."
+        },
+        {
+          "label": "Expand",
+          "note": "Grow the image back for fine predictions."
+        },
+        {
+          "label": "Segment",
+          "note": "Label every pixel with precision."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "U-Net: Convolutional Networks for Biomedical Image Segmentation",
+      "body": [
+        "Read the full paper for technical details and open-source code links."
+      ]
+    }
+  ]
+}

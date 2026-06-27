@@ -604,10 +604,24 @@ func bundlePaperId(slug: String) -> String? {
     case "perceptron", "backprop", "lenet", "alexnet",
          "word2vec", "seq2seq", "gans", "resnet",
          "attention", "gpt3", "bert", "instructgpt",
-         "chain-of-thought", "scratchpad", "self-consistency", "tot",
+         "chain-of-thought", "scratchpad", "self-consistency",
          "least-to-most", "react", "toolformer", "grokking",
          "deepseek-r1":
-        return "loop:foundational:\(slug)"
+        return slug
+    case "tot":
+        return "tree-of-thoughts"
+    case "cot":
+        return "chain-of-thought"
+    case "selfconsist":
+        return "self-consistency"
+    case "vit", "ddpm", "clip", "controlnet", "sam":
+        return slug
+    case "sd":
+        return "stable-diffusion"
+    case "t5", "chinchilla", "palm", "llama", "mixtral":
+        return slug
+    case "reflexion":
+        return slug
     default:
         return nil
     }

@@ -13,7 +13,7 @@ import SwiftUI
 extension LearningLesson {
 
     static let chainOfThought = LearningLesson(
-        paperId: "loop:foundational:chain-of-thought",
+        paperId: "chain-of-thought",
         cards: [
 
             // 1 - Editorial cover.

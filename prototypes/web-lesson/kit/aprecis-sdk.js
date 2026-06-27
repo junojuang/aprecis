@@ -8,6 +8,9 @@
  *   finish           mark complete + dismiss the reader
  *   close            dismiss the reader
  *   openOriginal({url})  present the source paper in an in-app browser
+ *   progress({progress})  report 0..1 reading progress (drives the Recently
+ *                         opened bar). The app also derives this automatically
+ *                         from the card counter, so calling it is optional.
  */
 (function (global) {
   function send(name, body) {
@@ -22,6 +25,7 @@
     finish: function () { send("finish"); },
     close: function () { send("close"); },
     openOriginal: function (u) { send("openOriginal", { url: u }); },
+    progress: function (frac) { send("progress", { progress: Math.max(0, Math.min(1, frac || 0)) }); },
 
     /* Mounts a lesson into #stage with the standard chrome: a segmented
      * progress rail, an N/total counter, exploration-gated advancement, themed
@@ -74,6 +78,7 @@
         sections.forEach(function (s, k) { s.classList.toggle("active", k === n); s.classList.toggle("back", k < n); });
         segs.forEach(function (s, k) { s.classList.toggle("on", k <= n); });
         countEl.textContent = (n + 1) + "/" + cards.length;
+        Aprecis.progress(cards.length > 1 ? n / (cards.length - 1) : 1);
         cur = n; applyTheme(cards[n].theme); refresh(); sections[n].scrollTop = 0;
       }
       nextBtn.addEventListener("click", function () {
@@ -95,13 +100,20 @@
         } else if (e.target === pop) pop.classList.remove("show");
       });
 
-      // edge-swipe back
-      var sx = 0, sy = 0;
-      stage.addEventListener("touchstart", function (e) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+      // Swipe right to go back. Ignore controls so sliders/buttons keep their
+      // native interaction without accidentally changing cards.
+      function isInteractiveTarget(t) {
+        return !!(t && t.closest && t.closest("button,input,select,textarea,a,.sw,.smallbtn,.srcbtn"));
+      }
+      var sx = 0, sy = 0, st = null;
+      stage.addEventListener("touchstart", function (e) {
+        sx = e.touches[0].clientX; sy = e.touches[0].clientY; st = e.target;
+      }, { passive: true });
       stage.addEventListener("touchend", function (e) {
+        if (isInteractiveTarget(st)) return;
         var dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
-        if (sx < 32 && dx > 80 && Math.abs(dy) < 60 && cur > 0) { Aprecis.haptic(); show(cur - 1); }
-      });
+        if (dx > 86 && Math.abs(dy) < 64 && cur > 0) { Aprecis.haptic(); show(cur - 1); }
+      }, { passive: true });
 
       show(0);
     }

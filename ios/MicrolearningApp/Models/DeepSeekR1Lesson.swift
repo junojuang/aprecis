@@ -12,7 +12,7 @@ import SwiftUI
 extension LearningLesson {
 
     static let deepseekR1 = LearningLesson(
-        paperId: "loop:foundational:deepseek-r1",
+        paperId: "deepseek-r1",
         cards: [
 
             // 1 - Editorial cover.

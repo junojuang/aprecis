@@ -1,0 +1,221 @@
+{
+  "paper_id": "faster-rcnn",
+  "short_name": "Faster R-CNN",
+  "title": "Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks",
+  "authors": "Shaoqing Ren, Kaiming He, Ross Girshick, Jian Sun",
+  "year": 2015,
+  "topic": "Vision",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/1506.01497",
+  "arxiv_id": "1506.01497",
+  "hook": "Imagine a neural network that spots objects in images almost instantly.",
+  "promise": "You will understand how Faster R-CNN unified object detection into a fast, trainable system using region proposal networks.",
+  "prerequisite_note": "Bring a sense of how neural nets process images and how detecting objects is different from just classifying them.",
+  "glossary": [
+    {
+      "term": "Region Proposal",
+      "plain": "A suggested area in an image that might contain an object."
+    },
+    {
+      "term": "Region Proposal Network (RPN)",
+      "plain": "A neural network that quickly predicts promising object regions in an image."
+    },
+    {
+      "term": "Convolutional Features",
+      "plain": "Patterns detected in an image by early layers of a convolutional neural network."
+    },
+    {
+      "term": "Objectness Score",
+      "plain": "A number showing how likely a region contains any object."
+    },
+    {
+      "term": "Fast R-CNN",
+      "plain": "An earlier system that detects objects using precomputed region proposals."
+    },
+    {
+      "term": "End-to-End Training",
+      "plain": "Training the entire detection system together, so all parts improve at once."
+    }
+  ],
+  "related_slugs": [
+    "rcnn",
+    "fast-rcnn",
+    "yolo",
+    "ssd",
+    "mask-rcnn"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Vision",
+      "title": "Object detection, accelerated",
+      "body": [
+        "See how Faster R-CNN made spotting objects in images both faster and smarter."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "The bottleneck in finding objects",
+      "body": [
+        "Imagine looking at a photo and quickly circling every car, person, or dog. Computers need to do this too, but it used to be slow.",
+        "Earlier systems carefully searched for promising regions first, then checked them for objects. This region proposal step became the slowest part, holding everything back."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "How Faster R-CNN flows",
+      "body": [
+        "First, a convolutional network scans the whole image, building a feature map that highlights interesting patterns.",
+        "Next, the Region Proposal Network uses these features to suggest where objects might be, directly and rapidly.",
+        "Finally, another part of the network classifies these regions and refines the object boundaries, all in a single streamlined process."
+      ],
+      "left": "Image features extracted",
+      "middle": "Regions proposed by RPN",
+      "right": "Objects detected and labeled",
+      "caption": "The whole image is processed once, then reused for both proposing and detecting objects."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Region proposals: before and after",
+      "body": [
+        "Toggle to see how object detection changed with Faster R-CNN."
+      ],
+      "offLabel": "Traditional proposals",
+      "onLabel": "Region Proposal Network",
+      "offNote": "External algorithms slowly generate regions, adding time and complexity.",
+      "onNote": "A neural network proposes regions instantly, sharing image features with detection."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "The region proposal network trick",
+      "body": [
+        "The breakthrough was making region proposals part of the neural network itself, instead of relying on a completely separate algorithm.",
+        "By letting the detection network and the proposal network share the same image features, the system became much faster and could be trained as a whole."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How many proposals?",
+      "body": [
+        "Adjust the number of region proposals per image and see how speed and accuracy shift."
+      ],
+      "lowLabel": "Few proposals",
+      "highLabel": "Many proposals",
+      "low": "Very fast but may miss some objects.",
+      "mid": "Balanced: fast and accurate with about 300 proposals.",
+      "high": "Slow and redundant, but almost never misses an object."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What goes into Faster R-CNN?",
+      "body": [
+        "Pick which components are essential for the Faster R-CNN detection pipeline."
+      ],
+      "choices": [
+        {
+          "label": "Convolutional feature extractor",
+          "note": "Finds patterns in the image."
+        },
+        {
+          "label": "Region Proposal Network",
+          "note": "Suggests where objects might be."
+        },
+        {
+          "label": "ROI pooling",
+          "note": "Aligns proposed regions to a fixed size."
+        },
+        {
+          "label": "Object classifier",
+          "note": "Decides what each object is."
+        },
+        {
+          "label": "Bounding box regressor",
+          "note": "Refines the edges of each detected object."
+        },
+        {
+          "label": "End-to-end training",
+          "note": "Lets the whole system learn together."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "Detection speed and accuracy leap",
+      "body": [
+        "Faster R-CNN delivered benchmark-leading accuracy on PASCAL VOC and COCO, while running much faster than previous systems.",
+        "By merging region proposals into the neural network, it enabled real-time object detection and inspired a new wave of research."
+      ],
+      "bars": [
+        {
+          "label": "Detection speed (fps)",
+          "note": "5x faster than Fast R-CNN",
+          "value": 80
+        },
+        {
+          "label": "VOC 2007 accuracy",
+          "note": "Best-in-class at the time",
+          "value": 95
+        },
+        {
+          "label": "Proposal count needed",
+          "note": "Only 300 per image",
+          "value": 70
+        },
+        {
+          "label": "COCO competition wins",
+          "note": "Top entries used this",
+          "value": 100
+        }
+      ],
+      "caption": "Faster R-CNN set new standards for both speed and accuracy in object detection."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "A foundation for modern vision",
+      "body": [
+        "By making region proposals part of the neural network, Faster R-CNN unified object detection into a single, trainable system.",
+        "Its influence can be seen in nearly every modern object detector, making it a foundational step in computer vision."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "How Faster R-CNN works",
+      "body": [],
+      "recap": [
+        {
+          "label": "Extract",
+          "note": "Scan the image for features with a convolutional net."
+        },
+        {
+          "label": "Propose",
+          "note": "Use an RPN to suggest promising regions."
+        },
+        {
+          "label": "Classify",
+          "note": "Identify objects and refine their locations."
+        },
+        {
+          "label": "Train",
+          "note": "Let the whole system learn together, end to end."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks",
+      "body": [
+        "Read the full paper for technical details and code links."
+      ]
+    }
+  ]
+}

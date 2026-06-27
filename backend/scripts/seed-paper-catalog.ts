@@ -53,7 +53,7 @@ interface CatalogEntry {
 }
 
 const CURATED: Record<string, CatalogEntry> = {
-  "loop:foundational:perceptron": {
+  "perceptron": {
     title: "The Perceptron: A Probabilistic Model for Information Storage and Organization in the Brain",
     canonicalKey: "doi:10.1037/h0042519",
     year: 1958,
@@ -62,7 +62,7 @@ const CURATED: Record<string, CatalogEntry> = {
     url: "https://psycnet.apa.org/doi/10.1037/h0042519",
     arxivId: null,
   },
-  "loop:foundational:backprop": {
+  "backprop": {
     title: "Learning Representations by Back Propagating Errors",
     canonicalKey: "article:nature:323533a0",
     year: 1986,
@@ -71,25 +71,25 @@ const CURATED: Record<string, CatalogEntry> = {
     url: "https://www.nature.com/articles/323533a0",
     arxivId: null,
   },
-  "loop:foundational:lenet": {
+  "lenet": {
     title: "Gradient Based Learning Applied to Document Recognition (LeNet-5)",
-    canonicalKey: "id:lecun:1998",
+    canonicalKey: "id:lenet",
     year: 1998,
     publishedAt: "1998-01-01",
     topic: "Vision",
     url: "https://yann.lecun.com/exdb/publis/pdf/lecun-98.pdf",
     arxivId: null,
   },
-  "loop:foundational:alexnet": {
+  "alexnet": {
     title: "ImageNet Classification with Deep Convolutional Neural Networks",
-    canonicalKey: "id:krizhevsky:2012",
+    canonicalKey: "id:alexnet",
     year: 2012,
     publishedAt: "2012-01-01",
     topic: "Vision",
     url: "https://papers.nips.cc/paper_files/paper/2012/hash/c399862d3b9d6b76c8436e924a68c45b-Abstract.html",
     arxivId: null,
   },
-  "loop:foundational:word2vec": {
+  "word2vec": {
     title: "Efficient Estimation of Word Representations in Vector Space",
     canonicalKey: "arxiv:1301.3781",
     year: 2013,
@@ -98,7 +98,7 @@ const CURATED: Record<string, CatalogEntry> = {
     url: "https://arxiv.org/abs/1301.3781",
     arxivId: "1301.3781",
   },
-  "loop:foundational:seq2seq": {
+  "seq2seq": {
     title: "Sequence to Sequence Learning with Neural Networks",
     canonicalKey: "arxiv:1409.3215",
     year: 2014,
@@ -107,7 +107,7 @@ const CURATED: Record<string, CatalogEntry> = {
     url: "https://arxiv.org/abs/1409.3215",
     arxivId: "1409.3215",
   },
-  "loop:foundational:gans": {
+  "gans": {
     title: "Generative Adversarial Nets",
     canonicalKey: "arxiv:1406.2661",
     year: 2014,
@@ -116,7 +116,7 @@ const CURATED: Record<string, CatalogEntry> = {
     url: "https://arxiv.org/abs/1406.2661",
     arxivId: "1406.2661",
   },
-  "loop:foundational:resnet": {
+  "resnet": {
     title: "Deep Residual Learning for Image Recognition",
     canonicalKey: "arxiv:1512.03385",
     year: 2015,
@@ -125,7 +125,7 @@ const CURATED: Record<string, CatalogEntry> = {
     url: "https://arxiv.org/abs/1512.03385",
     arxivId: "1512.03385",
   },
-  "loop:foundational:attention": {
+  "attention": {
     title: "Attention Is All You Need",
     canonicalKey: "arxiv:1706.03762",
     year: 2017,
@@ -134,7 +134,7 @@ const CURATED: Record<string, CatalogEntry> = {
     url: "https://arxiv.org/abs/1706.03762",
     arxivId: "1706.03762",
   },
-  "loop:foundational:gpt3": {
+  "gpt3": {
     title: "Language Models are Few Shot Learners (GPT-3)",
     canonicalKey: "arxiv:2005.14165",
     year: 2020,
@@ -143,7 +143,7 @@ const CURATED: Record<string, CatalogEntry> = {
     url: "https://arxiv.org/abs/2005.14165",
     arxivId: "2005.14165",
   },
-  "loop:foundational:bert": {
+  "bert": {
     title: "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
     canonicalKey: "arxiv:1810.04805",
     year: 2018,

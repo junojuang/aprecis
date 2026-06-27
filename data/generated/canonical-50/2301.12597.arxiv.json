@@ -1,0 +1,8 @@
+{
+  "title": "BLIP-2: Bootstrapping Language-Image Pre-training with Frozen Image Encoders and Large Language Models",
+  "abstract": "BLIP-2: Bootstrapping Language-Image Pre-training with Frozen Image Encoders and Large Language Models. BLIP-2 bridged frozen vision encoders and frozen LLMs with a lightweight query transformer.",
+  "authors": [],
+  "year": 2023,
+  "published_at": "2023-01-01T00:00:00Z",
+  "url": "https://arxiv.org/abs/2301.12597"
+}

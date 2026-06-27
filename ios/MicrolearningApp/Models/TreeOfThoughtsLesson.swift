@@ -12,7 +12,7 @@ import SwiftUI
 extension LearningLesson {
 
     static let treeOfThoughts = LearningLesson(
-        paperId: "loop:foundational:tot",
+        paperId: "tree-of-thoughts",
         cards: [
 
             // 1 - Cover.
