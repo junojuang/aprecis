@@ -11,7 +11,7 @@ import SwiftUI
 extension LearningLesson {
 
     static let gpt3 = LearningLesson(
-        paperId: "loop:foundational:gpt3",
+        paperId: "gpt3",
         cards: [
 
             // Editorial cover.

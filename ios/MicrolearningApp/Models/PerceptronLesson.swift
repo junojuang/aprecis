@@ -12,7 +12,7 @@ import SwiftUI
 extension LearningLesson {
 
     static let perceptron = LearningLesson(
-        paperId: "loop:foundational:perceptron",
+        paperId: "perceptron",
         cards: [
 
             // 1 — Editorial cover.

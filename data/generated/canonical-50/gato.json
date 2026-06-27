@@ -1,0 +1,222 @@
+{
+  "paper_id": "gato",
+  "short_name": "Generalist Agent",
+  "title": "A Generalist Agent",
+  "authors": "",
+  "year": 2022,
+  "topic": "Agents",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/2205.06175",
+  "arxiv_id": "2205.06175",
+  "hook": "Imagine one AI that can chat, play video games, and control robots all at once.",
+  "promise": "You will understand how Gato reframes many tasks as a single, generalist sequence problem.",
+  "prerequisite_note": "Bring a sense of how language models process sequences, and curiosity about agents that act in the world.",
+  "glossary": [
+    {
+      "term": "Sequence Modeling",
+      "plain": "Treating data as a series of tokens, predicting the next one each time."
+    },
+    {
+      "term": "Multimodal",
+      "plain": "Able to handle many kinds of input and output, like text, images, and actions."
+    },
+    {
+      "term": "Generalist Agent",
+      "plain": "A single model that performs many different tasks across domains."
+    },
+    {
+      "term": "Tokenization",
+      "plain": "Breaking data into small pieces, like words or actions, for the model to process."
+    },
+    {
+      "term": "Policy",
+      "plain": "A rule or function that chooses what the agent should do next."
+    },
+    {
+      "term": "Autoregressive Model",
+      "plain": "A model that predicts the next item in a sequence based on previous ones."
+    }
+  ],
+  "related_slugs": [
+    "decision-transformer",
+    "gpt-3",
+    "dalle",
+    "dreamer",
+    "world-models"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Agents",
+      "title": "One Model, Many Talents",
+      "body": [
+        "Discover how Gato learns to solve dozens of tasks by seeing everything as a sequence."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Can one brain do it all?",
+      "body": [
+        "Imagine an AI that can chat, stack blocks with a robot arm, and play Atari games, all using the same brain.",
+        "For years, AI agents were specialists, each trained for one job. What if we could train a single agent to do almost anything?"
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "How Gato Sees Every Task",
+      "body": [
+        "First, Gato takes in inputs like images, text, or sensor data, and turns them into tokens.",
+        "Next, it processes these tokens with a transformer, just like a language model predicts words.",
+        "Finally, Gato outputs tokens, which can be words, button presses, or robot movements.",
+        "By using the same process for all tasks, Gato learns to act, talk, and understand in one model."
+      ],
+      "left": "Inputs become tokens",
+      "middle": "Transformer processes sequences",
+      "right": "Outputs cover many tasks",
+      "caption": "Gato unifies vision, language, and control as one big sequence problem."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "One Model or Many?",
+      "body": [
+        "Toggle to see the difference between using separate specialist agents and Gato's unified approach."
+      ],
+      "offLabel": "Specialist Agents",
+      "onLabel": "Gato's Generalist Model",
+      "offNote": "Each task needs its own model, which takes lots of training and maintenance.",
+      "onNote": "A single model handles dozens of tasks, switching between them by changing its input tokens."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "The Sequence Trick",
+      "body": [
+        "Gato's breakthrough is to treat every task as a sequence problem, whether it's language, control, or vision.",
+        "This means it can use the same transformer architecture for everything, just by changing how inputs and outputs are tokenized."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "Specialization vs. Generalization",
+      "body": [
+        "Slide to explore what happens as you move from specialist to generalist agents."
+      ],
+      "lowLabel": "Specialist",
+      "highLabel": "Generalist",
+      "low": "Best performance on one task, but can't handle new or mixed tasks.",
+      "mid": "Handles several related tasks, but may not excel at any single one.",
+      "high": "Takes on many tasks at once, with some loss in top performance for each."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "Pick Gato's Ingredients",
+      "body": [
+        "Which components are essential for building a generalist agent like Gato?"
+      ],
+      "choices": [
+        {
+          "label": "Transformer architecture",
+          "note": "Processes sequences of tokens efficiently."
+        },
+        {
+          "label": "Multimodal tokenization",
+          "note": "Turns images, text, and actions into a common format."
+        },
+        {
+          "label": "Large-scale dataset",
+          "note": "Provides diverse tasks for training."
+        },
+        {
+          "label": "Unified policy output",
+          "note": "Lets the model act, talk, or write."
+        },
+        {
+          "label": "Task conditioning",
+          "note": "Tells the model which task to perform."
+        },
+        {
+          "label": "Autoregressive prediction",
+          "note": "Predicts the next token, no matter the task."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "Gato's Many Skills",
+      "body": [
+        "Gato performed over 600 tasks, from stacking blocks to captioning images, all with one set of weights.",
+        "While it does not always match the best specialist models, Gato shows strong performance across a wide range of challenges."
+      ],
+      "bars": [
+        {
+          "label": "Task Diversity",
+          "note": "Number of tasks handled",
+          "value": 95
+        },
+        {
+          "label": "Text Tasks",
+          "note": "Performance on language benchmarks",
+          "value": 70
+        },
+        {
+          "label": "Robot Control",
+          "note": "Success in real-world manipulation",
+          "value": 60
+        },
+        {
+          "label": "Atari Games",
+          "note": "Scores on classic games",
+          "value": 65
+        }
+      ],
+      "caption": "Gato set a new bar for multitask agents, even if it did not beat every specialist."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "A New Path for AI Agents",
+      "body": [
+        "Gato's approach inspired a new wave of research into generalist AI, unifying tasks once thought separate.",
+        "It showed that with the right framing, one model can learn to see, talk, and act, just by reading sequences."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "How Gato Works in Four Moves",
+      "body": [],
+      "recap": [
+        {
+          "label": "Tokenize",
+          "note": "Convert all data into tokens, no matter the type."
+        },
+        {
+          "label": "Sequence",
+          "note": "Feed the token stream through a transformer."
+        },
+        {
+          "label": "Condition",
+          "note": "Tell the model what task to perform with special tokens."
+        },
+        {
+          "label": "Act",
+          "note": "Generate outputs as new tokens for any task."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "A Generalist Agent",
+      "body": [
+        "Read the full paper for technical details and more experiments."
+      ]
+    }
+  ]
+}

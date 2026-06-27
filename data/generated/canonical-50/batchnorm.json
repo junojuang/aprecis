@@ -1,0 +1,221 @@
+{
+  "paper_id": "batchnorm",
+  "short_name": "Batch Normalization",
+  "title": "Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift",
+  "authors": "Sergey Ioffe, Christian Szegedy",
+  "year": 2015,
+  "topic": "Optimization",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/1502.03167",
+  "arxiv_id": "1502.03167",
+  "hook": "BatchNorm lets deep networks learn faster by calming shifting signals inside each layer.",
+  "promise": "You will understand how Batch Normalization stabilizes and speeds up deep network training.",
+  "prerequisite_note": "Bring an intuition for how neural networks learn layer by layer, and why shifting inputs can cause problems.",
+  "glossary": [
+    {
+      "term": "Internal Covariate Shift",
+      "plain": "The changing distribution of a layer’s inputs as earlier layers update during training."
+    },
+    {
+      "term": "Normalization",
+      "plain": "The process of adjusting values so they fit within a certain range or distribution."
+    },
+    {
+      "term": "Mini-batch",
+      "plain": "A small, randomly chosen subset of the training data processed together in one step."
+    },
+    {
+      "term": "Nonlinearity",
+      "plain": "A function like ReLU or sigmoid that lets neural networks model complex patterns."
+    },
+    {
+      "term": "Dropout",
+      "plain": "A regularization method where random neurons are ignored during training to prevent overfitting."
+    },
+    {
+      "term": "Learning Rate",
+      "plain": "A parameter that controls how much the model’s weights change in response to each update."
+    }
+  ],
+  "related_slugs": [
+    "resnet",
+    "layernorm",
+    "adam",
+    "dropout",
+    "relu"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Optimization",
+      "title": "Why deep learning sped up",
+      "body": [
+        "Learn how a simple normalization trick made deep networks much easier and faster to train."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Why training deep nets used to be so hard",
+      "body": [
+        "Imagine trying to stack cards on a table while the table keeps wobbling. Each layer in a neural network faces a similar problem as it learns.",
+        "When earlier layers change, the inputs to later layers shift, making learning unstable and slow. This forces careful tuning and makes deep models hard to train."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "How BatchNorm changes the training flow",
+      "body": [
+        "Before BatchNorm, each layer had to adjust to constantly shifting inputs, making training a balancing act.",
+        "BatchNorm normalizes the inputs of each layer for every mini-batch, keeping the signals steady as training progresses.",
+        "This stability lets networks use higher learning rates and train faster, often reaching better accuracy with less effort."
+      ],
+      "left": "Unstable signals at each layer",
+      "middle": "Normalize inputs per mini-batch",
+      "right": "Faster, more stable training",
+      "caption": "BatchNorm tames the chaos inside deep networks, leading to smoother and quicker learning."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Training before and after BatchNorm",
+      "body": [
+        "Watch what happens when you train a deep network with and without BatchNorm."
+      ],
+      "offLabel": "No BatchNorm",
+      "onLabel": "With BatchNorm",
+      "offNote": "Training is slow, learning rates must be low, and results are sensitive to initialization.",
+      "onNote": "Training is fast, higher learning rates work, and initialization is less critical."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "The magic of normalizing layer inputs",
+      "body": [
+        "BatchNorm takes the outputs of each layer and rescales them so they have a mean of zero and a standard deviation of one, per mini-batch.",
+        "By making this normalization a standard part of the model, it reduces the shifting of inputs and lets each layer learn on a more stable foundation."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much normalization helps",
+      "body": [
+        "Adjust the slider to see how varying the strength of normalization affects training speed and stability."
+      ],
+      "lowLabel": "No normalization",
+      "highLabel": "Full normalization",
+      "low": "Training is unstable and slow, requiring careful tuning.",
+      "mid": "Some stabilization, moderate speedup, but not optimal.",
+      "high": "Training is fast and stable, with high learning rates possible."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What goes into BatchNorm?",
+      "body": [
+        "Pick the ingredients that make BatchNorm work within a neural network."
+      ],
+      "choices": [
+        {
+          "label": "Mini-batch statistics",
+          "note": "Calculates the mean and variance for normalization."
+        },
+        {
+          "label": "Learnable scale parameter",
+          "note": "Lets the model adjust the normalized output's scale."
+        },
+        {
+          "label": "Learnable shift parameter",
+          "note": "Lets the model shift the normalized output up or down."
+        },
+        {
+          "label": "Per-layer normalization",
+          "note": "Applies normalization to each layer separately."
+        },
+        {
+          "label": "Nonlinearity after normalization",
+          "note": "Ensures the network keeps its expressive power."
+        },
+        {
+          "label": "Backpropagation support",
+          "note": "Allows the normalization step to be trained end-to-end."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "BatchNorm’s impact on deep learning",
+      "body": [
+        "BatchNorm let models reach the same accuracy in far fewer training steps, making deep learning practical for much larger models.",
+        "It also acted as a regularizer, sometimes removing the need for techniques like Dropout, and led to new benchmark-leading results."
+      ],
+      "bars": [
+        {
+          "label": "Training steps needed",
+          "note": "Fewer steps to reach target accuracy",
+          "value": 15
+        },
+        {
+          "label": "Top-5 ImageNet error",
+          "note": "Lower error than previous best",
+          "value": 10
+        },
+        {
+          "label": "Learning rate flexibility",
+          "note": "Can use much higher rates",
+          "value": 90
+        },
+        {
+          "label": "Sensitivity to initialization",
+          "note": "Much less sensitive",
+          "value": 25
+        }
+      ],
+      "caption": "BatchNorm accelerated training, improved accuracy, and simplified the deep learning workflow."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why BatchNorm is a classic",
+      "body": [
+        "BatchNorm changed how researchers and practitioners train deep neural networks, making them faster, more robust, and easier to tune.",
+        "Its influence is felt in almost every modern deep learning architecture, and its core idea inspired many later normalization techniques."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "four-line mental model",
+      "body": [],
+      "recap": [
+        {
+          "label": "Normalize",
+          "note": "Standardize layer inputs using mini-batch statistics."
+        },
+        {
+          "label": "Stabilize",
+          "note": "Reduce internal covariate shift for smoother training."
+        },
+        {
+          "label": "Accelerate",
+          "note": "Allow higher learning rates and faster convergence."
+        },
+        {
+          "label": "Regularize",
+          "note": "Add robustness, sometimes replacing Dropout."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift",
+      "body": [
+        "Read the original paper to see the experiments and details behind this influential normalization method."
+      ]
+    }
+  ]
+}

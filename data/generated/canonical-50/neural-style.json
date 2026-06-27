@@ -1,0 +1,221 @@
+{
+  "paper_id": "neural-style",
+  "short_name": "Neural Style Transfer",
+  "title": "A Neural Algorithm of Artistic Style",
+  "authors": "Leon A. Gatys, Alexander S. Ecker, Matthias Bethge",
+  "year": 2015,
+  "topic": "Vision",
+  "difficulty": "Beginner",
+  "url": "https://arxiv.org/abs/1508.06576",
+  "arxiv_id": "1508.06576",
+  "hook": "See a photo painted in the style of Van Gogh or Picasso, instantly.",
+  "promise": "You will understand how neural networks can separate and remix the content and style of images.",
+  "prerequisite_note": "Bring your curiosity about how computers see images, no deep math or coding needed.",
+  "glossary": [
+    {
+      "term": "Convolutional Neural Network (CNN)",
+      "plain": "A type of neural network especially good at finding patterns in images."
+    },
+    {
+      "term": "Content Representation",
+      "plain": "The high-level information in an image, like objects and their arrangement."
+    },
+    {
+      "term": "Style Representation",
+      "plain": "The textures, colors, and brushstrokes that give an image its artistic feel."
+    },
+    {
+      "term": "Gram Matrix",
+      "plain": "A way to capture how features in an image relate to each other, used to represent style."
+    },
+    {
+      "term": "Optimization",
+      "plain": "Automatically changing an image until it matches the desired content and style."
+    },
+    {
+      "term": "Feature Map",
+      "plain": "A grid of numbers showing where certain patterns appear in the image."
+    }
+  ],
+  "related_slugs": [
+    "stylegan",
+    "cycle-gan",
+    "deepdream",
+    "imagenet-cnn",
+    "biggan"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Vision",
+      "title": "Paint Like a Neural Net",
+      "body": [
+        "See how AI blends the look of one image with the structure of another."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "What if computers could paint?",
+      "body": [
+        "Imagine taking a photo of your cat and making it look like a Van Gogh painting. Gatys and colleagues show how a neural network can do just that.",
+        "By teasing apart what an image shows from how it looks, the authors unlocked a new way to create art using AI."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "From photograph to masterpiece",
+      "body": [
+        "First, a neural network analyzes both a content image and a style image, breaking them down into patterns.",
+        "It then creates a new image, gradually adjusting it so its content matches the first image and its style matches the second.",
+        "The result is a picture with the subject of your photo but the brushwork and color of your chosen artist."
+      ],
+      "left": "Analyze content and style",
+      "middle": "Optimize a new image",
+      "right": "Blend content with style",
+      "caption": "The process turns two images into a unique artistic blend."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Before and after neural style transfer",
+      "body": [
+        "See how traditional filters differ from neural style transfer."
+      ],
+      "offLabel": "Traditional filters",
+      "onLabel": "Neural style transfer",
+      "offNote": "Only simple effects like blur or color shift, no real style mixing.",
+      "onNote": "Captures complex textures and patterns, creating true artistic blends."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "Separating what and how",
+      "body": [
+        "The neural network learns to tell apart the 'what' (the objects and their shapes) from the 'how' (the textures and colors) in an image.",
+        "By optimizing a new image to match the content of one and the style of another, it creates a seamless artistic fusion."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "Balance content and style",
+      "body": [
+        "Slide to see how changing the balance affects the final image."
+      ],
+      "lowLabel": "Mostly content",
+      "highLabel": "Mostly style",
+      "low": "The image looks like the original photo with light artistic touches.",
+      "mid": "A balanced mix, both recognizable subject and clear artistic style.",
+      "high": "The image is heavily stylized, sometimes losing the original subject."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "Choose your neural palette",
+      "body": [
+        "Pick the ingredients needed for neural style transfer."
+      ],
+      "choices": [
+        {
+          "label": "Content image",
+          "note": "The photo or subject you want to keep."
+        },
+        {
+          "label": "Style image",
+          "note": "The artwork whose look you want to borrow."
+        },
+        {
+          "label": "Pretrained CNN",
+          "note": "A network trained to see image patterns."
+        },
+        {
+          "label": "Content loss function",
+          "note": "Measures how much the new image matches the content."
+        },
+        {
+          "label": "Style loss function",
+          "note": "Measures how much the new image matches the style."
+        },
+        {
+          "label": "Image optimizer",
+          "note": "Tweaks the new image to bring content and style together."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "AI as an artist",
+      "body": [
+        "Neural style transfer became a viral sensation, inspiring artists, apps, and new research in AI creativity.",
+        "It proved that neural networks can learn abstract concepts like style, not just recognize objects."
+      ],
+      "bars": [
+        {
+          "label": "Artistic realism",
+          "note": "How convincing the results look",
+          "value": 85
+        },
+        {
+          "label": "Flexibility",
+          "note": "Works with any combination of images",
+          "value": 90
+        },
+        {
+          "label": "Computational cost",
+          "note": "Requires significant processing power",
+          "value": 40
+        },
+        {
+          "label": "Impact on apps",
+          "note": "Inspired filters and tools worldwide",
+          "value": 80
+        }
+      ],
+      "caption": "Neural style transfer made creative AI accessible to millions."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why this paper changed AI art",
+      "body": [
+        "This work showed that neural networks can go beyond recognition, helping machines create and remix art in new ways.",
+        "It set the stage for a wave of AI-powered creativity, from photo filters to generative art and beyond."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "Neural Style Transfer in four moves",
+      "body": [],
+      "recap": [
+        {
+          "label": "Analyze",
+          "note": "Break images into content and style features."
+        },
+        {
+          "label": "Separate",
+          "note": "Distinguish what is shown from how it looks."
+        },
+        {
+          "label": "Blend",
+          "note": "Mix content from one image with style from another."
+        },
+        {
+          "label": "Optimize",
+          "note": "Adjust the new image until both goals are met."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "A Neural Algorithm of Artistic Style",
+      "body": [
+        "Read the original to see the math and experiments behind this creative leap."
+      ]
+    }
+  ]
+}

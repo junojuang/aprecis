@@ -1,0 +1,8 @@
+{
+  "title": "GLIDE: Towards Photorealistic Image Generation and Editing with Text-Guided Diffusion Models",
+  "abstract": "GLIDE: Towards Photorealistic Image Generation and Editing with Text-Guided Diffusion Models. GLIDE showed classifier-free guidance could make text-guided diffusion more faithful.",
+  "authors": [],
+  "year": 2021,
+  "published_at": "2021-01-01T00:00:00Z",
+  "url": "https://arxiv.org/abs/2112.10741"
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base theme is a no-action-bar Material 3 shell. Real coloring is driven
+         by Compose (ui/theme), so this only needs to hand off cleanly at launch. -->
+    <style name="Theme.Aprecis" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>

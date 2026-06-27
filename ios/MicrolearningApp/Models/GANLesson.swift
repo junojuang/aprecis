@@ -9,7 +9,7 @@ import SwiftUI
 extension LearningLesson {
 
     static let gans = LearningLesson(
-        paperId: "loop:foundational:gans",
+        paperId: "gans",
         cards: [
 
             .cover(

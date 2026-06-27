@@ -11,7 +11,7 @@ import SwiftUI
 extension LearningLesson {
 
     static let grokking = LearningLesson(
-        paperId: "loop:foundational:grokking",
+        paperId: "grokking",
         cards: [
 
             // 1 - Cover.

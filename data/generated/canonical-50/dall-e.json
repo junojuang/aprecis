@@ -1,0 +1,221 @@
+{
+  "paper_id": "dall-e",
+  "short_name": "DALL-E",
+  "title": "Zero-Shot Text-to-Image Generation",
+  "authors": "Aditya Ramesh, Mikhail Pavlov, Gabriel Goh, Scott Gray et al.",
+  "year": 2021,
+  "topic": "Multimodal",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/2102.12092",
+  "arxiv_id": "2102.12092",
+  "hook": "Type a sentence, and see a machine imagine a picture from scratch.",
+  "promise": "You will understand how DALL-E links words to images using discrete visual tokens and transformers.",
+  "prerequisite_note": "Bring a sense of how language models predict the next word in a sentence.",
+  "glossary": [
+    {
+      "term": "Zero-shot",
+      "plain": "Generating outputs for prompts never seen during training, with no extra fine-tuning."
+    },
+    {
+      "term": "Discrete VAE",
+      "plain": "A neural network that compresses images into a sequence of tokens, like turning pictures into a visual alphabet."
+    },
+    {
+      "term": "Autoregressive transformer",
+      "plain": "A model that generates data one token at a time, using everything it has seen so far."
+    },
+    {
+      "term": "Text-to-image generation",
+      "plain": "Creating pictures based on written descriptions."
+    },
+    {
+      "term": "Token",
+      "plain": "A basic unit of data, such as a word or a chunk of an image."
+    },
+    {
+      "term": "Multimodal",
+      "plain": "Involving more than one type of data, like text and images together."
+    }
+  ],
+  "related_slugs": [
+    "clip",
+    "stable-diffusion",
+    "imagen",
+    "vq-vae",
+    "gpt-3"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Multimodal",
+      "title": "Words Become Pictures",
+      "body": [
+        "Discover how DALL-E lets language steer image creation through clever token-based modeling."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "From Sentences to Scenes",
+      "body": [
+        "Imagine describing a scene to a friend and having them paint it instantly. DALL-E tries to do this, but with machines.",
+        "Instead of memorizing pictures, DALL-E learns to connect language and images, so it can invent new scenes from just your words."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "How Text Becomes an Image",
+      "body": [
+        "First, DALL-E turns your sentence and an image into short sequences of tokens, like a language for pictures.",
+        "Then, a transformer model learns to predict the next token, mixing text and image tokens together in a single stream.",
+        "Finally, when given a new sentence, DALL-E generates new image tokens, which are decoded back into a picture."
+      ],
+      "left": "Text and image are split into tokens",
+      "middle": "Transformer predicts next token in mixed sequence",
+      "right": "Tokens are decoded into a new image",
+      "caption": "DALL-E stitches together language and vision by treating both as sequences of tokens."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "How DALL-E Differs From Old Approaches",
+      "body": [
+        "Compare traditional image generators with DALL-E's token-based, zero-shot approach."
+      ],
+      "offLabel": "old way",
+      "onLabel": "DALL-E's way",
+      "offNote": "Needs labeled data or extra information, struggles with new concepts.",
+      "onNote": "Combines text and images as tokens, invents new scenes from pure description."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "One Stream, Two Worlds",
+      "body": [
+        "The central trick: treat words and pieces of images as the same type of token, mixing them in one long sequence.",
+        "This lets a single transformer model learn the rules of both language and vision, so it can generate images from text alone."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How Scale Changes DALL-E's Imagination",
+      "body": [
+        "Adjust the amount of training data and model size to see how DALL-E's creativity and accuracy shift."
+      ],
+      "lowLabel": "Tiny model",
+      "highLabel": "Huge model",
+      "low": "Struggles to match text and images, makes blurry or mismatched pictures.",
+      "mid": "Some matching, can handle common objects but misses fine details.",
+      "high": "Sharp, creative images that closely follow text prompts, even for unusual scenes."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "Pick DALL-E's Key Ingredients",
+      "body": [
+        "Select the essential parts that let DALL-E turn words into images."
+      ],
+      "choices": [
+        {
+          "label": "Text encoder",
+          "note": "Converts sentences into tokens the model can use."
+        },
+        {
+          "label": "Discrete VAE",
+          "note": "Compresses images into a sequence of visual tokens."
+        },
+        {
+          "label": "Autoregressive transformer",
+          "note": "Learns to predict the next token in the sequence."
+        },
+        {
+          "label": "Large paired dataset",
+          "note": "Provides many examples of matching text and images."
+        },
+        {
+          "label": "Token mixing",
+          "note": "Combines text and image tokens in one stream."
+        },
+        {
+          "label": "Zero-shot evaluation",
+          "note": "Tests the model on prompts it has never seen before."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "DALL-E's Surprising Results",
+      "body": [
+        "DALL-E could invent images for text prompts it had never seen, rivaling or beating older models on creativity and relevance.",
+        "Its zero-shot ability showed that merging text and image tokens let one model generalize to new ideas without extra training."
+      ],
+      "bars": [
+        {
+          "label": "Zero-shot accuracy",
+          "note": "Matches text to images never seen during training",
+          "value": 78
+        },
+        {
+          "label": "Sample diversity",
+          "note": "Creates many different images for one prompt",
+          "value": 85
+        },
+        {
+          "label": "Image quality",
+          "note": "Sharpness and realism of generated images",
+          "value": 80
+        },
+        {
+          "label": "Creativity",
+          "note": "Ability to invent new combinations",
+          "value": 88
+        }
+      ],
+      "caption": "DALL-E set a new bar for zero-shot text-to-image generation."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why DALL-E Changed the Game",
+      "body": [
+        "DALL-E proved that a single model could learn to connect language and vision, simply by predicting tokens in sequence.",
+        "This idea inspired a wave of new research, making text-driven image generation a practical and creative tool."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "Four Steps to DALL-E",
+      "body": [],
+      "recap": [
+        {
+          "label": "Tokenize",
+          "note": "Turn text and images into sequences of tokens."
+        },
+        {
+          "label": "Mix",
+          "note": "Combine text and image tokens in one stream."
+        },
+        {
+          "label": "Predict",
+          "note": "Use a transformer to generate new tokens."
+        },
+        {
+          "label": "Decode",
+          "note": "Turn image tokens back into a picture."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Zero-Shot Text-to-Image Generation",
+      "body": [
+        "To dive deeper, explore the full paper and see DALL-E's results and architecture in detail."
+      ]
+    }
+  ]
+}

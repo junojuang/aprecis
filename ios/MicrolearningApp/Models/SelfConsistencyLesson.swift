@@ -12,7 +12,7 @@ import SwiftUI
 extension LearningLesson {
 
     static let selfConsistency = LearningLesson(
-        paperId: "loop:foundational:self-consistency",
+        paperId: "self-consistency",
         cards: [
 
             // 1 - Cover.

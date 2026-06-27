@@ -57,8 +57,8 @@ interface CuratedSeed {
 
 const CURATED: CuratedSeed[] = [
   {
-    loopId: "loop:foundational:perceptron",
-    backendId: "rosenblatt:1958",
+    loopId: "perceptron",
+    backendId: "perceptron",
     title: "The Perceptron: A Probabilistic Model for Information Storage and Organization in the Brain",
     abstract:
       "We propose a hypothetical nervous system, called the perceptron, designed to illustrate fundamental properties of intelligent systems. The perceptron consists of input retina cells, association units that pool weighted signals through an adjustable threshold, and a response unit. A reinforcement rule updates the association weights from labelled examples. Under broad conditions the perceptron is shown capable of learning to classify stimuli into categories.",
@@ -66,8 +66,8 @@ const CURATED: CuratedSeed[] = [
     publishedAt: "1958-11-01T00:00:00Z",
   },
   {
-    loopId: "loop:foundational:backprop",
-    backendId: "rumelhart:1986",
+    loopId: "backprop",
+    backendId: "backprop",
     title: "Learning Representations by Back-Propagating Errors",
     abstract:
       "We describe a new learning procedure, back-propagation, for networks of neurone-like units. The procedure repeatedly adjusts the weights of the connections in the network to minimize the difference between the actual output vector and the desired output vector. Internal hidden units come to represent important features of the task domain, and regularities are captured by the interactions of these units.",
@@ -75,8 +75,8 @@ const CURATED: CuratedSeed[] = [
     publishedAt: "1986-10-09T00:00:00Z",
   },
   {
-    loopId: "loop:foundational:lenet",
-    backendId: "lecun:1998",
+    loopId: "lenet",
+    backendId: "lenet",
     title: "Gradient-Based Learning Applied to Document Recognition",
     abstract:
       "Multilayer neural networks trained with the back-propagation algorithm constitute the best example of a successful gradient-based learning technique. Given an appropriate network architecture, gradient-based learning algorithms can synthesize a complex decision surface that classifies high-dimensional patterns such as handwritten characters with minimal preprocessing. This paper reviews various methods applied to handwritten character recognition and compares them on a standard handwritten digit recognition task. Convolutional neural networks, specifically designed to deal with the variability of 2D shapes, are shown to outperform all other techniques.",
@@ -84,33 +84,33 @@ const CURATED: CuratedSeed[] = [
     publishedAt: "1998-11-01T00:00:00Z",
   },
   {
-    loopId: "loop:foundational:alexnet",
-    backendId: "krizhevsky:2012",
+    loopId: "alexnet",
+    backendId: "alexnet",
     title: "ImageNet Classification with Deep Convolutional Neural Networks",
     abstract:
       "We trained a large, deep convolutional neural network to classify the 1.2 million high-resolution images in the ImageNet LSVRC-2010 contest into 1000 classes. The neural network has 60 million parameters and 650,000 neurons. To make training faster we used non-saturating neurons and an efficient GPU implementation of the convolution operation. To reduce overfitting we employed a regularization method called dropout. We also entered a variant in the ILSVRC-2012 competition and achieved a winning top-5 test error rate of 15.3%.",
     url: "https://papers.nips.cc/paper/2012/hash/c399862d3b9d6b76c8436e924a68c45b-Abstract.html",
     publishedAt: "2012-12-03T00:00:00Z",
   },
-  { loopId: "loop:foundational:word2vec", backendId: "arxiv:1301.3781", arxivId: "1301.3781" },
-  { loopId: "loop:foundational:seq2seq",  backendId: "arxiv:1409.3215", arxivId: "1409.3215" },
-  { loopId: "loop:foundational:gans",     backendId: "arxiv:1406.2661", arxivId: "1406.2661" },
-  { loopId: "loop:foundational:resnet",   backendId: "arxiv:1512.03385", arxivId: "1512.03385" },
-  { loopId: "loop:foundational:attention", backendId: "arxiv:1706.03762", arxivId: "1706.03762" },
-  { loopId: "loop:foundational:gpt3",     backendId: "arxiv:2005.14165", arxivId: "2005.14165" },
-  { loopId: "loop:foundational:bert",     backendId: "arxiv:1810.04805", arxivId: "1810.04805" },
+  { loopId: "word2vec", backendId: "arxiv:1301.3781", arxivId: "1301.3781" },
+  { loopId: "seq2seq",  backendId: "arxiv:1409.3215", arxivId: "1409.3215" },
+  { loopId: "gans",     backendId: "arxiv:1406.2661", arxivId: "1406.2661" },
+  { loopId: "resnet",   backendId: "arxiv:1512.03385", arxivId: "1512.03385" },
+  { loopId: "attention", backendId: "arxiv:1706.03762", arxivId: "1706.03762" },
+  { loopId: "gpt3",     backendId: "arxiv:2005.14165", arxivId: "2005.14165" },
+  { loopId: "bert",     backendId: "arxiv:1810.04805", arxivId: "1810.04805" },
   // Reasoning trunk (all on arXiv). These cite each other, so seeding them
   // together lets Builds-on / Led-to edges resolve within the curated set.
-  { loopId: "loop:foundational:instructgpt",       backendId: "arxiv:2203.02155", arxivId: "2203.02155" },
-  { loopId: "loop:foundational:chain-of-thought",  backendId: "arxiv:2201.11903", arxivId: "2201.11903" },
-  { loopId: "loop:foundational:scratchpad",        backendId: "arxiv:2112.00114", arxivId: "2112.00114" },
-  { loopId: "loop:foundational:self-consistency",  backendId: "arxiv:2203.11171", arxivId: "2203.11171" },
-  { loopId: "loop:foundational:tot",               backendId: "arxiv:2305.10601", arxivId: "2305.10601" },
-  { loopId: "loop:foundational:least-to-most",     backendId: "arxiv:2205.10625", arxivId: "2205.10625" },
-  { loopId: "loop:foundational:react",             backendId: "arxiv:2210.03629", arxivId: "2210.03629" },
-  { loopId: "loop:foundational:toolformer",        backendId: "arxiv:2302.04761", arxivId: "2302.04761" },
-  { loopId: "loop:foundational:grokking",          backendId: "arxiv:2201.02177", arxivId: "2201.02177" },
-  { loopId: "loop:foundational:deepseek-r1",       backendId: "arxiv:2501.12948", arxivId: "2501.12948" },
+  { loopId: "instructgpt",       backendId: "arxiv:2203.02155", arxivId: "2203.02155" },
+  { loopId: "chain-of-thought",  backendId: "arxiv:2201.11903", arxivId: "2201.11903" },
+  { loopId: "scratchpad",        backendId: "arxiv:2112.00114", arxivId: "2112.00114" },
+  { loopId: "self-consistency",  backendId: "arxiv:2203.11171", arxivId: "2203.11171" },
+  { loopId: "tree-of-thoughts",               backendId: "arxiv:2305.10601", arxivId: "2305.10601" },
+  { loopId: "least-to-most",     backendId: "arxiv:2205.10625", arxivId: "2205.10625" },
+  { loopId: "react",             backendId: "arxiv:2210.03629", arxivId: "2210.03629" },
+  { loopId: "toolformer",        backendId: "arxiv:2302.04761", arxivId: "2302.04761" },
+  { loopId: "grokking",          backendId: "arxiv:2201.02177", arxivId: "2201.02177" },
+  { loopId: "deepseek-r1",       backendId: "arxiv:2501.12948", arxivId: "2501.12948" },
 ];
 
 // ─── Fetch arXiv metadata (no LLM) ───────────────────────────────────────────

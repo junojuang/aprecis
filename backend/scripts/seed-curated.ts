@@ -60,7 +60,7 @@ interface CuratedDeck {
 }
 
 const perceptron: CuratedDeck = {
-  paper_id: "rosenblatt:1958",
+  paper_id: "perceptron",
   title: "The Perceptron: A Probabilistic Model for Information Storage and Organization in the Brain",
   source: "rss",
   url: "https://psycnet.apa.org/doiLanding?doi=10.1037/h0042519",
@@ -238,7 +238,7 @@ const perceptron: CuratedDeck = {
 };
 
 const backprop: CuratedDeck = {
-  paper_id: "rumelhart:1986",
+  paper_id: "backprop",
   title: "Learning Representations by Back-Propagating Errors",
   source: "rss",
   url: "https://www.nature.com/articles/323533a0",

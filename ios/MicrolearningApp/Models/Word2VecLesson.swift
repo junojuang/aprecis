@@ -10,7 +10,7 @@ import SwiftUI
 extension LearningLesson {
 
     static let word2vec = LearningLesson(
-        paperId: "loop:foundational:word2vec",
+        paperId: "word2vec",
         cards: [
 
             // Editorial cover.

@@ -1153,12 +1153,12 @@ enum BraceIdentity {
             ?? grab(#"doi[=:](10\.[^?&\s#]+)"#)
     }
 
-    /// Curated `paper_id` rows that share a work with `loop:foundational:*` or bundle previews.
+    /// Curated `paper_id` rows that share a work with bundle previews.
     private static func literatureCanonKey(forPaperId paperId: String) -> String? {
         switch paperId {
-        case "loop:foundational:backprop", "rumelhart:1986", "backprop-001":
+        case "backprop", "backprop-001":
             return "article:nature:323533a0"
-        case "loop:foundational:perceptron", "rosenblatt:1958", "perceptron-001":
+        case "perceptron", "perceptron-001":
             return "doi:10.1037/h0042519"
         default:
             return nil

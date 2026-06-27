@@ -1,0 +1,220 @@
+{
+  "paper_id": "bahdanau-attention",
+  "short_name": "Bahdanau Attention",
+  "title": "Neural Machine Translation by Jointly Learning to Align and Translate",
+  "authors": "Dzmitry Bahdanau, Kyunghyun Cho, Yoshua Bengio",
+  "year": 2014,
+  "topic": "Language",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/1409.0473",
+  "arxiv_id": "1409.0473",
+  "hook": "This paper lets translation models focus on the right words at each step.",
+  "promise": "You will understand how attention helps neural networks translate sentences more accurately by aligning source and target words dynamically.",
+  "prerequisite_note": "You only need an intuition for how machines might turn one sentence into another, step by step.",
+  "glossary": [
+    {
+      "term": "Encoder-Decoder",
+      "plain": "A two-part neural network where one half reads the input and the other generates the output."
+    },
+    {
+      "term": "Fixed-Length Vector",
+      "plain": "A single summary of a whole sentence, often too compressed to remember every detail."
+    },
+    {
+      "term": "Attention Mechanism",
+      "plain": "A way for the model to focus on different input words when generating each output word."
+    },
+    {
+      "term": "Alignment",
+      "plain": "The process of linking a word in the output to relevant words in the input."
+    },
+    {
+      "term": "Soft Attention",
+      "plain": "A method where the model weighs all input words, rather than picking just one at a time."
+    },
+    {
+      "term": "Neural Machine Translation (NMT)",
+      "plain": "A system that uses neural networks to convert sentences from one language to another."
+    }
+  ],
+  "related_slugs": [
+    "transformer-attention",
+    "seq2seq-sutskever",
+    "luong-attention",
+    "bert-pretraining"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Language",
+      "title": "Translation that pays attention",
+      "body": [
+        "Learn how neural networks became much better at translation by learning to focus on the right words."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "How can a model know what matters?",
+      "body": [
+        "Imagine translating a sentence word by word, but not always in the same order. Some words need to connect across the sentence.",
+        "Early neural translators squeezed the whole input into a single memory. What if the model could look back at the words it needs, just in time?"
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "From sentence to translation: aligning on the fly",
+      "body": [
+        "First, the model reads the entire source sentence and encodes it into a series of vectors, one for each word.",
+        "Then, as it generates each output word, it calculates which source words are most relevant, assigning attention weights.",
+        "Finally, it produces the translation word by word, guided by these dynamic alignments, instead of relying on a single summary vector."
+      ],
+      "left": "Encode each input word",
+      "middle": "Calculate attention for each output step",
+      "right": "Generate translated word using focused context",
+      "caption": "Attention lets the model align each output word to the right input words dynamically."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "What happens if you squeeze too much?",
+      "body": [
+        "Slide to compare translations using a single memory vs dynamic attention."
+      ],
+      "offLabel": "Fixed-length vector",
+      "onLabel": "Attention mechanism",
+      "offNote": "The model forgets details, especially for long or complex sentences.",
+      "onNote": "The model can focus on relevant words, improving accuracy and fluency."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "Let the model look back",
+      "body": [
+        "Instead of forcing the model to remember everything in one vector, Bahdanau and colleagues let it search for relevant words each time it generates a new word.",
+        "This soft attention allows the model to learn alignments between input and output words, making translations more accurate, especially for longer sentences."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much attention is enough?",
+      "body": [
+        "Move the slider to see how focusing too little or too much affects translation quality."
+      ],
+      "lowLabel": "No attention",
+      "highLabel": "Full attention",
+      "low": "The model ignores input context, producing poor translations.",
+      "mid": "The model balances context, improving accuracy and fluency.",
+      "high": "The model may overfit to input, sometimes copying instead of translating."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What does this translation engine need?",
+      "body": [
+        "Pick the ingredients that let a neural network align and translate sentences with attention."
+      ],
+      "choices": [
+        {
+          "label": "Word embeddings",
+          "note": "Represent words as vectors the model can process."
+        },
+        {
+          "label": "Encoder RNN",
+          "note": "Reads and processes the input sentence."
+        },
+        {
+          "label": "Attention layer",
+          "note": "Calculates which input words to focus on at each step."
+        },
+        {
+          "label": "Decoder RNN",
+          "note": "Generates the output sentence word by word."
+        },
+        {
+          "label": "Alignment scores",
+          "note": "Measure how relevant each input word is for the current output word."
+        },
+        {
+          "label": "Softmax function",
+          "note": "Turns alignment scores into attention weights."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "Translation with attention: the impact",
+      "body": [
+        "On English to French translation, the attention model matched or beat the strongest systems of the time, especially on longer sentences.",
+        "The model's learned alignments agreed well with human intuition, showing it really did learn to focus on the right words."
+      ],
+      "bars": [
+        {
+          "label": "Short sentence BLEU",
+          "note": "Competitive with previous models",
+          "value": 70
+        },
+        {
+          "label": "Long sentence BLEU",
+          "note": "Outperforms fixed-vector models",
+          "value": 85
+        },
+        {
+          "label": "Alignment quality",
+          "note": "Matches human intuition",
+          "value": 90
+        },
+        {
+          "label": "Training complexity",
+          "note": "Slightly increased",
+          "value": 40
+        }
+      ],
+      "caption": "Attention especially improves translation for longer, more complex sentences."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why attention changed everything",
+      "body": [
+        "This paper showed that forcing models to use a single memory is limiting, especially for complex language tasks like translation.",
+        "By letting the model align and focus as needed, attention paved the way for modern breakthroughs in language understanding and generation."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "How attention-based translation works",
+      "body": [],
+      "recap": [
+        {
+          "label": "Encode",
+          "note": "Read the input sentence into word vectors."
+        },
+        {
+          "label": "Attend",
+          "note": "Compute relevance of each input word for each output step."
+        },
+        {
+          "label": "Align",
+          "note": "Use attention weights to find the right context."
+        },
+        {
+          "label": "Translate",
+          "note": "Generate each output word using focused information."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Neural Machine Translation by Jointly Learning to Align and Translate",
+      "body": [
+        "Read the original paper to see how attention mechanisms transformed machine translation."
+      ]
+    }
+  ]
+}

@@ -13,7 +13,7 @@ import SwiftUI
 extension LearningLesson {
 
     static let instructGPT = LearningLesson(
-        paperId: "loop:foundational:instructgpt",
+        paperId: "instructgpt",
         cards: [
 
             // 1 - Editorial cover.

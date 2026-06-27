@@ -1,0 +1,221 @@
+{
+  "paper_id": "glide",
+  "short_name": "GLIDE Diffusion",
+  "title": "GLIDE: Towards Photorealistic Image Generation and Editing with Text-Guided Diffusion Models",
+  "authors": "",
+  "year": 2021,
+  "topic": "Diffusion",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/2112.10741",
+  "arxiv_id": "2112.10741",
+  "hook": "Imagine typing a prompt and watching a photorealistic scene appear from noise.",
+  "promise": "You will understand how classifier-free guidance makes text-to-image diffusion models more faithful to your prompt.",
+  "prerequisite_note": "You only need a sense of how noisy processes can be reversed to create order.",
+  "glossary": [
+    {
+      "term": "Diffusion Model",
+      "plain": "A generative model that creates data by gradually removing noise from a random input."
+    },
+    {
+      "term": "Text Guidance",
+      "plain": "Using a text prompt to steer the image generation process."
+    },
+    {
+      "term": "Classifier-Free Guidance",
+      "plain": "A way to guide generation without needing a separate classifier model."
+    },
+    {
+      "term": "Denoising",
+      "plain": "The process of turning noisy data into a clear, meaningful image."
+    },
+    {
+      "term": "Conditional Generation",
+      "plain": "Generating images based on a specific input, like a text description."
+    },
+    {
+      "term": "Unconditional Generation",
+      "plain": "Generating images without any guiding input or prompt."
+    }
+  ],
+  "related_slugs": [
+    "dalle2",
+    "imagen",
+    "stable-diffusion",
+    "ddpm",
+    "score-sde",
+    "clip"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Diffusion",
+      "title": "Text to Stunning Image",
+      "body": [
+        "Discover how GLIDE made text-guided image generation more accurate and photorealistic through classifier-free guidance."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "From words to visuals",
+      "body": [
+        "Imagine describing a scene with words and seeing a computer create a matching, realistic image from scratch. This is no longer science fiction.",
+        "GLIDE brought us closer to this dream by making diffusion models listen more closely to your text, generating images that truly fit your words."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "How GLIDE turns text into images",
+      "body": [
+        "First, GLIDE starts with pure noise and a text prompt. The model then repeatedly denoises, each time using the prompt for guidance.",
+        "Instead of needing a separate classifier to steer the process, GLIDE learns to listen to your prompt directly, blending conditional and unconditional signals."
+      ],
+      "left": "Start with noise and text",
+      "middle": "Blend prompt and no-prompt guidance",
+      "right": "Photorealistic, faithful image",
+      "caption": "GLIDE removes noise step by step, using your words to shape each stage."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "How does guidance change the result?",
+      "body": [
+        "See what happens when we generate images with and without classifier-free guidance."
+      ],
+      "offLabel": "Separate classifier",
+      "onLabel": "Classifier-free guidance",
+      "offNote": "Images sometimes ignore the prompt or look less realistic. Requires an extra classifier model.",
+      "onNote": "Images match the prompt better and look more natural, using only the diffusion model."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "The classifier-free guidance trick",
+      "body": [
+        "GLIDE realized you can get strong prompt control without a separate classifier. Instead, you train the model to sometimes ignore the prompt during learning.",
+        "At generation time, you blend the model's predictions with and without the prompt, dialing up how much it listens to your words. This gives both faithfulness and flexibility."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much guidance is best?",
+      "body": [
+        "Adjust how strongly the model follows your text prompt during image generation."
+      ],
+      "lowLabel": "Low guidance",
+      "highLabel": "High guidance",
+      "low": "Images are diverse but may ignore your prompt.",
+      "mid": "Balanced: images mostly match prompt and look natural.",
+      "high": "Images fit prompt closely but may look less realistic or show artifacts."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "Choose the key ingredients for GLIDE",
+      "body": [
+        "Which parts must you combine to get GLIDE's results? Pick all that apply."
+      ],
+      "choices": [
+        {
+          "label": "Diffusion process",
+          "note": "Creates images by denoising from random noise."
+        },
+        {
+          "label": "Text encoder",
+          "note": "Turns your prompt into something the model understands."
+        },
+        {
+          "label": "Classifier-free guidance",
+          "note": "Controls how much the image follows the prompt."
+        },
+        {
+          "label": "Unconditional training",
+          "note": "Teaches the model to generate images without prompts too."
+        },
+        {
+          "label": "Conditional training",
+          "note": "Teaches the model to generate images based on prompts."
+        },
+        {
+          "label": "No separate classifier",
+          "note": "Removes the need for an extra classifier model."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "Sharper, more faithful images",
+      "body": [
+        "GLIDE's classifier-free guidance made text-to-image results much more faithful to the prompt, and often more photorealistic, compared to older methods.",
+        "This innovation set a new standard for controllable, high-quality image generation and inspired many later diffusion models."
+      ],
+      "bars": [
+        {
+          "label": "Prompt Faithfulness",
+          "note": "How well images match text",
+          "value": 92
+        },
+        {
+          "label": "Photorealism",
+          "note": "Visual quality of images",
+          "value": 85
+        },
+        {
+          "label": "Sample Diversity",
+          "note": "Variety of images per prompt",
+          "value": 65
+        },
+        {
+          "label": "No Extra Classifier",
+          "note": "Simplicity of the approach",
+          "value": 100
+        }
+      ],
+      "caption": "GLIDE improved both prompt matching and realism, with fewer moving parts."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why GLIDE changed the game",
+      "body": [
+        "GLIDE showed that you do not need a separate classifier to guide text-to-image generation. This made models simpler and more robust.",
+        "Its classifier-free guidance trick is now a foundation for most modern diffusion models, making text-driven creativity more accessible and reliable."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "GLIDE in four steps",
+      "body": [],
+      "recap": [
+        {
+          "label": "Start",
+          "note": "Begin with random noise and a text prompt."
+        },
+        {
+          "label": "Guide",
+          "note": "Blend predictions with and without the prompt."
+        },
+        {
+          "label": "Denoise",
+          "note": "Iteratively remove noise, guided by your words."
+        },
+        {
+          "label": "Reveal",
+          "note": "Produce a photorealistic image that matches the prompt."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "GLIDE: Towards Photorealistic Image Generation and Editing with Text-Guided Diffusion Models",
+      "body": [
+        "Read the full paper for technical details and more results from the GLIDE team."
+      ]
+    }
+  ]
+}

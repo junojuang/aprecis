@@ -1,0 +1,220 @@
+{
+  "paper_id": "sparrow",
+  "short_name": "Sparrow Alignment",
+  "title": "Improving alignment of dialogue agents via targeted human judgements",
+  "authors": "",
+  "year": 2022,
+  "topic": "Alignment",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/2209.14375",
+  "arxiv_id": "2209.14375",
+  "hook": "What if chatbots could follow rules and explain their answers with real evidence?",
+  "promise": "You will see how dialogue agents can be trained to follow rules and cite evidence using human feedback.",
+  "prerequisite_note": "Bring curiosity about how AI can be taught to behave safely and give reliable answers.",
+  "glossary": [
+    {
+      "term": "Alignment",
+      "plain": "Making sure an AI does what humans want and avoids harmful behaviors."
+    },
+    {
+      "term": "Dialogue agent",
+      "plain": "A chatbot or AI that interacts with people through conversation."
+    },
+    {
+      "term": "Rule-based constraints",
+      "plain": "Explicit guidelines that the AI must follow during its responses."
+    },
+    {
+      "term": "Evidence citation",
+      "plain": "The agent provides sources or reasons for its answers, not just opinions."
+    },
+    {
+      "term": "Human feedback",
+      "plain": "People judge the AI's answers to help improve its behavior."
+    },
+    {
+      "term": "Reinforcement learning from human feedback (RLHF)",
+      "plain": "A training method where AI learns from human preferences."
+    }
+  ],
+  "related_slugs": [
+    "constitutional-ai",
+    "instructgpt",
+    "chatgpt",
+    "rlhf",
+    "lamda"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Alignment",
+      "title": "Teaching Chatbots to Follow Rules",
+      "body": [
+        "Discover how Sparrow learned to obey rules and cite evidence using human guidance."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Why chatbots need rules",
+      "body": [
+        "Imagine a chatbot that sometimes makes things up, gives unsafe advice, or cannot explain itself. This is a real problem for AI assistants.",
+        "Sparrow was built to address these issues by training a chatbot to follow explicit rules and back up its answers with evidence."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "How Sparrow learns to align",
+      "body": [
+        "First, humans set rules for the chatbot and collect many example responses. Then, human judges rate which answers follow the rules and provide good evidence.",
+        "The AI uses these ratings to learn which behaviors are rewarded, gradually improving its ability to obey rules and cite sources."
+      ],
+      "left": "Human sets rules",
+      "middle": "AI gets human feedback on responses",
+      "right": "Agent gives safer, evidence-backed answers",
+      "caption": "Sparrow's learning loop connects rules, human judgement, and improved chatbot behavior."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "What changes with human-judged rules?",
+      "body": [
+        "See how a chatbot's answers differ before and after it learns from human-judged rules."
+      ],
+      "offLabel": "No rules",
+      "onLabel": "Sparrow's way",
+      "offNote": "Chatbot may give unsafe or unsupported answers, and cannot explain its reasoning.",
+      "onNote": "Chatbot follows rules, avoids unsafe topics, and cites evidence for its answers."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "Learning from targeted human feedback",
+      "body": [
+        "Sparrow's core insight is to use explicit rules and targeted human judgement to shape a chatbot's behavior.",
+        "Instead of just predicting language, Sparrow is trained to satisfy human judges who care about safety and evidence."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How strict should the rules be?",
+      "body": [
+        "Adjust how tightly the chatbot follows rules versus how freely it can answer."
+      ],
+      "lowLabel": "Few rules",
+      "highLabel": "Strict rules",
+      "low": "The chatbot is creative but may make mistakes or unsafe claims.",
+      "mid": "The chatbot balances creativity with some rule-following and evidence.",
+      "high": "The chatbot is very safe but may sound less natural or flexible."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "Which parts make a safer chatbot?",
+      "body": [
+        "Pick which ingredients you think are crucial for training a rule-following, evidence-citing dialogue agent."
+      ],
+      "choices": [
+        {
+          "label": "Explicit rules",
+          "note": "Define what the chatbot is allowed to say."
+        },
+        {
+          "label": "Human feedback",
+          "note": "Humans judge which answers are good or bad."
+        },
+        {
+          "label": "Evidence citation",
+          "note": "Require the agent to back up its claims."
+        },
+        {
+          "label": "Reward model",
+          "note": "Learn which responses humans prefer."
+        },
+        {
+          "label": "Dialogue dataset",
+          "note": "Provide many example conversations to learn from."
+        },
+        {
+          "label": "Safety constraints",
+          "note": "Block unsafe or harmful responses."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "Sparrow's safer, more reliable answers",
+      "body": [
+        "Sparrow was much better at following rules and providing evidence compared to previous chatbots.",
+        "Human judges preferred Sparrow's responses and found them safer in real conversations."
+      ],
+      "bars": [
+        {
+          "label": "Rule-following",
+          "note": "How often rules were obeyed",
+          "value": 90
+        },
+        {
+          "label": "Evidence citation",
+          "note": "Answers with cited sources",
+          "value": 80
+        },
+        {
+          "label": "User preference",
+          "note": "Humans liked these answers more",
+          "value": 75
+        },
+        {
+          "label": "Unsafe responses",
+          "note": "Lower is better",
+          "value": 15
+        }
+      ],
+      "caption": "Sparrow showed big improvements in rule-following, evidence, and safety."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why Sparrow changed the field",
+      "body": [
+        "Sparrow proved that chatbots can be taught not just to talk, but to follow rules and explain themselves.",
+        "This approach inspired new generations of safer, more trustworthy dialogue agents."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "How Sparrow aligns dialogue agents",
+      "body": [],
+      "recap": [
+        {
+          "label": "Set",
+          "note": "Define rules for safe chatbot behavior"
+        },
+        {
+          "label": "Judge",
+          "note": "Humans rate answers for rule-following and evidence"
+        },
+        {
+          "label": "Train",
+          "note": "AI learns from human feedback to improve"
+        },
+        {
+          "label": "Deploy",
+          "note": "Chatbot gives safer, evidence-backed answers"
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Improving alignment of dialogue agents via targeted human judgements",
+      "body": [
+        "Read the source to see how Sparrow's training process was designed and measured."
+      ]
+    }
+  ]
+}

@@ -15,7 +15,7 @@
  * Run (after `npx supabase db push` so the column exists):
  *   cd backend && deno run --allow-net --allow-env --allow-read \
  *     scripts/set-web-lesson.ts \
- *     --loop loop:foundational:grokking \
+ *     --loop grokking \
  *     --file ../prototypes/web-lesson/grokking-premium.html \
  *     --slug grokking \
  *     --title "Grokking: Generalization Beyond Overfitting on Small Algorithmic Datasets" \

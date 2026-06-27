@@ -1,0 +1,221 @@
+{
+  "paper_id": "minerva",
+  "short_name": "Math Reasoning LMs",
+  "title": "Solving Quantitative Reasoning Problems with Language Models",
+  "authors": "",
+  "year": 2022,
+  "topic": "Reasoning",
+  "difficulty": "Advanced",
+  "url": "https://arxiv.org/abs/2206.14858",
+  "arxiv_id": "2206.14858",
+  "hook": "A language model trained on scientific text solves high school and college math problems.",
+  "promise": "By the end, you will see how Minerva lets language models tackle challenging math and science questions.",
+  "prerequisite_note": "You only need basic intuition for how language models read and generate text step by step.",
+  "glossary": [
+    {
+      "term": "Language Model",
+      "plain": "A neural network that predicts the next word in a sequence, trained on lots of text."
+    },
+    {
+      "term": "Quantitative Reasoning",
+      "plain": "Solving problems that require mathematical calculation, logic, or symbolic manipulation."
+    },
+    {
+      "term": "Technical Corpus",
+      "plain": "A large collection of scientific or mathematical documents used for training."
+    },
+    {
+      "term": "Chain-of-Thought",
+      "plain": "A method where the model is prompted to show step-by-step reasoning, not just an answer."
+    },
+    {
+      "term": "Few-Shot Prompting",
+      "plain": "Showing the model a handful of example questions and answers to guide its behavior."
+    },
+    {
+      "term": "Out-of-Distribution",
+      "plain": "Problems or data that are different from what the model saw during training."
+    }
+  ],
+  "related_slugs": [
+    "gopher",
+    "paLM",
+    "cot",
+    "gpt3",
+    "math-dataset",
+    "t5"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Reasoning",
+      "title": "How Language Models Learn Math",
+      "body": [
+        "Discover how Minerva trains language models to solve real math and science problems, not just recite text."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Can a text model do math?",
+      "body": [
+        "Imagine a computer reading thousands of math papers and textbooks, then trying to solve advanced math problems itself.",
+        "Minerva is a project where researchers trained a language model on scientific text, pushing it to answer real quantitative questions, not just simple calculations."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "From reading to reasoning",
+      "body": [
+        "First, the model is pre-trained on vast general text, then fine-tuned on technical, math-heavy documents.",
+        "Given a math question, the model is prompted to reason step by step, producing detailed solutions instead of just the final answer."
+      ],
+      "left": "Pretrain on general text",
+      "middle": "Fine-tune on technical math",
+      "right": "Solve real math problems",
+      "caption": "Minerva bridges language and math by learning from scientific writing."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "How do models handle math questions?",
+      "body": [
+        "Compare a standard language model with Minerva on a challenging math problem."
+      ],
+      "offLabel": "Standard LM",
+      "onLabel": "Minerva",
+      "offNote": "Often gives a plausible answer but fails multi-step reasoning or math notation.",
+      "onNote": "Produces step-by-step solutions, handles symbols, and arrives at correct answers more often."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "Minerva’s central trick",
+      "body": [
+        "Instead of just feeding the model more data, Minerva carefully selects technical math and science text to fine-tune the model.",
+        "This targeted training teaches the model not only to recognize mathematical language but also to perform multi-step quantitative reasoning."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much technical data?",
+      "body": [
+        "See how the amount of technical training data affects Minerva's math problem performance."
+      ],
+      "lowLabel": "No technical data",
+      "highLabel": "Lots of technical data",
+      "low": "Model struggles with symbols and multi-step reasoning.",
+      "mid": "Model gets some simple math right but misses harder steps.",
+      "high": "Model solves complex quantitative problems with detailed reasoning."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "Pick Minerva’s ingredients",
+      "body": [
+        "Which components are crucial for getting a language model to solve real math problems?"
+      ],
+      "choices": [
+        {
+          "label": "Large model size",
+          "note": "Gives more capacity for complex reasoning."
+        },
+        {
+          "label": "Technical math corpus",
+          "note": "Supplies examples of scientific language and notation."
+        },
+        {
+          "label": "Chain-of-thought prompting",
+          "note": "Encourages step-by-step solutions."
+        },
+        {
+          "label": "Few-shot examples",
+          "note": "Guides the model with worked sample problems."
+        },
+        {
+          "label": "Fine-tuning",
+          "note": "Adapts the model to new, specialized data."
+        },
+        {
+          "label": "Evaluation on real exams",
+          "note": "Tests if the model can truly solve practical problems."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "Minerva’s leap in math reasoning",
+      "body": [
+        "Minerva achieved benchmark-leading results on challenging math and science benchmarks, including high school and college-level exams.",
+        "The model’s performance improved dramatically with technical training, showing it could generalize to new quantitative questions."
+      ],
+      "bars": [
+        {
+          "label": "MATH dataset score",
+          "note": "Best prior: 8%, Minerva: 50%",
+          "value": 50
+        },
+        {
+          "label": "GSM8K (grade school)",
+          "note": "Minerva: 78%",
+          "value": 78
+        },
+        {
+          "label": "Competition-level math",
+          "note": "Minerva: 23%",
+          "value": 23
+        },
+        {
+          "label": "Physics questions",
+          "note": "Minerva: 50%",
+          "value": 50
+        }
+      ],
+      "caption": "Minerva’s targeted training let language models outperform past approaches on real math exams."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why Minerva matters",
+      "body": [
+        "Minerva proved that language models can cross into quantitative reasoning, not just language understanding, if trained with the right data.",
+        "This work inspired new research on using LMs as scientific assistants, raising hopes for AI that can solve real technical problems."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "How Minerva makes LMs do math",
+      "body": [],
+      "recap": [
+        {
+          "label": "Pretrain",
+          "note": "Start with a large language model trained on general text."
+        },
+        {
+          "label": "Fine-tune",
+          "note": "Adapt the model with scientific and math-heavy documents."
+        },
+        {
+          "label": "Prompt",
+          "note": "Guide the model to show step-by-step reasoning for each question."
+        },
+        {
+          "label": "Evaluate",
+          "note": "Test on real math and science exams to measure progress."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Solving Quantitative Reasoning Problems with Language Models",
+      "body": [
+        "Read the original Minerva paper to see exactly how language models learned to solve math."
+      ]
+    }
+  ]
+}

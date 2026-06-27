@@ -1,0 +1,221 @@
+{
+  "paper_id": "phi-2",
+  "short_name": "Phi-2 Small Model",
+  "title": "Phi-2: The surprising power of small language models",
+  "authors": "",
+  "year": 2023,
+  "topic": "Small Models",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/2312.13103",
+  "arxiv_id": "2312.13103",
+  "hook": "Tiny models can punch far above their weight with the right training recipe.",
+  "promise": "You will see how carefully chosen data can make small language models impressively capable.",
+  "prerequisite_note": "Bring your curiosity about how language models learn from data, not just their size.",
+  "glossary": [
+    {
+      "term": "Language Model",
+      "plain": "A system that predicts the next word or phrase in a sequence."
+    },
+    {
+      "term": "Training Data Curation",
+      "plain": "The process of carefully selecting and filtering data to improve model learning."
+    },
+    {
+      "term": "Parameter Count",
+      "plain": "The number of adjustable weights in a neural network, often used as a measure of size."
+    },
+    {
+      "term": "Scaling Laws",
+      "plain": "Observed patterns showing how performance changes as models or datasets grow."
+    },
+    {
+      "term": "Instruction Tuning",
+      "plain": "Fine-tuning a model to follow explicit instructions in prompts."
+    },
+    {
+      "term": "Synthetic Data",
+      "plain": "Artificially generated examples used to supplement or improve real data."
+    }
+  ],
+  "related_slugs": [
+    "llama-2",
+    "alpaca",
+    "gpt-3",
+    "tiny-llm",
+    "chinchilla",
+    "flan-t5"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Small Models",
+      "title": "Small size, big impact",
+      "body": [
+        "Discover how clever data choices let small models match tasks once reserved for giants."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "How small can a smart model get?",
+      "body": [
+        "Big language models get all the attention, but what if smaller ones could do more than expected?",
+        "Imagine a lightweight assistant on your phone that can write, reason, and code, all without the heavy hardware usually required."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "From curated data to surprising skill",
+      "body": [
+        "The journey begins with handpicked, high-quality data chosen for its clarity and coverage.",
+        "Training a modestly sized model on this special data, the team observes abilities that rival much larger models."
+      ],
+      "left": "Curated, instructional data",
+      "middle": "Small model trained with care",
+      "right": "Unexpectedly strong performance",
+      "caption": "Careful data selection is the secret ingredient that transforms a small model into a surprisingly capable one."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "What if you just scale up?",
+      "body": [
+        "Compare the usual approach of making models bigger with the Phi-2 approach of making data better."
+      ],
+      "offLabel": "Bigger Model",
+      "onLabel": "Better Data",
+      "offNote": "Needs more compute and memory, still struggles with some reasoning tasks.",
+      "onNote": "Smaller, faster, and can outperform larger models on many benchmarks."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "Data quality over model size",
+      "body": [
+        "Instead of endlessly adding parameters, the authors focused on filtering and designing the training data for clarity and coverage.",
+        "This shift in focus lets a small model, with only 2.7 billion parameters, learn patterns and reasoning skills that usually require much larger models."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How size and data shape ability",
+      "body": [
+        "Drag the slider to see what changes as you increase model size or improve data quality."
+      ],
+      "lowLabel": "Low Data Quality",
+      "highLabel": "High Data Quality",
+      "low": "A small model with random or noisy data struggles with even simple tasks.",
+      "mid": "A small model with decent data starts to show surprising skill.",
+      "high": "A small model with carefully curated data rivals much larger models on benchmarks."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What goes into a capable small model?",
+      "body": [
+        "Pick the ingredients needed to create a Phi-2 style small but mighty language model."
+      ],
+      "choices": [
+        {
+          "label": "Instructional Data",
+          "note": "Teaches the model to follow prompts and tasks."
+        },
+        {
+          "label": "Careful Filtering",
+          "note": "Removes errors and ambiguities from training examples."
+        },
+        {
+          "label": "Synthetic Examples",
+          "note": "Expands the data with artificial but targeted samples."
+        },
+        {
+          "label": "Moderate Parameter Count",
+          "note": "Keeps the model small enough to run efficiently."
+        },
+        {
+          "label": "Diverse Domains",
+          "note": "Covers math, coding, reasoning, and more."
+        },
+        {
+          "label": "Iterative Evaluation",
+          "note": "Tests and refines the data and model as training progresses."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "Small model, big benchmarks",
+      "body": [
+        "Phi-2 outperformed models twice its size on tasks like reasoning, coding, and language understanding.",
+        "It even matched or beat some much larger models, showing that data curation can rival raw scale."
+      ],
+      "bars": [
+        {
+          "label": "Reasoning Tasks",
+          "note": "Beats models up to 7B parameters",
+          "value": 85
+        },
+        {
+          "label": "Coding Benchmarks",
+          "note": "On par with 13B parameter models",
+          "value": 80
+        },
+        {
+          "label": "Language Understanding",
+          "note": "Matches larger models",
+          "value": 75
+        },
+        {
+          "label": "Compute Efficiency",
+          "note": "Much less hardware needed",
+          "value": 90
+        }
+      ],
+      "caption": "Phi-2 proves that a small model with the right data can compete with much larger systems."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why Phi-2 matters",
+      "body": [
+        "Phi-2 challenged the idea that only massive models can be smart, making advanced AI more accessible.",
+        "Its approach opened doors for efficient, on-device AI that does not sacrifice ability for size."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "How Phi-2 works in four moves",
+      "body": [],
+      "recap": [
+        {
+          "label": "Select",
+          "note": "Curate high quality, instructional data."
+        },
+        {
+          "label": "Train",
+          "note": "Use a modestly sized model architecture."
+        },
+        {
+          "label": "Refine",
+          "note": "Iteratively improve data and training."
+        },
+        {
+          "label": "Compare",
+          "note": "Benchmark against much larger models."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Phi-2: The surprising power of small language models",
+      "body": [
+        "Read the full Phi-2 paper to explore the details and see the benchmarks yourself."
+      ]
+    }
+  ]
+}

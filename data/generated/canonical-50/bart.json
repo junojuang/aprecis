@@ -1,0 +1,222 @@
+{
+  "paper_id": "bart",
+  "short_name": "BART model",
+  "title": "BART: Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension",
+  "authors": "Mike Lewis, Yinhan Liu, Naman Goyal, Marjan Ghazvininejad et al.",
+  "year": 2019,
+  "topic": "Language",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/1910.13461",
+  "arxiv_id": "1910.13461",
+  "hook": "Imagine a model that learns by piecing together scrambled and masked text puzzles.",
+  "promise": "You will understand how BART unifies generation and comprehension by reconstructing corrupted text.",
+  "prerequisite_note": "Bring curiosity about how computers learn language by fixing broken sentences.",
+  "glossary": [
+    {
+      "term": "Denoising autoencoder",
+      "plain": "A model trained to recover original data from a corrupted version."
+    },
+    {
+      "term": "Sequence-to-sequence",
+      "plain": "A model that transforms one sequence, like a sentence, into another."
+    },
+    {
+      "term": "Noising function",
+      "plain": "A method for deliberately scrambling or masking parts of input data."
+    },
+    {
+      "term": "Span masking",
+      "plain": "Replacing continuous chunks of text with a single mask token so the model must fill in the blanks."
+    },
+    {
+      "term": "Bidirectional encoder",
+      "plain": "A component that reads the input both forwards and backwards to capture context."
+    },
+    {
+      "term": "Left-to-right decoder",
+      "plain": "A component that generates output one token at a time, always moving forward."
+    }
+  ],
+  "related_slugs": [
+    "bert",
+    "gpt-2",
+    "roberta",
+    "t5",
+    "transformer",
+    "pegasus"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Language",
+      "title": "Rebuild the broken message",
+      "body": [
+        "Learn how BART turns scrambled text into a powerful language model for both understanding and generating text."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Why teach a model with puzzles?",
+      "body": [
+        "Imagine giving a student a sentence with missing or jumbled words, then asking them to reconstruct the original. This exercise tests both understanding and creativity.",
+        "BART uses this idea to train computers, forcing them to fix corrupted text. By solving these puzzles, the model learns to deeply understand and generate language."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "How BART learns from chaos",
+      "body": [
+        "First, plain text is deliberately corrupted using shuffling and masking tricks. The model receives this noisy input, with the challenge to reconstruct the original.",
+        "The encoder reads the broken text in both directions, gathering clues. The decoder then generates the cleaned-up sequence, token by token.",
+        "The outcome is a model that excels at both understanding and creating text, thanks to its training in fixing all kinds of language messes."
+      ],
+      "left": "Corrupted input",
+      "middle": "Bidirectional encoding and left-to-right decoding",
+      "right": "Reconstructed output",
+      "caption": "BART learns by piecing together disrupted text, building skills for many language tasks."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "What if you only mask single words?",
+      "body": [
+        "Compare training a model by hiding just one word at a time versus hiding whole spans and shuffling sentences."
+      ],
+      "offLabel": "Single-word masking",
+      "onLabel": "BART's noising",
+      "offNote": "Model learns to fill in the blanks, but may miss bigger context and structure.",
+      "onNote": "Model learns to reconstruct entire phrases and order, gaining deeper understanding of meaning."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "BART's central trick: unifying two worlds",
+      "body": [
+        "BART combines the best of two language model families. The encoder reads input in both directions, like BERT, while the decoder generates output step by step, like GPT.",
+        "By corrupting input in creative ways and training on reconstruction, BART becomes skilled at both understanding and generating language, all within one architecture."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much should you scramble the input?",
+      "body": [
+        "Adjust the amount of corruption: less makes the task easier, more forces deeper learning, but too much can confuse the model."
+      ],
+      "lowLabel": "Minimal corruption",
+      "highLabel": "Extreme corruption",
+      "low": "Model learns basic fill-in-the-blank skills.",
+      "mid": "Model learns to handle complex disruptions and sentence order.",
+      "high": "Model may struggle to recover meaning if input is too damaged."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "Choose BART's ingredients",
+      "body": [
+        "Pick the six core elements that make BART's pretraining unique and effective."
+      ],
+      "choices": [
+        {
+          "label": "Bidirectional encoder",
+          "note": "Reads input in both directions to capture context."
+        },
+        {
+          "label": "Left-to-right decoder",
+          "note": "Generates output one token at a time."
+        },
+        {
+          "label": "Sentence shuffling",
+          "note": "Scrambles sentence order to force learning of structure."
+        },
+        {
+          "label": "Span masking",
+          "note": "Hides chunks of text, not just single words."
+        },
+        {
+          "label": "Transformer architecture",
+          "note": "Provides the backbone for flexible encoding and decoding."
+        },
+        {
+          "label": "Denoising objective",
+          "note": "Trains the model to fix corrupted sequences."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "BART's impact on language tasks",
+      "body": [
+        "BART set new records in summarization, translation, and dialogue, all using the same pretraining method. It matched or beat specialized models on many benchmarks.",
+        "Its flexible design means it can be fine-tuned for a wide range of tasks, making it a go-to choice for both comprehension and generation."
+      ],
+      "bars": [
+        {
+          "label": "Summarization (ROUGE)",
+          "note": "Up to 6 points higher than previous models",
+          "value": 95
+        },
+        {
+          "label": "Translation (BLEU)",
+          "note": "1.1 points above strong back-translation",
+          "value": 80
+        },
+        {
+          "label": "Comprehension (GLUE/SQuAD)",
+          "note": "Matches RoBERTa with similar resources",
+          "value": 90
+        },
+        {
+          "label": "Dialogue generation",
+          "note": "leading results on abstractive tasks",
+          "value": 85
+        }
+      ],
+      "caption": "BART's denoising approach raised the bar for both understanding and generating language."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why BART is a landmark model",
+      "body": [
+        "BART showed that one model can master both language comprehension and generation by learning to repair broken messages.",
+        "Its unified approach inspired many later models and remains a foundation for modern AI language systems."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "Four steps to BART",
+      "body": [],
+      "recap": [
+        {
+          "label": "Corrupt",
+          "note": "Scramble and mask parts of input text."
+        },
+        {
+          "label": "Encode",
+          "note": "Read the noisy input in both directions."
+        },
+        {
+          "label": "Decode",
+          "note": "Reconstruct the original text, step by step."
+        },
+        {
+          "label": "Fine-tune",
+          "note": "Adapt the model for any language task."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "BART: Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension",
+      "body": [
+        "Explore the original paper for technical details, experiments, and full results."
+      ]
+    }
+  ]
+}

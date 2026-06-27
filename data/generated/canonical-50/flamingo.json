@@ -1,0 +1,225 @@
+{
+  "paper_id": "flamingo",
+  "short_name": "Flamingo Model",
+  "title": "Flamingo: a Visual Language Model for Few-Shot Learning",
+  "authors": "",
+  "year": 2022,
+  "topic": "Multimodal",
+  "difficulty": "Advanced",
+  "url": "https://arxiv.org/abs/2204.14198",
+  "arxiv_id": "2204.14198",
+  "hook": "Flamingo learns from just a few examples by blending vision and language models.",
+  "promise": "You will understand how Flamingo links frozen vision and language models for flexible, few-shot multimodal learning.",
+  "prerequisite_note": "Bring your curiosity about how AI can connect images and text, no deep math required.",
+  "glossary": [
+    {
+      "term": "Frozen Model",
+      "plain": "A neural network whose weights are kept fixed during training on a new task."
+    },
+    {
+      "term": "Few-Shot Learning",
+      "plain": "Training a model to perform a new task with only a handful of examples."
+    },
+    {
+      "term": "Multimodal",
+      "plain": "Combining information from different types of data, such as images and text."
+    },
+    {
+      "term": "Vision Transformer",
+      "plain": "A neural network model that processes images using attention mechanisms."
+    },
+    {
+      "term": "Cross-Attention",
+      "plain": "A neural network operation that allows information to flow between different data types, like images and text."
+    },
+    {
+      "term": "Visual Language Model",
+      "plain": "A model that processes both images and language to generate or understand text about images."
+    }
+  ],
+  "related_slugs": [
+    "clip",
+    "blip",
+    "gpt-3",
+    "dalle-2",
+    "llava",
+    "kosmos-1"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Multimodal",
+      "title": "Images meet words, few-shot style",
+      "body": [
+        "Learn how Flamingo connects vision and language models for powerful few-shot multimodal learning."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Can AI answer questions about any image?",
+      "body": [
+        "Imagine showing an AI a handful of image-text pairs and expecting it to answer questions about new pictures.",
+        "Flamingo makes this possible by linking frozen vision and language models, letting the system learn new tasks with just a few examples."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "How Flamingo flows from vision to language",
+      "body": [
+        "Flamingo starts with powerful vision and language models, each trained separately and kept frozen.",
+        "It adds a small, trainable connector that lets these models talk, so the system can learn from a few new examples.",
+        "Frozen vision and language models provide strong starting points.",
+        "A cross-attention connector lets language query visual features.",
+        "Few-shot multimodal learning makes new image tasks promptable.",
+        "Flamingo’s architecture enables rapid adaptation to new tasks with minimal extra training."
+      ],
+      "left": "Frozen vision and language models",
+      "middle": "Cross-attention connector",
+      "right": "Few-shot multimodal learning",
+      "caption": "Flamingo’s architecture enables rapid adaptation to new tasks with minimal extra training."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "How few-shot multimodal learning changes the game",
+      "body": [
+        "Compare how old models and Flamingo handle new image-text tasks with few examples."
+      ],
+      "offLabel": "Old way",
+      "onLabel": "Flamingo’s way",
+      "offNote": "Requires retraining the whole model for each new task, which is slow and data-hungry.",
+      "onNote": "Keeps vision and language models frozen, learning new tasks from just a few examples with a small connector."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "The clever connector",
+      "body": [
+        "Flamingo’s key trick is to keep both vision and language models frozen, adding a cross-attention layer between them.",
+        "This small connector allows the combined model to quickly adapt to new multimodal tasks without retraining the large components."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How many examples does Flamingo need?",
+      "body": [
+        "Adjust the slider to see how Flamingo performs with more or fewer examples for each new task."
+      ],
+      "lowLabel": "1 example",
+      "highLabel": "16 examples",
+      "low": "Performance is limited, but Flamingo still outperforms older models on new tasks.",
+      "mid": "With a handful of examples, Flamingo adapts well and answers accurately.",
+      "high": "With more examples, Flamingo approaches the performance of fully supervised models."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "Pick Flamingo’s core ingredients",
+      "body": [
+        "Select the six critical parts that make Flamingo a few-shot multimodal learner."
+      ],
+      "choices": [
+        {
+          "label": "Frozen Vision Transformer",
+          "note": "Extracts features from images without further training."
+        },
+        {
+          "label": "Frozen Language Model",
+          "note": "Generates or understands text, weights kept fixed."
+        },
+        {
+          "label": "Cross-Attention Layers",
+          "note": "Link vision and language, letting them share information."
+        },
+        {
+          "label": "Multimodal Prompting",
+          "note": "Feeds both images and text as examples to the model."
+        },
+        {
+          "label": "Small Trainable Connector",
+          "note": "Learns to bridge the vision and language models."
+        },
+        {
+          "label": "Few-Shot Task Examples",
+          "note": "Provides a handful of demonstrations for new tasks."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "Flamingo’s few-shot performance across tasks",
+      "body": [
+        "Flamingo set new benchmarks on a range of multimodal tasks, including visual question answering and image captioning.",
+        "Its few-shot learning ability allowed it to outperform previous models with far less data and training."
+      ],
+      "bars": [
+        {
+          "label": "Visual Question Answering",
+          "note": "top few-shot accuracy",
+          "value": 95
+        },
+        {
+          "label": "Image Captioning",
+          "note": "Best few-shot results on COCO",
+          "value": 90
+        },
+        {
+          "label": "Video QA",
+          "note": "Strong performance with limited examples",
+          "value": 83
+        },
+        {
+          "label": "Open-Ended Tasks",
+          "note": "Handles diverse prompts flexibly",
+          "value": 78
+        }
+      ],
+      "caption": "Flamingo’s architecture leads to strong results on a wide range of multimodal benchmarks with minimal examples."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why Flamingo is a landmark for multimodal AI",
+      "body": [
+        "Flamingo showed that you can connect powerful vision and language models without retraining them, unlocking rapid few-shot learning.",
+        "This approach paved the way for new research into flexible, efficient multimodal systems that learn from just a few examples."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "Flamingo in four moves",
+      "body": [],
+      "recap": [
+        {
+          "label": "Combine",
+          "note": "Use frozen vision and language models."
+        },
+        {
+          "label": "Connect",
+          "note": "Add cross-attention layers as a bridge."
+        },
+        {
+          "label": "Prompt",
+          "note": "Show a few image-text examples."
+        },
+        {
+          "label": "Adapt",
+          "note": "Quickly learn new multimodal tasks."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Flamingo: a Visual Language Model for Few-Shot Learning",
+      "body": [
+        "Read the full paper for technical details and experimental results."
+      ]
+    }
+  ]
+}

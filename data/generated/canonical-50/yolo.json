@@ -1,0 +1,221 @@
+{
+  "paper_id": "yolo",
+  "short_name": "YOLO Object Detection",
+  "title": "You Only Look Once: Unified, Real-Time Object Detection",
+  "authors": "Joseph Redmon, Santosh Divvala, Ross Girshick, Ali Farhadi",
+  "year": 2015,
+  "topic": "Vision",
+  "difficulty": "Beginner",
+  "url": "https://arxiv.org/abs/1506.02640",
+  "arxiv_id": "1506.02640",
+  "hook": "YOLO lets computers find every object in an image in one fast glance.",
+  "promise": "You will understand how YOLO turns object detection into a single rapid prediction step.",
+  "prerequisite_note": "If you know images are made of pixels and computers can learn patterns, you are ready.",
+  "glossary": [
+    {
+      "term": "Object detection",
+      "plain": "Finding and labeling every object in an image with a box and a name."
+    },
+    {
+      "term": "Bounding box",
+      "plain": "A rectangle that tightly frames an object in an image."
+    },
+    {
+      "term": "Grid",
+      "plain": "Dividing an image into smaller squares to help locate objects."
+    },
+    {
+      "term": "Class probability",
+      "plain": "The chance that a detected object belongs to a certain category."
+    },
+    {
+      "term": "Regression",
+      "plain": "Predicting numbers directly, like box positions, instead of picking from categories."
+    },
+    {
+      "term": "End-to-end",
+      "plain": "Training the whole system in one go, so all parts work together."
+    }
+  ],
+  "related_slugs": [
+    "rcnn",
+    "faster-rcnn",
+    "ssd",
+    "retinanet",
+    "mask-rcnn"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Vision",
+      "title": "Find every object at once",
+      "body": [
+        "See how YOLO detects everything in an image with one swift prediction."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "How do computers spot things?",
+      "body": [
+        "Imagine asking a computer to find every dog, car, and person in a photo. Traditionally, it would scan each part of the image separately.",
+        "This slow, step-by-step search made real-time object detection nearly impossible. YOLO changes everything by letting the computer look at the whole image at once."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "From image to boxes in one go",
+      "body": [
+        "YOLO splits the image into a grid. Each grid cell predicts if it contains an object and where the object is.",
+        "Instead of checking regions one by one, YOLO's neural network learns to predict all bounding boxes and their classes in one pass.",
+        "As a result, detection becomes much faster and more unified, with every object found in a single evaluation."
+      ],
+      "left": "Image split into grid",
+      "middle": "Neural network predicts boxes and classes",
+      "right": "All objects detected at once",
+      "caption": "YOLO's grid-based approach enables instant object detection across the whole image."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "How did object detection work before YOLO?",
+      "body": [
+        "Toggle to compare the old multi-step process with YOLO's single prediction."
+      ],
+      "offLabel": "Region proposals",
+      "onLabel": "YOLO's single pass",
+      "offNote": "The system checks hundreds of regions, running a classifier on each. This is slow and complex.",
+      "onNote": "YOLO predicts all boxes and classes in one go, making detection much faster."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "YOLO's big leap: unified detection",
+      "body": [
+        "YOLO treats object detection as a single regression problem. It predicts both where objects are and what they are directly from the image.",
+        "Instead of piecing together separate systems, YOLO's network sees the whole scene, learning to predict all objects and their locations in one step."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "Speed versus accuracy in YOLO",
+      "body": [
+        "Slide to see how changing YOLO's speed affects its detection accuracy."
+      ],
+      "lowLabel": "Very fast (Fast YOLO)",
+      "highLabel": "Slower (Base YOLO)",
+      "low": "Processes images extremely quickly but may miss small or overlapping objects.",
+      "mid": "Balances speed and accuracy, suitable for most real-time uses.",
+      "high": "Detects more accurately but takes longer, still much faster than earlier methods."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What goes into YOLO?",
+      "body": [
+        "Select the ingredients that make YOLO possible."
+      ],
+      "choices": [
+        {
+          "label": "Grid splitting",
+          "note": "Divides the image into cells to localize objects."
+        },
+        {
+          "label": "Single neural network",
+          "note": "Processes the whole image in one pass."
+        },
+        {
+          "label": "Bounding box regression",
+          "note": "Predicts precise coordinates for each object."
+        },
+        {
+          "label": "Class probability prediction",
+          "note": "Estimates which object class is present."
+        },
+        {
+          "label": "End-to-end training",
+          "note": "Optimizes the system as a whole for detection."
+        },
+        {
+          "label": "Unified loss function",
+          "note": "Balances localization and classification errors during learning."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "YOLO's impact: speed and generalization",
+      "body": [
+        "YOLO made real-time object detection practical, running at 45 frames per second or more. It also generalized well to new types of images.",
+        "While it sometimes makes localization errors, YOLO produces far fewer false positives and adapts to art or sketches better than older methods."
+      ],
+      "bars": [
+        {
+          "label": "Speed (fps)",
+          "note": "Base YOLO runs at 45 fps",
+          "value": 90
+        },
+        {
+          "label": "Accuracy (mAP)",
+          "note": "Higher than previous real-time models",
+          "value": 75
+        },
+        {
+          "label": "Generalization",
+          "note": "Handles art and unusual images well",
+          "value": 80
+        },
+        {
+          "label": "False positives",
+          "note": "Fewer mistaken detections",
+          "value": 60
+        }
+      ],
+      "caption": "YOLO set a new standard for combining speed, accuracy, and flexibility in object detection."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why YOLO is a classic",
+      "body": [
+        "YOLO's single-shot approach inspired a new wave of fast, practical object detectors for everything from self-driving cars to mobile phones.",
+        "Its influence endures because it shows how rethinking a problem can unlock both speed and simplicity, without sacrificing too much accuracy."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "Four moves to YOLO",
+      "body": [],
+      "recap": [
+        {
+          "label": "Divide",
+          "note": "Split the image into a grid of cells."
+        },
+        {
+          "label": "Predict",
+          "note": "Use a neural network to predict boxes and classes for each cell."
+        },
+        {
+          "label": "Unify",
+          "note": "Train the whole system to optimize detection directly."
+        },
+        {
+          "label": "Detect",
+          "note": "Output all objects in one fast pass."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "You Only Look Once: Unified, Real-Time Object Detection",
+      "body": [
+        "Read the original paper to see how YOLO changed the object detection landscape."
+      ]
+    }
+  ]
+}

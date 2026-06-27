@@ -1,0 +1,221 @@
+{
+  "paper_id": "sora-report",
+  "short_name": "World Video Simulators",
+  "title": "Video generation models as world simulators",
+  "authors": "",
+  "year": 2024,
+  "topic": "Video",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/2402.17177",
+  "arxiv_id": "2402.17177",
+  "hook": "Imagine an AI that dreams up videos by simulating how the world unfolds.",
+  "promise": "You will understand how modern video models act as world simulators by generating spacetime patches.",
+  "prerequisite_note": "Bring a curiosity about how computers can imagine future frames and events in moving images.",
+  "glossary": [
+    {
+      "term": "Spacetime Patch",
+      "plain": "A chunk of video that covers a small region in space and time."
+    },
+    {
+      "term": "World Model",
+      "plain": "A neural network that tries to predict or simulate the dynamics of the real world."
+    },
+    {
+      "term": "Scaling Laws",
+      "plain": "Patterns that show how model performance improves as it gets bigger or trains on more data."
+    },
+    {
+      "term": "Long-term Consistency",
+      "plain": "The ability of a model to keep events logical and objects coherent across many video frames."
+    },
+    {
+      "term": "Autoregressive Generation",
+      "plain": "A way of generating data step by step, using previous outputs as context for new ones."
+    },
+    {
+      "term": "Physical Plausibility",
+      "plain": "How well generated videos follow the rules of real-world physics."
+    }
+  ],
+  "related_slugs": [
+    "imagen-video",
+    "make-a-video",
+    "dreamfusion",
+    "gato",
+    "video-diffusion-models"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Video",
+      "title": "Can AI imagine video worlds?",
+      "body": [
+        "See how new models generate not just frames, but entire worlds that unfold over time."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "How does an AI dream up a video?",
+      "body": [
+        "Imagine describing a scene and watching an AI invent a video of it, complete with moving objects and unfolding action.",
+        "Early video models often created short, blurry clips. Newer models try to understand and simulate the world, creating richer, longer, and more believable videos."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "From patches to worlds",
+      "body": [
+        "First, the model breaks video into spacetime patches, like tiny moving tiles.",
+        "Next, it learns to predict what comes next in each patch, using context from the whole scene.",
+        "Finally, by stitching these predictions together, the model simulates how a scene unfolds, creating long, coherent videos."
+      ],
+      "left": "Spacetime patches",
+      "middle": "Predict next patches",
+      "right": "Simulate unfolding world",
+      "caption": "The model builds videos by simulating small patches, then assembling them into a believable world."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Old frame-by-frame vs. world simulation",
+      "body": [
+        "Switch between the old approach and the world simulator to see the difference in video quality and coherence."
+      ],
+      "offLabel": "Frame-by-frame",
+      "onLabel": "World simulation",
+      "offNote": "Videos often become jumbled or lose objects over time.",
+      "onNote": "Videos stay logical, with objects and physics remaining consistent for longer stretches."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "The leap: scaling video as a world model",
+      "body": [
+        "The big breakthrough is treating video generation as a world simulation problem, not just an image prediction task.",
+        "By scaling up models and data, and focusing on predicting spacetime patches, the system learns to simulate how events unfold with realistic consistency."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much world understanding does the model need?",
+      "body": [
+        "Adjust how much the model 'knows' about the world to see the impact on video realism."
+      ],
+      "lowLabel": "Shallow understanding",
+      "highLabel": "Deep world model",
+      "low": "Objects flicker and physics break down quickly.",
+      "mid": "Short scenes look good, but oddities appear over time.",
+      "high": "Videos stay logical and objects behave realistically across many frames."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What makes a world-simulating video model?",
+      "body": [
+        "Pick the six essential ingredients for generating believable video worlds."
+      ],
+      "choices": [
+        {
+          "label": "Spacetime Patch Prediction",
+          "note": "Lets the model focus on small, local changes in video."
+        },
+        {
+          "label": "Large-scale Training Data",
+          "note": "Exposes the model to diverse events and scenes."
+        },
+        {
+          "label": "Autoregressive Architecture",
+          "note": "Enables step-by-step prediction, building videos over time."
+        },
+        {
+          "label": "Physical Consistency Loss",
+          "note": "Encourages the model to obey physics-like rules."
+        },
+        {
+          "label": "Temporal Attention",
+          "note": "Helps the model link events across many frames."
+        },
+        {
+          "label": "Scaling Model Size",
+          "note": "Improves the model's ability to capture complex world dynamics."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "How much better are world simulators?",
+      "body": [
+        "World-simulating models produce longer, more realistic videos with fewer glitches than older methods.",
+        "They achieve higher scores on benchmarks for temporal consistency, physical plausibility, and visual quality."
+      ],
+      "bars": [
+        {
+          "label": "Long-term consistency",
+          "note": "Objects stay coherent for more frames",
+          "value": 90
+        },
+        {
+          "label": "Physical plausibility",
+          "note": "Videos obey real-world physics better",
+          "value": 82
+        },
+        {
+          "label": "Visual quality",
+          "note": "Generated frames look sharper and more detailed",
+          "value": 88
+        },
+        {
+          "label": "Duration before failure",
+          "note": "How long videos stay believable",
+          "value": 76
+        }
+      ],
+      "caption": "World simulators outperform previous models on realism, coherence, and length of generated videos."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why world simulation changed video AI",
+      "body": [
+        "This approach helped video models break free from short, blurry clips by teaching them to simulate how the world behaves.",
+        "It set the stage for AI systems that can generate rich, long, and physically coherent videos, moving closer to true imagination."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "How world-simulating video models work",
+      "body": [],
+      "recap": [
+        {
+          "label": "Divide",
+          "note": "Break video into spacetime patches."
+        },
+        {
+          "label": "Predict",
+          "note": "Use context to generate the next patch."
+        },
+        {
+          "label": "Assemble",
+          "note": "Stitch patches into a coherent video."
+        },
+        {
+          "label": "Simulate",
+          "note": "Model events so videos follow real-world logic."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Video generation models as world simulators",
+      "body": [
+        "Read the full paper for technical details, experiments, and future directions in video world simulation."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,220 @@
+{
+  "paper_id": "electra",
+  "short_name": "ELECTRA pretraining",
+  "title": "ELECTRA: Pre-training Text Encoders as Discriminators Rather Than Generators",
+  "authors": "Kevin Clark, Minh-Thang Luong, Quoc V. Le, Christopher D. Manning",
+  "year": 2020,
+  "topic": "Language",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/2003.10555",
+  "arxiv_id": "2003.10555",
+  "hook": "What if language models learned by catching fakes instead of filling in blanks?",
+  "promise": "You will understand how ELECTRA trains language models more efficiently by detecting replaced words.",
+  "prerequisite_note": "It helps to grasp how models learn from predicting missing or altered words in sentences.",
+  "glossary": [
+    {
+      "term": "Pre-training",
+      "plain": "Training a model on a general task before fine-tuning for specific applications."
+    },
+    {
+      "term": "Masked Language Modeling (MLM)",
+      "plain": "A technique where some words are hidden and the model learns to guess them."
+    },
+    {
+      "term": "Generator",
+      "plain": "A small model that proposes plausible words to replace in the input text."
+    },
+    {
+      "term": "Discriminator",
+      "plain": "A model trained to decide if each word in a sentence is real or has been replaced."
+    },
+    {
+      "term": "Sample efficiency",
+      "plain": "How much useful learning a model achieves from a given amount of data or compute."
+    },
+    {
+      "term": "Replaced Token Detection",
+      "plain": "The task of identifying which words in a sentence have been substituted by the generator."
+    }
+  ],
+  "related_slugs": [
+    "bert",
+    "roberta",
+    "xlnet",
+    "gpt",
+    "t5"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Language",
+      "title": "Spot the Fake, Learn Faster",
+      "body": [
+        "See how ELECTRA trains language models to catch replaced words for rapid learning."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Why just fill in the blanks?",
+      "body": [
+        "Imagine teaching a language model by hiding words and asking it to guess them. This is how many models, like BERT, learn about language.",
+        "But what if instead, we train the model to spot words that do not belong? ELECTRA flips the script and finds a more efficient way to learn."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "From guessing to detecting",
+      "body": [
+        "Traditional models mask a few words and train the model to predict them, focusing only on these masked spots.",
+        "ELECTRA replaces some words with plausible alternatives, then trains a model to judge every word, asking if it is original or swapped."
+      ],
+      "left": "Original sentence",
+      "middle": "Some words replaced by generator",
+      "right": "Discriminator predicts which words are fake",
+      "caption": "ELECTRA involves both a generator that replaces words and a discriminator that spots them."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Guess vs Detect: Which is smarter?",
+      "body": [
+        "Toggle between the classic masked language modeling task and ELECTRA's replaced token detection."
+      ],
+      "offLabel": "Mask & guess",
+      "onLabel": "Replace & detect",
+      "offNote": "Only a few words teach the model at once, wasting potential learning.",
+      "onNote": "Every word in the sentence becomes a learning opportunity, making training more efficient."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "The replaced token trick",
+      "body": [
+        "Instead of hiding words, ELECTRA replaces some words with others suggested by a smaller generator model, making the input look plausible but subtly altered.",
+        "The main model, called the discriminator, must decide for each word whether it is original or swapped, forcing it to pay attention to every word."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "Adjust the percent of replaced words",
+      "body": [
+        "See how changing the amount of replaced words affects learning and realism."
+      ],
+      "lowLabel": "Few replaced",
+      "highLabel": "Many replaced",
+      "low": "Too few replaced words and the task is too easy, so little is learned.",
+      "mid": "A balanced amount keeps the task challenging and the sentences natural.",
+      "high": "Too many fakes and sentences become unnatural, which confuses the model."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What goes into ELECTRA?",
+      "body": [
+        "Pick the parts that make the ELECTRA pretraining process unique."
+      ],
+      "choices": [
+        {
+          "label": "Small generator",
+          "note": "Suggests plausible replacement words."
+        },
+        {
+          "label": "Replaced token detection",
+          "note": "Main training task for the discriminator."
+        },
+        {
+          "label": "Discriminator",
+          "note": "Learns to spot replaced words in the sentence."
+        },
+        {
+          "label": "No [MASK] tokens",
+          "note": "Input sentences always look natural."
+        },
+        {
+          "label": "All-token supervision",
+          "note": "Every word provides a learning signal."
+        },
+        {
+          "label": "Efficient use of compute",
+          "note": "Learns more per training step than MLM."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "ELECTRA's impact on model efficiency",
+      "body": [
+        "ELECTRA models outperform BERT and even rival RoBERTa and XLNet while using less compute, especially for smaller models.",
+        "On the GLUE benchmark, ELECTRA trained with less hardware matches or beats models trained with much more data and time."
+      ],
+      "bars": [
+        {
+          "label": "GLUE score (small model)",
+          "note": "ELECTRA outperforms GPT with 30x less compute",
+          "value": 90
+        },
+        {
+          "label": "Compute needed (relative)",
+          "note": "Fraction of compute versus RoBERTa or XLNet",
+          "value": 25
+        },
+        {
+          "label": "All-token supervision",
+          "note": "ELECTRA uses every word for training",
+          "value": 100
+        },
+        {
+          "label": "Performance at scale",
+          "note": "Matches or beats top models",
+          "value": 85
+        }
+      ],
+      "caption": "ELECTRA achieves strong results with less compute by learning from every word."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why ELECTRA changed pretraining",
+      "body": [
+        "ELECTRA showed that language models can learn more efficiently by focusing on detecting subtle changes, not just filling in blanks.",
+        "Its approach inspired new pretraining strategies and proved that clever learning tasks can reduce the need for massive compute."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "four-line mental model",
+      "body": [],
+      "recap": [
+        {
+          "label": "Replace",
+          "note": "A generator swaps some words for plausible alternatives."
+        },
+        {
+          "label": "Detect",
+          "note": "The discriminator decides if each word is original or fake."
+        },
+        {
+          "label": "Learn",
+          "note": "The model improves by considering every word, not just masked ones."
+        },
+        {
+          "label": "Transfer",
+          "note": "Resulting representations perform well on real language tasks."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "ELECTRA: Pre-training Text Encoders as Discriminators Rather Than Generators",
+      "body": [
+        "Explore the full details and results in the original ELECTRA paper from 2020."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,220 @@
+{
+  "paper_id": "mask-rcnn",
+  "short_name": "Instance Segmentation",
+  "title": "Mask R-CNN",
+  "authors": "Kaiming He, Georgia Gkioxari, Piotr Dollár, Ross Girshick",
+  "year": 2017,
+  "topic": "Vision",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/1703.06870",
+  "arxiv_id": "1703.06870",
+  "hook": "Mask R-CNN lets computers color inside the lines for every single object.",
+  "promise": "You will understand how Mask R-CNN detects objects and draws precise masks for each instance.",
+  "prerequisite_note": "If you know what detecting objects in a photo means, you are ready to learn Mask R-CNN.",
+  "glossary": [
+    {
+      "term": "Instance Segmentation",
+      "plain": "Finding and outlining each individual object in an image, not just classifying or boxing them."
+    },
+    {
+      "term": "Bounding Box",
+      "plain": "A rectangle drawn around an object to show where it is in an image."
+    },
+    {
+      "term": "Region Proposal Network (RPN)",
+      "plain": "A neural network that suggests likely locations for objects in an image."
+    },
+    {
+      "term": "RoIAlign",
+      "plain": "A technique for accurately extracting small features from proposed regions without losing alignment."
+    },
+    {
+      "term": "Segmentation Mask",
+      "plain": "A pixel-level label that shows exactly which pixels belong to an object."
+    },
+    {
+      "term": "Faster R-CNN",
+      "plain": "An earlier model that finds and classifies objects, but only with bounding boxes."
+    }
+  ],
+  "related_slugs": [
+    "faster-rcnn",
+    "yolo",
+    "deeplab",
+    "rcnn",
+    "unet"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Vision",
+      "title": "Draw the outline, not just the box",
+      "body": [
+        "Learn how Mask R-CNN lets AI not only spot objects but also color them in."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "How can a computer see objects, not just shapes?",
+      "body": [
+        "Imagine looking at a crowded photo and not just spotting people, but carefully tracing the edge of each one. This is harder than drawing boxes.",
+        "Early computer vision models could only draw rough rectangles around things. Mask R-CNN lets computers tell exactly which pixels belong to every object, no matter how tangled."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "From images to detailed outlines",
+      "body": [
+        "First, the model finds promising areas in the image where objects might be hiding. Then, it zooms in on each region and figures out what is there.",
+        "Finally, instead of stopping at a box, Mask R-CNN draws a crisp mask that matches the object's true shape, even when objects overlap."
+      ],
+      "left": "Image and region proposals",
+      "middle": "Classify and refine regions",
+      "right": "Draw detailed masks",
+      "caption": "Mask R-CNN combines detection and fine-grained segmentation in one pipeline."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Boxes or masks: what is the difference?",
+      "body": [
+        "Slide to see how object detection changes when you add masks."
+      ],
+      "offLabel": "Bounding box only",
+      "onLabel": "Mask R-CNN mask",
+      "offNote": "Objects are found, but boundaries are rough and overlap is unclear.",
+      "onNote": "Each object gets a clean, pixel-perfect outline, even in crowded scenes."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "The simple branch that changes everything",
+      "body": [
+        "Mask R-CNN keeps all the parts of Faster R-CNN but adds a parallel branch that predicts a mask for each object, not just a class and box.",
+        "The trick is to use a new layer, RoIAlign, which avoids losing pixel alignment, making segmentation masks much more accurate without slowing down training."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How precise do you want your object outlines?",
+      "body": [
+        "Move the slider to see what happens as mask accuracy improves."
+      ],
+      "lowLabel": "Rough boxes",
+      "highLabel": "Pixel-perfect masks",
+      "low": "Objects are found, but fine details and overlaps are missed.",
+      "mid": "Masks are better, but edges can still be jagged or misaligned.",
+      "high": "Every object is traced almost exactly, even in complex scenes."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What do you need for Mask R-CNN?",
+      "body": [
+        "Pick the ingredients that make Mask R-CNN work."
+      ],
+      "choices": [
+        {
+          "label": "Backbone CNN",
+          "note": "Extracts features from the image."
+        },
+        {
+          "label": "Region Proposal Network",
+          "note": "Suggests where objects might be."
+        },
+        {
+          "label": "Bounding box branch",
+          "note": "Predicts object locations."
+        },
+        {
+          "label": "Classification branch",
+          "note": "Labels each object."
+        },
+        {
+          "label": "Segmentation mask branch",
+          "note": "Draws a mask for each object."
+        },
+        {
+          "label": "RoIAlign layer",
+          "note": "Keeps region features perfectly aligned."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "How much better is Mask R-CNN?",
+      "body": [
+        "Mask R-CNN topped all three COCO challenge tracks: detection, segmentation, and keypoints. It set a new standard for practical instance segmentation.",
+        "It is fast enough for real use and easy to adapt for other tasks like pose estimation, making it a foundation for modern vision models."
+      ],
+      "bars": [
+        {
+          "label": "COCO mask AP",
+          "note": "Best segmentation accuracy",
+          "value": 90
+        },
+        {
+          "label": "COCO box AP",
+          "note": "Top object detection",
+          "value": 85
+        },
+        {
+          "label": "Keypoint AP",
+          "note": "Best pose estimation",
+          "value": 80
+        },
+        {
+          "label": "Speed (fps)",
+          "note": "5 frames per second",
+          "value": 60
+        }
+      ],
+      "caption": "Mask R-CNN outperformed all previous single-model entries on major vision benchmarks."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why Mask R-CNN matters today",
+      "body": [
+        "By simply adding a mask branch, Mask R-CNN made precise object segmentation practical and reliable for real-world images.",
+        "Its ideas now power many computer vision systems, from medical imaging to self-driving cars, wherever knowing the exact shape of objects is critical."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "Four steps to Mask R-CNN",
+      "body": [],
+      "recap": [
+        {
+          "label": "Extract",
+          "note": "Pull features from the image with a CNN"
+        },
+        {
+          "label": "Propose",
+          "note": "Suggest regions likely to contain objects"
+        },
+        {
+          "label": "Classify",
+          "note": "Predict class and refine box for each region"
+        },
+        {
+          "label": "Segment",
+          "note": "Draw a mask for every object instance"
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Mask R-CNN",
+      "body": [
+        "Explore the full details in the original paper by He and colleagues on arXiv."
+      ]
+    }
+  ]
+}

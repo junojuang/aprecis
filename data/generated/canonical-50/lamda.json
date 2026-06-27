@@ -1,0 +1,221 @@
+{
+  "paper_id": "lamda",
+  "short_name": "Open-ended Dialogue",
+  "title": "LaMDA: Language Models for Dialog Applications",
+  "authors": "",
+  "year": 2022,
+  "topic": "Dialogue",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/2201.08239",
+  "arxiv_id": "2201.08239",
+  "hook": "LaMDA set a new bar for conversational AI that actually feels open and safe.",
+  "promise": "You will grasp how LaMDA makes dialogue models more engaging, factual, and safe by design.",
+  "prerequisite_note": "Bring a sense for how language models generate text, and curiosity about what makes a good conversation.",
+  "glossary": [
+    {
+      "term": "Dialog model",
+      "plain": "A system trained to have conversations with humans using natural language."
+    },
+    {
+      "term": "Quality",
+      "plain": "How engaging, sensible, and specific a model's replies are in conversation."
+    },
+    {
+      "term": "Safety",
+      "plain": "The ability of a model to avoid harmful or inappropriate outputs."
+    },
+    {
+      "term": "Factuality",
+      "plain": "How well a model's responses align with real-world facts."
+    },
+    {
+      "term": "Fine-tuning",
+      "plain": "Adjusting a pre-trained model on a specific task or set of criteria."
+    },
+    {
+      "term": "Annotation",
+      "plain": "Labeling data (such as conversations) to guide model training or evaluation."
+    }
+  ],
+  "related_slugs": [
+    "chatgpt",
+    "blenderbot",
+    "dialogpt",
+    "llama",
+    "palm",
+    "gpt3"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Dialogue",
+      "title": "Conversations That Feel Real",
+      "body": [
+        "Discover how LaMDA made dialogue models more engaging, factual, and safe by design."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Why do most chatbots feel so fake?",
+      "body": [
+        "Have you ever chatted with a bot and felt it missed the point or sounded off? Most language models struggle to hold natural, interesting conversations.",
+        "LaMDA was designed to change that. Instead of just stringing words together, it aims to make dialogue that is sensible, engaging, and grounded in fact."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "How LaMDA shapes better dialogue",
+      "body": [
+        "LaMDA starts with a large language model, then fine-tunes it using explicit targets: quality, safety, and factuality.",
+        "By collecting massive annotated conversations, LaMDA learns to generate responses that are not only fluent but also safe and accurate."
+      ],
+      "left": "Pre-trained language model",
+      "middle": "Fine-tuning with quality, safety, factuality",
+      "right": "Open-ended, responsible dialogue",
+      "caption": "LaMDA's training process makes each conversation safer, more engaging, and more grounded."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "How does conversation change?",
+      "body": [
+        "Imagine chatting with a model before and after LaMDA's improvements."
+      ],
+      "offLabel": "Old way",
+      "onLabel": "LaMDA's way",
+      "offNote": "Replies often generic, sometimes unsafe or factually wrong.",
+      "onNote": "Replies are more engaging, safer, and factually grounded."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "Making quality, safety, and factuality explicit",
+      "body": [
+        "LaMDA's key trick is to make quality, safety, and factuality explicit training objectives, not just hoped-for outcomes.",
+        "By gathering human feedback and annotations on these dimensions, the model learns to optimize for conversations that feel both natural and responsible."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "Balancing engagement and safety",
+      "body": [
+        "As you increase safety, how does the feel of the conversation change?"
+      ],
+      "lowLabel": "Low safety",
+      "highLabel": "High safety",
+      "low": "The model may generate risky or inappropriate content, but conversation feels more open.",
+      "mid": "Conversation remains engaging, but risky replies are filtered out.",
+      "high": "All replies are safe, but some creativity or spontaneity may be lost."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What does LaMDA need?",
+      "body": [
+        "Pick the ingredients that make LaMDA's dialogue so effective."
+      ],
+      "choices": [
+        {
+          "label": "Pre-trained language model",
+          "note": "Foundation for language understanding and generation."
+        },
+        {
+          "label": "Human-annotated conversations",
+          "note": "Provide examples of good and bad dialogue."
+        },
+        {
+          "label": "Quality scoring",
+          "note": "Measures how engaging and relevant responses are."
+        },
+        {
+          "label": "Safety scoring",
+          "note": "Filters out harmful or toxic replies."
+        },
+        {
+          "label": "Factuality scoring",
+          "note": "Checks if responses are accurate and grounded."
+        },
+        {
+          "label": "Fine-tuning process",
+          "note": "Adjusts the model to optimize for these conversational targets."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "LaMDA's impact on dialogue",
+      "body": [
+        "LaMDA outperformed earlier models on quality, safety, and factuality in both human and automatic evaluations.",
+        "Its conversations were rated more engaging, less likely to go off-topic, and much less likely to produce unsafe responses."
+      ],
+      "bars": [
+        {
+          "label": "Quality improvement",
+          "note": "More engaging responses",
+          "value": 88
+        },
+        {
+          "label": "Safety improvement",
+          "note": "Fewer unsafe replies",
+          "value": 93
+        },
+        {
+          "label": "Factuality improvement",
+          "note": "More accurate information",
+          "value": 85
+        },
+        {
+          "label": "Off-topic reduction",
+          "note": "Stays on topic better",
+          "value": 78
+        }
+      ],
+      "caption": "LaMDA raised the bar for what users can expect from conversational AI."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why LaMDA is a canonical paper",
+      "body": [
+        "LaMDA showed that dialogue models can be trained to be not just fluent, but also safe and informative.",
+        "Its approach influenced how future conversational AIs are built, making quality, safety, and factuality standard goals."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "How LaMDA changed dialogue",
+      "body": [],
+      "recap": [
+        {
+          "label": "Start",
+          "note": "Begin with a large language model."
+        },
+        {
+          "label": "Train",
+          "note": "Fine-tune using human-annotated conversations."
+        },
+        {
+          "label": "Score",
+          "note": "Optimize for quality, safety, and factuality."
+        },
+        {
+          "label": "Deliver",
+          "note": "Provide open-ended, responsible conversations."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "LaMDA: Language Models for Dialog Applications",
+      "body": [
+        "For the full technical details, see the original paper on arXiv."
+      ]
+    }
+  ]
+}

@@ -12,7 +12,7 @@ import SwiftUI
 extension LearningLesson {
 
     static let reAct = LearningLesson(
-        paperId: "loop:foundational:react",
+        paperId: "react",
         cards: [
 
             // 1 - Cover.

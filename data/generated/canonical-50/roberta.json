@@ -1,0 +1,223 @@
+{
+  "paper_id": "roberta",
+  "short_name": "RoBERTa Model",
+  "title": "RoBERTa: A Robustly Optimized BERT Pretraining Approach",
+  "authors": "Yinhan Liu, Myle Ott, Naman Goyal, Jingfei Du et al.",
+  "year": 2019,
+  "topic": "Language",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/1907.11692",
+  "arxiv_id": "1907.11692",
+  "hook": "RoBERTa revealed BERT could be much stronger with the right recipe tweaks.",
+  "promise": "You will understand how careful training choices made RoBERTa outperform BERT and other models.",
+  "prerequisite_note": "Bring a curiosity for how small details in training can make a big difference in AI models.",
+  "glossary": [
+    {
+      "term": "Pretraining",
+      "plain": "Training a model on a large dataset before fine-tuning it for a specific task."
+    },
+    {
+      "term": "BERT",
+      "plain": "A popular language model using transformers to understand language context."
+    },
+    {
+      "term": "Hyperparameters",
+      "plain": "Settings chosen before training, like learning rate or batch size, that affect model performance."
+    },
+    {
+      "term": "Masked Language Modeling",
+      "plain": "A task where some words are hidden and the model learns to predict them."
+    },
+    {
+      "term": "Fine-tuning",
+      "plain": "Adapting a pretrained model to perform well on a specific, smaller dataset."
+    },
+    {
+      "term": "GLUE",
+      "plain": "A benchmark suite for evaluating how well language models understand and process English."
+    },
+    {
+      "term": "Undertraining",
+      "plain": "Not training a model long enough or with enough data to reach its full potential."
+    }
+  ],
+  "related_slugs": [
+    "bert",
+    "gpt-2",
+    "electra",
+    "deberta"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Language",
+      "title": "How RoBERTa Supercharged BERT",
+      "body": [
+        "Discover how tweaking training details made BERT much stronger than anyone realized."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "How much do details really matter?",
+      "body": [
+        "Imagine two chefs following the same recipe, but one uses more time, better ingredients, and a few subtle tricks. The dish tastes worlds apart.",
+        "RoBERTa is about treating BERT like that recipe. By changing the ingredients and steps, researchers found BERT could be dramatically improved."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "The RoBERTa recipe: from BERT to better",
+      "body": [
+        "RoBERTa starts with BERT's architecture but questions the original training process. What if we train longer, on more data, and tweak key parameters?",
+        "They meticulously test changes like removing the next sentence prediction, using bigger batches, and ramping up data. The result: a much stronger model."
+      ],
+      "left": "BERT's original training",
+      "middle": "Optimized training choices",
+      "right": "RoBERTa's improved performance",
+      "caption": "Tweaking the training recipe made a huge difference in model strength."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "How much does training matter?",
+      "body": [
+        "Toggle to see the impact of BERT's original recipe versus RoBERTa's optimized approach."
+      ],
+      "offLabel": "Original BERT",
+      "onLabel": "RoBERTa",
+      "offNote": "BERT trained less, on less data, with a fixed recipe. Performance plateaued early.",
+      "onNote": "RoBERTa trains longer, on more data, with careful tweaks. Performance jumps significantly."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "The overlooked power of training details",
+      "body": [
+        "RoBERTa's authors suspected that BERT's true potential was untapped. Instead of inventing a new model, they focused on the training process itself.",
+        "By systematically testing changes like batch size, data volume, and removing next sentence prediction, they showed that BERT was undertrained. RoBERTa proved that careful optimization could beat newer, more complex models."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much data and time is enough?",
+      "body": [
+        "Slide to see how training duration and dataset size affect model performance."
+      ],
+      "lowLabel": "Short training, small data",
+      "highLabel": "Long training, huge data",
+      "low": "The model learns quickly but misses many patterns, leading to lower accuracy.",
+      "mid": "Performance improves as more data and time are used, but gains start to slow.",
+      "high": "The model reaches its full potential, but requires massive compute and time investments."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "Choose your RoBERTa ingredients",
+      "body": [
+        "Pick the key ingredients that made RoBERTa outperform BERT."
+      ],
+      "choices": [
+        {
+          "label": "Remove next sentence prediction",
+          "note": "Focuses learning on word prediction only."
+        },
+        {
+          "label": "Larger training dataset",
+          "note": "Feeds the model much more text from diverse sources."
+        },
+        {
+          "label": "Longer training time",
+          "note": "Lets the model learn more deeply from its data."
+        },
+        {
+          "label": "Bigger batch sizes",
+          "note": "Allows more data to be processed at once, stabilizing training."
+        },
+        {
+          "label": "Dynamic masking",
+          "note": "Changes which words are hidden each time, forcing more robust learning."
+        },
+        {
+          "label": "Careful hyperparameter tuning",
+          "note": "Optimizes learning rates and other settings for best results."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "RoBERTa's results: outperforming the field",
+      "body": [
+        "RoBERTa set new records on benchmarks like GLUE, RACE, and SQuAD, showing the power of careful training.",
+        "Its success raised important questions about how much progress in AI comes from new ideas versus better use of old ones."
+      ],
+      "bars": [
+        {
+          "label": "GLUE Score",
+          "note": "RoBERTa surpassed BERT and rivals",
+          "value": 97
+        },
+        {
+          "label": "RACE Score",
+          "note": "new high-water mark on reading comprehension",
+          "value": 95
+        },
+        {
+          "label": "SQuAD Score",
+          "note": "Top marks on question answering",
+          "value": 98
+        },
+        {
+          "label": "Training Data Used",
+          "note": "Much larger than BERT",
+          "value": 90
+        }
+      ],
+      "caption": "RoBERTa beat previous models by optimizing training, not changing the architecture."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why RoBERTa changed the field",
+      "body": [
+        "RoBERTa showed that even the best ideas can be held back by undertraining or overlooked details.",
+        "Its lesson: sometimes, revisiting the basics and pushing them further is more powerful than inventing something entirely new."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "Four steps to RoBERTa's success",
+      "body": [],
+      "recap": [
+        {
+          "label": "Question",
+          "note": "Are training details holding models back?"
+        },
+        {
+          "label": "Tweak",
+          "note": "Test longer training, more data, and bigger batches."
+        },
+        {
+          "label": "Measure",
+          "note": "Benchmark results across standard tasks."
+        },
+        {
+          "label": "Surpass",
+          "note": "Outperform newer models by optimizing the process."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "RoBERTa: A Robustly Optimized BERT Pretraining Approach",
+      "body": [
+        "Read the original paper to see how training choices made all the difference."
+      ]
+    }
+  ]
+}

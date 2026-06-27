@@ -15,27 +15,39 @@ enum CuratedPaperCatalog {
 
     /// Same list as bundled JSON; used only if decode fails (previews/tests).
     private static let fallbackInteractiveLoopPaperIds: [String] = [
-        "loop:foundational:perceptron",
-        "loop:foundational:backprop",
-        "loop:foundational:lenet",
-        "loop:foundational:alexnet",
-        "loop:foundational:word2vec",
-        "loop:foundational:seq2seq",
-        "loop:foundational:gans",
-        "loop:foundational:resnet",
-        "loop:foundational:attention",
-        "loop:foundational:gpt3",
-        "loop:foundational:bert",
-        "loop:foundational:instructgpt",
-        "loop:foundational:chain-of-thought",
-        "loop:foundational:scratchpad",
-        "loop:foundational:self-consistency",
-        "loop:foundational:tot",
-        "loop:foundational:least-to-most",
-        "loop:foundational:react",
-        "loop:foundational:toolformer",
-        "loop:foundational:grokking",
-        "loop:foundational:deepseek-r1",
+        "perceptron",
+        "backprop",
+        "lenet",
+        "alexnet",
+        "word2vec",
+        "seq2seq",
+        "gans",
+        "resnet",
+        "attention",
+        "gpt3",
+        "bert",
+        "instructgpt",
+        "chain-of-thought",
+        "scratchpad",
+        "self-consistency",
+        "tree-of-thoughts",
+        "least-to-most",
+        "react",
+        "toolformer",
+        "grokking",
+        "deepseek-r1",
+        "vit",
+        "ddpm",
+        "clip",
+        "stable-diffusion",
+        "controlnet",
+        "sam",
+        "t5",
+        "chinchilla",
+        "llama",
+        "palm",
+        "mixtral",
+        "reflexion",
     ]
 
     private static let bundledInteractiveLoopPaperIds: [String] = {
@@ -49,7 +61,7 @@ enum CuratedPaperCatalog {
         return file.interactiveLoopPaperIds
     }()
 
-    /// Curated `loop:` ids hidden from every catalog-driven list, the
+    /// Curated paper ids hidden from every catalog-driven list, the
     /// subway map, and the similarity graph. One source of truth lives in
     /// `HiddenPapers`.
     static var hiddenPaperIds: Set<String> { HiddenPapers.hiddenLoopIds }
@@ -68,13 +80,30 @@ enum CuratedPaperCatalog {
         }
     }
 
-    /// Curator loop by id. Does not resolve `arxiv:…` aliases—`PaperReadingExperience` handles CoT bridging and blueprints.
+    /// Curator loop by readable paper id. Does not resolve `arxiv:...` aliases,
+    /// `PaperReadingExperience` handles CoT bridging and blueprints.
     static func content(forPaperId id: String) -> DailyLoopContent? {
         switch id {
+        case "perceptron", "backprop", "lenet", "alexnet", "word2vec",
+             "seq2seq", "gans", "resnet", "attention", "gpt3", "bert",
+             "instructgpt", "chain-of-thought", "scratchpad",
+             "self-consistency", "least-to-most", "react", "toolformer",
+             "grokking", "deepseek-r1":
+            return DailyLoopContent.foundational(slug: id)
+        case "tree-of-thoughts":
+            return DailyLoopContent.foundational(slug: "tot")
+        case "vit", "ddpm", "clip", "controlnet", "sam", "t5",
+             "chinchilla", "llama", "palm", "mixtral", "reflexion":
+            return DailyLoopContent.branch(category: "", slug: id)
+        case "stable-diffusion":
+            return DailyLoopContent.branch(category: "", slug: "sd")
         default:
-            guard id.hasPrefix("loop:foundational:") else { return nil }
-            let slug = String(id.dropFirst("loop:foundational:".count))
-            return DailyLoopContent.foundational(slug: slug)
+            let parts = id.split(separator: ":").map(String.init)
+            guard parts.count == 3, parts[0] == "loop" else { return nil }
+            if parts[1] == "foundational" {
+                return DailyLoopContent.foundational(slug: parts[2])
+            }
+            return DailyLoopContent.branch(category: parts[1], slug: parts[2])
         }
     }
 }

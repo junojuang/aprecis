@@ -1,0 +1,221 @@
+{
+  "paper_id": "vae",
+  "short_name": "Variational Autoencoder",
+  "title": "Auto-Encoding Variational Bayes",
+  "authors": "Diederik P Kingma, Max Welling",
+  "year": 2013,
+  "topic": "Generative Models",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/1312.6114",
+  "arxiv_id": "1312.6114",
+  "hook": "A neural network learns to invent new data by imagining hidden causes.",
+  "promise": "You will grasp how variational autoencoders use the reparameterization trick to train deep generative models efficiently.",
+  "prerequisite_note": "Bring your curiosity about how machines can imagine new examples from scratch.",
+  "glossary": [
+    {
+      "term": "Latent Variable",
+      "plain": "An invisible factor that explains patterns in the observed data."
+    },
+    {
+      "term": "Variational Inference",
+      "plain": "A method for approximating complicated probability distributions with simpler ones."
+    },
+    {
+      "term": "Reparameterization Trick",
+      "plain": "A clever change of variables that lets you backpropagate through random sampling."
+    },
+    {
+      "term": "Encoder",
+      "plain": "A neural network that maps data into a hidden representation."
+    },
+    {
+      "term": "Decoder",
+      "plain": "A neural network that reconstructs data from the hidden representation."
+    },
+    {
+      "term": "Evidence Lower Bound (ELBO)",
+      "plain": "A target objective for training that balances data reconstruction and regularization."
+    }
+  ],
+  "related_slugs": [
+    "gan",
+    "diffusion-models",
+    "bayesian-neural-nets",
+    "autoencoders",
+    "flow-based-models"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Generative Models",
+      "title": "How machines imagine new data",
+      "body": [
+        "Discover how variational autoencoders learn to invent new examples by simulating hidden causes."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "What if a neural net could dream?",
+      "body": [
+        "Imagine a machine that looks at thousands of handwritten digits and learns not just to copy them, but to invent new ones that look real.",
+        "To do this, the machine needs to guess the invisible factors that shape real data, then use those guesses to generate entirely fresh samples."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "From data to imagination",
+      "body": [
+        "First, the model sees real data and tries to guess the hidden variables that could have produced it.",
+        "Next, it learns to use those hidden guesses to reconstruct the original data, adjusting itself to get better at both guessing and recreating.",
+        "Finally, it can invent new data by sampling from the hidden space and decoding those samples into new outputs."
+      ],
+      "left": "Observe data",
+      "middle": "Infer and encode hidden causes",
+      "right": "Generate new data",
+      "caption": "The VAE learns to reverse engineer and then simulate the data-making process."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "How did we train generative models before?",
+      "body": [
+        "Toggle to compare the old approach of sampling and optimization with the VAE's reparameterization trick."
+      ],
+      "offLabel": "Sampling gradients",
+      "onLabel": "Reparameterization trick",
+      "offNote": "Gradients are noisy or impossible to compute, making training slow or unstable.",
+      "onNote": "Gradients flow cleanly through the network, enabling fast and stable end-to-end learning."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "The reparameterization trick unlocks deep generative learning",
+      "body": [
+        "Training a model to guess hidden causes usually means dealing with randomness, which breaks the chain of gradients needed for learning.",
+        "The reparameterization trick cleverly rewrites the random step so that gradients can pass through, making neural generative models trainable end to end."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much do we care about realism versus variety?",
+      "body": [
+        "Adjust the slider to see how the VAE balances reconstructing exact data versus exploring new possibilities."
+      ],
+      "lowLabel": "Perfect reconstruction",
+      "highLabel": "Maximum creativity",
+      "low": "The model memorizes data, but struggles to invent anything new.",
+      "mid": "The model balances copying the data and generating plausible new examples.",
+      "high": "The model explores wild variations, but outputs may stray from reality."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "Pick the VAE's key ingredients",
+      "body": [
+        "Choose the parts needed to make a variational autoencoder work."
+      ],
+      "choices": [
+        {
+          "label": "Encoder network",
+          "note": "Maps data to a distribution over hidden variables."
+        },
+        {
+          "label": "Latent variable",
+          "note": "Represents the hidden cause behind each data point."
+        },
+        {
+          "label": "Reparameterization trick",
+          "note": "Allows gradients to flow through sampling."
+        },
+        {
+          "label": "Decoder network",
+          "note": "Reconstructs data from the hidden variables."
+        },
+        {
+          "label": "ELBO objective",
+          "note": "Guides learning by balancing reconstruction and regularization."
+        },
+        {
+          "label": "Stochastic optimization",
+          "note": "Handles large datasets efficiently during training."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "What changed after VAEs?",
+      "body": [
+        "Before VAEs, training deep generative models with continuous latent variables was slow or impractical.",
+        "The VAE made it possible to learn powerful generative models efficiently, inspiring many advances in unsupervised learning and creative AI."
+      ],
+      "bars": [
+        {
+          "label": "Training speed",
+          "note": "Faster than previous variational methods",
+          "value": 85
+        },
+        {
+          "label": "Sample quality",
+          "note": "Good, but not perfect realism",
+          "value": 70
+        },
+        {
+          "label": "Scalability",
+          "note": "Works on large datasets",
+          "value": 90
+        },
+        {
+          "label": "Generative flexibility",
+          "note": "Can invent diverse new examples",
+          "value": 80
+        }
+      ],
+      "caption": "VAEs brought generative modeling into the deep learning era by making it efficient and scalable."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why VAEs are foundational",
+      "body": [
+        "The VAE introduced a practical way to train neural networks that can imagine and create new data, not just classify or predict.",
+        "Its core trick, the reparameterization, became a building block for almost every modern deep generative model."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "How a VAE works in four steps",
+      "body": [],
+      "recap": [
+        {
+          "label": "Encode",
+          "note": "Map data into a hidden variable distribution."
+        },
+        {
+          "label": "Sample",
+          "note": "Draw a hidden cause using the reparameterization trick."
+        },
+        {
+          "label": "Decode",
+          "note": "Transform the hidden variable back into data."
+        },
+        {
+          "label": "Optimize",
+          "note": "Adjust everything to balance realism and variety."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Auto-Encoding Variational Bayes",
+      "body": [
+        "Read the original paper for full mathematical details and experimental results."
+      ]
+    }
+  ]
+}

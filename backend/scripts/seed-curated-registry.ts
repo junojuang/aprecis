@@ -41,52 +41,52 @@ interface CuratedEntry {
 }
 
 const CURATED: Record<string, CuratedEntry> = {
-  "loop:foundational:perceptron": {
+  "perceptron": {
     title: "The Perceptron: A Probabilistic Model for Information Storage and Organization in the Brain",
     canonicalKey: "doi:10.1037/h0042519",
-    servedPaperId: "rosenblatt:1958",
+    servedPaperId: "perceptron",
   },
-  "loop:foundational:backprop": {
+  "backprop": {
     title: "Learning Representations by Back-Propagating Errors",
     canonicalKey: "article:nature:323533a0",
-    servedPaperId: "rumelhart:1986",
+    servedPaperId: "backprop",
   },
-  "loop:foundational:lenet": {
+  "lenet": {
     title: "Gradient-Based Learning Applied to Document Recognition",
     canonicalKey: null,
     servedPaperId: null,
   },
-  "loop:foundational:alexnet": {
+  "alexnet": {
     title: "ImageNet Classification with Deep Convolutional Neural Networks",
     canonicalKey: null,
     servedPaperId: null,
   },
-  "loop:foundational:word2vec": {
+  "word2vec": {
     title: "Efficient Estimation of Word Representations in Vector Space",
     canonicalKey: null,
     servedPaperId: null,
   },
-  "loop:foundational:seq2seq": {
+  "seq2seq": {
     title: "Sequence to Sequence Learning with Neural Networks",
     canonicalKey: null,
     servedPaperId: null,
   },
-  "loop:foundational:gans": {
+  "gans": {
     title: "Generative Adversarial Nets",
     canonicalKey: null,
     servedPaperId: null,
   },
-  "loop:foundational:resnet": {
+  "resnet": {
     title: "Deep Residual Learning for Image Recognition",
     canonicalKey: null,
     servedPaperId: null,
   },
-  "loop:foundational:attention": {
+  "attention": {
     title: "Attention Is All You Need",
     canonicalKey: null,
     servedPaperId: null,
   },
-  "loop:foundational:gpt3": {
+  "gpt3": {
     title: "Language Models are Few-Shot Learners",
     canonicalKey: null,
     servedPaperId: null,

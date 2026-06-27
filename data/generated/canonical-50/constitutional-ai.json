@@ -1,0 +1,220 @@
+{
+  "paper_id": "constitutional-ai",
+  "short_name": "Constitutional AI",
+  "title": "Constitutional AI: Harmlessness from AI Feedback",
+  "authors": "",
+  "year": 2022,
+  "topic": "Alignment",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/2212.08073",
+  "arxiv_id": "2212.08073",
+  "hook": "What if AI could learn to be harmless by following a written constitution?",
+  "promise": "You will understand how Constitutional AI uses principles instead of human labels to align models.",
+  "prerequisite_note": "Familiarity with how AI models are trained and why aligning their behavior is challenging is helpful.",
+  "glossary": [
+    {
+      "term": "Alignment",
+      "plain": "Ensuring an AI system's behavior matches human intentions and values."
+    },
+    {
+      "term": "Constitutional AI",
+      "plain": "A method where AI models are guided by a set of written rules or principles."
+    },
+    {
+      "term": "Reinforcement Learning from Human Feedback (RLHF)",
+      "plain": "Training AI using ratings or corrections from humans to shape its responses."
+    },
+    {
+      "term": "Self-Critique",
+      "plain": "The AI evaluates its own outputs against the constitution and adjusts accordingly."
+    },
+    {
+      "term": "Harmlessness",
+      "plain": "The principle that an AI should avoid causing harm in its responses."
+    },
+    {
+      "term": "Constitution",
+      "plain": "A document listing principles or rules that the AI should follow during training."
+    }
+  ],
+  "related_slugs": [
+    "rlhf",
+    "alignment-problem",
+    "red-teaming",
+    "reward-models"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Alignment",
+      "title": "AI by the Rules",
+      "body": [
+        "See how written principles let AI judge itself, reducing the need for endless human feedback."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Can AI follow rules like people do?",
+      "body": [
+        "Imagine teaching a robot to be polite using a list of rules, not by correcting every mistake. Could this work for AI?",
+        "This paper explores how written principles, like a mini-constitution, can guide AI models to act safely and helpfully with less human oversight."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "From principles to safer AI",
+      "body": [
+        "First, researchers write a constitution: a set of guidelines for the AI to follow. Instead of humans grading every answer, the AI uses these rules to judge its own outputs.",
+        "The model learns to self-critique, checking if its responses match the constitution. Over time, the AI improves its behavior, aiming for harmlessness and helpfulness.",
+        "The result is an AI that internalizes principles, relying less on human intervention, and more on clear, written values."
+      ],
+      "left": "Written constitution",
+      "middle": "AI self-critique using rules",
+      "right": "Safer, more aligned model",
+      "caption": "A constitution guides the AI, which then learns to judge and improve itself."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Human feedback or AI self-judgment?",
+      "body": [
+        "Toggle to see how training changes when AI uses written principles instead of constant human feedback."
+      ],
+      "offLabel": "RLHF",
+      "onLabel": "Constitutional AI",
+      "offNote": "Requires many human ratings, which are slow, costly, and inconsistent.",
+      "onNote": "AI uses clear written rules to critique itself, reducing human effort and improving consistency."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "The trick: self-critiquing with principles",
+      "body": [
+        "Instead of relying on endless human corrections, the AI is trained to compare its answers to a list of principles, like fairness or harmlessness.",
+        "The model learns not just to answer, but to reflect on its own outputs and revise them to better match the written constitution."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much should we trust AI to judge itself?",
+      "body": [
+        "Slide to see what happens as we rely more on AI self-critique versus human oversight."
+      ],
+      "lowLabel": "All human feedback",
+      "highLabel": "All AI self-critique",
+      "low": "Every response is checked by a human. Reliable but slow and expensive.",
+      "mid": "AI critiques most responses, with some human spot-checking. Faster, but occasional errors slip through.",
+      "high": "AI fully judges itself using the constitution. Scalable, but risks missing subtle harms humans would catch."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "Choose the right ingredients for Constitutional AI",
+      "body": [
+        "Pick the components needed to train an AI that follows written rules."
+      ],
+      "choices": [
+        {
+          "label": "Written constitution",
+          "note": "Provides the guiding principles for behavior."
+        },
+        {
+          "label": "Self-critique mechanism",
+          "note": "Lets the AI review and improve its own answers."
+        },
+        {
+          "label": "Initial human feedback",
+          "note": "Kickstarts the training process and sets the direction."
+        },
+        {
+          "label": "Reward model",
+          "note": "Measures how well the AI follows the constitution."
+        },
+        {
+          "label": "Reinforcement learning",
+          "note": "Optimizes the AI's responses based on feedback."
+        },
+        {
+          "label": "Red-teaming",
+          "note": "Tests the AI with challenging prompts to find weaknesses."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "Constitutional AI in practice: safer and scalable",
+      "body": [
+        "Constitutional AI produced models that were more harmless and helpful, with less need for human raters.",
+        "The approach made AI training more scalable, while still improving on key alignment metrics compared to traditional RLHF."
+      ],
+      "bars": [
+        {
+          "label": "Harmlessness",
+          "note": "AI avoids harmful outputs",
+          "value": 92
+        },
+        {
+          "label": "Helpfulness",
+          "note": "AI gives useful answers",
+          "value": 85
+        },
+        {
+          "label": "Human effort",
+          "note": "Less human feedback required",
+          "value": 30
+        },
+        {
+          "label": "Consistency",
+          "note": "Responses match principles",
+          "value": 80
+        }
+      ],
+      "caption": "The model became safer while reducing the need for costly human oversight."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why Constitutional AI matters",
+      "body": [
+        "This paper showed that AI can learn to follow rules, not just mimic human ratings, making alignment more scalable.",
+        "By shifting the focus from endless human correction to clear principles, Constitutional AI points toward safer, more autonomous systems."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "How Constitutional AI works",
+      "body": [],
+      "recap": [
+        {
+          "label": "Write",
+          "note": "Draft a clear constitution of principles for the AI."
+        },
+        {
+          "label": "Critique",
+          "note": "Train the AI to judge its own answers by these rules."
+        },
+        {
+          "label": "Reinforce",
+          "note": "Use rewards to shape better, more aligned responses."
+        },
+        {
+          "label": "Scale",
+          "note": "Reduce human labor while improving safety and helpfulness."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Constitutional AI: Harmlessness from AI Feedback",
+      "body": [
+        "Read the original work for technical details and experimental results."
+      ]
+    }
+  ]
+}

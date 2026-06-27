@@ -1,0 +1,221 @@
+{
+  "paper_id": "dpr",
+  "short_name": "Dense Passage Retrieval",
+  "title": "Dense Passage Retrieval for Open-Domain Question Answering",
+  "authors": "Vladimir Karpukhin, Barlas Oğuz, Sewon Min, Patrick Lewis et al.",
+  "year": 2020,
+  "topic": "Retrieval",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/2004.04906",
+  "arxiv_id": "2004.04906",
+  "hook": "Google for facts, but with neural networks instead of just keywords.",
+  "promise": "You will understand how dense retrieval transforms open-domain question answering from keyword to meaning-based search.",
+  "prerequisite_note": "Bring an intuition for how search engines match questions to documents.",
+  "glossary": [
+    {
+      "term": "Dense Representation",
+      "plain": "A compact vector that captures the meaning of text for efficient comparison."
+    },
+    {
+      "term": "Dual Encoder",
+      "plain": "A model setup where questions and passages are separately encoded into vectors."
+    },
+    {
+      "term": "Open-Domain QA",
+      "plain": "Answering questions using any passage in a large, unstructured text collection."
+    },
+    {
+      "term": "BM25",
+      "plain": "A popular keyword-based retrieval algorithm that counts word overlap and weights."
+    },
+    {
+      "term": "Embedding",
+      "plain": "A numeric representation of text that preserves semantic meaning."
+    },
+    {
+      "term": "Passage Retrieval",
+      "plain": "Finding short text chunks that are likely to contain an answer."
+    }
+  ],
+  "related_slugs": [
+    "colbert",
+    "contriever",
+    "realm",
+    "bm25",
+    "retriever",
+    "retro"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Retrieval",
+      "title": "From keywords to meaning",
+      "body": [
+        "Learn how dense passage retrieval lets machines find answers by meaning, not just matching words."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Why keyword search struggles",
+      "body": [
+        "Imagine typing a question into a search engine and getting results that only match your exact words, missing the real meaning.",
+        "Dense Passage Retrieval (DPR) changes this by teaching computers to look for passages with the right meaning, even if the words are different."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "From question to answer: the dense route",
+      "body": [
+        "First, a question and every passage in a huge collection are turned into vectors that capture meaning.",
+        "Then, the system searches for passages whose vectors are most similar to the question's vector, retrieving the best candidates."
+      ],
+      "left": "Question and passages",
+      "middle": "Encode to dense vectors",
+      "right": "Find top matches by similarity",
+      "caption": "DPR links questions to answers by comparing meaning, not just matching words."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Keywords vs. meanings: which finds the answer?",
+      "body": [
+        "Suppose you ask, 'Who wrote Hamlet?' and the passage says, 'Shakespeare is the author of Hamlet.'"
+      ],
+      "offLabel": "Keyword search (BM25)",
+      "onLabel": "Dense Passage Retrieval",
+      "offNote": "Might miss the passage if 'wrote' is not present.",
+      "onNote": "Finds the passage using learned meaning, even with different words."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "Training machines to understand",
+      "body": [
+        "DPR uses two neural networks: one for questions, one for passages, each learning to turn text into a vector that captures meaning.",
+        "During training, it rewards the model for pulling matching question-passage pairs close together and pushing unrelated pairs apart."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "Accuracy vs. speed in retrieval",
+      "body": [
+        "More accurate retrieval may require more computation, but too little can miss the answer."
+      ],
+      "lowLabel": "Fast, less accurate",
+      "highLabel": "Accurate, slower",
+      "low": "Quickly scans but may miss relevant passages.",
+      "mid": "Balances speed and recall, finds good candidates.",
+      "high": "Very thorough, but slower and more costly."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What powers dense passage retrieval?",
+      "body": [
+        "Pick the ingredients that make DPR work."
+      ],
+      "choices": [
+        {
+          "label": "Dual encoder",
+          "note": "Separately encodes questions and passages."
+        },
+        {
+          "label": "Dense embeddings",
+          "note": "Represents text as semantic vectors."
+        },
+        {
+          "label": "Similarity search",
+          "note": "Finds which vectors are close in meaning."
+        },
+        {
+          "label": "Contrastive training",
+          "note": "Teaches the model to pull matching pairs together."
+        },
+        {
+          "label": "Large passage corpus",
+          "note": "Provides a huge set of possible answers."
+        },
+        {
+          "label": "Fast vector index",
+          "note": "Allows efficient retrieval from millions of passages."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "Dense retrieval changes the game",
+      "body": [
+        "DPR outperformed traditional keyword methods like BM25, retrieving more relevant passages for open-domain questions.",
+        "It set new benchmark-leading results on several QA benchmarks, showing the value of learned semantic search."
+      ],
+      "bars": [
+        {
+          "label": "Top-20 accuracy (DPR)",
+          "note": "Best passage found in 20 tries",
+          "value": 85
+        },
+        {
+          "label": "Top-20 accuracy (BM25)",
+          "note": "BM25's best with same setup",
+          "value": 68
+        },
+        {
+          "label": "End-to-end QA improvement",
+          "note": "Better answers overall",
+          "value": 78
+        },
+        {
+          "label": "Speed (vectors)",
+          "note": "Efficient at scale",
+          "value": 90
+        }
+      ],
+      "caption": "Dense retrieval finds more answers and does it efficiently at scale."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "A leap for question answering",
+      "body": [
+        "Dense Passage Retrieval showed that neural models can search by meaning, not just words, making open-domain QA much more effective.",
+        "This approach laid the foundation for modern retrieval-augmented systems that blend large language models with fast, semantic search."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "Dense retrieval in four moves",
+      "body": [],
+      "recap": [
+        {
+          "label": "Encode",
+          "note": "Turn questions and passages into dense vectors."
+        },
+        {
+          "label": "Compare",
+          "note": "Measure similarity between question and passage vectors."
+        },
+        {
+          "label": "Retrieve",
+          "note": "Select top passages matching the question's meaning."
+        },
+        {
+          "label": "Answer",
+          "note": "Use retrieved passages to answer the question."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Dense Passage Retrieval for Open-Domain Question Answering",
+      "body": [
+        "Read the full paper for technical details and further experiments."
+      ]
+    }
+  ]
+}

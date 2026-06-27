@@ -1,0 +1,219 @@
+{
+  "paper_id": "imagen",
+  "short_name": "Imagen diffusion",
+  "title": "Photorealistic Text-to-Image Diffusion Models with Deep Language Understanding",
+  "authors": "",
+  "year": 2022,
+  "topic": "Diffusion",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/2205.11487",
+  "arxiv_id": "2205.11487",
+  "hook": "Watch a text prompt turn into a jaw-dropping photorealistic image, powered by language understanding.",
+  "promise": "You will understand how Imagen uses language models to create stunning images from text prompts.",
+  "prerequisite_note": "Bring an open mind about how AI can turn words into pictures using step-by-step noise removal.",
+  "glossary": [
+    {
+      "term": "Diffusion Model",
+      "plain": "A process that starts with noise and gradually turns it into a detailed image."
+    },
+    {
+      "term": "Text Encoder",
+      "plain": "A neural network that transforms words into a format a computer can use."
+    },
+    {
+      "term": "Photorealism",
+      "plain": "Images that look convincingly like real photographs."
+    },
+    {
+      "term": "T5",
+      "plain": "A powerful language model used to deeply understand text prompts."
+    },
+    {
+      "term": "Score-based Model",
+      "plain": "A model that predicts how to reduce noise in an image at each step."
+    },
+    {
+      "term": "Guidance",
+      "plain": "The way the model steers image generation to match the text."
+    }
+  ],
+  "related_slugs": [
+    "dalle-2",
+    "stable-diffusion",
+    "glide",
+    "vqgan-clip"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Diffusion",
+      "title": "From Words to Hyperreal Images",
+      "body": [
+        "Learn how Imagen turns text prompts into photorealistic images using advanced language understanding."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "How can AI draw what you describe?",
+      "body": [
+        "Imagine typing a sentence and instantly seeing a detailed photo that matches it. This is not magic, but the result of powerful AI models.",
+        "Imagen’s breakthrough is letting computers really understand your words, then guiding a step-by-step image creation process to match them with stunning realism."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "How Imagen turns text into images",
+      "body": [
+        "First, Imagen reads your prompt and deeply understands it with a language model. Next, it uses this understanding to steer the image creation process.",
+        "The model starts with random noise and, guided by the text features, gradually refines the image, removing noise step by step until a detailed picture emerges."
+      ],
+      "left": "Text prompt",
+      "middle": "Language understanding guides diffusion",
+      "right": "Photorealistic image",
+      "caption": "Imagen’s core is strong language guidance for stepwise image generation."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "How does strong language understanding change image generation?",
+      "body": [
+        "Compare generating images with a basic versus a powerful text encoder."
+      ],
+      "offLabel": "Basic text encoder",
+      "onLabel": "Imagen's T5 encoder",
+      "offNote": "Images may look generic or miss details from the prompt.",
+      "onNote": "Images closely match the prompt with sharper details and realism."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "Let language models drive the image process",
+      "body": [
+        "Previous models used simple text encodings, which often missed subtle meanings or details in prompts.",
+        "Imagen’s trick is to use a benchmark-leading language model, T5, to extract rich meaning from text and guide every step of the diffusion process."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much should the model trust the text?",
+      "body": [
+        "Adjust the slider to see how strict guidance affects the final image."
+      ],
+      "lowLabel": "Weak guidance",
+      "highLabel": "Strong guidance",
+      "low": "Image may ignore prompt details and look random.",
+      "mid": "Some prompt details appear, but image may be blurry or generic.",
+      "high": "Image closely matches prompt with sharp, realistic details."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What does Imagen need to succeed?",
+      "body": [
+        "Select the key ingredients that make Imagen’s results possible."
+      ],
+      "choices": [
+        {
+          "label": "Powerful text encoder",
+          "note": "Understands subtle meaning in prompts."
+        },
+        {
+          "label": "Score-based diffusion model",
+          "note": "Turns noise into images step by step."
+        },
+        {
+          "label": "Guidance mechanism",
+          "note": "Steers image generation using text features."
+        },
+        {
+          "label": "Large and diverse training data",
+          "note": "Helps model generalize to many prompts."
+        },
+        {
+          "label": "Super-resolution modules",
+          "note": "Upscales images to high quality."
+        },
+        {
+          "label": "Careful prompt engineering",
+          "note": "Ensures prompts are clear and effective."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "Imagen sets a new bar for text-to-image",
+      "body": [
+        "Imagen outperformed other models in both photorealism and how well images matched the text.",
+        "Human raters preferred Imagen’s images, especially for creative or unusual prompts, showing the power of strong language guidance."
+      ],
+      "bars": [
+        {
+          "label": "Photorealism (human rating)",
+          "note": "Imagen scored highest",
+          "value": 95
+        },
+        {
+          "label": "Text-image alignment",
+          "note": "Best at following prompts",
+          "value": 92
+        },
+        {
+          "label": "Creativity",
+          "note": "Generated unique images",
+          "value": 88
+        },
+        {
+          "label": "FID score (lower is better)",
+          "note": "Lowest FID among peers",
+          "value": 15
+        }
+      ],
+      "caption": "Imagen led in realism and accuracy, changing expectations for text-to-image AI."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why Imagen became a landmark paper",
+      "body": [
+        "Imagen proved that using a powerful language model makes a huge difference in generating images from text.",
+        "Its approach inspired a new wave of research and raised the bar for what people expect from AI-generated art."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "Four steps to Imagen’s magic",
+      "body": [],
+      "recap": [
+        {
+          "label": "Read",
+          "note": "Understand the text prompt with a strong language model."
+        },
+        {
+          "label": "Guide",
+          "note": "Use text features to steer the diffusion process."
+        },
+        {
+          "label": "Refine",
+          "note": "Remove noise step by step to reveal the image."
+        },
+        {
+          "label": "Deliver",
+          "note": "Produce a photorealistic image that matches the prompt."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Photorealistic Text-to-Image Diffusion Models with Deep Language Understanding",
+      "body": [
+        "Read the full paper to see details, results, and sample images from the Imagen model."
+      ]
+    }
+  ]
+}

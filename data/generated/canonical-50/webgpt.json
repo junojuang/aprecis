@@ -1,0 +1,220 @@
+{
+  "paper_id": "webgpt",
+  "short_name": "WebGPT",
+  "title": "WebGPT: Browser-assisted question-answering with human feedback",
+  "authors": "",
+  "year": 2021,
+  "topic": "Agents",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/2112.09332",
+  "arxiv_id": "2112.09332",
+  "hook": "Imagine an AI that learns to answer questions by browsing the web like you do.",
+  "promise": "You will understand how WebGPT trains language models to browse, cite, and improve answers using human feedback.",
+  "prerequisite_note": "Bring curiosity about how AI can search the web and learn from people’s preferences.",
+  "glossary": [
+    {
+      "term": "Language model",
+      "plain": "A system that predicts and generates text based on patterns in language."
+    },
+    {
+      "term": "Human feedback",
+      "plain": "Ratings or choices from people that guide how an AI learns or improves."
+    },
+    {
+      "term": "Citations",
+      "plain": "References to specific online sources that support an answer."
+    },
+    {
+      "term": "Reinforcement learning from human feedback (RLHF)",
+      "plain": "A training method where the AI is rewarded for outputs that people prefer."
+    },
+    {
+      "term": "Browser environment",
+      "plain": "A simulated web browser where the AI can search and click links."
+    },
+    {
+      "term": "Question-answering",
+      "plain": "The task of generating answers to questions, often using outside information."
+    }
+  ],
+  "related_slugs": [
+    "rlhf",
+    "gpt-3",
+    "chatgpt",
+    "self-ask",
+    "deepmind-sparrow"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Agents",
+      "title": "AI learns to browse",
+      "body": [
+        "Discover how WebGPT taught language models to search, cite, and improve answers using real web browsing and human feedback."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Can AI really look things up?",
+      "body": [
+        "Most language models answer questions by guessing from memory, not by searching the web for evidence.",
+        "WebGPT set out to show that AI can learn to browse, find sources, and give answers that humans actually trust."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "How WebGPT answers questions",
+      "body": [
+        "WebGPT starts with a question, then uses a browser to search, click, and read web pages.",
+        "It collects information, generates an answer, and attaches citations to show where facts came from."
+      ],
+      "left": "User question",
+      "middle": "Model browses and cites",
+      "right": "Answer with sources",
+      "caption": "WebGPT combines web browsing and human feedback to generate answers with references."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Guessing vs. searching",
+      "body": [
+        "Compare how a language model answers without browsing versus with WebGPT’s browser-assisted method."
+      ],
+      "offLabel": "From memory",
+      "onLabel": "WebGPT",
+      "offNote": "Relies on training data, may be outdated or inaccurate, and offers no sources.",
+      "onNote": "Searches live web, cites sources, and usually gives more up-to-date and trustworthy answers."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "Letting language models browse",
+      "body": [
+        "WebGPT connects a language model to a virtual browser, letting it search, follow links, and read web pages just like a person.",
+        "The model learns not just to answer, but to back up its claims with real citations, guided by what humans prefer."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "Speed vs. trustworthiness",
+      "body": [
+        "Slide between quick, memory-based answers and slower, sourced answers from web browsing."
+      ],
+      "lowLabel": "Faster, less reliable",
+      "highLabel": "Slower, more trustworthy",
+      "low": "Answers come instantly but may be outdated or wrong.",
+      "mid": "Some browsing and citations, balancing speed and evidence.",
+      "high": "Thorough web search, strong citations, but more time per answer."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What does WebGPT need?",
+      "body": [
+        "Pick the six key ingredients for a browser-assisted, human-aligned question-answering agent."
+      ],
+      "choices": [
+        {
+          "label": "Language model",
+          "note": "Generates text and reads web pages."
+        },
+        {
+          "label": "Browser environment",
+          "note": "Lets the model search and navigate websites."
+        },
+        {
+          "label": "Human feedback",
+          "note": "Teaches the model which answers people prefer."
+        },
+        {
+          "label": "Citation mechanism",
+          "note": "Attaches sources to specific claims in answers."
+        },
+        {
+          "label": "Reinforcement learning",
+          "note": "Improves the model using rewards from feedback."
+        },
+        {
+          "label": "Web search tools",
+          "note": "Helps the model find relevant information online."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "WebGPT’s results: more trusted answers",
+      "body": [
+        "Human judges preferred WebGPT’s answers to those from models without browsing or citations.",
+        "WebGPT’s answers were more accurate, more up-to-date, and more likely to include useful sources."
+      ],
+      "bars": [
+        {
+          "label": "Human preference",
+          "note": "Judges chose WebGPT over GPT-3",
+          "value": 70
+        },
+        {
+          "label": "Citation quality",
+          "note": "Answers with accurate sources",
+          "value": 85
+        },
+        {
+          "label": "Factual accuracy",
+          "note": "Correctness of answers",
+          "value": 65
+        },
+        {
+          "label": "Up-to-date info",
+          "note": "Answers reflect recent web content",
+          "value": 80
+        }
+      ],
+      "caption": "WebGPT set a new standard for trustworthy, sourced AI answers."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why WebGPT changed the field",
+      "body": [
+        "WebGPT showed that language models do not have to be static encyclopedias. They can learn to search and cite like real researchers.",
+        "This approach inspired later systems, including ChatGPT and others, to blend browsing, citations, and human guidance for better answers."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "WebGPT in four moves",
+      "body": [],
+      "recap": [
+        {
+          "label": "Search",
+          "note": "Model browses the web for information."
+        },
+        {
+          "label": "Read",
+          "note": "It reads and summarizes relevant content."
+        },
+        {
+          "label": "Cite",
+          "note": "Attaches sources to support its answers."
+        },
+        {
+          "label": "Learn",
+          "note": "Improves using human feedback on answer quality."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "WebGPT: Browser-assisted question-answering with human feedback",
+      "body": [
+        "Read the full paper for details on training, experiments, and the impact of browser-based AI."
+      ]
+    }
+  ]
+}

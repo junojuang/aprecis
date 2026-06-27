@@ -1,0 +1,220 @@
+{
+  "paper_id": "dqn",
+  "short_name": "Deep Q-Learning",
+  "title": "Playing Atari with Deep Reinforcement Learning",
+  "authors": "Volodymyr Mnih, Koray Kavukcuoglu, David Silver, Alex Graves et al.",
+  "year": 2013,
+  "topic": "Reinforcement Learning",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/1312.5602",
+  "arxiv_id": "1312.5602",
+  "hook": "A neural network learns to play Atari just by watching the screen.",
+  "promise": "You will understand how Deep Q-Learning lets computers master games using only raw pixels.",
+  "prerequisite_note": "It helps to know that computers can learn by trial and error, seeking higher rewards.",
+  "glossary": [
+    {
+      "term": "Q-Learning",
+      "plain": "A method where an agent learns how valuable each action is in a given situation."
+    },
+    {
+      "term": "Convolutional Neural Network",
+      "plain": "A neural network good at understanding images, using small filters to detect patterns."
+    },
+    {
+      "term": "Replay Memory",
+      "plain": "A storage of past experiences used to train the network more effectively."
+    },
+    {
+      "term": "Arcade Learning Environment",
+      "plain": "A platform for testing AI agents on classic Atari games."
+    },
+    {
+      "term": "Policy",
+      "plain": "A strategy that tells the agent which action to take in each situation."
+    },
+    {
+      "term": "Value Function",
+      "plain": "A prediction of expected future rewards for a given state or action."
+    }
+  ],
+  "related_slugs": [
+    "alpha-go",
+    "policy-gradients",
+    "atari-paper",
+    "double-dqn",
+    "rainbow-dqn"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Reinforcement Learning",
+      "title": "Neural Nets Play Atari",
+      "body": [
+        "Learn how a neural network can teach itself to play video games from scratch."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Can a computer watch and learn?",
+      "body": [
+        "Imagine a computer that learns to play games by simply watching the screen and pressing buttons, much like a human child might.",
+        "Instead of being told the rules, it figures out, through trial and error, how to win at classic Atari games like Breakout and Pong."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "How pixels become skill",
+      "body": [
+        "The process begins with the Atari screen, just a grid of colored pixels, streaming into the neural network.",
+        "The neural network processes these images and predicts which actions will bring the highest score, then tries them out and learns from the results."
+      ],
+      "left": "Atari screen pixels",
+      "middle": "Neural network predicts action values",
+      "right": "Agent chooses actions and learns",
+      "caption": "Raw pixels are transformed into game-winning decisions through learning."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Pixels to policies: what changed?",
+      "body": [
+        "Before this paper, agents needed hand-crafted features or simple environments. Now, let's compare old and new approaches."
+      ],
+      "offLabel": "Hand-crafted features",
+      "onLabel": "Deep Q-Learning",
+      "offNote": "Developers must design game-specific features. Performance is limited and does not generalize.",
+      "onNote": "The agent learns directly from pixels, adapting to many games without manual tuning."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "Let the network remember and learn",
+      "body": [
+        "A neural network, trained with Q-learning, estimates the value of each possible action from the current screen image.",
+        "It stores past game experiences in replay memory, randomly sampling them to break up patterns and stabilize learning."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much memory to replay?",
+      "body": [
+        "Replay memory size affects how well the agent learns from past experiences."
+      ],
+      "lowLabel": "Small memory",
+      "highLabel": "Large memory",
+      "low": "Learns quickly but may overfit to recent experiences and forget older lessons.",
+      "mid": "Balances learning speed with a mix of old and new experiences, improving stability.",
+      "high": "Learns from a wide variety of situations but may take longer to adapt to new patterns."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "Pick what makes Deep Q-Learning work",
+      "body": [
+        "Select the key components that help the agent learn efficiently from pixels."
+      ],
+      "choices": [
+        {
+          "label": "Convolutional layers",
+          "note": "Extracts visual features from raw images."
+        },
+        {
+          "label": "Replay memory",
+          "note": "Stores and reuses past experiences to improve learning."
+        },
+        {
+          "label": "Q-learning algorithm",
+          "note": "Guides the agent to maximize future rewards."
+        },
+        {
+          "label": "Epsilon-greedy exploration",
+          "note": "Balances trying new actions and exploiting known good moves."
+        },
+        {
+          "label": "Target network",
+          "note": "Stabilizes learning by slowly updating target values."
+        },
+        {
+          "label": "Reward signal",
+          "note": "Provides feedback for the agent's choices."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "From pixels to high scores",
+      "body": [
+        "Deep Q-Learning outperformed previous methods on six out of seven tested Atari games, often reaching or exceeding human-level scores.",
+        "It showed that a single neural network architecture could learn many different games, with no manual changes between them."
+      ],
+      "bars": [
+        {
+          "label": "Games beating previous AI",
+          "note": "6 out of 7",
+          "value": 85
+        },
+        {
+          "label": "Games beating humans",
+          "note": "3 out of 7",
+          "value": 60
+        },
+        {
+          "label": "Generalization to new games",
+          "note": "One model for all",
+          "value": 90
+        },
+        {
+          "label": "Need for hand-crafted features",
+          "note": "Dramatically reduced",
+          "value": 20
+        }
+      ],
+      "caption": "Deep Q-Learning set a new standard for general game-playing AI."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why this was a breakthrough",
+      "body": [
+        "This paper proved that deep neural networks could learn complex behaviors directly from high-dimensional sensory input, not just simple data.",
+        "It inspired a new wave of research in reinforcement learning, robotics, and AI, leading to advances like AlphaGo and self-driving cars."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "How Deep Q-Learning learns from pixels",
+      "body": [],
+      "recap": [
+        {
+          "label": "Observe",
+          "note": "Take in raw pixels from the game screen."
+        },
+        {
+          "label": "Predict",
+          "note": "Estimate action values using a neural network."
+        },
+        {
+          "label": "Act",
+          "note": "Choose and perform actions to maximize reward."
+        },
+        {
+          "label": "Learn",
+          "note": "Update the network using replayed experiences."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Playing Atari with Deep Reinforcement Learning",
+      "body": [
+        "Read the original paper to see how deep learning and reinforcement learning came together to change AI."
+      ]
+    }
+  ]
+}

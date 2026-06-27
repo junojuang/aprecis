@@ -12,7 +12,7 @@ import SwiftUI
 extension LearningLesson {
 
     static let scratchpad = LearningLesson(
-        paperId: "loop:foundational:scratchpad",
+        paperId: "scratchpad",
         cards: [
 
             // 1 - Cover.

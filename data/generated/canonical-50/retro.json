@@ -1,0 +1,221 @@
+{
+  "paper_id": "retro",
+  "short_name": "RETRO retrieval LM",
+  "title": "Improving language models by retrieving from trillions of tokens",
+  "authors": "",
+  "year": 2021,
+  "topic": "Retrieval",
+  "difficulty": "Advanced",
+  "url": "https://arxiv.org/abs/2112.04426",
+  "arxiv_id": "2112.04426",
+  "hook": "RETRO lets language models look up real documents as they generate new text.",
+  "promise": "You will understand how retrieval augments a language model and reduces the need for massive parameter counts.",
+  "prerequisite_note": "You just need to know that language models learn from lots of text and use parameters to store knowledge.",
+  "glossary": [
+    {
+      "term": "Retrieval-Augmented Language Model",
+      "plain": "A language model that searches an external database for relevant information while generating text."
+    },
+    {
+      "term": "Nearest Neighbor Search",
+      "plain": "A method to quickly find text passages in a huge database that are most similar to the current context."
+    },
+    {
+      "term": "Chunked Text",
+      "plain": "Splitting text into smaller, manageable pieces that can be indexed and retrieved."
+    },
+    {
+      "term": "Frozen Parameters",
+      "plain": "Model weights that are not updated during certain training phases or when using external data."
+    },
+    {
+      "term": "Memory Footprint",
+      "plain": "The total amount of storage or parameters a model requires to operate."
+    },
+    {
+      "term": "Perplexity",
+      "plain": "A measure of how well a language model predicts text, with lower values indicating better performance."
+    }
+  ],
+  "related_slugs": [
+    "gpt-3",
+    "rag",
+    "t5",
+    "bert",
+    "llama",
+    "memorizing-transformers"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Retrieval",
+      "title": "Let language models look things up",
+      "body": [
+        "See how language models can use retrieval to generate better text with fewer parameters."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Why not just ask the database?",
+      "body": [
+        "Imagine you have to write an essay, but you can only use what you remember. What if you could also look up facts instantly from a library?",
+        "RETRO gives language models this power: instead of memorizing everything, they retrieve relevant information from a huge database as they write."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "How retrieval shapes generation",
+      "body": [
+        "RETRO splits the input into chunks, searches a giant database for similar passages, and feeds those into the model as it generates text.",
+        "This means the model does not need to store every fact in its parameters. It leans on retrieval to fill in details on demand."
+      ],
+      "left": "Input chunk",
+      "middle": "Retrieve similar text",
+      "right": "Generate with extra context",
+      "caption": "RETRO's flow: chunk input, retrieve context, then generate richer output."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Would you rather memorize or look up?",
+      "body": [
+        "Toggle to see how classic language models and RETRO handle rare facts."
+      ],
+      "offLabel": "Memorize (old way)",
+      "onLabel": "Retrieve (RETRO)",
+      "offNote": "Model must store every detail in its parameters, needing huge models.",
+      "onNote": "Model finds rare facts in external data, so fewer parameters are needed."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "The central trick: swap memory for search",
+      "body": [
+        "Classic language models get larger as they try to memorize more information from their training data, making them expensive to train and run.",
+        "RETRO keeps the model smaller by teaching it to search a database for relevant text, essentially trading stored parameters for fast retrieval."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much should the model memorize?",
+      "body": [
+        "Slide to see how the balance between retrieval and parameters affects model size and performance."
+      ],
+      "lowLabel": "All memory",
+      "highLabel": "All retrieval",
+      "low": "The model stores everything in its parameters, so it is huge and costly.",
+      "mid": "The model memorizes common facts but retrieves rare details from the database.",
+      "high": "The model stores little and relies heavily on fast retrieval for almost all knowledge."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What does RETRO need?",
+      "body": [
+        "Pick the ingredients that make RETRO work."
+      ],
+      "choices": [
+        {
+          "label": "Large text database",
+          "note": "Holds trillions of tokens for the model to search."
+        },
+        {
+          "label": "Efficient retrieval system",
+          "note": "Finds relevant passages in milliseconds."
+        },
+        {
+          "label": "Chunked input text",
+          "note": "Allows the model to break queries into searchable pieces."
+        },
+        {
+          "label": "Retrieval-augmented transformer",
+          "note": "Combines retrieved context with generation."
+        },
+        {
+          "label": "Nearest neighbor search",
+          "note": "Selects the most relevant text chunks for each input."
+        },
+        {
+          "label": "Smaller model parameters",
+          "note": "Needs fewer stored weights due to retrieval."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "RETRO's impact on language models",
+      "body": [
+        "RETRO matches or beats the performance of models with ten times more parameters by using retrieval.",
+        "It achieves lower perplexity, better factual accuracy, and needs much less memory than classic models of similar skill."
+      ],
+      "bars": [
+        {
+          "label": "Perplexity (lower is better)",
+          "note": "RETRO outperforms same-sized language models",
+          "value": 85
+        },
+        {
+          "label": "Parameter count reduction",
+          "note": "Matches performance with far fewer parameters",
+          "value": 90
+        },
+        {
+          "label": "Factual accuracy",
+          "note": "Improves on rare or obscure facts",
+          "value": 80
+        },
+        {
+          "label": "Memory footprint",
+          "note": "Requires less GPU memory to run",
+          "value": 75
+        }
+      ],
+      "caption": "RETRO delivers strong results with a smaller, more efficient language model."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why RETRO changed the game",
+      "body": [
+        "RETRO proved that language models do not have to memorize everything. They can be smaller, faster, and just as smart by looking things up.",
+        "This idea inspired a wave of retrieval-augmented models, making powerful language AI more accessible and efficient."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "four-line mental model",
+      "body": [],
+      "recap": [
+        {
+          "label": "Chunk",
+          "note": "Break input into searchable pieces"
+        },
+        {
+          "label": "Retrieve",
+          "note": "Find similar passages from a giant database"
+        },
+        {
+          "label": "Augment",
+          "note": "Feed retrieved context into the model"
+        },
+        {
+          "label": "Generate",
+          "note": "Produce more accurate and informed text"
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Improving language models by retrieving from trillions of tokens",
+      "body": [
+        "Read the full paper for technical details and experiments behind RETRO's breakthrough."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,219 @@
+{
+  "paper_id": "mamba",
+  "short_name": "Mamba Sequence Model",
+  "title": "Mamba: Linear-Time Sequence Modeling with Selective State Spaces",
+  "authors": "",
+  "year": 2023,
+  "topic": "Architecture",
+  "difficulty": "Advanced",
+  "url": "https://arxiv.org/abs/2312.00752",
+  "arxiv_id": "2312.00752",
+  "hook": "Mamba lets neural networks process very long sequences, without relying on attention.",
+  "promise": "You will understand how Mamba models long sequences efficiently using selective state spaces instead of attention.",
+  "prerequisite_note": "Bring an openness to how sequences are modeled and a curiosity about alternatives to attention.",
+  "glossary": [
+    {
+      "term": "Selective State Space Model",
+      "plain": "A neural architecture that tracks and updates only the most relevant information over time."
+    },
+    {
+      "term": "Linear-Time Complexity",
+      "plain": "An algorithm whose computation grows in direct proportion to the input length."
+    },
+    {
+      "term": "Attention Mechanism",
+      "plain": "A method allowing models to focus on important parts of the input when making predictions."
+    },
+    {
+      "term": "Long Sequence Modeling",
+      "plain": "Techniques for handling data where the input consists of many steps or tokens."
+    },
+    {
+      "term": "State Update",
+      "plain": "The process of changing the internal memory of a model at each step."
+    },
+    {
+      "term": "Token Mixing",
+      "plain": "Combining information from different positions in a sequence to make predictions."
+    }
+  ],
+  "related_slugs": [
+    "transformer-attention",
+    "rwkv",
+    "ssm-long-sequence",
+    "linear-transformers"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Architecture",
+      "title": "A new way to handle long sequences",
+      "body": [
+        "See how Mamba sidesteps attention to model long sequences quickly and efficiently."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Why long sequences are hard",
+      "body": [
+        "Imagine reading a book where you must remember every word to understand the next. For neural networks, handling very long sequences is a huge challenge.",
+        "Transformers use attention, but this becomes slow and memory-hungry as the sequence grows. Is there another way to keep track of what matters most?"
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "From input to output: Mamba's selective flow",
+      "body": [
+        "Mamba starts by receiving a stream of tokens, just like a Transformer. But instead of attending to every token, it keeps a compact state.",
+        "At each step, Mamba selectively updates this state, focusing only on the most relevant parts. The updated state then predicts the next output efficiently."
+      ],
+      "left": "Input tokens arrive",
+      "middle": "Selective state updates",
+      "right": "Efficient output prediction",
+      "caption": "Mamba compresses sequence history into a state, updating only what matters at each step."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Attention vs. Selective State Spaces",
+      "body": [
+        "Toggle to see how modeling long sequences differs between attention and Mamba."
+      ],
+      "offLabel": "Attention",
+      "onLabel": "Mamba",
+      "offNote": "Each token compares itself to every other, causing slowdowns for long sequences.",
+      "onNote": "Only the relevant state is updated, so computation stays fast as sequences grow."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "The selective state space trick",
+      "body": [
+        "Instead of letting every token interact with every other, Mamba keeps a dynamic memory that evolves as new tokens arrive.",
+        "This memory, or state, is updated using learned rules that let the model decide what to keep and what to ignore, making it both efficient and expressive."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "Sequence length vs. computation time",
+      "body": [
+        "Drag to see how Mamba's speed holds up as sequence length increases."
+      ],
+      "lowLabel": "Short sequence",
+      "highLabel": "Very long sequence",
+      "low": "Both attention and Mamba are fast when the sequence is short.",
+      "mid": "Attention slows down, but Mamba stays efficient as the sequence grows.",
+      "high": "Mamba remains linear, while attention becomes impractically slow and memory-hungry."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What makes Mamba run?",
+      "body": [
+        "Pick the essential ingredients for Mamba's selective state space model."
+      ],
+      "choices": [
+        {
+          "label": "Selective State Update",
+          "note": "Ensures only relevant information is kept at each step."
+        },
+        {
+          "label": "Linear-Time Computation",
+          "note": "Keeps processing fast, even for long sequences."
+        },
+        {
+          "label": "Token Mixing Layer",
+          "note": "Blends information across the sequence."
+        },
+        {
+          "label": "Dynamic Parameterization",
+          "note": "Learns how to update the state in context."
+        },
+        {
+          "label": "Input Projection",
+          "note": "Maps raw tokens into a form the model can use."
+        },
+        {
+          "label": "Output Projection",
+          "note": "Converts the internal state into predictions."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "Mamba's impact on sequence modeling",
+      "body": [
+        "Mamba matches or outperforms attention-based models on long-sequence tasks, while using less memory and time.",
+        "Its linear scaling makes it practical for tasks previously out of reach for attention-heavy architectures."
+      ],
+      "bars": [
+        {
+          "label": "Sequence Length Handling",
+          "note": "Stays fast as sequences grow",
+          "value": 95
+        },
+        {
+          "label": "Memory Usage",
+          "note": "Much lower than attention",
+          "value": 90
+        },
+        {
+          "label": "Accuracy",
+          "note": "Competitive with benchmark-leading",
+          "value": 85
+        },
+        {
+          "label": "Training Speed",
+          "note": "Faster for long sequences",
+          "value": 80
+        }
+      ],
+      "caption": "Mamba's efficient architecture unlocks long-range modeling that attention struggles with."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Selective state spaces join the canon",
+      "body": [
+        "Mamba showed that attention is not the only way to handle long sequences. Selective state spaces are now a real alternative.",
+        "By rethinking how models store and update information, Mamba opened the door for efficient, scalable sequence modeling in AI."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "Mamba in four moves",
+      "body": [],
+      "recap": [
+        {
+          "label": "Receives",
+          "note": "Take in input tokens as a stream"
+        },
+        {
+          "label": "Selects",
+          "note": "Update only the most relevant internal state"
+        },
+        {
+          "label": "Predicts",
+          "note": "Use the compact state to generate outputs"
+        },
+        {
+          "label": "Scales",
+          "note": "Handle very long sequences efficiently"
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Mamba: Linear-Time Sequence Modeling with Selective State Spaces",
+      "body": [
+        "For more technical details, see the full paper on arXiv."
+      ]
+    }
+  ]
+}

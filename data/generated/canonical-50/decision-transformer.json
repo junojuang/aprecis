@@ -1,0 +1,220 @@
+{
+  "paper_id": "decision-transformer",
+  "short_name": "Decision Transformer",
+  "title": "Decision Transformer: Reinforcement Learning via Sequence Modeling",
+  "authors": "",
+  "year": 2021,
+  "topic": "Reinforcement Learning",
+  "difficulty": "Advanced",
+  "url": "https://arxiv.org/abs/2106.01345",
+  "arxiv_id": "2106.01345",
+  "hook": "Imagine teaching an agent by showing it sequences of successes, not just rewards.",
+  "promise": "You will understand how Decision Transformer reframes reinforcement learning as a sequence modeling problem using transformers.",
+  "prerequisite_note": "It helps to know how agents learn from rewards and how transformers model sequences.",
+  "glossary": [
+    {
+      "term": "Sequence Modeling",
+      "plain": "Learning patterns in ordered data, like predicting the next word in a sentence."
+    },
+    {
+      "term": "Transformer",
+      "plain": "A neural network architecture designed to handle sequences using attention mechanisms."
+    },
+    {
+      "term": "Return-to-go",
+      "plain": "The sum of future rewards an agent aims to achieve from a given state."
+    },
+    {
+      "term": "Offline Reinforcement Learning",
+      "plain": "Training agents using fixed datasets of past experiences instead of live interactions."
+    },
+    {
+      "term": "Trajectory",
+      "plain": "A sequence of states, actions, and rewards experienced by an agent."
+    },
+    {
+      "term": "Causal Masking",
+      "plain": "A technique to ensure models only use past and present information, not the future."
+    }
+  ],
+  "related_slugs": [
+    "transformer",
+    "dqn",
+    "behavior-cloning",
+    "offline-rl",
+    "gpt"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Reinforcement Learning",
+      "title": "Teach RL like language",
+      "body": [
+        "Discover how Decision Transformer treats learning to act as learning to predict sequences."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "What if RL was like autocomplete?",
+      "body": [
+        "Imagine you want an agent to achieve a goal, but instead of telling it step by step, you show it examples of success.",
+        "What if training an agent was more like training a language model, learning from stories of past achievements rather than just chasing rewards?"
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "How sequence modeling changes RL",
+      "body": [
+        "Traditionally, RL agents learn to maximize rewards by trial and error, updating their policies as they go.",
+        "Decision Transformer flips the script: it models the entire trajectory as a sequence, predicting actions that lead to desired outcomes."
+      ],
+      "left": "Past trajectories",
+      "middle": "Sequence modeling with transformer",
+      "right": "Actions aligned with target returns",
+      "caption": "The agent learns to act by predicting sequences that end in high rewards."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Compare classic RL with Decision Transformer",
+      "body": [
+        "How do agents learn differently when you swap value updates for sequence prediction?"
+      ],
+      "offLabel": "Classic RL",
+      "onLabel": "Decision Transformer",
+      "offNote": "Agent updates its policy step by step, needs careful reward design, struggles with offline data.",
+      "onNote": "Agent learns from full trajectories, can specify target returns, leverages powerful sequence models."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "Recasting RL as sequence prediction",
+      "body": [
+        "Instead of learning a value function or a policy directly, Decision Transformer predicts the next action given past states, actions, and desired returns.",
+        "It treats the RL problem like language modeling, where the sequence is a story of states, actions, and rewards, and the agent learns to write new successful stories."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much future do you target?",
+      "body": [
+        "Adjust the importance of the target return to see how the agent's behavior changes."
+      ],
+      "lowLabel": "Low return-to-go",
+      "highLabel": "High return-to-go",
+      "low": "Agent aims for modest outcomes, often playing it safe.",
+      "mid": "Agent balances risk and reward, seeking reasonable success.",
+      "high": "Agent takes bold actions to maximize long-term rewards."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What makes a Decision Transformer?",
+      "body": [
+        "Select the building blocks that turn a transformer into a reinforcement learning agent."
+      ],
+      "choices": [
+        {
+          "label": "Trajectory dataset",
+          "note": "Provides the sequences of states, actions, and rewards."
+        },
+        {
+          "label": "Transformer model",
+          "note": "Learns to model sequences and dependencies."
+        },
+        {
+          "label": "Return-to-go input",
+          "note": "Specifies the future reward the agent should aim for."
+        },
+        {
+          "label": "Causal masking",
+          "note": "Prevents the model from peeking at future actions or rewards."
+        },
+        {
+          "label": "Offline RL setup",
+          "note": "Trains entirely from previously collected data."
+        },
+        {
+          "label": "Sequence prediction objective",
+          "note": "Trains the model to predict the next action in the sequence."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "How well does it work?",
+      "body": [
+        "Decision Transformer matches or outperforms traditional RL and imitation learning on several Atari and robotic control benchmarks.",
+        "It shows that sequence models can be powerful RL agents, especially when working with large offline datasets."
+      ],
+      "bars": [
+        {
+          "label": "Atari score",
+          "note": "Performance on Atari games",
+          "value": 80
+        },
+        {
+          "label": "Robotic control",
+          "note": "Success on continuous control tasks",
+          "value": 75
+        },
+        {
+          "label": "Offline RL",
+          "note": "Ability to learn from static data",
+          "value": 90
+        },
+        {
+          "label": "Imitation learning",
+          "note": "Matching expert trajectories",
+          "value": 70
+        }
+      ],
+      "caption": "Decision Transformer shows strong results across classic RL and imitation learning settings."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why this paper is a landmark",
+      "body": [
+        "Decision Transformer opened a new path by unifying reinforcement learning and sequence modeling, making RL more flexible and data-driven.",
+        "Its success inspired a wave of research using transformers for control and planning, making it a cornerstone in modern AI."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "four-line mental model",
+      "body": [],
+      "recap": [
+        {
+          "label": "Collect",
+          "note": "Use past trajectories of states, actions, and rewards."
+        },
+        {
+          "label": "Sequence",
+          "note": "Treat RL as a sequence modeling problem."
+        },
+        {
+          "label": "Predict",
+          "note": "Generate actions conditioned on target returns."
+        },
+        {
+          "label": "Generalize",
+          "note": "Apply to new goals using the same model."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Decision Transformer: Reinforcement Learning via Sequence Modeling",
+      "body": [
+        "Read the original work to dive deeper into the details and experiments."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,226 @@
+{
+  "paper_id": "prompt-tuning",
+  "short_name": "Prompt Tuning",
+  "title": "The Power of Scale for Parameter-Efficient Prompt Tuning",
+  "authors": "Brian Lester, Rami Al-Rfou, Noah Constant",
+  "year": 2021,
+  "topic": "Adaptation",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/2104.08691",
+  "arxiv_id": "2104.08691",
+  "hook": "Tiny learned prompts can steer huge language models to new tasks without retraining.",
+  "promise": "You will understand how prompt tuning adapts large language models efficiently using only small learned prompts.",
+  "prerequisite_note": "You just need a sense for how language models use prompts to guide their outputs.",
+  "glossary": [
+    {
+      "term": "Prompt tuning",
+      "plain": "Learning a small set of special input tokens to guide a frozen model for a new task."
+    },
+    {
+      "term": "Soft prompt",
+      "plain": "A prompt made of learned vectors, not actual words, optimized by gradient descent."
+    },
+    {
+      "term": "Frozen model",
+      "plain": "A model whose main parameters are not updated during training on a new task."
+    },
+    {
+      "term": "Parameter-efficient",
+      "plain": "Achieving good performance by changing only a tiny fraction of the model's parameters."
+    },
+    {
+      "term": "Few-shot learning",
+      "plain": "Adapting to a new task using only a few labeled examples, typically by crafting text prompts."
+    },
+    {
+      "term": "Model tuning",
+      "plain": "Updating all of a model's parameters to adapt it to a new task."
+    },
+    {
+      "term": "Prefix tuning",
+      "plain": "A related method that prepends learnable vectors to the input but is more complex than prompt tuning."
+    }
+  ],
+  "related_slugs": [
+    "prefix-tuning",
+    "gpt-3",
+    "t5",
+    "adapter-tuning",
+    "lora",
+    "instruction-tuning"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Adaptation",
+      "title": "Steering Giants with Tiny Prompts",
+      "body": [
+        "See how small learned prompts can adapt enormous language models for new tasks, without updating the whole model."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "How can you change a giant model with a tiny nudge?",
+      "body": [
+        "Imagine having a massive language model, trained for months, that you want to repurpose for a new task. Retraining it would be slow and expensive.",
+        "What if you could simply teach it a new trick by learning a small add-on prompt, leaving the rest of the model untouched? This is the magic of prompt tuning."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "From frozen model to flexible tool",
+      "body": [
+        "Start with a frozen, pre-trained language model that already knows a lot about language.",
+        "Learn a short, task-specific prompt as a set of new vectors by training only those, not the whole model.",
+        "The model, guided by this prompt, produces outputs tailored to the new task almost as well as if it had been fully retrained."
+      ],
+      "left": "Frozen language model",
+      "middle": "Learned soft prompt",
+      "right": "Task-adapted outputs",
+      "caption": "Prompt tuning adapts a single frozen model to many tasks with tiny, learned prompts."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Full model tuning versus prompt tuning",
+      "body": [
+        "Pretend you need to adapt a big model for sentiment analysis. Which method do you choose?"
+      ],
+      "offLabel": "Full model tuning",
+      "onLabel": "Prompt tuning",
+      "offNote": "Retrain all parameters, needs lots of compute, slow to deploy and store.",
+      "onNote": "Only learns a short prompt, fast and cheap, keeps the main model unchanged."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "Learning prompts, not weights",
+      "body": [
+        "Instead of updating the billions of parameters in a language model, prompt tuning learns a small set of new input vectors that act as a soft prompt.",
+        "These soft prompts are optimized using gradient descent, allowing the frozen model to solve new tasks efficiently by conditioning on these learned cues."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "What happens as models get bigger?",
+      "body": [
+        "Slide to see how prompt tuning's effectiveness changes as the underlying model size increases."
+      ],
+      "lowLabel": "Small model",
+      "highLabel": "Huge model",
+      "low": "Prompt tuning lags behind full tuning, not enough model capacity.",
+      "mid": "Prompt tuning catches up, performance gap narrows.",
+      "high": "Prompt tuning matches full tuning, efficient adaptation at scale."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "What goes into prompt tuning?",
+      "body": [
+        "Select the ingredients needed to adapt a frozen model using prompt tuning."
+      ],
+      "choices": [
+        {
+          "label": "Frozen language model",
+          "note": "Provides the base knowledge, remains unchanged."
+        },
+        {
+          "label": "Soft prompt vectors",
+          "note": "Learned representations prepended to input."
+        },
+        {
+          "label": "Labeled examples",
+          "note": "Guide the learning of the prompt for each task."
+        },
+        {
+          "label": "Backpropagation",
+          "note": "Optimizes the soft prompt vectors."
+        },
+        {
+          "label": "Downstream task objective",
+          "note": "Defines what counts as success for the new task."
+        },
+        {
+          "label": "No main model updates",
+          "note": "Ensures only the prompt is learned, not the entire model."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "Prompt tuning closes the gap at scale",
+      "body": [
+        "Prompt tuning outperforms classic few-shot prompting and, for very large models, matches the performance of full model tuning.",
+        "This means that with a huge model, you only need to learn a tiny prompt to get top results on new tasks, saving time and resources."
+      ],
+      "bars": [
+        {
+          "label": "Few-shot (GPT-3 style)",
+          "note": "Prompting with text only",
+          "value": 35
+        },
+        {
+          "label": "Prompt tuning (small model)",
+          "note": "Still behind full tuning",
+          "value": 55
+        },
+        {
+          "label": "Prompt tuning (large model)",
+          "note": "Matches full tuning",
+          "value": 90
+        },
+        {
+          "label": "Full model tuning",
+          "note": "Best but expensive",
+          "value": 92
+        }
+      ],
+      "caption": "With bigger models, prompt tuning closes in on full model tuning performance."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "A new way to adapt big models",
+      "body": [
+        "Prompt tuning showed that you do not need to retrain massive models for every task. A small, learned prompt is enough.",
+        "This approach opened the door to sharing and serving large models more efficiently, making them much more flexible in practice."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "Prompt tuning in four moves",
+      "body": [],
+      "recap": [
+        {
+          "label": "Freeze",
+          "note": "Keep the main model fixed."
+        },
+        {
+          "label": "Learn",
+          "note": "Train a small, soft prompt for each task."
+        },
+        {
+          "label": "Condition",
+          "note": "Feed the prompt to guide the model's output."
+        },
+        {
+          "label": "Adapt",
+          "note": "Achieve near full-tuning performance with minimal updates."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "The Power of Scale for Parameter-Efficient Prompt Tuning",
+      "body": [
+        "Read the full paper for details, ablations, and comparisons to other parameter-efficient adaptation methods."
+      ]
+    }
+  ]
+}

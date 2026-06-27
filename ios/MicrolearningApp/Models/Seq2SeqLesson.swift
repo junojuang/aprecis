@@ -10,7 +10,7 @@ import SwiftUI
 extension LearningLesson {
 
     static let seq2seq = LearningLesson(
-        paperId: "loop:foundational:seq2seq",
+        paperId: "seq2seq",
         cards: [
 
             // Cover.

@@ -1,0 +1,221 @@
+{
+  "paper_id": "rag",
+  "short_name": "RAG models",
+  "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+  "authors": "Patrick Lewis, Ethan Perez, Aleksandra Piktus, Fabio Petroni et al.",
+  "year": 2020,
+  "topic": "Retrieval",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/2005.11401",
+  "arxiv_id": "2005.11401",
+  "hook": "Imagine a chatbot that can instantly look up facts before answering you.",
+  "promise": "You will understand how RAG lets language models retrieve knowledge before generating answers.",
+  "prerequisite_note": "Bring a curiosity for how language models might pull in outside information while they write.",
+  "glossary": [
+    {
+      "term": "Parametric memory",
+      "plain": "The knowledge stored inside a model's parameters after training."
+    },
+    {
+      "term": "Non-parametric memory",
+      "plain": "External knowledge sources, like a database or documents, that the model can consult at runtime."
+    },
+    {
+      "term": "Retriever",
+      "plain": "A system that finds relevant documents from a large collection based on a query."
+    },
+    {
+      "term": "Seq2seq model",
+      "plain": "A neural network that turns one sequence, like a question, into another, like an answer."
+    },
+    {
+      "term": "Dense vector index",
+      "plain": "A way to represent documents as vectors so the model can quickly search for similar ones."
+    },
+    {
+      "term": "Knowledge-intensive task",
+      "plain": "A problem that requires specific factual information to answer correctly."
+    }
+  ],
+  "related_slugs": [
+    "colbert",
+    "dpr",
+    "t5",
+    "gpt3",
+    "realm"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Retrieval",
+      "title": "Let models look things up",
+      "body": [
+        "Learn how RAG lets AI models search for facts before writing answers."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "Why memory matters for language models",
+      "body": [
+        "Imagine asking a language model for a recent fact, like the latest Nobel Prize winner. If it was trained before that event, it cannot know the answer.",
+        "What if the model could instantly search Wikipedia or another resource for up-to-date facts? Retrieval-Augmented Generation, or RAG, makes this possible."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "How RAG connects searching and writing",
+      "body": [
+        "Traditional models answer based only on what they remember from training, missing new or rare facts.",
+        "RAG first uses a retriever to find relevant documents, then feeds them into a language model that writes the answer using both its memory and the new information.",
+        "The result is a model that can answer questions with up-to-date details, and even cite where it found them."
+      ],
+      "left": "Question arrives",
+      "middle": "Retrieve relevant passages",
+      "right": "Generate answer using both memories",
+      "caption": "RAG combines searching and generation for more factual, flexible answers."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "How answers change when models can retrieve",
+      "body": [
+        "Imagine asking for the population of a small city. Toggle to see what happens."
+      ],
+      "offLabel": "Parametric only",
+      "onLabel": "RAG",
+      "offNote": "Model guesses based on outdated or missing information from its training.",
+      "onNote": "Model retrieves the latest data from Wikipedia, then writes a more accurate answer."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "Blending retrieval with generation",
+      "body": [
+        "RAG’s key trick is to let the language model consult an external memory, like a search engine, while generating each answer.",
+        "Instead of memorizing everything, the model learns to retrieve relevant passages and combine them with its own knowledge to write more factual, grounded responses."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much should the model rely on retrieval?",
+      "body": [
+        "Slide to see what happens as the model trusts retrieved documents more or less."
+      ],
+      "lowLabel": "All parametric",
+      "highLabel": "All retrieval",
+      "low": "Relies only on training memory, may miss rare or new facts.",
+      "mid": "Balances both memories, using retrieval for specifics and model memory for language.",
+      "high": "Copies mostly from retrieved documents, but may lose fluency or context."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "Choose RAG’s key ingredients",
+      "body": [
+        "Pick the components that let RAG models combine searching and generating."
+      ],
+      "choices": [
+        {
+          "label": "Pre-trained seq2seq model",
+          "note": "Writes answers using language knowledge."
+        },
+        {
+          "label": "Dense vector retriever",
+          "note": "Finds relevant passages for each question."
+        },
+        {
+          "label": "Wikipedia index",
+          "note": "Provides the external knowledge base to search."
+        },
+        {
+          "label": "Token-level conditioning",
+          "note": "Lets the model switch passages as it writes each word."
+        },
+        {
+          "label": "End-to-end fine-tuning",
+          "note": "Trains both retrieval and generation together."
+        },
+        {
+          "label": "Non-parametric memory",
+          "note": "Stores up-to-date facts outside the model parameters."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "RAG sets new benchmarks in open-domain QA",
+      "body": [
+        "RAG models outperformed previous methods on open-domain question answering, especially where up-to-date or rare facts were needed.",
+        "They also generated answers that were more specific, diverse, and grounded in real sources, beating parametric-only models."
+      ],
+      "bars": [
+        {
+          "label": "Open-domain QA accuracy",
+          "note": "RAG achieves a new benchmark high",
+          "value": 94
+        },
+        {
+          "label": "Specificity of answers",
+          "note": "Answers are more detailed",
+          "value": 88
+        },
+        {
+          "label": "Diversity",
+          "note": "Less repetition, more variety",
+          "value": 82
+        },
+        {
+          "label": "Factual grounding",
+          "note": "Answers cite real sources",
+          "value": 91
+        }
+      ],
+      "caption": "RAG’s results showed clear improvements in factual and diverse answer generation."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why RAG changed language models",
+      "body": [
+        "RAG was a turning point because it let models answer questions using current, external knowledge, not just what they memorized during training.",
+        "It paved the way for future systems that blend search and generation, making AI more trustworthy and adaptable."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "four-line mental model",
+      "body": [],
+      "recap": [
+        {
+          "label": "Ask",
+          "note": "A question arrives for the model."
+        },
+        {
+          "label": "Retrieve",
+          "note": "The model searches documents for relevant facts."
+        },
+        {
+          "label": "Generate",
+          "note": "It writes an answer using both memories."
+        },
+        {
+          "label": "Ground",
+          "note": "The answer cites and relies on real sources."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+      "body": [
+        "Read the full paper to see how RAG changed the way language models use knowledge."
+      ]
+    }
+  ]
+}

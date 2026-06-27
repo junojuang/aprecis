@@ -15,8 +15,8 @@ struct BundleDetailView: View {
     /// is in this map fetches the deck (with blueprint) at runtime instead of
     /// rendering the static preview baked into Models.swift.
     static let paperBackendId: [String: String] = [
-        "perceptron": "rosenblatt:1958",
-        "backprop":   "rumelhart:1986",
+        "perceptron": "perceptron",
+        "backprop":   "backprop",
     ]
 
     private static let paperMeta: [String: (title: String, tag: String, mins: Int)] = [
@@ -57,7 +57,7 @@ struct BundleDetailView: View {
         if let backendId = Self.paperBackendId[slug] {
             RemoteDeckDestination(paperId: backendId, fallbackSlug: slug)
         } else if let curated = DailyLoopContent.foundational(slug: slug) {
-            DailyLoopView(content: curated.withPaperId("loop:foundational:\(slug)"))
+            DailyLoopView(content: curated.withPaperId(slug == "tot" ? "tree-of-thoughts" : slug))
         } else {
             DeckDestination(deck: CardDeck.bundlePaper(slug: slug))
         }

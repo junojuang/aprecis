@@ -45,7 +45,7 @@ resolves to New York via `ui-serif`, matching the app.
 ```bash
 cd backend
 deno run --allow-net --allow-env --allow-read scripts/set-web-lesson.ts \
-  --loop loop:systems:flashattention \
+  --loop flashattention \
   --file ../prototypes/web-lesson/flashattention.html \
   --slug flashattention \
   --title "FlashAttention" \
@@ -109,7 +109,7 @@ web bundle. For an existing ingested paper with a `cards` row, you can still set
    ```sql
    update cards set web_lesson_url =
      'https://<project>.supabase.co/storage/v1/object/public/web-lessons/grokking/index.html'
-   where paper_id = 'loop:foundational:grokking';
+   where paper_id = 'grokking';
    ```
 4. `serve-cards` returns `web_lesson_url`; the app renders it. Done. A
    web-lesson URL takes precedence over the native reader, so this also upgrades
@@ -123,7 +123,7 @@ Add the bundle to the app target as a resource and register it in
 ```swift
 enum WebLessonRegistry {
     static let localOverrides: [String: URL] = [
-        "loop:foundational:grokking":
+        "grokking":
             Bundle.main.url(forResource: "grokking-premium", withExtension: "html")!
     ]
 }

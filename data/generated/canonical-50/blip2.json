@@ -1,0 +1,220 @@
+{
+  "paper_id": "blip2",
+  "short_name": "BLIP-2 Bridge",
+  "title": "BLIP-2: Bootstrapping Language-Image Pre-training with Frozen Image Encoders and Large Language Models",
+  "authors": "",
+  "year": 2023,
+  "topic": "Multimodal",
+  "difficulty": "Intermediate",
+  "url": "https://arxiv.org/abs/2301.12597",
+  "arxiv_id": "2301.12597",
+  "hook": "BLIP-2 lets vision and language models talk without retraining either from scratch.",
+  "promise": "You will understand how BLIP-2 connects image encoders and language models for efficient multimodal learning.",
+  "prerequisite_note": "You only need a basic sense of how AI models process images and text to get started.",
+  "glossary": [
+    {
+      "term": "Frozen Encoder",
+      "plain": "A model whose weights are fixed and not updated during training."
+    },
+    {
+      "term": "Large Language Model (LLM)",
+      "plain": "A neural network trained on lots of text to understand and generate language."
+    },
+    {
+      "term": "Query Transformer (Q-Former)",
+      "plain": "A lightweight module that connects vision and language models by translating features between them."
+    },
+    {
+      "term": "Multimodal Learning",
+      "plain": "Training models to understand and relate information from different sources, like images and text."
+    },
+    {
+      "term": "Pre-training",
+      "plain": "Training a model on a broad dataset before fine-tuning it for specific tasks."
+    },
+    {
+      "term": "Zero-shot Transfer",
+      "plain": "Applying a model to new tasks it was not specifically trained on, without extra training."
+    }
+  ],
+  "related_slugs": [
+    "clip",
+    "blip",
+    "flamingo",
+    "llava",
+    "albef"
+  ],
+  "cards": [
+    {
+      "kind": "cover",
+      "kicker": "Aprecis · Multimodal",
+      "title": "A bridge between vision and language",
+      "body": [
+        "Discover how BLIP-2 connects frozen image and language models for smarter multimodal AI."
+      ]
+    },
+    {
+      "kind": "story",
+      "kicker": "Start here",
+      "title": "How do models see and talk?",
+      "body": [
+        "Imagine an AI that can describe a picture in perfect detail or answer questions about it. This requires understanding both images and language.",
+        "Traditionally, models for images and text are trained separately, so combining them is tricky and expensive. BLIP-2 offers a shortcut that makes this combination much easier."
+      ]
+    },
+    {
+      "kind": "map",
+      "kicker": "The map",
+      "title": "How BLIP-2 links vision and language",
+      "body": [
+        "BLIP-2 starts with two powerful but frozen models: one for images and one for language. They do not speak the same language at first.",
+        "A lightweight query transformer learns to translate between these two worlds, letting the models collaborate without retraining either one."
+      ],
+      "left": "Frozen Vision Encoder",
+      "middle": "Query Transformer bridges the gap",
+      "right": "Frozen Language Model understands images",
+      "caption": "BLIP-2 glues two expert models together using a small, trainable bridge."
+    },
+    {
+      "kind": "compare",
+      "kicker": "Try it",
+      "title": "Training from scratch vs. BLIP-2's bridge",
+      "body": [
+        "Suppose you want your AI to both see and talk. Should you train everything together or connect strong models with a bridge?"
+      ],
+      "offLabel": "Train all together",
+      "onLabel": "BLIP-2 bridge",
+      "offNote": "Needs huge data and compute. Harder to reuse existing models.",
+      "onNote": "Keeps image and language experts frozen. Only learns a small connector."
+    },
+    {
+      "kind": "story",
+      "kicker": "Core idea",
+      "title": "The trick: bridging with a Query Transformer",
+      "body": [
+        "BLIP-2 does not retrain large vision or language models. Instead, it adds a compact query transformer that learns to translate image features into language features.",
+        "This lets the image encoder and language model remain untouched, while the query transformer adapts their outputs to work together on multimodal tasks."
+      ]
+    },
+    {
+      "kind": "slider",
+      "kicker": "Feel the tradeoff",
+      "title": "How much do you freeze?",
+      "body": [
+        "Adjust how much of the system you keep frozen versus how much you retrain."
+      ],
+      "lowLabel": "Retrain all",
+      "highLabel": "Freeze all",
+      "low": "Full flexibility but huge cost and risk of overfitting.",
+      "mid": "Retrain only the bridge. Good balance of efficiency and adaptability.",
+      "high": "No adaptation possible. Models cannot talk to each other."
+    },
+    {
+      "kind": "chooser",
+      "kicker": "Build it",
+      "title": "Pick your BLIP-2 ingredients",
+      "body": [
+        "Which parts do you need to assemble a BLIP-2 style system?"
+      ],
+      "choices": [
+        {
+          "label": "Frozen Vision Encoder",
+          "note": "Extracts image features, stays unchanged."
+        },
+        {
+          "label": "Frozen Large Language Model",
+          "note": "Processes language, also unchanged."
+        },
+        {
+          "label": "Query Transformer",
+          "note": "Learns to connect vision and language features."
+        },
+        {
+          "label": "Image-Text Pretraining Data",
+          "note": "Pairs of images and text for learning the bridge."
+        },
+        {
+          "label": "Linear Projection Layer",
+          "note": "Maps features into a common space before the bridge."
+        },
+        {
+          "label": "Task-specific Head",
+          "note": "Optional. Adapts the output for classification or generation tasks."
+        }
+      ]
+    },
+    {
+      "kind": "results",
+      "kicker": "Why it mattered",
+      "title": "BLIP-2's surprising performance",
+      "body": [
+        "BLIP-2 achieves benchmark-leading results on tasks like visual question answering and image captioning, with much less compute.",
+        "Its modular design allows rapid adaptation to new tasks and models, making it a practical choice for research and industry."
+      ],
+      "bars": [
+        {
+          "label": "Visual QA Accuracy",
+          "note": "Outperforms previous models",
+          "value": 92
+        },
+        {
+          "label": "Image Captioning BLEU",
+          "note": "High text quality",
+          "value": 88
+        },
+        {
+          "label": "Zero-shot Transfer",
+          "note": "Works well on unseen tasks",
+          "value": 84
+        },
+        {
+          "label": "Training Efficiency",
+          "note": "Less compute needed",
+          "value": 95
+        }
+      ],
+      "caption": "BLIP-2 sets new benchmarks while saving time and resources."
+    },
+    {
+      "kind": "story",
+      "kicker": "Takeaway",
+      "title": "Why BLIP-2 is a canonical paper",
+      "body": [
+        "BLIP-2 showed that you can combine the best vision and language models without costly retraining, using a clever, lightweight bridge.",
+        "This approach has inspired a wave of research into modular, reusable AI systems that can adapt quickly to new challenges."
+      ]
+    },
+    {
+      "kind": "recap",
+      "kicker": "Recap",
+      "title": "four-line mental model",
+      "body": [],
+      "recap": [
+        {
+          "label": "Freeze",
+          "note": "Keep vision and language models unchanged."
+        },
+        {
+          "label": "Bridge",
+          "note": "Add a query transformer to connect them."
+        },
+        {
+          "label": "Train",
+          "note": "Teach the bridge using image-text pairs."
+        },
+        {
+          "label": "Transfer",
+          "note": "Apply to new tasks with minimal extra effort."
+        }
+      ]
+    },
+    {
+      "kind": "source",
+      "kicker": "Original paper",
+      "title": "BLIP-2: Bootstrapping Language-Image Pre-training with Frozen Image Encoders and Large Language Models",
+      "body": [
+        "Read the original paper for technical details and experimental results."
+      ]
+    }
+  ]
+}
