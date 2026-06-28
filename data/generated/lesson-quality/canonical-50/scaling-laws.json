@@ -1,0 +1,93 @@
+{
+  "paper_id": "scaling-laws",
+  "title": "Scaling Laws for Neural Language Models",
+  "score": 65,
+  "grade": "repair",
+  "blocking_issues": [],
+  "category_scores": {
+    "research_grounding": {
+      "score": 44,
+      "notes": [
+        "Important card does not carry enough paper-specific vocabulary.",
+        "Related slugs are not in the generated catalog: gpt-3, chinchilla, efficientnet, moore-law-ai, gpt-neo, paLM."
+      ]
+    },
+    "beginner_mental_model": {
+      "score": 72,
+      "notes": [
+        "Opening story uses AI terms before earning the intuition."
+      ]
+    },
+    "narrative_flow": {
+      "score": 100,
+      "notes": []
+    },
+    "interaction_design": {
+      "score": 44,
+      "notes": [
+        "Compare interaction feels generic.",
+        "Slider uses a generic tradeoff template."
+      ]
+    },
+    "aprecis_style": {
+      "score": 100,
+      "notes": []
+    },
+    "mobile_fit": {
+      "score": 100,
+      "notes": []
+    },
+    "source_integrity": {
+      "score": 100,
+      "notes": []
+    },
+    "llm_critic": {
+      "score": 100,
+      "notes": []
+    }
+  },
+  "issues": [
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "card": 6,
+      "finding": "Important card does not carry enough paper-specific vocabulary.",
+      "repair": "Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper."
+    },
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "finding": "Related slugs are not in the generated catalog: gpt-3, chinchilla, efficientnet, moore-law-ai, gpt-neo, paLM.",
+      "repair": "Use only readable ids already present in the catalog or leave weak relations out."
+    },
+    {
+      "specialist": "beginner_mental_model",
+      "severity": "major",
+      "card": 2,
+      "finding": "Opening story uses AI terms before earning the intuition.",
+      "repair": "Begin with a familiar situation first, then introduce the technical name on the next card."
+    },
+    {
+      "specialist": "interaction_design",
+      "severity": "major",
+      "card": 4,
+      "finding": "Compare interaction feels generic.",
+      "repair": "Make the toggle demonstrate the paper's central before/after change."
+    },
+    {
+      "specialist": "interaction_design",
+      "severity": "major",
+      "card": 6,
+      "finding": "Slider uses a generic tradeoff template.",
+      "repair": "Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+    }
+  ],
+  "recommended_repairs": [
+    "Card 6: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.",
+    "Use only readable ids already present in the catalog or leave weak relations out.",
+    "Card 2: Begin with a familiar situation first, then introduce the technical name on the next card.",
+    "Card 4: Make the toggle demonstrate the paper's central before/after change.",
+    "Card 6: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+  ],
+  "repair_brief": "Repair scaling-laws: Scaling Laws for Neural Language Models\nCurrent score: 65\nGoal: 90+ with no blocker issues.\nKeep the existing schema and card order.\nPreserve exact title, arxiv_id, url, year, and readable paper_id.\nNever use em dashes or en dashes in user-facing copy.\nPrimary issues:\nCard 6: Important card does not carry enough paper-specific vocabulary. Repair: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.\nRelated slugs are not in the generated catalog: gpt-3, chinchilla, efficientnet, moore-law-ai, gpt-neo, paLM. Repair: Use only readable ids already present in the catalog or leave weak relations out.\nCard 2: Opening story uses AI terms before earning the intuition. Repair: Begin with a familiar situation first, then introduce the technical name on the next card.\nCard 4: Compare interaction feels generic. Repair: Make the toggle demonstrate the paper's central before/after change.\nCard 6: Slider uses a generic tradeoff template. Repair: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+}

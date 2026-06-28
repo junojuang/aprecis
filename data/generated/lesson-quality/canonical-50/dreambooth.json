@@ -1,0 +1,119 @@
+{
+  "paper_id": "dreambooth",
+  "title": "DreamBooth: Fine Tuning Text-to-Image Diffusion Models for Subject-Driven Generation",
+  "score": 49,
+  "grade": "rebuild",
+  "blocking_issues": [],
+  "category_scores": {
+    "research_grounding": {
+      "score": 16,
+      "notes": [
+        "Important card does not carry enough paper-specific vocabulary.",
+        "Important card does not carry enough paper-specific vocabulary.",
+        "Related slugs are not in the generated catalog: stable-diffusion, dalle2, textual-inversion, controlnet."
+      ]
+    },
+    "beginner_mental_model": {
+      "score": 100,
+      "notes": []
+    },
+    "narrative_flow": {
+      "score": 100,
+      "notes": []
+    },
+    "interaction_design": {
+      "score": 44,
+      "notes": [
+        "Compare interaction feels generic.",
+        "Slider uses a generic tradeoff template."
+      ]
+    },
+    "aprecis_style": {
+      "score": 72,
+      "notes": [
+        "Analogy collapses into AI explanation too quickly."
+      ]
+    },
+    "mobile_fit": {
+      "score": 88,
+      "notes": [
+        "Card title is likely too long on mobile."
+      ]
+    },
+    "source_integrity": {
+      "score": 72,
+      "notes": [
+        "Lesson is missing an author string."
+      ]
+    },
+    "llm_critic": {
+      "score": 100,
+      "notes": []
+    }
+  },
+  "issues": [
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "card": 4,
+      "finding": "Important card does not carry enough paper-specific vocabulary.",
+      "repair": "Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper."
+    },
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "card": 6,
+      "finding": "Important card does not carry enough paper-specific vocabulary.",
+      "repair": "Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper."
+    },
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "finding": "Related slugs are not in the generated catalog: stable-diffusion, dalle2, textual-inversion, controlnet.",
+      "repair": "Use only readable ids already present in the catalog or leave weak relations out."
+    },
+    {
+      "specialist": "interaction_design",
+      "severity": "major",
+      "card": 4,
+      "finding": "Compare interaction feels generic.",
+      "repair": "Make the toggle demonstrate the paper's central before/after change."
+    },
+    {
+      "specialist": "interaction_design",
+      "severity": "major",
+      "card": 6,
+      "finding": "Slider uses a generic tradeoff template.",
+      "repair": "Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+    },
+    {
+      "specialist": "aprecis_style",
+      "severity": "major",
+      "finding": "Analogy collapses into AI explanation too quickly.",
+      "repair": "Let the analogy stand on its own before revealing the technical mapping."
+    },
+    {
+      "specialist": "mobile_fit",
+      "severity": "minor",
+      "card": 11,
+      "finding": "Card title is likely too long on mobile.",
+      "repair": "Shorten the title or move detail into body text."
+    },
+    {
+      "specialist": "source_integrity",
+      "severity": "major",
+      "finding": "Lesson is missing an author string.",
+      "repair": "Populate authors from metadata or curated fallback before publishing."
+    }
+  ],
+  "recommended_repairs": [
+    "Card 4: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.",
+    "Card 6: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.",
+    "Use only readable ids already present in the catalog or leave weak relations out.",
+    "Card 4: Make the toggle demonstrate the paper's central before/after change.",
+    "Card 6: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale.",
+    "Let the analogy stand on its own before revealing the technical mapping.",
+    "Populate authors from metadata or curated fallback before publishing."
+  ],
+  "repair_brief": "Repair dreambooth: DreamBooth: Fine Tuning Text-to-Image Diffusion Models for Subject-Driven Generation\nCurrent score: 49\nGoal: 90+ with no blocker issues.\nKeep the existing schema and card order.\nPreserve exact title, arxiv_id, url, year, and readable paper_id.\nNever use em dashes or en dashes in user-facing copy.\nPrimary issues:\nCard 4: Important card does not carry enough paper-specific vocabulary. Repair: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.\nCard 6: Important card does not carry enough paper-specific vocabulary. Repair: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.\nRelated slugs are not in the generated catalog: stable-diffusion, dalle2, textual-inversion, controlnet. Repair: Use only readable ids already present in the catalog or leave weak relations out.\nCard 4: Compare interaction feels generic. Repair: Make the toggle demonstrate the paper's central before/after change.\nCard 6: Slider uses a generic tradeoff template. Repair: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale.\nAnalogy collapses into AI explanation too quickly. Repair: Let the analogy stand on its own before revealing the technical mapping."
+}

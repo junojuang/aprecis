@@ -1,0 +1,84 @@
+{
+  "paper_id": "minerva",
+  "title": "Solving Quantitative Reasoning Problems with Language Models",
+  "score": 72,
+  "grade": "repair",
+  "blocking_issues": [],
+  "category_scores": {
+    "research_grounding": {
+      "score": 72,
+      "notes": [
+        "Related slugs are not in the generated catalog: gopher, paLM, cot, gpt3, math-dataset, t5."
+      ]
+    },
+    "beginner_mental_model": {
+      "score": 72,
+      "notes": [
+        "Opening story uses AI terms before earning the intuition."
+      ]
+    },
+    "narrative_flow": {
+      "score": 100,
+      "notes": []
+    },
+    "interaction_design": {
+      "score": 72,
+      "notes": [
+        "Slider uses a generic tradeoff template."
+      ]
+    },
+    "aprecis_style": {
+      "score": 100,
+      "notes": []
+    },
+    "mobile_fit": {
+      "score": 100,
+      "notes": []
+    },
+    "source_integrity": {
+      "score": 72,
+      "notes": [
+        "Lesson is missing an author string."
+      ]
+    },
+    "llm_critic": {
+      "score": 100,
+      "notes": []
+    }
+  },
+  "issues": [
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "finding": "Related slugs are not in the generated catalog: gopher, paLM, cot, gpt3, math-dataset, t5.",
+      "repair": "Use only readable ids already present in the catalog or leave weak relations out."
+    },
+    {
+      "specialist": "beginner_mental_model",
+      "severity": "major",
+      "card": 2,
+      "finding": "Opening story uses AI terms before earning the intuition.",
+      "repair": "Begin with a familiar situation first, then introduce the technical name on the next card."
+    },
+    {
+      "specialist": "interaction_design",
+      "severity": "major",
+      "card": 6,
+      "finding": "Slider uses a generic tradeoff template.",
+      "repair": "Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+    },
+    {
+      "specialist": "source_integrity",
+      "severity": "major",
+      "finding": "Lesson is missing an author string.",
+      "repair": "Populate authors from metadata or curated fallback before publishing."
+    }
+  ],
+  "recommended_repairs": [
+    "Use only readable ids already present in the catalog or leave weak relations out.",
+    "Card 2: Begin with a familiar situation first, then introduce the technical name on the next card.",
+    "Card 6: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale.",
+    "Populate authors from metadata or curated fallback before publishing."
+  ],
+  "repair_brief": "Repair minerva: Solving Quantitative Reasoning Problems with Language Models\nCurrent score: 72\nGoal: 90+ with no blocker issues.\nKeep the existing schema and card order.\nPreserve exact title, arxiv_id, url, year, and readable paper_id.\nNever use em dashes or en dashes in user-facing copy.\nPrimary issues:\nRelated slugs are not in the generated catalog: gopher, paLM, cot, gpt3, math-dataset, t5. Repair: Use only readable ids already present in the catalog or leave weak relations out.\nCard 2: Opening story uses AI terms before earning the intuition. Repair: Begin with a familiar situation first, then introduce the technical name on the next card.\nCard 6: Slider uses a generic tradeoff template. Repair: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale.\nLesson is missing an author string. Repair: Populate authors from metadata or curated fallback before publishing."
+}

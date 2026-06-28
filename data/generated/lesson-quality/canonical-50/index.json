@@ -1,0 +1,406 @@
+{
+  "generated_at": "2026-06-27T04:26:37.345Z",
+  "batch": "canonical-50",
+  "lesson_count": 50,
+  "average_score": 65,
+  "grade_counts": {
+    "ship": 0,
+    "polish": 6,
+    "repair": 30,
+    "rebuild": 14
+  },
+  "worst": [
+    {
+      "paper_id": "rag",
+      "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+      "score": 32,
+      "grade": "rebuild"
+    },
+    {
+      "paper_id": "bahdanau-attention",
+      "title": "Neural Machine Translation by Jointly Learning to Align and Translate",
+      "score": 39,
+      "grade": "rebuild"
+    },
+    {
+      "paper_id": "vae",
+      "title": "Auto-Encoding Variational Bayes",
+      "score": 42,
+      "grade": "rebuild"
+    },
+    {
+      "paper_id": "lamda",
+      "title": "LaMDA: Language Models for Dialog Applications",
+      "score": 44,
+      "grade": "rebuild"
+    },
+    {
+      "paper_id": "mamba",
+      "title": "Mamba: Linear-Time Sequence Modeling with Selective State Spaces",
+      "score": 44,
+      "grade": "rebuild"
+    },
+    {
+      "paper_id": "dreambooth",
+      "title": "DreamBooth: Fine Tuning Text-to-Image Diffusion Models for Subject-Driven Generation",
+      "score": 49,
+      "grade": "rebuild"
+    },
+    {
+      "paper_id": "neural-style",
+      "title": "A Neural Algorithm of Artistic Style",
+      "score": 49,
+      "grade": "rebuild"
+    },
+    {
+      "paper_id": "dpo",
+      "title": "Direct Preference Optimization: Your Language Model is Secretly a Reward Model",
+      "score": 55,
+      "grade": "rebuild"
+    },
+    {
+      "paper_id": "flamingo",
+      "title": "Flamingo: a Visual Language Model for Few-Shot Learning",
+      "score": 55,
+      "grade": "rebuild"
+    },
+    {
+      "paper_id": "gshard",
+      "title": "GShard: Scaling Giant Models with Conditional Computation and Automatic Sharding",
+      "score": 55,
+      "grade": "rebuild"
+    },
+    {
+      "paper_id": "bart",
+      "title": "BART: Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension",
+      "score": 56,
+      "grade": "rebuild"
+    },
+    {
+      "paper_id": "dall-e",
+      "title": "Zero-Shot Text-to-Image Generation",
+      "score": 58,
+      "grade": "rebuild"
+    },
+    {
+      "paper_id": "elmo",
+      "title": "Deep contextualized word representations",
+      "score": 58,
+      "grade": "rebuild"
+    },
+    {
+      "paper_id": "llama-2",
+      "title": "Llama 2: Open Foundation and Fine-Tuned Chat Models",
+      "score": 58,
+      "grade": "rebuild"
+    },
+    {
+      "paper_id": "dpr",
+      "title": "Dense Passage Retrieval for Open-Domain Question Answering",
+      "score": 63,
+      "grade": "repair"
+    }
+  ],
+  "reports": [
+    {
+      "paper_id": "rag",
+      "score": 32,
+      "grade": "rebuild",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/rag.json"
+    },
+    {
+      "paper_id": "bahdanau-attention",
+      "score": 39,
+      "grade": "rebuild",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/bahdanau-attention.json"
+    },
+    {
+      "paper_id": "vae",
+      "score": 42,
+      "grade": "rebuild",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/vae.json"
+    },
+    {
+      "paper_id": "lamda",
+      "score": 44,
+      "grade": "rebuild",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/lamda.json"
+    },
+    {
+      "paper_id": "mamba",
+      "score": 44,
+      "grade": "rebuild",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/mamba.json"
+    },
+    {
+      "paper_id": "dreambooth",
+      "score": 49,
+      "grade": "rebuild",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/dreambooth.json"
+    },
+    {
+      "paper_id": "neural-style",
+      "score": 49,
+      "grade": "rebuild",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/neural-style.json"
+    },
+    {
+      "paper_id": "dpo",
+      "score": 55,
+      "grade": "rebuild",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/dpo.json"
+    },
+    {
+      "paper_id": "flamingo",
+      "score": 55,
+      "grade": "rebuild",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/flamingo.json"
+    },
+    {
+      "paper_id": "gshard",
+      "score": 55,
+      "grade": "rebuild",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/gshard.json"
+    },
+    {
+      "paper_id": "bart",
+      "score": 56,
+      "grade": "rebuild",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/bart.json"
+    },
+    {
+      "paper_id": "dall-e",
+      "score": 58,
+      "grade": "rebuild",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/dall-e.json"
+    },
+    {
+      "paper_id": "elmo",
+      "score": 58,
+      "grade": "rebuild",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/elmo.json"
+    },
+    {
+      "paper_id": "llama-2",
+      "score": 58,
+      "grade": "rebuild",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/llama-2.json"
+    },
+    {
+      "paper_id": "dpr",
+      "score": 63,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/dpr.json"
+    },
+    {
+      "paper_id": "electra",
+      "score": 63,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/electra.json"
+    },
+    {
+      "paper_id": "generative-agents",
+      "score": 63,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/generative-agents.json"
+    },
+    {
+      "paper_id": "glide",
+      "score": 63,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/glide.json"
+    },
+    {
+      "paper_id": "decision-transformer",
+      "score": 65,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/decision-transformer.json"
+    },
+    {
+      "paper_id": "gato",
+      "score": 65,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/gato.json"
+    },
+    {
+      "paper_id": "phi-2",
+      "score": 65,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/phi-2.json"
+    },
+    {
+      "paper_id": "scaling-laws",
+      "score": 65,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/scaling-laws.json"
+    },
+    {
+      "paper_id": "sora-report",
+      "score": 65,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/sora-report.json"
+    },
+    {
+      "paper_id": "sparrow",
+      "score": 65,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/sparrow.json"
+    },
+    {
+      "paper_id": "webgpt",
+      "score": 65,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/webgpt.json"
+    },
+    {
+      "paper_id": "retro",
+      "score": 69,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/retro.json"
+    },
+    {
+      "paper_id": "roberta",
+      "score": 69,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/roberta.json"
+    },
+    {
+      "paper_id": "alphazero",
+      "score": 70,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/alphazero.json"
+    },
+    {
+      "paper_id": "blip2",
+      "score": 70,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/blip2.json"
+    },
+    {
+      "paper_id": "dqn",
+      "score": 70,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/dqn.json"
+    },
+    {
+      "paper_id": "nerf",
+      "score": 70,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/nerf.json"
+    },
+    {
+      "paper_id": "prompt-tuning",
+      "score": 70,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/prompt-tuning.json"
+    },
+    {
+      "paper_id": "constitutional-ai",
+      "score": 72,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/constitutional-ai.json"
+    },
+    {
+      "paper_id": "lora",
+      "score": 72,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/lora.json"
+    },
+    {
+      "paper_id": "memory-networks",
+      "score": 72,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/memory-networks.json"
+    },
+    {
+      "paper_id": "minerva",
+      "score": 72,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/minerva.json"
+    },
+    {
+      "paper_id": "pointer-networks",
+      "score": 72,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/pointer-networks.json"
+    },
+    {
+      "paper_id": "qlora",
+      "score": 72,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/qlora.json"
+    },
+    {
+      "paper_id": "transformer-xl",
+      "score": 72,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/transformer-xl.json"
+    },
+    {
+      "paper_id": "unet",
+      "score": 72,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/unet.json"
+    },
+    {
+      "paper_id": "xlnet",
+      "score": 72,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/xlnet.json"
+    },
+    {
+      "paper_id": "batchnorm",
+      "score": 76,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/batchnorm.json"
+    },
+    {
+      "paper_id": "faster-rcnn",
+      "score": 76,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/faster-rcnn.json"
+    },
+    {
+      "paper_id": "imagen",
+      "score": 76,
+      "grade": "repair",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/imagen.json"
+    },
+    {
+      "paper_id": "instructpix2pix",
+      "score": 79,
+      "grade": "polish",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/instructpix2pix.json"
+    },
+    {
+      "paper_id": "neural-turing-machines",
+      "score": 79,
+      "grade": "polish",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/neural-turing-machines.json"
+    },
+    {
+      "paper_id": "prefix-tuning",
+      "score": 79,
+      "grade": "polish",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/prefix-tuning.json"
+    },
+    {
+      "paper_id": "voyager",
+      "score": 79,
+      "grade": "polish",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/voyager.json"
+    },
+    {
+      "paper_id": "mask-rcnn",
+      "score": 84,
+      "grade": "polish",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/mask-rcnn.json"
+    },
+    {
+      "paper_id": "yolo",
+      "score": 84,
+      "grade": "polish",
+      "path": "/Users/juno/Desktop/Aprecis/Aprecis//data/generated/lesson-quality/canonical-50/yolo.json"
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "paper_id": "elmo",
+  "title": "Deep contextualized word representations",
+  "score": 58,
+  "grade": "rebuild",
+  "blocking_issues": [],
+  "category_scores": {
+    "research_grounding": {
+      "score": 16,
+      "notes": [
+        "Important card does not carry enough paper-specific vocabulary.",
+        "Important card does not carry enough paper-specific vocabulary.",
+        "Related slugs are not in the generated catalog: bert, word2vec, gpt, glove, ulmfit."
+      ]
+    },
+    "beginner_mental_model": {
+      "score": 100,
+      "notes": []
+    },
+    "narrative_flow": {
+      "score": 72,
+      "notes": [
+        "Opening arc does not pose a crisp learning tension."
+      ]
+    },
+    "interaction_design": {
+      "score": 44,
+      "notes": [
+        "Compare interaction feels generic.",
+        "Slider uses a generic tradeoff template."
+      ]
+    },
+    "aprecis_style": {
+      "score": 100,
+      "notes": []
+    },
+    "mobile_fit": {
+      "score": 100,
+      "notes": []
+    },
+    "source_integrity": {
+      "score": 100,
+      "notes": []
+    },
+    "llm_critic": {
+      "score": 100,
+      "notes": []
+    }
+  },
+  "issues": [
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "card": 4,
+      "finding": "Important card does not carry enough paper-specific vocabulary.",
+      "repair": "Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper."
+    },
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "card": 6,
+      "finding": "Important card does not carry enough paper-specific vocabulary.",
+      "repair": "Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper."
+    },
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "finding": "Related slugs are not in the generated catalog: bert, word2vec, gpt, glove, ulmfit.",
+      "repair": "Use only readable ids already present in the catalog or leave weak relations out."
+    },
+    {
+      "specialist": "narrative_flow",
+      "severity": "major",
+      "card": 2,
+      "finding": "Opening arc does not pose a crisp learning tension.",
+      "repair": "Make the first story ask a concrete question or name the obstacle the paper solves."
+    },
+    {
+      "specialist": "interaction_design",
+      "severity": "major",
+      "card": 4,
+      "finding": "Compare interaction feels generic.",
+      "repair": "Make the toggle demonstrate the paper's central before/after change."
+    },
+    {
+      "specialist": "interaction_design",
+      "severity": "major",
+      "card": 6,
+      "finding": "Slider uses a generic tradeoff template.",
+      "repair": "Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+    }
+  ],
+  "recommended_repairs": [
+    "Card 4: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.",
+    "Card 6: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.",
+    "Use only readable ids already present in the catalog or leave weak relations out.",
+    "Card 2: Make the first story ask a concrete question or name the obstacle the paper solves.",
+    "Card 4: Make the toggle demonstrate the paper's central before/after change.",
+    "Card 6: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+  ],
+  "repair_brief": "Repair elmo: Deep contextualized word representations\nCurrent score: 58\nGoal: 90+ with no blocker issues.\nKeep the existing schema and card order.\nPreserve exact title, arxiv_id, url, year, and readable paper_id.\nNever use em dashes or en dashes in user-facing copy.\nPrimary issues:\nCard 4: Important card does not carry enough paper-specific vocabulary. Repair: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.\nCard 6: Important card does not carry enough paper-specific vocabulary. Repair: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.\nRelated slugs are not in the generated catalog: bert, word2vec, gpt, glove, ulmfit. Repair: Use only readable ids already present in the catalog or leave weak relations out.\nCard 2: Opening arc does not pose a crisp learning tension. Repair: Make the first story ask a concrete question or name the obstacle the paper solves.\nCard 4: Compare interaction feels generic. Repair: Make the toggle demonstrate the paper's central before/after change.\nCard 6: Slider uses a generic tradeoff template. Repair: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+}

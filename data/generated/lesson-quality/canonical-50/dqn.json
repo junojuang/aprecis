@@ -1,0 +1,92 @@
+{
+  "paper_id": "dqn",
+  "title": "Playing Atari with Deep Reinforcement Learning",
+  "score": 70,
+  "grade": "repair",
+  "blocking_issues": [],
+  "category_scores": {
+    "research_grounding": {
+      "score": 44,
+      "notes": [
+        "Important card does not carry enough paper-specific vocabulary.",
+        "Related slugs are not in the generated catalog: alpha-go, policy-gradients, atari-paper, double-dqn, rainbow-dqn."
+      ]
+    },
+    "beginner_mental_model": {
+      "score": 100,
+      "notes": []
+    },
+    "narrative_flow": {
+      "score": 60,
+      "notes": [
+        "Generic card title: \"Pixels to policies: what changed?\".",
+        "Core idea card does not clearly name the paper's specific mechanism."
+      ]
+    },
+    "interaction_design": {
+      "score": 72,
+      "notes": [
+        "Slider uses a generic tradeoff template."
+      ]
+    },
+    "aprecis_style": {
+      "score": 100,
+      "notes": []
+    },
+    "mobile_fit": {
+      "score": 100,
+      "notes": []
+    },
+    "source_integrity": {
+      "score": 100,
+      "notes": []
+    },
+    "llm_critic": {
+      "score": 100,
+      "notes": []
+    }
+  },
+  "issues": [
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "card": 6,
+      "finding": "Important card does not carry enough paper-specific vocabulary.",
+      "repair": "Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper."
+    },
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "finding": "Related slugs are not in the generated catalog: alpha-go, policy-gradients, atari-paper, double-dqn, rainbow-dqn.",
+      "repair": "Use only readable ids already present in the catalog or leave weak relations out."
+    },
+    {
+      "specialist": "narrative_flow",
+      "severity": "minor",
+      "card": 4,
+      "finding": "Generic card title: \"Pixels to policies: what changed?\".",
+      "repair": "Replace the title with a concrete claim about this paper's move."
+    },
+    {
+      "specialist": "narrative_flow",
+      "severity": "major",
+      "card": 5,
+      "finding": "Core idea card does not clearly name the paper's specific mechanism.",
+      "repair": "Make the card answer: what new move did this paper add?"
+    },
+    {
+      "specialist": "interaction_design",
+      "severity": "major",
+      "card": 6,
+      "finding": "Slider uses a generic tradeoff template.",
+      "repair": "Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+    }
+  ],
+  "recommended_repairs": [
+    "Card 6: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.",
+    "Use only readable ids already present in the catalog or leave weak relations out.",
+    "Card 5: Make the card answer: what new move did this paper add?",
+    "Card 6: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+  ],
+  "repair_brief": "Repair dqn: Playing Atari with Deep Reinforcement Learning\nCurrent score: 70\nGoal: 90+ with no blocker issues.\nKeep the existing schema and card order.\nPreserve exact title, arxiv_id, url, year, and readable paper_id.\nNever use em dashes or en dashes in user-facing copy.\nPrimary issues:\nCard 6: Important card does not carry enough paper-specific vocabulary. Repair: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.\nRelated slugs are not in the generated catalog: alpha-go, policy-gradients, atari-paper, double-dqn, rainbow-dqn. Repair: Use only readable ids already present in the catalog or leave weak relations out.\nCard 5: Core idea card does not clearly name the paper's specific mechanism. Repair: Make the card answer: what new move did this paper add?\nCard 6: Slider uses a generic tradeoff template. Repair: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+}

@@ -1,0 +1,100 @@
+{
+  "paper_id": "generative-agents",
+  "title": "Generative Agents: Interactive Simulacra of Human Behavior",
+  "score": 63,
+  "grade": "repair",
+  "blocking_issues": [],
+  "category_scores": {
+    "research_grounding": {
+      "score": 44,
+      "notes": [
+        "Important card does not carry enough paper-specific vocabulary.",
+        "Related slugs are not in the generated catalog: react-paper, babyagi, llm-agents, autogpt, socratic-models, llm-memory."
+      ]
+    },
+    "beginner_mental_model": {
+      "score": 88,
+      "notes": [
+        "Glossary is getting crowded."
+      ]
+    },
+    "narrative_flow": {
+      "score": 100,
+      "notes": []
+    },
+    "interaction_design": {
+      "score": 44,
+      "notes": [
+        "Compare interaction feels generic.",
+        "Slider uses a generic tradeoff template."
+      ]
+    },
+    "aprecis_style": {
+      "score": 100,
+      "notes": []
+    },
+    "mobile_fit": {
+      "score": 100,
+      "notes": []
+    },
+    "source_integrity": {
+      "score": 72,
+      "notes": [
+        "Lesson is missing an author string."
+      ]
+    },
+    "llm_critic": {
+      "score": 100,
+      "notes": []
+    }
+  },
+  "issues": [
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "card": 4,
+      "finding": "Important card does not carry enough paper-specific vocabulary.",
+      "repair": "Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper."
+    },
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "finding": "Related slugs are not in the generated catalog: react-paper, babyagi, llm-agents, autogpt, socratic-models, llm-memory.",
+      "repair": "Use only readable ids already present in the catalog or leave weak relations out."
+    },
+    {
+      "specialist": "beginner_mental_model",
+      "severity": "minor",
+      "finding": "Glossary is getting crowded.",
+      "repair": "Keep only terms that are used in the prose and matter to the mental model."
+    },
+    {
+      "specialist": "interaction_design",
+      "severity": "major",
+      "card": 4,
+      "finding": "Compare interaction feels generic.",
+      "repair": "Make the toggle demonstrate the paper's central before/after change."
+    },
+    {
+      "specialist": "interaction_design",
+      "severity": "major",
+      "card": 6,
+      "finding": "Slider uses a generic tradeoff template.",
+      "repair": "Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+    },
+    {
+      "specialist": "source_integrity",
+      "severity": "major",
+      "finding": "Lesson is missing an author string.",
+      "repair": "Populate authors from metadata or curated fallback before publishing."
+    }
+  ],
+  "recommended_repairs": [
+    "Card 4: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.",
+    "Use only readable ids already present in the catalog or leave weak relations out.",
+    "Card 4: Make the toggle demonstrate the paper's central before/after change.",
+    "Card 6: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale.",
+    "Populate authors from metadata or curated fallback before publishing."
+  ],
+  "repair_brief": "Repair generative-agents: Generative Agents: Interactive Simulacra of Human Behavior\nCurrent score: 63\nGoal: 90+ with no blocker issues.\nKeep the existing schema and card order.\nPreserve exact title, arxiv_id, url, year, and readable paper_id.\nNever use em dashes or en dashes in user-facing copy.\nPrimary issues:\nCard 4: Important card does not carry enough paper-specific vocabulary. Repair: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.\nRelated slugs are not in the generated catalog: react-paper, babyagi, llm-agents, autogpt, socratic-models, llm-memory. Repair: Use only readable ids already present in the catalog or leave weak relations out.\nCard 4: Compare interaction feels generic. Repair: Make the toggle demonstrate the paper's central before/after change.\nCard 6: Slider uses a generic tradeoff template. Repair: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale.\nLesson is missing an author string. Repair: Populate authors from metadata or curated fallback before publishing."
+}

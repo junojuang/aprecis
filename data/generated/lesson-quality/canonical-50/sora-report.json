@@ -1,0 +1,92 @@
+{
+  "paper_id": "sora-report",
+  "title": "Video generation models as world simulators",
+  "score": 65,
+  "grade": "repair",
+  "blocking_issues": [],
+  "category_scores": {
+    "research_grounding": {
+      "score": 72,
+      "notes": [
+        "Related slugs are not in the generated catalog: imagen-video, make-a-video, dreamfusion, video-diffusion-models."
+      ]
+    },
+    "beginner_mental_model": {
+      "score": 72,
+      "notes": [
+        "Prerequisite note is vague rather than useful."
+      ]
+    },
+    "narrative_flow": {
+      "score": 100,
+      "notes": []
+    },
+    "interaction_design": {
+      "score": 72,
+      "notes": [
+        "Slider uses a generic tradeoff template."
+      ]
+    },
+    "aprecis_style": {
+      "score": 72,
+      "notes": [
+        "Analogy collapses into AI explanation too quickly."
+      ]
+    },
+    "mobile_fit": {
+      "score": 100,
+      "notes": []
+    },
+    "source_integrity": {
+      "score": 72,
+      "notes": [
+        "Lesson is missing an author string."
+      ]
+    },
+    "llm_critic": {
+      "score": 100,
+      "notes": []
+    }
+  },
+  "issues": [
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "finding": "Related slugs are not in the generated catalog: imagen-video, make-a-video, dreamfusion, video-diffusion-models.",
+      "repair": "Use only readable ids already present in the catalog or leave weak relations out."
+    },
+    {
+      "specialist": "beginner_mental_model",
+      "severity": "major",
+      "finding": "Prerequisite note is vague rather than useful.",
+      "repair": "Name the one concrete idea the learner should bring, for example sequences, images, feedback, or memory."
+    },
+    {
+      "specialist": "interaction_design",
+      "severity": "major",
+      "card": 6,
+      "finding": "Slider uses a generic tradeoff template.",
+      "repair": "Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+    },
+    {
+      "specialist": "aprecis_style",
+      "severity": "major",
+      "finding": "Analogy collapses into AI explanation too quickly.",
+      "repair": "Let the analogy stand on its own before revealing the technical mapping."
+    },
+    {
+      "specialist": "source_integrity",
+      "severity": "major",
+      "finding": "Lesson is missing an author string.",
+      "repair": "Populate authors from metadata or curated fallback before publishing."
+    }
+  ],
+  "recommended_repairs": [
+    "Use only readable ids already present in the catalog or leave weak relations out.",
+    "Name the one concrete idea the learner should bring, for example sequences, images, feedback, or memory.",
+    "Card 6: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale.",
+    "Let the analogy stand on its own before revealing the technical mapping.",
+    "Populate authors from metadata or curated fallback before publishing."
+  ],
+  "repair_brief": "Repair sora-report: Video generation models as world simulators\nCurrent score: 65\nGoal: 90+ with no blocker issues.\nKeep the existing schema and card order.\nPreserve exact title, arxiv_id, url, year, and readable paper_id.\nNever use em dashes or en dashes in user-facing copy.\nPrimary issues:\nRelated slugs are not in the generated catalog: imagen-video, make-a-video, dreamfusion, video-diffusion-models. Repair: Use only readable ids already present in the catalog or leave weak relations out.\nPrerequisite note is vague rather than useful. Repair: Name the one concrete idea the learner should bring, for example sequences, images, feedback, or memory.\nCard 6: Slider uses a generic tradeoff template. Repair: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale.\nAnalogy collapses into AI explanation too quickly. Repair: Let the analogy stand on its own before revealing the technical mapping.\nLesson is missing an author string. Repair: Populate authors from metadata or curated fallback before publishing."
+}

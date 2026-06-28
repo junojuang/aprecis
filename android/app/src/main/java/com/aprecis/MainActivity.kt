@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.aprecis.ui.feed.FeedDebugScreen
+import com.aprecis.ui.AprecisAppShell
 import com.aprecis.ui.theme.AprecisTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -15,10 +15,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             AprecisTheme {
-                // Phase 1: a debug screen that exercises the networking layer by
-                // fetching and displaying a real /serve-cards page. Replaced by
-                // the Discover/Profile NavHost in a later phase.
-                FeedDebugScreen()
+                AprecisAppShell()
             }
         }
     }

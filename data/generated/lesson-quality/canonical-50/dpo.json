@@ -1,0 +1,120 @@
+{
+  "paper_id": "dpo",
+  "title": "Direct Preference Optimization: Your Language Model is Secretly a Reward Model",
+  "score": 55,
+  "grade": "rebuild",
+  "blocking_issues": [],
+  "category_scores": {
+    "research_grounding": {
+      "score": 44,
+      "notes": [
+        "Important card does not carry enough paper-specific vocabulary.",
+        "Related slugs are not in the generated catalog: rlhf, instructgpt, reward-modeling, alignment, chatgpt."
+      ]
+    },
+    "beginner_mental_model": {
+      "score": 72,
+      "notes": [
+        "Opening story uses AI terms before earning the intuition."
+      ]
+    },
+    "narrative_flow": {
+      "score": 100,
+      "notes": []
+    },
+    "interaction_design": {
+      "score": 44,
+      "notes": [
+        "Compare interaction feels generic.",
+        "Slider uses a generic tradeoff template."
+      ]
+    },
+    "aprecis_style": {
+      "score": 88,
+      "notes": [
+        "Paragraph is too thin to teach."
+      ]
+    },
+    "mobile_fit": {
+      "score": 88,
+      "notes": [
+        "Card title is likely too long on mobile."
+      ]
+    },
+    "source_integrity": {
+      "score": 72,
+      "notes": [
+        "Lesson is missing an author string."
+      ]
+    },
+    "llm_critic": {
+      "score": 100,
+      "notes": []
+    }
+  },
+  "issues": [
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "card": 6,
+      "finding": "Important card does not carry enough paper-specific vocabulary.",
+      "repair": "Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper."
+    },
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "finding": "Related slugs are not in the generated catalog: rlhf, instructgpt, reward-modeling, alignment, chatgpt.",
+      "repair": "Use only readable ids already present in the catalog or leave weak relations out."
+    },
+    {
+      "specialist": "beginner_mental_model",
+      "severity": "major",
+      "card": 2,
+      "finding": "Opening story uses AI terms before earning the intuition.",
+      "repair": "Begin with a familiar situation first, then introduce the technical name on the next card."
+    },
+    {
+      "specialist": "interaction_design",
+      "severity": "major",
+      "card": 4,
+      "finding": "Compare interaction feels generic.",
+      "repair": "Make the toggle demonstrate the paper's central before/after change."
+    },
+    {
+      "specialist": "interaction_design",
+      "severity": "major",
+      "card": 6,
+      "finding": "Slider uses a generic tradeoff template.",
+      "repair": "Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+    },
+    {
+      "specialist": "aprecis_style",
+      "severity": "minor",
+      "card": 7,
+      "finding": "Paragraph is too thin to teach.",
+      "repair": "Expand it into one concrete idea, not a label."
+    },
+    {
+      "specialist": "mobile_fit",
+      "severity": "minor",
+      "card": 11,
+      "finding": "Card title is likely too long on mobile.",
+      "repair": "Shorten the title or move detail into body text."
+    },
+    {
+      "specialist": "source_integrity",
+      "severity": "major",
+      "finding": "Lesson is missing an author string.",
+      "repair": "Populate authors from metadata or curated fallback before publishing."
+    }
+  ],
+  "recommended_repairs": [
+    "Card 6: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.",
+    "Use only readable ids already present in the catalog or leave weak relations out.",
+    "Card 2: Begin with a familiar situation first, then introduce the technical name on the next card.",
+    "Card 4: Make the toggle demonstrate the paper's central before/after change.",
+    "Card 6: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale.",
+    "Populate authors from metadata or curated fallback before publishing."
+  ],
+  "repair_brief": "Repair dpo: Direct Preference Optimization: Your Language Model is Secretly a Reward Model\nCurrent score: 55\nGoal: 90+ with no blocker issues.\nKeep the existing schema and card order.\nPreserve exact title, arxiv_id, url, year, and readable paper_id.\nNever use em dashes or en dashes in user-facing copy.\nPrimary issues:\nCard 6: Important card does not carry enough paper-specific vocabulary. Repair: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.\nRelated slugs are not in the generated catalog: rlhf, instructgpt, reward-modeling, alignment, chatgpt. Repair: Use only readable ids already present in the catalog or leave weak relations out.\nCard 2: Opening story uses AI terms before earning the intuition. Repair: Begin with a familiar situation first, then introduce the technical name on the next card.\nCard 4: Compare interaction feels generic. Repair: Make the toggle demonstrate the paper's central before/after change.\nCard 6: Slider uses a generic tradeoff template. Repair: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale.\nLesson is missing an author string. Repair: Populate authors from metadata or curated fallback before publishing."
+}

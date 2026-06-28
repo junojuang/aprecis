@@ -1,0 +1,118 @@
+{
+  "paper_id": "flamingo",
+  "title": "Flamingo: a Visual Language Model for Few-Shot Learning",
+  "score": 55,
+  "grade": "rebuild",
+  "blocking_issues": [],
+  "category_scores": {
+    "research_grounding": {
+      "score": 44,
+      "notes": [
+        "Important card does not carry enough paper-specific vocabulary.",
+        "Related slugs are not in the generated catalog: clip, blip, gpt-3, dalle-2, llava, kosmos-1."
+      ]
+    },
+    "beginner_mental_model": {
+      "score": 72,
+      "notes": [
+        "Prerequisite note is vague rather than useful."
+      ]
+    },
+    "narrative_flow": {
+      "score": 100,
+      "notes": []
+    },
+    "interaction_design": {
+      "score": 44,
+      "notes": [
+        "Compare interaction feels generic.",
+        "Slider uses a generic tradeoff template."
+      ]
+    },
+    "aprecis_style": {
+      "score": 76,
+      "notes": [
+        "Paragraph is too thin to teach.",
+        "Paragraph is too thin to teach."
+      ]
+    },
+    "mobile_fit": {
+      "score": 100,
+      "notes": []
+    },
+    "source_integrity": {
+      "score": 72,
+      "notes": [
+        "Lesson is missing an author string."
+      ]
+    },
+    "llm_critic": {
+      "score": 100,
+      "notes": []
+    }
+  },
+  "issues": [
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "card": 6,
+      "finding": "Important card does not carry enough paper-specific vocabulary.",
+      "repair": "Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper."
+    },
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "finding": "Related slugs are not in the generated catalog: clip, blip, gpt-3, dalle-2, llava, kosmos-1.",
+      "repair": "Use only readable ids already present in the catalog or leave weak relations out."
+    },
+    {
+      "specialist": "beginner_mental_model",
+      "severity": "major",
+      "finding": "Prerequisite note is vague rather than useful.",
+      "repair": "Name the one concrete idea the learner should bring, for example sequences, images, feedback, or memory."
+    },
+    {
+      "specialist": "interaction_design",
+      "severity": "major",
+      "card": 4,
+      "finding": "Compare interaction feels generic.",
+      "repair": "Make the toggle demonstrate the paper's central before/after change."
+    },
+    {
+      "specialist": "interaction_design",
+      "severity": "major",
+      "card": 6,
+      "finding": "Slider uses a generic tradeoff template.",
+      "repair": "Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+    },
+    {
+      "specialist": "aprecis_style",
+      "severity": "minor",
+      "card": 3,
+      "finding": "Paragraph is too thin to teach.",
+      "repair": "Expand it into one concrete idea, not a label."
+    },
+    {
+      "specialist": "aprecis_style",
+      "severity": "minor",
+      "card": 3,
+      "finding": "Paragraph is too thin to teach.",
+      "repair": "Expand it into one concrete idea, not a label."
+    },
+    {
+      "specialist": "source_integrity",
+      "severity": "major",
+      "finding": "Lesson is missing an author string.",
+      "repair": "Populate authors from metadata or curated fallback before publishing."
+    }
+  ],
+  "recommended_repairs": [
+    "Card 6: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.",
+    "Use only readable ids already present in the catalog or leave weak relations out.",
+    "Name the one concrete idea the learner should bring, for example sequences, images, feedback, or memory.",
+    "Card 4: Make the toggle demonstrate the paper's central before/after change.",
+    "Card 6: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale.",
+    "Populate authors from metadata or curated fallback before publishing."
+  ],
+  "repair_brief": "Repair flamingo: Flamingo: a Visual Language Model for Few-Shot Learning\nCurrent score: 55\nGoal: 90+ with no blocker issues.\nKeep the existing schema and card order.\nPreserve exact title, arxiv_id, url, year, and readable paper_id.\nNever use em dashes or en dashes in user-facing copy.\nPrimary issues:\nCard 6: Important card does not carry enough paper-specific vocabulary. Repair: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.\nRelated slugs are not in the generated catalog: clip, blip, gpt-3, dalle-2, llava, kosmos-1. Repair: Use only readable ids already present in the catalog or leave weak relations out.\nPrerequisite note is vague rather than useful. Repair: Name the one concrete idea the learner should bring, for example sequences, images, feedback, or memory.\nCard 4: Compare interaction feels generic. Repair: Make the toggle demonstrate the paper's central before/after change.\nCard 6: Slider uses a generic tradeoff template. Repair: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale.\nLesson is missing an author string. Repair: Populate authors from metadata or curated fallback before publishing."
+}

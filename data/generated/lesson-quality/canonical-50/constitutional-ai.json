@@ -1,0 +1,84 @@
+{
+  "paper_id": "constitutional-ai",
+  "title": "Constitutional AI: Harmlessness from AI Feedback",
+  "score": 72,
+  "grade": "repair",
+  "blocking_issues": [],
+  "category_scores": {
+    "research_grounding": {
+      "score": 72,
+      "notes": [
+        "Related slugs are not in the generated catalog: rlhf, alignment-problem, red-teaming, reward-models."
+      ]
+    },
+    "beginner_mental_model": {
+      "score": 100,
+      "notes": []
+    },
+    "narrative_flow": {
+      "score": 72,
+      "notes": [
+        "Core idea card does not clearly name the paper's specific mechanism."
+      ]
+    },
+    "interaction_design": {
+      "score": 72,
+      "notes": [
+        "Slider uses a generic tradeoff template."
+      ]
+    },
+    "aprecis_style": {
+      "score": 100,
+      "notes": []
+    },
+    "mobile_fit": {
+      "score": 100,
+      "notes": []
+    },
+    "source_integrity": {
+      "score": 72,
+      "notes": [
+        "Lesson is missing an author string."
+      ]
+    },
+    "llm_critic": {
+      "score": 100,
+      "notes": []
+    }
+  },
+  "issues": [
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "finding": "Related slugs are not in the generated catalog: rlhf, alignment-problem, red-teaming, reward-models.",
+      "repair": "Use only readable ids already present in the catalog or leave weak relations out."
+    },
+    {
+      "specialist": "narrative_flow",
+      "severity": "major",
+      "card": 5,
+      "finding": "Core idea card does not clearly name the paper's specific mechanism.",
+      "repair": "Make the card answer: what new move did this paper add?"
+    },
+    {
+      "specialist": "interaction_design",
+      "severity": "major",
+      "card": 6,
+      "finding": "Slider uses a generic tradeoff template.",
+      "repair": "Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+    },
+    {
+      "specialist": "source_integrity",
+      "severity": "major",
+      "finding": "Lesson is missing an author string.",
+      "repair": "Populate authors from metadata or curated fallback before publishing."
+    }
+  ],
+  "recommended_repairs": [
+    "Use only readable ids already present in the catalog or leave weak relations out.",
+    "Card 5: Make the card answer: what new move did this paper add?",
+    "Card 6: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale.",
+    "Populate authors from metadata or curated fallback before publishing."
+  ],
+  "repair_brief": "Repair constitutional-ai: Constitutional AI: Harmlessness from AI Feedback\nCurrent score: 72\nGoal: 90+ with no blocker issues.\nKeep the existing schema and card order.\nPreserve exact title, arxiv_id, url, year, and readable paper_id.\nNever use em dashes or en dashes in user-facing copy.\nPrimary issues:\nRelated slugs are not in the generated catalog: rlhf, alignment-problem, red-teaming, reward-models. Repair: Use only readable ids already present in the catalog or leave weak relations out.\nCard 5: Core idea card does not clearly name the paper's specific mechanism. Repair: Make the card answer: what new move did this paper add?\nCard 6: Slider uses a generic tradeoff template. Repair: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale.\nLesson is missing an author string. Repair: Populate authors from metadata or curated fallback before publishing."
+}

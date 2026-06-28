@@ -1,0 +1,129 @@
+{
+  "paper_id": "bahdanau-attention",
+  "title": "Neural Machine Translation by Jointly Learning to Align and Translate",
+  "score": 39,
+  "grade": "rebuild",
+  "blocking_issues": [],
+  "category_scores": {
+    "research_grounding": {
+      "score": 0,
+      "notes": [
+        "Important card does not carry enough paper-specific vocabulary.",
+        "Important card does not carry enough paper-specific vocabulary.",
+        "Important card does not carry enough paper-specific vocabulary.",
+        "Related slugs are not in the generated catalog: transformer-attention, seq2seq-sutskever, luong-attention, bert-pretraining."
+      ]
+    },
+    "beginner_mental_model": {
+      "score": 72,
+      "notes": [
+        "Opening story uses AI terms before earning the intuition."
+      ]
+    },
+    "narrative_flow": {
+      "score": 72,
+      "notes": [
+        "Core idea card does not clearly name the paper's specific mechanism."
+      ]
+    },
+    "interaction_design": {
+      "score": 16,
+      "notes": [
+        "Compare interaction feels generic.",
+        "Slider uses a generic tradeoff template.",
+        "Results card is not grounded in the paper's distinctive claims."
+      ]
+    },
+    "aprecis_style": {
+      "score": 100,
+      "notes": []
+    },
+    "mobile_fit": {
+      "score": 100,
+      "notes": []
+    },
+    "source_integrity": {
+      "score": 100,
+      "notes": []
+    },
+    "llm_critic": {
+      "score": 100,
+      "notes": []
+    }
+  },
+  "issues": [
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "card": 4,
+      "finding": "Important card does not carry enough paper-specific vocabulary.",
+      "repair": "Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper."
+    },
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "card": 6,
+      "finding": "Important card does not carry enough paper-specific vocabulary.",
+      "repair": "Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper."
+    },
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "card": 8,
+      "finding": "Important card does not carry enough paper-specific vocabulary.",
+      "repair": "Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper."
+    },
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "finding": "Related slugs are not in the generated catalog: transformer-attention, seq2seq-sutskever, luong-attention, bert-pretraining.",
+      "repair": "Use only readable ids already present in the catalog or leave weak relations out."
+    },
+    {
+      "specialist": "beginner_mental_model",
+      "severity": "major",
+      "card": 2,
+      "finding": "Opening story uses AI terms before earning the intuition.",
+      "repair": "Begin with a familiar situation first, then introduce the technical name on the next card."
+    },
+    {
+      "specialist": "narrative_flow",
+      "severity": "major",
+      "card": 5,
+      "finding": "Core idea card does not clearly name the paper's specific mechanism.",
+      "repair": "Make the card answer: what new move did this paper add?"
+    },
+    {
+      "specialist": "interaction_design",
+      "severity": "major",
+      "card": 4,
+      "finding": "Compare interaction feels generic.",
+      "repair": "Make the toggle demonstrate the paper's central before/after change."
+    },
+    {
+      "specialist": "interaction_design",
+      "severity": "major",
+      "card": 6,
+      "finding": "Slider uses a generic tradeoff template.",
+      "repair": "Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+    },
+    {
+      "specialist": "interaction_design",
+      "severity": "major",
+      "card": 8,
+      "finding": "Results card is not grounded in the paper's distinctive claims.",
+      "repair": "Tie the result bars to the actual comparison, capability, or experiment the paper reports."
+    }
+  ],
+  "recommended_repairs": [
+    "Card 4: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.",
+    "Card 6: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.",
+    "Card 8: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.",
+    "Use only readable ids already present in the catalog or leave weak relations out.",
+    "Card 2: Begin with a familiar situation first, then introduce the technical name on the next card.",
+    "Card 5: Make the card answer: what new move did this paper add?",
+    "Card 4: Make the toggle demonstrate the paper's central before/after change.",
+    "Card 6: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+  ],
+  "repair_brief": "Repair bahdanau-attention: Neural Machine Translation by Jointly Learning to Align and Translate\nCurrent score: 39\nGoal: 90+ with no blocker issues.\nKeep the existing schema and card order.\nPreserve exact title, arxiv_id, url, year, and readable paper_id.\nNever use em dashes or en dashes in user-facing copy.\nPrimary issues:\nCard 4: Important card does not carry enough paper-specific vocabulary. Repair: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.\nCard 6: Important card does not carry enough paper-specific vocabulary. Repair: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.\nCard 8: Important card does not carry enough paper-specific vocabulary. Repair: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.\nRelated slugs are not in the generated catalog: transformer-attention, seq2seq-sutskever, luong-attention, bert-pretraining. Repair: Use only readable ids already present in the catalog or leave weak relations out.\nCard 2: Opening story uses AI terms before earning the intuition. Repair: Begin with a familiar situation first, then introduce the technical name on the next card.\nCard 5: Core idea card does not clearly name the paper's specific mechanism. Repair: Make the card answer: what new move did this paper add?"
+}

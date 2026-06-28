@@ -1,0 +1,102 @@
+{
+  "paper_id": "electra",
+  "title": "ELECTRA: Pre-training Text Encoders as Discriminators Rather Than Generators",
+  "score": 63,
+  "grade": "repair",
+  "blocking_issues": [],
+  "category_scores": {
+    "research_grounding": {
+      "score": 44,
+      "notes": [
+        "Important card does not carry enough paper-specific vocabulary.",
+        "Related slugs are not in the generated catalog: bert, gpt, t5."
+      ]
+    },
+    "beginner_mental_model": {
+      "score": 72,
+      "notes": [
+        "Opening story uses AI terms before earning the intuition."
+      ]
+    },
+    "narrative_flow": {
+      "score": 100,
+      "notes": []
+    },
+    "interaction_design": {
+      "score": 72,
+      "notes": [
+        "Slider uses a generic tradeoff template."
+      ]
+    },
+    "aprecis_style": {
+      "score": 72,
+      "notes": [
+        "Analogy collapses into AI explanation too quickly."
+      ]
+    },
+    "mobile_fit": {
+      "score": 88,
+      "notes": [
+        "Card title is likely too long on mobile."
+      ]
+    },
+    "source_integrity": {
+      "score": 100,
+      "notes": []
+    },
+    "llm_critic": {
+      "score": 100,
+      "notes": []
+    }
+  },
+  "issues": [
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "card": 6,
+      "finding": "Important card does not carry enough paper-specific vocabulary.",
+      "repair": "Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper."
+    },
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "finding": "Related slugs are not in the generated catalog: bert, gpt, t5.",
+      "repair": "Use only readable ids already present in the catalog or leave weak relations out."
+    },
+    {
+      "specialist": "beginner_mental_model",
+      "severity": "major",
+      "card": 2,
+      "finding": "Opening story uses AI terms before earning the intuition.",
+      "repair": "Begin with a familiar situation first, then introduce the technical name on the next card."
+    },
+    {
+      "specialist": "interaction_design",
+      "severity": "major",
+      "card": 6,
+      "finding": "Slider uses a generic tradeoff template.",
+      "repair": "Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+    },
+    {
+      "specialist": "aprecis_style",
+      "severity": "major",
+      "finding": "Analogy collapses into AI explanation too quickly.",
+      "repair": "Let the analogy stand on its own before revealing the technical mapping."
+    },
+    {
+      "specialist": "mobile_fit",
+      "severity": "minor",
+      "card": 11,
+      "finding": "Card title is likely too long on mobile.",
+      "repair": "Shorten the title or move detail into body text."
+    }
+  ],
+  "recommended_repairs": [
+    "Card 6: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.",
+    "Use only readable ids already present in the catalog or leave weak relations out.",
+    "Card 2: Begin with a familiar situation first, then introduce the technical name on the next card.",
+    "Card 6: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale.",
+    "Let the analogy stand on its own before revealing the technical mapping."
+  ],
+  "repair_brief": "Repair electra: ELECTRA: Pre-training Text Encoders as Discriminators Rather Than Generators\nCurrent score: 63\nGoal: 90+ with no blocker issues.\nKeep the existing schema and card order.\nPreserve exact title, arxiv_id, url, year, and readable paper_id.\nNever use em dashes or en dashes in user-facing copy.\nPrimary issues:\nCard 6: Important card does not carry enough paper-specific vocabulary. Repair: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.\nRelated slugs are not in the generated catalog: bert, gpt, t5. Repair: Use only readable ids already present in the catalog or leave weak relations out.\nCard 2: Opening story uses AI terms before earning the intuition. Repair: Begin with a familiar situation first, then introduce the technical name on the next card.\nCard 6: Slider uses a generic tradeoff template. Repair: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale.\nAnalogy collapses into AI explanation too quickly. Repair: Let the analogy stand on its own before revealing the technical mapping."
+}

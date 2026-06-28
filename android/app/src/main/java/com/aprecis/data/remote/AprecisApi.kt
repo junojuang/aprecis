@@ -15,9 +15,12 @@ import retrofit2.http.Query
  */
 interface AprecisApi {
 
-    /** GET /serve-cards?page=<page> */
+    /** GET /serve-cards?page=<page>&limit=<limit> */
     @GET("serve-cards")
-    suspend fun fetchFeed(@Query("page") page: Int): FeedPageDto
+    suspend fun fetchFeed(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int = 80,
+    ): FeedPageDto
 
     /** GET /serve-cards?paper_id=<id> */
     @GET("serve-cards")

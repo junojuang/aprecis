@@ -1,0 +1,99 @@
+{
+  "paper_id": "roberta",
+  "title": "RoBERTa: A Robustly Optimized BERT Pretraining Approach",
+  "score": 69,
+  "grade": "repair",
+  "blocking_issues": [],
+  "category_scores": {
+    "research_grounding": {
+      "score": 44,
+      "notes": [
+        "Important card does not carry enough paper-specific vocabulary.",
+        "Related slugs are not in the generated catalog: bert, gpt-2, deberta."
+      ]
+    },
+    "beginner_mental_model": {
+      "score": 60,
+      "notes": [
+        "Prerequisite note is vague rather than useful.",
+        "Glossary is getting crowded."
+      ]
+    },
+    "narrative_flow": {
+      "score": 100,
+      "notes": []
+    },
+    "interaction_design": {
+      "score": 72,
+      "notes": [
+        "Slider uses a generic tradeoff template."
+      ]
+    },
+    "aprecis_style": {
+      "score": 100,
+      "notes": []
+    },
+    "mobile_fit": {
+      "score": 88,
+      "notes": [
+        "Chooser label may wrap awkwardly."
+      ]
+    },
+    "source_integrity": {
+      "score": 100,
+      "notes": []
+    },
+    "llm_critic": {
+      "score": 100,
+      "notes": []
+    }
+  },
+  "issues": [
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "card": 6,
+      "finding": "Important card does not carry enough paper-specific vocabulary.",
+      "repair": "Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper."
+    },
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "finding": "Related slugs are not in the generated catalog: bert, gpt-2, deberta.",
+      "repair": "Use only readable ids already present in the catalog or leave weak relations out."
+    },
+    {
+      "specialist": "beginner_mental_model",
+      "severity": "major",
+      "finding": "Prerequisite note is vague rather than useful.",
+      "repair": "Name the one concrete idea the learner should bring, for example sequences, images, feedback, or memory."
+    },
+    {
+      "specialist": "beginner_mental_model",
+      "severity": "minor",
+      "finding": "Glossary is getting crowded.",
+      "repair": "Keep only terms that are used in the prose and matter to the mental model."
+    },
+    {
+      "specialist": "interaction_design",
+      "severity": "major",
+      "card": 6,
+      "finding": "Slider uses a generic tradeoff template.",
+      "repair": "Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+    },
+    {
+      "specialist": "mobile_fit",
+      "severity": "minor",
+      "card": 7,
+      "finding": "Chooser label may wrap awkwardly.",
+      "repair": "Use a shorter label and keep the explanation in the note."
+    }
+  ],
+  "recommended_repairs": [
+    "Card 6: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.",
+    "Use only readable ids already present in the catalog or leave weak relations out.",
+    "Name the one concrete idea the learner should bring, for example sequences, images, feedback, or memory.",
+    "Card 6: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+  ],
+  "repair_brief": "Repair roberta: RoBERTa: A Robustly Optimized BERT Pretraining Approach\nCurrent score: 69\nGoal: 90+ with no blocker issues.\nKeep the existing schema and card order.\nPreserve exact title, arxiv_id, url, year, and readable paper_id.\nNever use em dashes or en dashes in user-facing copy.\nPrimary issues:\nCard 6: Important card does not carry enough paper-specific vocabulary. Repair: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.\nRelated slugs are not in the generated catalog: bert, gpt-2, deberta. Repair: Use only readable ids already present in the catalog or leave weak relations out.\nPrerequisite note is vague rather than useful. Repair: Name the one concrete idea the learner should bring, for example sequences, images, feedback, or memory.\nCard 6: Slider uses a generic tradeoff template. Repair: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+}

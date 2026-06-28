@@ -1,0 +1,74 @@
+{
+  "paper_id": "mask-rcnn",
+  "title": "Mask R-CNN",
+  "score": 84,
+  "grade": "polish",
+  "blocking_issues": [],
+  "category_scores": {
+    "research_grounding": {
+      "score": 72,
+      "notes": [
+        "Related slugs are not in the generated catalog: deeplab, rcnn."
+      ]
+    },
+    "beginner_mental_model": {
+      "score": 100,
+      "notes": []
+    },
+    "narrative_flow": {
+      "score": 100,
+      "notes": []
+    },
+    "interaction_design": {
+      "score": 72,
+      "notes": [
+        "Slider uses a generic tradeoff template."
+      ]
+    },
+    "aprecis_style": {
+      "score": 88,
+      "notes": [
+        "Paragraph is too thin to teach."
+      ]
+    },
+    "mobile_fit": {
+      "score": 100,
+      "notes": []
+    },
+    "source_integrity": {
+      "score": 100,
+      "notes": []
+    },
+    "llm_critic": {
+      "score": 100,
+      "notes": []
+    }
+  },
+  "issues": [
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "finding": "Related slugs are not in the generated catalog: deeplab, rcnn.",
+      "repair": "Use only readable ids already present in the catalog or leave weak relations out."
+    },
+    {
+      "specialist": "interaction_design",
+      "severity": "major",
+      "card": 6,
+      "finding": "Slider uses a generic tradeoff template.",
+      "repair": "Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+    },
+    {
+      "specialist": "aprecis_style",
+      "severity": "minor",
+      "card": 7,
+      "finding": "Paragraph is too thin to teach.",
+      "repair": "Expand it into one concrete idea, not a label."
+    }
+  ],
+  "recommended_repairs": [
+    "Use only readable ids already present in the catalog or leave weak relations out.",
+    "Card 6: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+  ],
+  "repair_brief": "Repair mask-rcnn: Mask R-CNN\nCurrent score: 84\nGoal: 90+ with no blocker issues.\nKeep the existing schema and card order.\nPreserve exact title, arxiv_id, url, year, and readable paper_id.\nNever use em dashes or en dashes in user-facing copy.\nPrimary issues:\nRelated slugs are not in the generated catalog: deeplab, rcnn. Repair: Use only readable ids already present in the catalog or leave weak relations out.\nCard 6: Slider uses a generic tradeoff template. Repair: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+}

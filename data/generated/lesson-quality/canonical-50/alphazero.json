@@ -1,0 +1,92 @@
+{
+  "paper_id": "alphazero",
+  "title": "Mastering Chess and Shogi by Self-Play with a General Reinforcement Learning Algorithm",
+  "score": 70,
+  "grade": "repair",
+  "blocking_issues": [],
+  "category_scores": {
+    "research_grounding": {
+      "score": 44,
+      "notes": [
+        "Important card does not carry enough paper-specific vocabulary.",
+        "Related slugs are not in the generated catalog: alphago-zero, deepmind-mcts, reinforcement-learning-dqn, muzero."
+      ]
+    },
+    "beginner_mental_model": {
+      "score": 100,
+      "notes": []
+    },
+    "narrative_flow": {
+      "score": 100,
+      "notes": []
+    },
+    "interaction_design": {
+      "score": 72,
+      "notes": [
+        "Slider uses a generic tradeoff template."
+      ]
+    },
+    "aprecis_style": {
+      "score": 72,
+      "notes": [
+        "Lesson contains weak Aprecis copy patterns."
+      ]
+    },
+    "mobile_fit": {
+      "score": 88,
+      "notes": [
+        "Card title is likely too long on mobile."
+      ]
+    },
+    "source_integrity": {
+      "score": 100,
+      "notes": []
+    },
+    "llm_critic": {
+      "score": 100,
+      "notes": []
+    }
+  },
+  "issues": [
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "card": 6,
+      "finding": "Important card does not carry enough paper-specific vocabulary.",
+      "repair": "Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper."
+    },
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "finding": "Related slugs are not in the generated catalog: alphago-zero, deepmind-mcts, reinforcement-learning-dqn, muzero.",
+      "repair": "Use only readable ids already present in the catalog or leave weak relations out."
+    },
+    {
+      "specialist": "interaction_design",
+      "severity": "major",
+      "card": 6,
+      "finding": "Slider uses a generic tradeoff template.",
+      "repair": "Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+    },
+    {
+      "specialist": "aprecis_style",
+      "severity": "major",
+      "finding": "Lesson contains weak Aprecis copy patterns.",
+      "repair": "Cut abstract hype and write concrete, beginner-first prose."
+    },
+    {
+      "specialist": "mobile_fit",
+      "severity": "minor",
+      "card": 11,
+      "finding": "Card title is likely too long on mobile.",
+      "repair": "Shorten the title or move detail into body text."
+    }
+  ],
+  "recommended_repairs": [
+    "Card 6: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.",
+    "Use only readable ids already present in the catalog or leave weak relations out.",
+    "Card 6: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale.",
+    "Cut abstract hype and write concrete, beginner-first prose."
+  ],
+  "repair_brief": "Repair alphazero: Mastering Chess and Shogi by Self-Play with a General Reinforcement Learning Algorithm\nCurrent score: 70\nGoal: 90+ with no blocker issues.\nKeep the existing schema and card order.\nPreserve exact title, arxiv_id, url, year, and readable paper_id.\nNever use em dashes or en dashes in user-facing copy.\nPrimary issues:\nCard 6: Important card does not carry enough paper-specific vocabulary. Repair: Rewrite this card around named mechanisms, datasets, metrics, or claims from the paper.\nRelated slugs are not in the generated catalog: alphago-zero, deepmind-mcts, reinforcement-learning-dqn, muzero. Repair: Use only readable ids already present in the catalog or leave weak relations out.\nCard 6: Slider uses a generic tradeoff template. Repair: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale.\nLesson contains weak Aprecis copy patterns. Repair: Cut abstract hype and write concrete, beginner-first prose."
+}

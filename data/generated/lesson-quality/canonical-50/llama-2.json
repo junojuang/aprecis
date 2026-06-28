@@ -1,0 +1,102 @@
+{
+  "paper_id": "llama-2",
+  "title": "Llama 2: Open Foundation and Fine-Tuned Chat Models",
+  "score": 58,
+  "grade": "rebuild",
+  "blocking_issues": [],
+  "category_scores": {
+    "research_grounding": {
+      "score": 72,
+      "notes": [
+        "Related slugs are not in the generated catalog: gpt-3, llama-1, alpaca, chatgpt, palm, falcon."
+      ]
+    },
+    "beginner_mental_model": {
+      "score": 44,
+      "notes": [
+        "Opening story uses AI terms before earning the intuition.",
+        "Prerequisite note is vague rather than useful."
+      ]
+    },
+    "narrative_flow": {
+      "score": 72,
+      "notes": [
+        "Opening arc does not pose a crisp learning tension."
+      ]
+    },
+    "interaction_design": {
+      "score": 72,
+      "notes": [
+        "Slider uses a generic tradeoff template."
+      ]
+    },
+    "aprecis_style": {
+      "score": 100,
+      "notes": []
+    },
+    "mobile_fit": {
+      "score": 100,
+      "notes": []
+    },
+    "source_integrity": {
+      "score": 72,
+      "notes": [
+        "Lesson is missing an author string."
+      ]
+    },
+    "llm_critic": {
+      "score": 100,
+      "notes": []
+    }
+  },
+  "issues": [
+    {
+      "specialist": "research_grounding",
+      "severity": "major",
+      "finding": "Related slugs are not in the generated catalog: gpt-3, llama-1, alpaca, chatgpt, palm, falcon.",
+      "repair": "Use only readable ids already present in the catalog or leave weak relations out."
+    },
+    {
+      "specialist": "beginner_mental_model",
+      "severity": "major",
+      "card": 2,
+      "finding": "Opening story uses AI terms before earning the intuition.",
+      "repair": "Begin with a familiar situation first, then introduce the technical name on the next card."
+    },
+    {
+      "specialist": "beginner_mental_model",
+      "severity": "major",
+      "finding": "Prerequisite note is vague rather than useful.",
+      "repair": "Name the one concrete idea the learner should bring, for example sequences, images, feedback, or memory."
+    },
+    {
+      "specialist": "narrative_flow",
+      "severity": "major",
+      "card": 2,
+      "finding": "Opening arc does not pose a crisp learning tension.",
+      "repair": "Make the first story ask a concrete question or name the obstacle the paper solves."
+    },
+    {
+      "specialist": "interaction_design",
+      "severity": "major",
+      "card": 6,
+      "finding": "Slider uses a generic tradeoff template.",
+      "repair": "Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale."
+    },
+    {
+      "specialist": "source_integrity",
+      "severity": "major",
+      "finding": "Lesson is missing an author string.",
+      "repair": "Populate authors from metadata or curated fallback before publishing."
+    }
+  ],
+  "recommended_repairs": [
+    "Use only readable ids already present in the catalog or leave weak relations out.",
+    "Card 2: Begin with a familiar situation first, then introduce the technical name on the next card.",
+    "Name the one concrete idea the learner should bring, for example sequences, images, feedback, or memory.",
+    "Card 2: Make the first story ask a concrete question or name the obstacle the paper solves.",
+    "Card 6: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale.",
+    "Populate authors from metadata or curated fallback before publishing."
+  ],
+  "repair_brief": "Repair llama-2: Llama 2: Open Foundation and Fine-Tuned Chat Models\nCurrent score: 58\nGoal: 90+ with no blocker issues.\nKeep the existing schema and card order.\nPreserve exact title, arxiv_id, url, year, and readable paper_id.\nNever use em dashes or en dashes in user-facing copy.\nPrimary issues:\nRelated slugs are not in the generated catalog: gpt-3, llama-1, alpaca, chatgpt, palm, falcon. Repair: Use only readable ids already present in the catalog or leave weak relations out.\nCard 2: Opening story uses AI terms before earning the intuition. Repair: Begin with a familiar situation first, then introduce the technical name on the next card.\nPrerequisite note is vague rather than useful. Repair: Name the one concrete idea the learner should bring, for example sequences, images, feedback, or memory.\nCard 2: Opening arc does not pose a crisp learning tension. Repair: Make the first story ask a concrete question or name the obstacle the paper solves.\nCard 6: Slider uses a generic tradeoff template. Repair: Tie the slider to the paper's own knob, such as retrieval depth, mask quality, prompt strength, memory span, or guidance scale.\nLesson is missing an author string. Repair: Populate authors from metadata or curated fallback before publishing."
+}
